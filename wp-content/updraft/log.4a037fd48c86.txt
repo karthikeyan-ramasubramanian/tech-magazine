@@ -1,0 +1,1093 @@
+0000.000 (0) Opened log file at time: Mon, 17 Jan 2022 06:27:11 +0000 on https://blogs.techsnapie.com
+0000.005 (0) UpdraftPlus WordPress backup plugin (https://updraftplus.com): 1.22.1 WP: 5.8.3 PHP: 8.0.10 (litespeed, Linux ip-172-31-30-73 5.8.0-1038-aws #40~20.04.1-Ubuntu SMP Thu Jun 17 13:25:28 UTC 2021 x86_64) MySQL: 10.3.31-MariaDB-0ubuntu0.20.04.1 (max packet size=16777216) WPLANG: en_US Server: LiteSpeed safe_mode: 0 max_execution_time: 900 memory_limit: 500M (used: 11.8M | 14M) multisite: N openssl: OpenSSL 1.1.1f  31 Mar 2020 mcrypt: N LANG:  ZipArchive::addFile: Y
+0000.008 (0) Free space on disk containing Updraft's temporary directory: 20980.4 MB
+0000.018 (0) Tasks: Backup files: 1 (schedule: daily) Backup DB:  (schedule: daily)
+0000.021 (0) Processed schedules. Combining jobs from identical schedules. Tasks now: Backup files: 1 Backup DB: 1
+0000.036 (0) Requesting semaphore lock (fd) (apparently via scheduler: last_scheduled_action_called_at=1642314787, seconds_ago=86044)
+0000.044 (0) Set semaphore last lock (fd) time to 2022-01-17 06:27:11
+0000.045 (0) Semaphore lock (fd) complete
+0000.053 (0) Backup run: resumption=0, nonce=4a037fd48c86, file_nonce=4a037fd48c86 begun at=1642400831 (0s ago), job type=backup
+0000.057 (0) Scheduling a resumption (1) after 300 seconds (1642401131) in case this run gets aborted
+0000.089 (0) Checking if we have a zip executable available
+0000.092 (0) Testing: /usr/bin/zip
+0000.099 (0) Output: zip warning: binziptest/test.zip not found or empty
+0000.102 (0) Output: adding: binziptest/subdir1/	(in=0) (out=0) (stored 0%)
+0000.104 (0) Output: adding: binziptest/subdir1/subdir2/	(in=0) (out=0) (stored 0%)
+0000.106 (0) Output: adding: binziptest/subdir1/subdir2/test.html	(in=131) (out=107) (deflated 18%)
+0000.109 (0) Output: total bytes=131, compressed=107 -> 18% savings
+0000.115 (0) Output: adding: binziptest/subdir1/subdir2/test2.html	(in=138) (out=113) (deflated 18%)
+0000.118 (0) Output: total bytes=269, compressed=220 -> 18% savings
+0000.136 (0) Working binary zip found: /usr/bin/zip
+0000.142 (0) Zip engine: found/will use a binary zip: /usr/bin/zip
+0000.145 (0) Creation of backups of directories: beginning
+0000.165 (0) Beginning creation of dump of plugins (split every: 400 MB)
+0002.270 (0) Total entities for the zip file: 3370 directories, 18131 files (0 skipped as non-modified), 223 MB
+0002.275 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 100 files added (on-disk size: 0 KB)
+0002.279 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 200 files added (on-disk size: 0 KB)
+0002.283 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 300 files added (on-disk size: 0 KB)
+0002.286 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 400 files added (on-disk size: 0 KB)
+0002.290 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 500 files added (on-disk size: 0 KB)
+0002.294 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 600 files added (on-disk size: 0 KB)
+0002.298 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 700 files added (on-disk size: 0 KB)
+0002.302 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 800 files added (on-disk size: 0 KB)
+0002.306 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 900 files added (on-disk size: 0 KB)
+0002.310 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 1000 files added (on-disk size: 0 KB)
+0002.313 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 1000 files added on this batch (12.9 MB, 18131 files batched, 1001 (1001) added so far); re-opening (prior size: 0 KB)
+0003.644 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: size is now: 5.10 MB
+0003.651 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 1100 files added (on-disk size: 5219.1 KB)
+0003.655 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 1200 files added (on-disk size: 5219.1 KB)
+0003.659 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 1300 files added (on-disk size: 5219.1 KB)
+0003.663 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 1400 files added (on-disk size: 5219.1 KB)
+0003.667 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 1500 files added (on-disk size: 5219.1 KB)
+0003.671 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 1600 files added (on-disk size: 5219.1 KB)
+0003.676 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 1700 files added (on-disk size: 5219.1 KB)
+0003.680 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 1800 files added (on-disk size: 5219.1 KB)
+0003.684 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 1900 files added (on-disk size: 5219.1 KB)
+0003.688 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 2000 files added (on-disk size: 5219.1 KB)
+0003.691 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 1000 files added on this batch (11.2 MB, 18131 files batched, 1001 (2002) added so far); re-opening (prior size: 5219.1 KB)
+0004.874 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: size is now: 7.80 MB
+0004.893 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 2100 files added (on-disk size: 7951.2 KB)
+0004.897 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 2200 files added (on-disk size: 7951.2 KB)
+0004.901 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 2300 files added (on-disk size: 7951.2 KB)
+0004.905 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 2400 files added (on-disk size: 7951.2 KB)
+0004.909 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 2500 files added (on-disk size: 7951.2 KB)
+0004.913 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 2600 files added (on-disk size: 7951.2 KB)
+0004.917 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 2700 files added (on-disk size: 7951.2 KB)
+0004.921 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 2800 files added (on-disk size: 7951.2 KB)
+0004.925 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 25 MB added on this batch (25.2 MB, 18131 files batched, 890 (2892) added so far); re-opening (prior size: 7951.2 KB)
+0007.183 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: size is now: 15.80 MB
+0007.191 (0) A useful amount of data was added after this amount of zip processing: 3.3 s (normalised: 3.2 s, rate: 7923.4 KB/s)
+0007.197 (0) Performance is good - will increase the amount of data we attempt to batch (time=3.2625188827515, normalised_time=3.2309261965953, max_time=7.1938951015472, data points known=1, old_max_bytes=26214400, new_max_bytes=48681520)
+0007.201 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 2900 files added (on-disk size: 16195.1 KB)
+0007.205 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 3000 files added (on-disk size: 16195.1 KB)
+0007.209 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 3100 files added (on-disk size: 16195.1 KB)
+0007.213 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 3200 files added (on-disk size: 16195.1 KB)
+0007.215 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 3300 files added (on-disk size: 16195.1 KB)
+0007.219 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 3400 files added (on-disk size: 16195.1 KB)
+0007.222 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 3500 files added (on-disk size: 16195.1 KB)
+0007.226 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 3600 files added (on-disk size: 16195.1 KB)
+0007.230 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 3700 files added (on-disk size: 16195.1 KB)
+0007.234 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 3800 files added (on-disk size: 16195.1 KB)
+0007.238 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 1000 files added on this batch (18.7 MB, 18131 files batched, 1001 (3893) added so far); re-opening (prior size: 16195.1 KB)
+0008.501 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: size is now: 22.30 MB
+0008.521 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 3900 files added (on-disk size: 22852.2 KB)
+0008.528 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 4000 files added (on-disk size: 22852.2 KB)
+0008.533 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 4100 files added (on-disk size: 22852.2 KB)
+0008.537 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 4200 files added (on-disk size: 22852.2 KB)
+0008.541 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 4300 files added (on-disk size: 22852.2 KB)
+0008.546 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 4400 files added (on-disk size: 22852.2 KB)
+0008.550 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 4500 files added (on-disk size: 22852.2 KB)
+0008.554 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 4600 files added (on-disk size: 22852.2 KB)
+0008.558 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 4700 files added (on-disk size: 22852.2 KB)
+0008.562 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 4800 files added (on-disk size: 22852.2 KB)
+0008.566 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 1000 files added on this batch (13.5 MB, 18131 files batched, 1001 (4894) added so far); re-opening (prior size: 22852.2 KB)
+0009.728 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: size is now: 31.10 MB
+0009.737 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 4900 files added (on-disk size: 31857.9 KB)
+0009.739 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 5000 files added (on-disk size: 31857.9 KB)
+0009.743 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 5100 files added (on-disk size: 31857.9 KB)
+0009.748 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 5200 files added (on-disk size: 31857.9 KB)
+0009.752 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 5300 files added (on-disk size: 31857.9 KB)
+0009.756 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 5400 files added (on-disk size: 31857.9 KB)
+0009.760 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 5500 files added (on-disk size: 31857.9 KB)
+0009.765 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 5600 files added (on-disk size: 31857.9 KB)
+0009.769 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 5700 files added (on-disk size: 31857.9 KB)
+0009.774 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 5800 files added (on-disk size: 31857.9 KB)
+0009.778 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 1000 files added on this batch (11.1 MB, 18131 files batched, 1001 (5895) added so far); re-opening (prior size: 31857.9 KB)
+0011.082 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 5900 files added (on-disk size: 35239.8 KB)
+0011.086 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 6000 files added (on-disk size: 35239.8 KB)
+0011.093 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 6100 files added (on-disk size: 35239.8 KB)
+0011.097 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 6200 files added (on-disk size: 35239.8 KB)
+0011.101 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 6300 files added (on-disk size: 35239.8 KB)
+0011.106 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 6400 files added (on-disk size: 35239.8 KB)
+0011.110 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 6500 files added (on-disk size: 35239.8 KB)
+0011.114 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 6600 files added (on-disk size: 35239.8 KB)
+0011.118 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 6700 files added (on-disk size: 35239.8 KB)
+0011.122 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 6800 files added (on-disk size: 35239.8 KB)
+0011.130 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 1000 files added on this batch (15.8 MB, 18131 files batched, 1001 (6896) added so far); re-opening (prior size: 35239.8 KB)
+0012.587 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 6900 files added (on-disk size: 41871.1 KB)
+0012.598 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 7000 files added (on-disk size: 41871.1 KB)
+0012.604 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 7100 files added (on-disk size: 41871.1 KB)
+0012.613 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 7200 files added (on-disk size: 41871.1 KB)
+0012.618 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 7300 files added (on-disk size: 41871.1 KB)
+0012.624 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 7400 files added (on-disk size: 41871.1 KB)
+0012.628 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 7500 files added (on-disk size: 41871.1 KB)
+0012.632 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 7600 files added (on-disk size: 41871.1 KB)
+0012.642 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 7700 files added (on-disk size: 41871.1 KB)
+0012.651 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 7800 files added (on-disk size: 41871.1 KB)
+0012.659 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 1000 files added on this batch (3.1 MB, 18131 files batched, 1001 (7897) added so far); re-opening (prior size: 41871.1 KB)
+0013.611 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 7900 files added (on-disk size: 43045.7 KB)
+0013.619 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 8000 files added (on-disk size: 43045.7 KB)
+0013.629 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 8100 files added (on-disk size: 43045.7 KB)
+0013.633 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 8200 files added (on-disk size: 43045.7 KB)
+0013.637 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 8300 files added (on-disk size: 43045.7 KB)
+0013.642 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 8400 files added (on-disk size: 43045.7 KB)
+0013.646 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 8500 files added (on-disk size: 43045.7 KB)
+0013.651 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 8600 files added (on-disk size: 43045.7 KB)
+0013.655 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 8700 files added (on-disk size: 43045.7 KB)
+0013.660 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 8800 files added (on-disk size: 43045.7 KB)
+0013.664 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 1000 files added on this batch (1.3 MB, 18131 files batched, 1001 (8898) added so far); re-opening (prior size: 43045.7 KB)
+0014.485 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 8900 files added (on-disk size: 44064.7 KB)
+0014.490 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 9000 files added (on-disk size: 44064.7 KB)
+0014.494 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 9100 files added (on-disk size: 44064.7 KB)
+0014.498 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 9200 files added (on-disk size: 44064.7 KB)
+0014.502 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 9300 files added (on-disk size: 44064.7 KB)
+0014.507 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 9400 files added (on-disk size: 44064.7 KB)
+0014.511 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 9500 files added (on-disk size: 44064.7 KB)
+0014.517 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 9600 files added (on-disk size: 44064.7 KB)
+0014.521 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 9700 files added (on-disk size: 44064.7 KB)
+0014.527 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 9800 files added (on-disk size: 44064.7 KB)
+0014.532 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 1000 files added on this batch (2.1 MB, 18131 files batched, 1001 (9899) added so far); re-opening (prior size: 44064.7 KB)
+0015.436 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 9900 files added (on-disk size: 45500.6 KB)
+0015.442 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 10000 files added (on-disk size: 45500.6 KB)
+0015.449 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 10100 files added (on-disk size: 45500.6 KB)
+0015.457 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 10200 files added (on-disk size: 45500.6 KB)
+0015.467 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 10300 files added (on-disk size: 45500.6 KB)
+0015.471 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 10400 files added (on-disk size: 45500.6 KB)
+0015.476 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 10500 files added (on-disk size: 45500.6 KB)
+0015.482 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 10600 files added (on-disk size: 45500.6 KB)
+0015.491 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 10700 files added (on-disk size: 45500.6 KB)
+0015.498 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 10800 files added (on-disk size: 45500.6 KB)
+0015.507 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 1000 files added on this batch (5.4 MB, 18131 files batched, 1001 (10900) added so far); re-opening (prior size: 45500.6 KB)
+0016.759 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 10900 files added (on-disk size: 47618.8 KB)
+0016.767 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 11000 files added (on-disk size: 47618.8 KB)
+0016.774 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 11100 files added (on-disk size: 47618.8 KB)
+0016.794 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 11200 files added (on-disk size: 47618.8 KB)
+0016.800 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 11300 files added (on-disk size: 47618.8 KB)
+0016.808 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 11400 files added (on-disk size: 47618.8 KB)
+0016.813 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 11500 files added (on-disk size: 47618.8 KB)
+0016.821 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 11600 files added (on-disk size: 47618.8 KB)
+0016.826 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 11700 files added (on-disk size: 47618.8 KB)
+0016.831 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 11800 files added (on-disk size: 47618.8 KB)
+0016.836 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 11900 files added (on-disk size: 47618.8 KB)
+0016.840 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 1000 files added on this batch (8 MB, 18131 files batched, 1001 (11901) added so far); re-opening (prior size: 47618.8 KB)
+0018.426 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 12000 files added (on-disk size: 50020.5 KB)
+0018.432 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 12100 files added (on-disk size: 50020.5 KB)
+0018.437 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 12200 files added (on-disk size: 50020.5 KB)
+0018.442 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 12300 files added (on-disk size: 50020.5 KB)
+0018.447 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 12400 files added (on-disk size: 50020.5 KB)
+0018.451 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 12500 files added (on-disk size: 50020.5 KB)
+0018.456 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 12600 files added (on-disk size: 50020.5 KB)
+0018.462 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 12700 files added (on-disk size: 50020.5 KB)
+0018.466 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 12800 files added (on-disk size: 50020.5 KB)
+0018.471 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 12900 files added (on-disk size: 50020.5 KB)
+0018.475 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 1000 files added on this batch (25.9 MB, 18131 files batched, 1001 (12902) added so far); re-opening (prior size: 50020.5 KB)
+0020.934 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 13000 files added (on-disk size: 59377.7 KB)
+0020.938 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 13100 files added (on-disk size: 59377.7 KB)
+0020.942 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 13200 files added (on-disk size: 59377.7 KB)
+0020.947 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 13300 files added (on-disk size: 59377.7 KB)
+0020.953 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 13400 files added (on-disk size: 59377.7 KB)
+0020.957 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 13500 files added (on-disk size: 59377.7 KB)
+0020.962 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 13600 files added (on-disk size: 59377.7 KB)
+0020.966 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 13700 files added (on-disk size: 59377.7 KB)
+0020.971 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 13800 files added (on-disk size: 59377.7 KB)
+0020.975 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 13900 files added (on-disk size: 59377.7 KB)
+0020.978 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 1000 files added on this batch (21.8 MB, 18131 files batched, 1001 (13903) added so far); re-opening (prior size: 59377.7 KB)
+0022.997 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 14000 files added (on-disk size: 65929.4 KB)
+0023.002 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 14100 files added (on-disk size: 65929.4 KB)
+0023.006 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 14200 files added (on-disk size: 65929.4 KB)
+0023.011 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 14300 files added (on-disk size: 65929.4 KB)
+0023.015 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 14400 files added (on-disk size: 65929.4 KB)
+0023.022 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 14500 files added (on-disk size: 65929.4 KB)
+0023.026 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 14600 files added (on-disk size: 65929.4 KB)
+0023.031 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 14700 files added (on-disk size: 65929.4 KB)
+0023.036 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 14800 files added (on-disk size: 65929.4 KB)
+0023.042 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 14900 files added (on-disk size: 65929.4 KB)
+0023.045 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 1000 files added on this batch (7.1 MB, 18131 files batched, 1001 (14904) added so far); re-opening (prior size: 65929.4 KB)
+0024.588 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 15000 files added (on-disk size: 68214.7 KB)
+0024.592 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 15100 files added (on-disk size: 68214.7 KB)
+0024.597 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 15200 files added (on-disk size: 68214.7 KB)
+0024.602 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 15300 files added (on-disk size: 68214.7 KB)
+0024.609 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 15400 files added (on-disk size: 68214.7 KB)
+0024.615 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 15500 files added (on-disk size: 68214.7 KB)
+0024.620 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 15600 files added (on-disk size: 68214.7 KB)
+0024.625 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 15700 files added (on-disk size: 68214.7 KB)
+0024.630 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 15800 files added (on-disk size: 68214.7 KB)
+0024.634 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 15900 files added (on-disk size: 68214.7 KB)
+0024.638 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 1000 files added on this batch (13.3 MB, 18131 files batched, 1001 (15905) added so far); re-opening (prior size: 68214.7 KB)
+0026.433 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 16000 files added (on-disk size: 74548.4 KB)
+0026.438 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 16100 files added (on-disk size: 74548.4 KB)
+0026.443 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 16200 files added (on-disk size: 74548.4 KB)
+0026.447 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 16300 files added (on-disk size: 74548.4 KB)
+0026.452 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 16400 files added (on-disk size: 74548.4 KB)
+0026.456 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 16500 files added (on-disk size: 74548.4 KB)
+0026.461 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 16600 files added (on-disk size: 74548.4 KB)
+0026.465 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 16700 files added (on-disk size: 74548.4 KB)
+0026.474 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 16800 files added (on-disk size: 74548.4 KB)
+0026.479 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 16900 files added (on-disk size: 74548.4 KB)
+0026.483 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 1000 files added on this batch (21.7 MB, 18131 files batched, 1001 (16906) added so far); re-opening (prior size: 74548.4 KB)
+0028.608 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 17000 files added (on-disk size: 80102.5 KB)
+0028.613 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 17100 files added (on-disk size: 80102.5 KB)
+0028.617 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 17200 files added (on-disk size: 80102.5 KB)
+0028.622 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 17300 files added (on-disk size: 80102.5 KB)
+0028.626 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 17400 files added (on-disk size: 80102.5 KB)
+0028.631 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 17500 files added (on-disk size: 80102.5 KB)
+0028.636 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 17600 files added (on-disk size: 80102.5 KB)
+0028.640 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 17700 files added (on-disk size: 80102.5 KB)
+0028.644 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 17800 files added (on-disk size: 80102.5 KB)
+0028.649 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 17900 files added (on-disk size: 80102.5 KB)
+0028.652 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 1000 files added on this batch (3.5 MB, 18131 files batched, 1001 (17907) added so far); re-opening (prior size: 80102.5 KB)
+0029.820 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 18000 files added (on-disk size: 81452.2 KB)
+0029.826 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.tmp: 18100 files added (on-disk size: 81452.2 KB)
+0030.662 (0) Creating zip file manifest (/home/blogs.techsnapie.com/public_html/wp-content/updraft/backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.list-temp.tmp)
+0030.706 (0) Successfully created zip file manifest (size: 1535937)
+0031.949 (0) Created plugins zip (0) - 82311.5 KB in 31.8 s (2590 KB/s) (sha1: 371c280615c61cf62d2755dc6c19bcf65e4513ba, sha256: e1635183a3faaa528fb68a10c2b1b337e5ef9f4d0c276c3b0bb40ab97d44a53e)
+0031.956 (0) Beginning creation of dump of themes (split every: 400 MB)
+0031.986 (0) Total entities for the zip file: 56 directories, 312 files (0 skipped as non-modified), 5.1 MB
+0031.990 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-themes.zip.tmp: 100 files added (on-disk size: 0 KB)
+0031.994 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-themes.zip.tmp: 200 files added (on-disk size: 0 KB)
+0031.998 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-themes.zip.tmp: 300 files added (on-disk size: 0 KB)
+0032.792 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-themes.zip.tmp: size is now: 2.10 MB
+0032.802 (0) Creating zip file manifest (/home/blogs.techsnapie.com/public_html/wp-content/updraft/backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-themes.zip.list-temp.tmp)
+0032.805 (0) Successfully created zip file manifest (size: 22654)
+0032.841 (0) Created themes zip (0) - 2175.5 KB in 0.9 s (2460.8 KB/s) (sha1: e32d805f8f6d3efc2878588e9cb3f48049fa0424, sha256: fc80c2d1841148740a5d19bbf4c447930e56d621dc2ecd2b0b98885cd34b271e)
+0032.847 (0) Exclusion option setting (uploads): backup*,*backups,backwpup*,wp-clone,snapshots
+0032.848 (0) Looking for candidates to backup in: /home/blogs.techsnapie.com/public_html/wp-content/uploads
+0032.852 (0) finding files: tg-demo-pack: adding to list (1)
+0032.853 (0) finding files: astra-sites: adding to list (2)
+0032.856 (0) finding files: smush-webp-test.png: adding to list (3)
+0032.858 (0) finding files: wpforms: adding to list (4)
+0032.861 (0) finding files: 2021: adding to list (5)
+0032.864 (0) finding files: elementor: adding to list (6)
+0032.866 (0) finding files: matomo: adding to list (7)
+0032.869 (0) finding files: photo-gallery: adding to list (8)
+0032.872 (0) finding files: dynamic-mobmenu.css: adding to list (9)
+0032.874 (0) finding files: rank-math: adding to list (10)
+0032.876 (0) finding files: evf-logs: adding to list (11)
+0032.878 (0) finding files: 2022: adding to list (12)
+0032.880 (0) Beginning creation of dump of uploads (split every: 400 MB)
+0032.955 (0) Total entities for the zip file: 25 directories, 2275 files (0 skipped as non-modified), 359.9 MB
+0032.960 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip.tmp: 100 files added (on-disk size: 0 KB)
+0032.964 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip.tmp: 200 files added (on-disk size: 0 KB)
+0032.967 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip.tmp: 300 files added (on-disk size: 0 KB)
+0032.971 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 46.4 MB added on this batch (46.5 MB, 2275 files batched, 376 (376) added so far); re-opening (prior size: 0 KB)
+0033.975 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip.tmp: size is now: 45.50 MB
+0033.985 (0) A useful amount of data was added after this amount of zip processing: 2.1 s (normalised: 2.1 s, rate: 23139.5 KB/s)
+0033.990 (0) Performance is good - will increase the amount of data we attempt to batch (time=2.0564749240875, normalised_time=2.0545185922117, max_time=33.988079071045, data points known=1, old_max_bytes=48681520, new_max_bytes=209715200)
+0033.996 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip.tmp: 400 files added (on-disk size: 46628 KB)
+0033.999 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip.tmp: 500 files added (on-disk size: 46628 KB)
+0034.003 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip.tmp: 600 files added (on-disk size: 46628 KB)
+0034.009 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip.tmp: 700 files added (on-disk size: 46628 KB)
+0034.013 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip.tmp: 800 files added (on-disk size: 46628 KB)
+0034.017 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip.tmp: 900 files added (on-disk size: 46628 KB)
+0034.025 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip.tmp: 1000 files added (on-disk size: 46628 KB)
+0034.030 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip.tmp: 1100 files added (on-disk size: 46628 KB)
+0034.034 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip.tmp: 1200 files added (on-disk size: 46628 KB)
+0034.038 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip.tmp: 1300 files added (on-disk size: 46628 KB)
+0034.042 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 1000 files added on this batch (118.8 MB, 2275 files batched, 1001 (1377) added so far); re-opening (prior size: 46628 KB)
+0036.979 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip.tmp: size is now: 164.50 MB
+0036.988 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip.tmp: 1400 files added (on-disk size: 168489.3 KB)
+0036.992 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip.tmp: 1500 files added (on-disk size: 168489.3 KB)
+0036.996 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip.tmp: 1600 files added (on-disk size: 168489.3 KB)
+0037.001 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip.tmp: 1700 files added (on-disk size: 168489.3 KB)
+0037.005 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip.tmp: 1800 files added (on-disk size: 168489.3 KB)
+0037.010 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip.tmp: 1900 files added (on-disk size: 168489.3 KB)
+0037.015 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip.tmp: 2000 files added (on-disk size: 168489.3 KB)
+0037.019 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip.tmp: 2100 files added (on-disk size: 168489.3 KB)
+0037.025 (0) Zip: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip.tmp: 2200 files added (on-disk size: 168489.3 KB)
+0050.925 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip.tmp: size is now: 307.80 MB
+0050.967 (0) Creating zip file manifest (/home/blogs.techsnapie.com/public_html/wp-content/updraft/backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip.list-temp.tmp)
+0050.980 (0) Successfully created zip file manifest (size: 119584)
+0056.060 (0) Created uploads zip (0) - 315234.3 KB in 23.2 s (13600.7 KB/s) (sha1: 03cc0f683bd8427419eb5872a63a0ee6383ba958, sha256: 222d8cb22c4a3aa1ced661cb772475b4e41c70b3374c36513244bad20533aff6)
+0056.071 (0) Beginning backup of other directories found in the content directory (index: 0)
+0056.075 (0) Exclusion option setting (others): upgrade,cache,updraft,backup*,*backups,mysql.sql,debug.log
+0056.081 (0) Looking for candidates to backup in: /home/blogs.techsnapie.com/public_html/wp-content
+0056.084 (0) finding files: mu-plugins: adding to list (1)
+0056.085 (0) finding files: updraft: skipping: this is the updraft directory
+0056.088 (0) finding files: plugins: skipping: this is the plugins directory
+0056.089 (0) finding files: smush-webp: adding to list (2)
+0056.092 (0) finding files: logs: adding to list (3)
+0056.093 (0) finding files: cache: skipping: excluded by options
+0056.096 (0) finding files: themes: skipping: this is the themes directory
+0056.097 (0) finding files: aiowps_backups: skipping: excluded by options (glob)
+0056.100 (0) finding files: index.php: adding to list (4)
+0056.101 (0) finding files: uploads: skipping: this is the uploads directory
+0056.103 (0) finding files: upgrade: skipping: excluded by options
+0056.115 (0) Total entities for the zip file: 4 directories, 5 files (0 skipped as non-modified), 0 MB
+0056.148 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-others.zip.tmp: size is now: 0.00 MB
+0056.154 (0) Creating zip file manifest (/home/blogs.techsnapie.com/public_html/wp-content/updraft/backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-others.zip.list-temp.tmp)
+0056.157 (0) Successfully created zip file manifest (size: 191)
+0056.165 (0) Created others zip (0) - 3.4 KB in 0.1 s (56.7 KB/s) (sha1: a72eca726ca2d409dc39ed7558a66e0745f02381, sha256: 473aae26be1cd6eddc399dc458e625029047b5487396303a4cd2c1c64af5cf6e)
+0056.176 (0) Saving backup status to database (elements: 8)
+0056.190 (0) Beginning creation of database dump (WordPress DB)
+0056.195 (0) SQL compatibility mode is: ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+0056.207 (0) Testing potential mysqldump binary: /usr/bin/mysqldump
+0056.328 (0) Output: /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;\n/*!40103 SET TIME_ZONE='+00:00' */;\n/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;\n/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;\n/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;\n/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;\nDROP TABLE IF EXISTS `wp_options`;\n/*!40101 SET @saved_cs_client     = @@character_set_client */;\n/*!40101 SET character_set_client = utf8 */;\nCRE (truncated - 1531 bytes total)
+0056.332 (0) Working binary mysqldump found: /usr/bin/mysqldump
+0056.426 (0) Table wp_options: Total expected rows (via COUNT): 1005
+0056.794 (0) Table wp_options: Rows added in this batch (next record: 119889): 1001 (uncompressed bytes in this segment=6012768) in 0.42 seconds
+0056.808 (0) Table wp_options: finishing file(s) (2, 762.9 KB)
+0056.815 (0) Table wp_users: Total expected rows (via COUNT): 24
+0056.819 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0056.825 (0) Table wp_users: Rows added in this batch (next record: 25): 24 (uncompressed bytes in this segment=5789) in 0.01 seconds
+0056.834 (0) Table wp_users: finishing file(s) (2, 2.6 KB)
+0056.846 (0) Table wp_usermeta: Total expected rows (via COUNT): 613
+0056.852 (0) Table is relatively small; fetch_rows will thus be: 500 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0056.862 (0) Table wp_usermeta: Rows added in this batch (next record: 644): 613 (uncompressed bytes in this segment=42982) in 0.02 seconds
+0056.875 (0) Table wp_usermeta: finishing file(s) (2, 10.5 KB)
+0056.886 (0) Table wp_actionscheduler_actions: Total expected rows (via COUNT): 106
+0056.889 (0) Table is relatively small; fetch_rows will thus be: 200 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0056.897 (0) Table wp_actionscheduler_actions: Rows added in this batch (next record: 10876): 106 (uncompressed bytes in this segment=45343) in 0.02 seconds
+0056.908 (0) Table wp_actionscheduler_actions: finishing file(s) (2, 4.6 KB)
+0056.914 (0) Table wp_actionscheduler_claims: Total expected rows (via COUNT): 0
+0056.921 (0) Table wp_actionscheduler_claims: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=632) in 0.01 seconds
+0056.930 (0) Table wp_actionscheduler_claims: finishing file(s) (2, 0.4 KB)
+0056.938 (0) Table wp_actionscheduler_groups: Total expected rows (via COUNT): 6
+0056.941 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0056.946 (0) Table wp_actionscheduler_groups: Rows added in this batch (next record: 6): 6 (uncompressed bytes in this segment=773) in 0.01 seconds
+0056.954 (0) Table wp_actionscheduler_groups: finishing file(s) (2, 0.4 KB)
+0056.962 (0) Table wp_actionscheduler_logs: Total expected rows (via COUNT): 300
+0056.964 (0) Table is relatively small; fetch_rows will thus be: 500 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0056.972 (0) Table wp_actionscheduler_logs: Rows added in this batch (next record: 29599): 300 (uncompressed bytes in this segment=27506) in 0.01 seconds
+0056.981 (0) Table wp_actionscheduler_logs: finishing file(s) (2, 3.8 KB)
+0056.991 (0) Table wp_commentmeta: Total expected rows (via COUNT): 6
+0056.995 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0057.000 (0) Table wp_commentmeta: Rows added in this batch (next record: 28): 6 (uncompressed bytes in this segment=1553) in 0.01 seconds
+0057.010 (0) Table wp_commentmeta: finishing file(s) (2, 0.6 KB)
+0057.018 (0) Table wp_comments: Total expected rows (via COUNT): 11
+0057.021 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0057.025 (0) Table wp_comments: Rows added in this batch (next record: 20): 11 (uncompressed bytes in this segment=5127) in 0.01 seconds
+0057.033 (0) Table wp_comments: finishing file(s) (2, 1.4 KB)
+0057.044 (0) Table wp_evf_entrymeta: Total expected rows (via COUNT): 24
+0057.046 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0057.049 (0) Table wp_evf_entrymeta: Rows added in this batch (next record: 24): 24 (uncompressed bytes in this segment=2164) in 0.01 seconds
+0057.060 (0) Table wp_evf_entrymeta: finishing file(s) (2, 0.8 KB)
+0057.068 (0) Table wp_links: Total expected rows (via COUNT): 0
+0057.074 (0) Table wp_links: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=1266) in 0.01 seconds
+0057.084 (0) Table wp_links: finishing file(s) (2, 0.5 KB)
+0057.095 (0) Table wp_postmeta: Total expected rows (approximate): 2185
+0057.152 (0) Table wp_postmeta: Rows added in this batch (next record: 5229): 2491 (uncompressed bytes in this segment=619499) in 0.06 seconds
+0057.167 (0) Table wp_postmeta: finishing file(s) (2, 57.3 KB)
+0057.188 (0) Table wp_posts: Total expected rows (via COUNT): 625
+0057.359 (0) Table wp_posts: Rows added in this batch (next record: 1453): 625 (uncompressed bytes in this segment=2817154) in 0.19 seconds
+0057.372 (0) Table wp_posts: finishing file(s) (2, 369.2 KB)
+0057.378 (0) Table wp_term_relationships: Total expected rows (approximate): 234
+0057.386 (0) Table wp_term_relationships: Rows added in this batch (next record: 100000): 234 (uncompressed bytes in this segment=4303) in 0.01 seconds
+0057.396 (0) Table wp_term_relationships: finishing file(s) (2, 1 KB)
+0057.406 (0) Table wp_term_taxonomy: Total expected rows (via COUNT): 149
+0057.409 (0) Table is relatively small; fetch_rows will thus be: 250 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0057.414 (0) Table wp_term_taxonomy: Rows added in this batch (next record: 156): 149 (uncompressed bytes in this segment=5915) in 0.01 seconds
+0057.425 (0) Table wp_term_taxonomy: finishing file(s) (2, 1.3 KB)
+0057.434 (0) Table wp_termmeta: Total expected rows (via COUNT): 0
+0057.440 (0) Table wp_termmeta: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=657) in 0.01 seconds
+0057.449 (0) Table wp_termmeta: finishing file(s) (2, 0.4 KB)
+0057.460 (0) Table wp_terms: Total expected rows (via COUNT): 149
+0057.463 (0) Table is relatively small; fetch_rows will thus be: 250 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0057.470 (0) Table wp_terms: Rows added in this batch (next record: 156): 149 (uncompressed bytes in this segment=7309) in 0.01 seconds
+0057.481 (0) Table wp_terms: finishing file(s) (2, 2.6 KB)
+0057.509 (0) Table wp_aioseo_cache: Total expected rows (via COUNT): 12
+0057.513 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0057.524 (0) Table wp_aioseo_cache: Rows added in this batch (next record: 588): 12 (uncompressed bytes in this segment=73899) in 0.04 seconds
+0057.537 (0) Table wp_aioseo_cache: finishing file(s) (2, 14 KB)
+0057.571 (0) Table wp_aioseo_notifications: Total expected rows (via COUNT): 7
+0057.574 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0057.578 (0) Table wp_aioseo_notifications: Rows added in this batch (next record: 8): 7 (uncompressed bytes in this segment=19820) in 0.02 seconds
+0057.590 (0) Table wp_aioseo_notifications: finishing file(s) (2, 12.2 KB)
+0057.641 (0) Table wp_aioseo_posts: Total expected rows (via COUNT): 50
+0057.643 (0) Table is relatively small; fetch_rows will thus be: 100 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0057.665 (0) Table wp_aioseo_posts: Rows added in this batch (next record: 52): 50 (uncompressed bytes in this segment=211573) in 0.06 seconds
+0057.676 (0) Table wp_aioseo_posts: finishing file(s) (2, 32.3 KB)
+0057.687 (0) Table wp_aiowps_events: Total expected rows (via COUNT): 0
+0057.693 (0) Table wp_aiowps_events: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=1000) in 0.01 seconds
+0057.705 (0) Table wp_aiowps_events: finishing file(s) (2, 0.4 KB)
+0057.712 (0) Table wp_aiowps_failed_logins: Total expected rows (via COUNT): 4
+0057.716 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0057.722 (0) Table wp_aiowps_failed_logins: Rows added in this batch (next record: 4): 4 (uncompressed bytes in this segment=1033) in 0.01 seconds
+0057.730 (0) Table wp_aiowps_failed_logins: finishing file(s) (2, 0.5 KB)
+0057.743 (0) Table wp_aiowps_global_meta: Total expected rows (via COUNT): 0
+0057.749 (0) Table wp_aiowps_global_meta: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=1148) in 0.01 seconds
+0057.758 (0) Table wp_aiowps_global_meta: finishing file(s) (2, 0.4 KB)
+0057.776 (0) Table wp_aiowps_login_activity: Total expected rows (via COUNT): 14
+0057.779 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0057.786 (0) Table wp_aiowps_login_activity: Rows added in this batch (next record: 14): 14 (uncompressed bytes in this segment=2356) in 0.02 seconds
+0057.793 (0) Table wp_aiowps_login_activity: finishing file(s) (2, 0.8 KB)
+0057.802 (0) Table wp_aiowps_login_lockdown: Total expected rows (via COUNT): 0
+0057.807 (0) Table wp_aiowps_login_lockdown: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=932) in 0.01 seconds
+0057.816 (0) Table wp_aiowps_login_lockdown: finishing file(s) (2, 0.4 KB)
+0057.822 (0) Table wp_aiowps_permanent_block: Total expected rows (via COUNT): 0
+0057.826 (0) Table wp_aiowps_permanent_block: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=815) in 0.00 seconds
+0057.837 (0) Table wp_aiowps_permanent_block: finishing file(s) (2, 0.4 KB)
+0057.848 (0) Table wp_b2s_posts: Total expected rows (via COUNT): 1
+0057.851 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0057.858 (0) Table wp_b2s_posts: Rows added in this batch (next record: 1): 1 (uncompressed bytes in this segment=1832) in 0.01 seconds
+0057.866 (0) Table wp_b2s_posts: finishing file(s) (2, 0.6 KB)
+0057.880 (0) Table wp_b2s_posts_drafts: Total expected rows (via COUNT): 0
+0057.889 (0) Table wp_b2s_posts_drafts: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=737) in 0.02 seconds
+0057.901 (0) Table wp_b2s_posts_drafts: finishing file(s) (2, 0.4 KB)
+0057.908 (0) Table wp_b2s_posts_favorites: Total expected rows (via COUNT): 0
+0057.912 (0) Table wp_b2s_posts_favorites: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=648) in 0.01 seconds
+0057.930 (0) Table wp_b2s_posts_favorites: finishing file(s) (2, 0.4 KB)
+0057.941 (0) Table wp_b2s_posts_network_details: Total expected rows (via COUNT): 1
+0057.944 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0057.950 (0) Table wp_b2s_posts_network_details: Rows added in this batch (next record: 1): 1 (uncompressed bytes in this segment=808) in 0.01 seconds
+0057.960 (0) Table wp_b2s_posts_network_details: finishing file(s) (2, 0.4 KB)
+0057.970 (0) Table wp_b2s_posts_sched_details: Total expected rows (via COUNT): 0
+0057.977 (0) Table wp_b2s_posts_sched_details: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=601) in 0.01 seconds
+0057.985 (0) Table wp_b2s_posts_sched_details: finishing file(s) (2, 0.3 KB)
+0057.993 (0) Table wp_b2s_user: Total expected rows (via COUNT): 1
+0057.995 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0058.001 (0) Table wp_b2s_user: Rows added in this batch (next record: 1): 1 (uncompressed bytes in this segment=975) in 0.01 seconds
+0058.009 (0) Table wp_b2s_user: finishing file(s) (2, 0.6 KB)
+0058.017 (0) Table wp_b2s_user_contact: Total expected rows (via COUNT): 0
+0058.023 (0) Table wp_b2s_user_contact: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=1169) in 0.01 seconds
+0058.032 (0) Table wp_b2s_user_contact: finishing file(s) (2, 0.5 KB)
+0058.039 (0) Table wp_b2s_user_network_settings: Total expected rows (via COUNT): 0
+0058.044 (0) Table wp_b2s_user_network_settings: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=638) in 0.01 seconds
+0058.052 (0) Table wp_b2s_user_network_settings: finishing file(s) (2, 0.3 KB)
+0058.061 (0) Table wp_bwg_album: Total expected rows (via COUNT): 0
+0058.064 (0) Table wp_bwg_album: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=850) in 0.00 seconds
+0058.070 (0) Table wp_bwg_album: finishing file(s) (2, 0.4 KB)
+0058.077 (0) Table wp_bwg_album_gallery: Total expected rows (via COUNT): 0
+0058.081 (0) Table wp_bwg_album_gallery: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=578) in 0.00 seconds
+0058.089 (0) Table wp_bwg_album_gallery: finishing file(s) (2, 0.3 KB)
+0058.098 (0) Table wp_bwg_file_paths: Total expected rows (via COUNT): 13
+0058.101 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0058.106 (0) Table wp_bwg_file_paths: Rows added in this batch (next record: 13): 13 (uncompressed bytes in this segment=5157) in 0.01 seconds
+0058.116 (0) Table wp_bwg_file_paths: finishing file(s) (2, 1 KB)
+0058.123 (0) Table wp_bwg_gallery: Total expected rows (via COUNT): 0
+0058.130 (0) Table wp_bwg_gallery: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=1170) in 0.01 seconds
+0058.137 (0) Table wp_bwg_gallery: finishing file(s) (2, 0.5 KB)
+0058.148 (0) Table wp_bwg_image: Total expected rows (via COUNT): 0
+0058.150 (0) Table wp_bwg_image: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=1490) in 0.01 seconds
+0058.160 (0) Table wp_bwg_image: finishing file(s) (2, 0.5 KB)
+0058.168 (0) Table wp_bwg_image_comment: Total expected rows (via COUNT): 0
+0058.171 (0) Table wp_bwg_image_comment: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=802) in 0.00 seconds
+0058.181 (0) Table wp_bwg_image_comment: finishing file(s) (2, 0.4 KB)
+0058.188 (0) Table wp_bwg_image_rate: Total expected rows (via COUNT): 0
+0058.191 (0) Table wp_bwg_image_rate: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=598) in 0.00 seconds
+0058.200 (0) Table wp_bwg_image_rate: finishing file(s) (2, 0.3 KB)
+0058.207 (0) Table wp_bwg_image_tag: Total expected rows (via COUNT): 0
+0058.210 (0) Table wp_bwg_image_tag: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=521) in 0.00 seconds
+0058.218 (0) Table wp_bwg_image_tag: finishing file(s) (2, 0.3 KB)
+0058.225 (0) Table wp_bwg_shortcode: Total expected rows (via COUNT): 0
+0058.228 (0) Table wp_bwg_shortcode: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=464) in 0.00 seconds
+0058.236 (0) Table wp_bwg_shortcode: finishing file(s) (2, 0.3 KB)
+0058.246 (0) Table wp_bwg_theme: Total expected rows (via COUNT): 2
+0058.249 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0058.257 (0) Table wp_bwg_theme: Rows added in this batch (next record: 2): 2 (uncompressed bytes in this segment=41503) in 0.01 seconds
+0058.266 (0) Table wp_bwg_theme: finishing file(s) (2, 4.5 KB)
+0058.277 (0) Table wp_ce4wp_contacts: Total expected rows (via COUNT): 0
+0058.281 (0) Table wp_ce4wp_contacts: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=816) in 0.01 seconds
+0058.289 (0) Table wp_ce4wp_contacts: finishing file(s) (2, 0.4 KB)
+0058.298 (0) Table wp_evf_entries: Total expected rows (via COUNT): 6
+0058.301 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0058.307 (0) Table wp_evf_entries: Rows added in this batch (next record: 6): 6 (uncompressed bytes in this segment=5101) in 0.01 seconds
+0058.322 (0) Table wp_evf_entries: finishing file(s) (2, 1.1 KB)
+0058.330 (0) Table wp_evf_sessions: Total expected rows (via COUNT): 0
+0058.336 (0) Table wp_evf_sessions: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=657) in 0.01 seconds
+0058.346 (0) Table wp_evf_sessions: finishing file(s) (2, 0.4 KB)
+0058.354 (0) Table wp_inrupp_appender_db: Total expected rows (via COUNT): 2
+0058.357 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0058.361 (0) Table wp_inrupp_appender_db: Rows added in this batch (next record: 2): 2 (uncompressed bytes in this segment=682) in 0.01 seconds
+0058.369 (0) Table wp_inrupp_appender_db: finishing file(s) (2, 0.4 KB)
+0058.377 (0) Table wp_matomo_access: Total expected rows (via COUNT): 0
+0058.382 (0) Table wp_matomo_access: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=564) in 0.01 seconds
+0058.389 (0) Table wp_matomo_access: finishing file(s) (2, 0.3 KB)
+0058.394 (0) Table wp_matomo_archive_blob_2021_01: Total expected rows (approximate): 0
+0058.398 (0) Table wp_matomo_archive_blob_2021_01: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=795) in 0.00 seconds
+0058.406 (0) Table wp_matomo_archive_blob_2021_01: finishing file(s) (2, 0.4 KB)
+0058.413 (0) Table wp_matomo_archive_blob_2021_02: Total expected rows (approximate): 0
+0058.417 (0) Table wp_matomo_archive_blob_2021_02: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=795) in 0.00 seconds
+0058.425 (0) Table wp_matomo_archive_blob_2021_02: finishing file(s) (2, 0.4 KB)
+0058.431 (0) Table wp_matomo_archive_blob_2021_03: Total expected rows (approximate): 0
+0058.435 (0) Table wp_matomo_archive_blob_2021_03: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=795) in 0.00 seconds
+0058.444 (0) Table wp_matomo_archive_blob_2021_03: finishing file(s) (2, 0.4 KB)
+0058.450 (0) Table wp_matomo_archive_blob_2021_04: Total expected rows (approximate): 0
+0058.454 (0) Table wp_matomo_archive_blob_2021_04: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=795) in 0.00 seconds
+0058.461 (0) Table wp_matomo_archive_blob_2021_04: finishing file(s) (2, 0.4 KB)
+0058.467 (0) Table wp_matomo_archive_blob_2021_05: Total expected rows (approximate): 0
+0058.470 (0) Table wp_matomo_archive_blob_2021_05: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=795) in 0.00 seconds
+0058.480 (0) Table wp_matomo_archive_blob_2021_05: finishing file(s) (2, 0.4 KB)
+0058.486 (0) Table wp_matomo_archive_blob_2021_06: Total expected rows (approximate): 0
+0058.489 (0) Table wp_matomo_archive_blob_2021_06: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=795) in 0.00 seconds
+0058.497 (0) Table wp_matomo_archive_blob_2021_06: finishing file(s) (2, 0.4 KB)
+0058.503 (0) Table wp_matomo_archive_blob_2021_07: Total expected rows (approximate): 0
+0058.507 (0) Table wp_matomo_archive_blob_2021_07: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=795) in 0.00 seconds
+0058.517 (0) Table wp_matomo_archive_blob_2021_07: finishing file(s) (2, 0.4 KB)
+0058.523 (0) Table wp_matomo_archive_blob_2021_08: Total expected rows (approximate): 0
+0058.527 (0) Table wp_matomo_archive_blob_2021_08: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=795) in 0.01 seconds
+0058.536 (0) Table wp_matomo_archive_blob_2021_08: finishing file(s) (2, 0.4 KB)
+0058.542 (0) Table wp_matomo_archive_blob_2021_09: Total expected rows (approximate): 0
+0058.545 (0) Table wp_matomo_archive_blob_2021_09: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=795) in 0.00 seconds
+0058.553 (0) Table wp_matomo_archive_blob_2021_09: finishing file(s) (2, 0.4 KB)
+0058.560 (0) Table wp_matomo_archive_blob_2021_10: Total expected rows (approximate): 0
+0058.564 (0) Table wp_matomo_archive_blob_2021_10: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=795) in 0.00 seconds
+0058.573 (0) Table wp_matomo_archive_blob_2021_10: finishing file(s) (2, 0.4 KB)
+0058.580 (0) Table wp_matomo_archive_blob_2021_11: Total expected rows (approximate): 0
+0058.583 (0) Table wp_matomo_archive_blob_2021_11: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=795) in 0.00 seconds
+0058.592 (0) Table wp_matomo_archive_blob_2021_11: finishing file(s) (2, 0.4 KB)
+0058.598 (0) Table wp_matomo_archive_blob_2021_12: Total expected rows (approximate): 0
+0058.601 (0) Table wp_matomo_archive_blob_2021_12: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=795) in 0.00 seconds
+0058.610 (0) Table wp_matomo_archive_blob_2021_12: finishing file(s) (2, 0.4 KB)
+0058.617 (0) Table wp_matomo_archive_blob_2022_01: Total expected rows (approximate): 928
+0058.660 (0) Table wp_matomo_archive_blob_2022_01: Rows added in this batch (next record: 1000): 928 (uncompressed bytes in this segment=649581) in 0.04 seconds
+0058.670 (0) Table wp_matomo_archive_blob_2022_01: finishing file(s) (2, 306 KB)
+0058.678 (0) Table wp_matomo_archive_blob_2022_02: Total expected rows (approximate): 0
+0058.681 (0) Table wp_matomo_archive_blob_2022_02: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=795) in 0.00 seconds
+0058.702 (0) Table wp_matomo_archive_blob_2022_02: finishing file(s) (2, 0.4 KB)
+0058.710 (0) Table wp_matomo_archive_invalidations: Total expected rows (via COUNT): 0
+0058.714 (0) Table wp_matomo_archive_invalidations: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=968) in 0.00 seconds
+0058.725 (0) Table wp_matomo_archive_invalidations: finishing file(s) (2, 0.4 KB)
+0058.731 (0) Table wp_matomo_archive_numeric_2021_01: Total expected rows (approximate): 0
+0058.734 (0) Table wp_matomo_archive_numeric_2021_01: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=894) in 0.00 seconds
+0058.744 (0) Table wp_matomo_archive_numeric_2021_01: finishing file(s) (2, 0.4 KB)
+0058.751 (0) Table wp_matomo_archive_numeric_2021_02: Total expected rows (approximate): 0
+0058.755 (0) Table wp_matomo_archive_numeric_2021_02: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=894) in 0.00 seconds
+0058.766 (0) Table wp_matomo_archive_numeric_2021_02: finishing file(s) (2, 0.4 KB)
+0058.775 (0) Table wp_matomo_archive_numeric_2021_03: Total expected rows (approximate): 0
+0058.781 (0) Table wp_matomo_archive_numeric_2021_03: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=894) in 0.01 seconds
+0058.789 (0) Table wp_matomo_archive_numeric_2021_03: finishing file(s) (2, 0.4 KB)
+0058.795 (0) Table wp_matomo_archive_numeric_2021_04: Total expected rows (approximate): 0
+0058.798 (0) Table wp_matomo_archive_numeric_2021_04: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=894) in 0.00 seconds
+0058.808 (0) Table wp_matomo_archive_numeric_2021_04: finishing file(s) (2, 0.4 KB)
+0058.815 (0) Table wp_matomo_archive_numeric_2021_05: Total expected rows (approximate): 0
+0058.818 (0) Table wp_matomo_archive_numeric_2021_05: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=894) in 0.00 seconds
+0058.825 (0) Table wp_matomo_archive_numeric_2021_05: finishing file(s) (2, 0.4 KB)
+0058.831 (0) Table wp_matomo_archive_numeric_2021_06: Total expected rows (approximate): 0
+0058.835 (0) Table wp_matomo_archive_numeric_2021_06: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=894) in 0.00 seconds
+0058.844 (0) Table wp_matomo_archive_numeric_2021_06: finishing file(s) (2, 0.4 KB)
+0058.850 (0) Table wp_matomo_archive_numeric_2021_07: Total expected rows (approximate): 0
+0058.854 (0) Table wp_matomo_archive_numeric_2021_07: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=894) in 0.00 seconds
+0058.862 (0) Table wp_matomo_archive_numeric_2021_07: finishing file(s) (2, 0.4 KB)
+0058.869 (0) Table wp_matomo_archive_numeric_2021_08: Total expected rows (approximate): 0
+0058.873 (0) Table wp_matomo_archive_numeric_2021_08: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=894) in 0.00 seconds
+0058.881 (0) Table wp_matomo_archive_numeric_2021_08: finishing file(s) (2, 0.4 KB)
+0058.887 (0) Table wp_matomo_archive_numeric_2021_09: Total expected rows (approximate): 0
+0058.890 (0) Table wp_matomo_archive_numeric_2021_09: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=894) in 0.00 seconds
+0058.898 (0) Table wp_matomo_archive_numeric_2021_09: finishing file(s) (2, 0.4 KB)
+0058.905 (0) Table wp_matomo_archive_numeric_2021_10: Total expected rows (approximate): 0
+0058.909 (0) Table wp_matomo_archive_numeric_2021_10: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=894) in 0.00 seconds
+0058.917 (0) Table wp_matomo_archive_numeric_2021_10: finishing file(s) (2, 0.4 KB)
+0058.922 (0) Table wp_matomo_archive_numeric_2021_11: Total expected rows (approximate): 0
+0058.926 (0) Table wp_matomo_archive_numeric_2021_11: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=894) in 0.00 seconds
+0058.933 (0) Table wp_matomo_archive_numeric_2021_11: finishing file(s) (2, 0.4 KB)
+0058.940 (0) Table wp_matomo_archive_numeric_2021_12: Total expected rows (approximate): 0
+0058.943 (0) Table wp_matomo_archive_numeric_2021_12: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=894) in 0.00 seconds
+0058.950 (0) Table wp_matomo_archive_numeric_2021_12: finishing file(s) (2, 0.4 KB)
+0058.958 (0) Table wp_matomo_archive_numeric_2022_01: Total expected rows (approximate): 563
+0058.966 (0) Table wp_matomo_archive_numeric_2022_01: Rows added in this batch (next record: 1000): 563 (uncompressed bytes in this segment=56391) in 0.01 seconds
+0058.974 (0) Table wp_matomo_archive_numeric_2022_01: finishing file(s) (2, 4.6 KB)
+0058.980 (0) Table wp_matomo_archive_numeric_2022_02: Total expected rows (approximate): 0
+0058.983 (0) Table wp_matomo_archive_numeric_2022_02: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=894) in 0.00 seconds
+0058.992 (0) Table wp_matomo_archive_numeric_2022_02: finishing file(s) (2, 0.4 KB)
+0058.998 (0) Table wp_matomo_brute_force_log: Total expected rows (via COUNT): 0
+0059.001 (0) Table wp_matomo_brute_force_log: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=633) in 0.00 seconds
+0059.008 (0) Table wp_matomo_brute_force_log: finishing file(s) (2, 0.4 KB)
+0059.014 (0) Table wp_matomo_custom_dimensions: Total expected rows (approximate): 0
+0059.017 (0) Table wp_matomo_custom_dimensions: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=861) in 0.00 seconds
+0059.025 (0) Table wp_matomo_custom_dimensions: finishing file(s) (2, 0.4 KB)
+0059.034 (0) Table wp_matomo_goal: Total expected rows (approximate): 0
+0059.037 (0) Table wp_matomo_goal: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=815) in 0.00 seconds
+0059.045 (0) Table wp_matomo_goal: finishing file(s) (2, 0.4 KB)
+0059.051 (0) Table wp_matomo_locks: Total expected rows (approximate): 0
+0059.055 (0) Table wp_matomo_locks: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=467) in 0.00 seconds
+0059.064 (0) Table wp_matomo_locks: finishing file(s) (2, 0.3 KB)
+0059.072 (0) Table wp_matomo_log_action: Total expected rows (via COUNT): 363
+0059.075 (0) Table is relatively small; fetch_rows will thus be: 500 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0059.084 (0) Table wp_matomo_log_action: Rows added in this batch (next record: 363): 363 (uncompressed bytes in this segment=37691) in 0.02 seconds
+0059.094 (0) Table wp_matomo_log_action: finishing file(s) (2, 9.6 KB)
+0059.102 (0) Table wp_matomo_log_conversion: Total expected rows (approximate): 0
+0059.108 (0) Table wp_matomo_log_conversion: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=2302) in 0.01 seconds
+0059.117 (0) Table wp_matomo_log_conversion: finishing file(s) (2, 0.7 KB)
+0059.123 (0) Table wp_matomo_log_conversion_item: Total expected rows (approximate): 0
+0059.127 (0) Table wp_matomo_log_conversion_item: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=1146) in 0.00 seconds
+0059.137 (0) Table wp_matomo_log_conversion_item: finishing file(s) (2, 0.4 KB)
+0059.143 (0) Table wp_matomo_log_link_visit_action: Total expected rows (approximate): 1275
+0059.204 (0) Table wp_matomo_log_link_visit_action: Rows added in this batch (next record: 1275): 1275 (uncompressed bytes in this segment=337052) in 0.06 seconds
+0059.215 (0) Table wp_matomo_log_link_visit_action: finishing file(s) (2, 37.7 KB)
+0059.223 (0) Table wp_matomo_log_profiling: Total expected rows (via COUNT): 0
+0059.226 (0) Table wp_matomo_log_profiling: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=600) in 0.00 seconds
+0059.237 (0) Table wp_matomo_log_profiling: finishing file(s) (2, 0.4 KB)
+0059.244 (0) Table wp_matomo_log_visit: Total expected rows (via COUNT): 206
+0059.247 (0) Table is relatively small; fetch_rows will thus be: 250 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0059.262 (0) Table wp_matomo_log_visit: Rows added in this batch (next record: 206): 206 (uncompressed bytes in this segment=92197) in 0.02 seconds
+0059.272 (0) Table wp_matomo_log_visit: finishing file(s) (2, 14.8 KB)
+0059.279 (0) Table wp_matomo_logger_message: Total expected rows (via COUNT): 0
+0059.286 (0) Table wp_matomo_logger_message: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=618) in 0.01 seconds
+0059.294 (0) Table wp_matomo_logger_message: finishing file(s) (2, 0.3 KB)
+0059.301 (0) Table wp_matomo_option: Total expected rows (approximate): 167
+0059.306 (0) Table wp_matomo_option: Rows added in this batch (next record: 1000): 167 (uncompressed bytes in this segment=12396) in 0.01 seconds
+0059.313 (0) Table wp_matomo_option: finishing file(s) (2, 2.9 KB)
+0059.331 (0) Table wp_matomo_plugin_setting: Total expected rows (via COUNT): 9
+0059.334 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0059.341 (0) Table wp_matomo_plugin_setting: Rows added in this batch (next record: 18): 9 (uncompressed bytes in this segment=1451) in 0.02 seconds
+0059.353 (0) Table wp_matomo_plugin_setting: finishing file(s) (2, 0.5 KB)
+0059.366 (0) Table wp_matomo_privacy_logdata_anonymizations: Total expected rows (via COUNT): 0
+0059.374 (0) Table wp_matomo_privacy_logdata_anonymizations: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=1250) in 0.01 seconds
+0059.385 (0) Table wp_matomo_privacy_logdata_anonymizations: finishing file(s) (2, 0.5 KB)
+0059.398 (0) Table wp_matomo_report: Total expected rows (via COUNT): 0
+0059.403 (0) Table wp_matomo_report: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=1043) in 0.01 seconds
+0059.415 (0) Table wp_matomo_report: finishing file(s) (2, 0.5 KB)
+0059.424 (0) Table wp_matomo_report_subscriptions: Total expected rows (approximate): 0
+0059.428 (0) Table wp_matomo_report_subscriptions: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=721) in 0.00 seconds
+0059.438 (0) Table wp_matomo_report_subscriptions: finishing file(s) (2, 0.4 KB)
+0059.446 (0) Table wp_matomo_segment: Total expected rows (via COUNT): 0
+0059.450 (0) Table wp_matomo_segment: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=833) in 0.00 seconds
+0059.460 (0) Table wp_matomo_segment: finishing file(s) (2, 0.4 KB)
+0059.467 (0) Table wp_matomo_sequence: Total expected rows (approximate): 14
+0059.471 (0) Table wp_matomo_sequence: Rows added in this batch (next record: 1000): 14 (uncompressed bytes in this segment=1081) in 0.00 seconds
+0059.480 (0) Table wp_matomo_sequence: finishing file(s) (2, 0.4 KB)
+0059.487 (0) Table wp_matomo_session: Total expected rows (approximate): 4
+0059.492 (0) Table wp_matomo_session: Rows added in this batch (next record: 1000): 4 (uncompressed bytes in this segment=1588) in 0.01 seconds
+0059.502 (0) Table wp_matomo_session: finishing file(s) (2, 0.8 KB)
+0059.510 (0) Table wp_matomo_site: Total expected rows (via COUNT): 1
+0059.512 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0059.518 (0) Table wp_matomo_site: Rows added in this batch (next record: 1): 1 (uncompressed bytes in this segment=1294) in 0.01 seconds
+0059.528 (0) Table wp_matomo_site: finishing file(s) (2, 0.6 KB)
+0059.539 (0) Table wp_matomo_site_setting: Total expected rows (via COUNT): 1
+0059.554 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0059.557 (0) Table wp_matomo_site_setting: Rows added in this batch (next record: 1): 1 (uncompressed bytes in this segment=834) in 0.02 seconds
+0059.569 (0) Table wp_matomo_site_setting: finishing file(s) (2, 0.5 KB)
+0059.576 (0) Table wp_matomo_site_url: Total expected rows (approximate): 0
+0059.581 (0) Table wp_matomo_site_url: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=440) in 0.01 seconds
+0059.589 (0) Table wp_matomo_site_url: finishing file(s) (2, 0.3 KB)
+0059.598 (0) Table wp_matomo_tagmanager_container: Total expected rows (approximate): 0
+0059.602 (0) Table wp_matomo_tagmanager_container: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=824) in 0.00 seconds
+0059.610 (0) Table wp_matomo_tagmanager_container: finishing file(s) (2, 0.4 KB)
+0059.617 (0) Table wp_matomo_tagmanager_container_release: Total expected rows (via COUNT): 0
+0059.620 (0) Table wp_matomo_tagmanager_container_release: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=932) in 0.00 seconds
+0059.628 (0) Table wp_matomo_tagmanager_container_release: finishing file(s) (2, 0.4 KB)
+0059.636 (0) Table wp_matomo_tagmanager_container_version: Total expected rows (via COUNT): 0
+0059.640 (0) Table wp_matomo_tagmanager_container_version: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=1030) in 0.00 seconds
+0059.649 (0) Table wp_matomo_tagmanager_container_version: finishing file(s) (2, 0.5 KB)
+0059.656 (0) Table wp_matomo_tagmanager_tag: Total expected rows (via COUNT): 0
+0059.659 (0) Table wp_matomo_tagmanager_tag: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=1194) in 0.00 seconds
+0059.670 (0) Table wp_matomo_tagmanager_tag: finishing file(s) (2, 0.5 KB)
+0059.676 (0) Table wp_matomo_tagmanager_trigger: Total expected rows (via COUNT): 0
+0059.680 (0) Table wp_matomo_tagmanager_trigger: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=946) in 0.00 seconds
+0059.689 (0) Table wp_matomo_tagmanager_trigger: finishing file(s) (2, 0.4 KB)
+0059.695 (0) Table wp_matomo_tagmanager_variable: Total expected rows (via COUNT): 0
+0059.699 (0) Table wp_matomo_tagmanager_variable: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=993) in 0.00 seconds
+0059.708 (0) Table wp_matomo_tagmanager_variable: finishing file(s) (2, 0.5 KB)
+0059.715 (0) Table wp_matomo_tracking_failure: Total expected rows (approximate): 0
+0059.718 (0) Table wp_matomo_tracking_failure: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=591) in 0.00 seconds
+0059.728 (0) Table wp_matomo_tracking_failure: finishing file(s) (2, 0.3 KB)
+0059.735 (0) Table wp_matomo_twofactor_recovery_code: Total expected rows (via COUNT): 0
+0059.738 (0) Table wp_matomo_twofactor_recovery_code: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=600) in 0.00 seconds
+0059.746 (0) Table wp_matomo_twofactor_recovery_code: finishing file(s) (2, 0.3 KB)
+0059.756 (0) Table wp_matomo_user: Total expected rows (approximate): 3
+0059.760 (0) Table wp_matomo_user: Rows added in this batch (next record: 1000): 3 (uncompressed bytes in this segment=1179) in 0.00 seconds
+0059.770 (0) Table wp_matomo_user: finishing file(s) (2, 0.6 KB)
+0059.779 (0) Table wp_matomo_user_dashboard: Total expected rows (approximate): 2
+0059.785 (0) Table wp_matomo_user_dashboard: Rows added in this batch (next record: 1000): 2 (uncompressed bytes in this segment=4278) in 0.01 seconds
+0059.794 (0) Table wp_matomo_user_dashboard: finishing file(s) (2, 0.9 KB)
+0059.803 (0) Table wp_matomo_user_language: Total expected rows (approximate): 3
+0059.806 (0) Table wp_matomo_user_language: Rows added in this batch (next record: 1000): 3 (uncompressed bytes in this segment=661) in 0.00 seconds
+0059.814 (0) Table wp_matomo_user_language: finishing file(s) (2, 0.4 KB)
+0059.822 (0) Table wp_matomo_user_token_auth: Total expected rows (via COUNT): 0
+0059.825 (0) Table wp_matomo_user_token_auth: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=846) in 0.00 seconds
+0059.834 (0) Table wp_matomo_user_token_auth: finishing file(s) (2, 0.4 KB)
+0059.841 (0) Table wp_post_views: Total expected rows (approximate): 901
+0059.849 (0) Table wp_post_views: Rows added in this batch (next record: 1000): 901 (uncompressed bytes in this segment=23624) in 0.01 seconds
+0059.859 (0) Table wp_post_views: finishing file(s) (2, 3.8 KB)
+0059.873 (0) Table wp_rank_math_404_logs: Total expected rows (via COUNT): 0
+0059.877 (0) Table wp_rank_math_404_logs: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=812) in 0.01 seconds
+0059.885 (0) Table wp_rank_math_404_logs: finishing file(s) (2, 0.4 KB)
+0059.894 (0) Table wp_rank_math_analytics_gsc: Total expected rows (via COUNT): 0
+0059.898 (0) Table wp_rank_math_analytics_gsc: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=967) in 0.01 seconds
+0059.909 (0) Table wp_rank_math_analytics_gsc: finishing file(s) (2, 0.5 KB)
+0059.919 (0) Table wp_rank_math_analytics_objects: Total expected rows (via COUNT): 43
+0059.922 (0) Table is relatively small; fetch_rows will thus be: 50 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0059.930 (0) Table wp_rank_math_analytics_objects: Rows added in this batch (next record: 43): 43 (uncompressed bytes in this segment=9933) in 0.02 seconds
+0059.938 (0) Table wp_rank_math_analytics_objects: finishing file(s) (2, 2.9 KB)
+0059.947 (0) Table wp_rank_math_internal_links: Total expected rows (via COUNT): 3
+0059.950 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0059.957 (0) Table wp_rank_math_internal_links: Rows added in this batch (next record: 4): 3 (uncompressed bytes in this segment=1075) in 0.01 seconds
+0059.965 (0) Table wp_rank_math_internal_links: finishing file(s) (2, 0.5 KB)
+0059.971 (0) Table wp_rank_math_internal_meta: Total expected rows (via COUNT): 7
+0059.974 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0059.978 (0) Table wp_rank_math_internal_meta: Rows added in this batch (next record: 1431): 7 (uncompressed bytes in this segment=817) in 0.01 seconds
+0059.986 (0) Table wp_rank_math_internal_meta: finishing file(s) (2, 0.4 KB)
+0059.995 (0) Table wp_rank_math_redirections: Total expected rows (via COUNT): 0
+0060.002 (0) Table wp_rank_math_redirections: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=993) in 0.01 seconds
+0060.010 (0) Table wp_rank_math_redirections: finishing file(s) (2, 0.5 KB)
+0060.018 (0) Table wp_rank_math_redirections_cache: Total expected rows (via COUNT): 0
+0060.022 (0) Table wp_rank_math_redirections_cache: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=863) in 0.00 seconds
+0060.030 (0) Table wp_rank_math_redirections_cache: finishing file(s) (2, 0.4 KB)
+0060.039 (0) Table wp_smush_dir_images: Total expected rows (via COUNT): 0
+0060.042 (0) Table wp_smush_dir_images: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=1078) in 0.00 seconds
+0060.052 (0) Table wp_smush_dir_images: finishing file(s) (2, 0.5 KB)
+0060.060 (0) Table wp_stcfq_queries: Total expected rows (via COUNT): 0
+0060.063 (0) Table wp_stcfq_queries: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=916) in 0.00 seconds
+0060.073 (0) Table wp_stcfq_queries: finishing file(s) (2, 0.4 KB)
+0060.086 (0) Table wp_wpforms_tasks_meta: Total expected rows (via COUNT): 39
+0060.089 (0) Table is relatively small; fetch_rows will thus be: 50 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0060.094 (0) Table wp_wpforms_tasks_meta: Rows added in this batch (next record: 39): 39 (uncompressed bytes in this segment=3633) in 0.01 seconds
+0060.105 (0) Table wp_wpforms_tasks_meta: finishing file(s) (2, 0.9 KB)
+0060.113 (0) Table wp_wpmailsmtp_debug_events: Total expected rows (via COUNT): 14
+0060.116 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0060.122 (0) Table wp_wpmailsmtp_debug_events: Rows added in this batch (next record: 14): 14 (uncompressed bytes in this segment=5586) in 0.01 seconds
+0060.132 (0) Table wp_wpmailsmtp_debug_events: finishing file(s) (2, 1 KB)
+0060.145 (0) Table wp_wpmailsmtp_tasks_meta: Total expected rows (via COUNT): 25
+0060.148 (0) Table is relatively small; fetch_rows will thus be: 50 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0060.153 (0) Table wp_wpmailsmtp_tasks_meta: Rows added in this batch (next record: 25): 25 (uncompressed bytes in this segment=2675) in 0.02 seconds
+0060.164 (0) Table wp_wpmailsmtp_tasks_meta: finishing file(s) (2, 0.7 KB)
+0060.165 (0) PHP event: code E_WARNING: filemtime(): stat failed for /home/blogs.techsnapie.com/public_html/wp-content/updraft/backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db.gz (line 1836, wp-content/plugins/updraftplus/backup.php)
+0060.173 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_options.table.tmpr119890.gz (1/125/fopen): adding to final database dump
+0060.185 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_options.table.gz (2/125/fopen): adding to final database dump
+0060.188 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_users.table.tmpr26.gz (3/125/fopen): adding to final database dump
+0060.190 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_users.table.gz (4/125/fopen): adding to final database dump
+0060.193 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_usermeta.table.tmpr645.gz (5/125/fopen): adding to final database dump
+0060.197 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_usermeta.table.gz (6/125/fopen): adding to final database dump
+0060.200 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_actionscheduler_actions.table.tmpr10877.gz (7/125/fopen): adding to final database dump
+0060.201 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_actionscheduler_actions.table.gz (8/125/fopen): adding to final database dump
+0060.205 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_actionscheduler_claims.table.tmpr0.gz (9/125/fopen): adding to final database dump
+0060.208 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_actionscheduler_claims.table.gz (10/125/fopen): adding to final database dump
+0060.209 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_actionscheduler_groups.table.tmpr7.gz (11/125/fopen): adding to final database dump
+0060.212 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_actionscheduler_groups.table.gz (12/125/fopen): adding to final database dump
+0060.214 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_actionscheduler_logs.table.tmpr29600.gz (13/125/fopen): adding to final database dump
+0060.217 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_actionscheduler_logs.table.gz (14/125/fopen): adding to final database dump
+0060.220 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_commentmeta.table.tmpr29.gz (15/125/fopen): adding to final database dump
+0060.221 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_commentmeta.table.gz (16/125/fopen): adding to final database dump
+0060.224 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_comments.table.tmpr21.gz (17/125/fopen): adding to final database dump
+0060.225 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_comments.table.gz (18/125/fopen): adding to final database dump
+0060.228 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_evf_entrymeta.table.tmpr25.gz (19/125/fopen): adding to final database dump
+0060.230 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_evf_entrymeta.table.gz (20/125/fopen): adding to final database dump
+0060.232 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_links.table.tmpr0.gz (21/125/fopen): adding to final database dump
+0060.234 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_links.table.gz (22/125/fopen): adding to final database dump
+0060.237 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_postmeta.table.tmpr5230.gz (23/125/fopen): adding to final database dump
+0060.240 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_postmeta.table.gz (24/125/fopen): adding to final database dump
+0060.241 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_posts.table.tmpr1454.gz (25/125/fopen): adding to final database dump
+0060.248 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_posts.table.gz (26/125/fopen): adding to final database dump
+0060.251 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_term_relationships.table.tmpr100001.gz (27/125/fopen): adding to final database dump
+0060.255 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_term_relationships.table.gz (28/125/fopen): adding to final database dump
+0060.258 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_term_taxonomy.table.tmpr157.gz (29/125/fopen): adding to final database dump
+0060.261 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_term_taxonomy.table.gz (30/125/fopen): adding to final database dump
+0060.263 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_termmeta.table.tmpr0.gz (31/125/fopen): adding to final database dump
+0060.265 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_termmeta.table.gz (32/125/fopen): adding to final database dump
+0060.268 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_terms.table.tmpr157.gz (33/125/fopen): adding to final database dump
+0060.269 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_terms.table.gz (34/125/fopen): adding to final database dump
+0060.272 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_aioseo_cache.table.tmpr589.gz (35/125/fopen): adding to final database dump
+0060.274 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_aioseo_cache.table.gz (36/125/fopen): adding to final database dump
+0060.277 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_aioseo_notifications.table.tmpr9.gz (37/125/fopen): adding to final database dump
+0060.280 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_aioseo_notifications.table.gz (38/125/fopen): adding to final database dump
+0060.282 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_aioseo_posts.table.tmpr53.gz (39/125/fopen): adding to final database dump
+0060.285 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_aioseo_posts.table.gz (40/125/fopen): adding to final database dump
+0060.288 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_aiowps_events.table.tmpr0.gz (41/125/fopen): adding to final database dump
+0060.290 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_aiowps_events.table.gz (42/125/fopen): adding to final database dump
+0060.293 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_aiowps_failed_logins.table.tmpr5.gz (43/125/fopen): adding to final database dump
+0060.296 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_aiowps_failed_logins.table.gz (44/125/fopen): adding to final database dump
+0060.297 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_aiowps_global_meta.table.tmpr0.gz (45/125/fopen): adding to final database dump
+0060.300 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_aiowps_global_meta.table.gz (46/125/fopen): adding to final database dump
+0060.302 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_aiowps_login_activity.table.tmpr15.gz (47/125/fopen): adding to final database dump
+0060.305 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_aiowps_login_activity.table.gz (48/125/fopen): adding to final database dump
+0060.308 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_aiowps_login_lockdown.table.tmpr0.gz (49/125/fopen): adding to final database dump
+0060.310 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_aiowps_login_lockdown.table.gz (50/125/fopen): adding to final database dump
+0060.313 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_aiowps_permanent_block.table.tmpr0.gz (51/125/fopen): adding to final database dump
+0060.316 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_aiowps_permanent_block.table.gz (52/125/fopen): adding to final database dump
+0060.317 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_b2s_posts.table.tmpr2.gz (53/125/fopen): adding to final database dump
+0060.321 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_b2s_posts.table.gz (54/125/fopen): adding to final database dump
+0060.324 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_b2s_posts_drafts.table.tmpr0.gz (55/125/fopen): adding to final database dump
+0060.325 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_b2s_posts_drafts.table.gz (56/125/fopen): adding to final database dump
+0060.328 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_b2s_posts_favorites.table.tmpr0.gz (57/125/fopen): adding to final database dump
+0060.330 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_b2s_posts_favorites.table.gz (58/125/fopen): adding to final database dump
+0060.333 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_b2s_posts_network_details.table.tmpr2.gz (59/125/fopen): adding to final database dump
+0060.336 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_b2s_posts_network_details.table.gz (60/125/fopen): adding to final database dump
+0060.337 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_b2s_posts_sched_details.table.tmpr0.gz (61/125/fopen): adding to final database dump
+0060.340 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_b2s_posts_sched_details.table.gz (62/125/fopen): adding to final database dump
+0060.341 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_b2s_user.table.tmpr2.gz (63/125/fopen): adding to final database dump
+0060.344 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_b2s_user.table.gz (64/125/fopen): adding to final database dump
+0060.346 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_b2s_user_contact.table.tmpr0.gz (65/125/fopen): adding to final database dump
+0060.349 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_b2s_user_contact.table.gz (66/125/fopen): adding to final database dump
+0060.352 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_b2s_user_network_settings.table.tmpr0.gz (67/125/fopen): adding to final database dump
+0060.354 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_b2s_user_network_settings.table.gz (68/125/fopen): adding to final database dump
+0060.356 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_bwg_album.table.tmpr0.gz (69/125/fopen): adding to final database dump
+0060.357 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_bwg_album.table.gz (70/125/fopen): adding to final database dump
+0060.361 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_bwg_album_gallery.table.tmpr0.gz (71/125/fopen): adding to final database dump
+0060.364 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_bwg_album_gallery.table.gz (72/125/fopen): adding to final database dump
+0060.366 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_bwg_file_paths.table.tmpr14.gz (73/125/fopen): adding to final database dump
+0060.369 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_bwg_file_paths.table.gz (74/125/fopen): adding to final database dump
+0060.372 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_bwg_gallery.table.tmpr0.gz (75/125/fopen): adding to final database dump
+0060.373 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_bwg_gallery.table.gz (76/125/fopen): adding to final database dump
+0060.376 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_bwg_image.table.tmpr0.gz (77/125/fopen): adding to final database dump
+0060.377 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_bwg_image.table.gz (78/125/fopen): adding to final database dump
+0060.380 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_bwg_image_comment.table.tmpr0.gz (79/125/fopen): adding to final database dump
+0060.382 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_bwg_image_comment.table.gz (80/125/fopen): adding to final database dump
+0060.384 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_bwg_image_rate.table.tmpr0.gz (81/125/fopen): adding to final database dump
+0060.386 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_bwg_image_rate.table.gz (82/125/fopen): adding to final database dump
+0060.388 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_bwg_image_tag.table.tmpr0.gz (83/125/fopen): adding to final database dump
+0060.390 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_bwg_image_tag.table.gz (84/125/fopen): adding to final database dump
+0060.392 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_bwg_shortcode.table.tmpr0.gz (85/125/fopen): adding to final database dump
+0060.394 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_bwg_shortcode.table.gz (86/125/fopen): adding to final database dump
+0060.397 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_bwg_theme.table.tmpr3.gz (87/125/fopen): adding to final database dump
+0060.400 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_bwg_theme.table.gz (88/125/fopen): adding to final database dump
+0060.401 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_ce4wp_contacts.table.tmpr0.gz (89/125/fopen): adding to final database dump
+0060.404 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_ce4wp_contacts.table.gz (90/125/fopen): adding to final database dump
+0060.405 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_evf_entries.table.tmpr7.gz (91/125/fopen): adding to final database dump
+0060.409 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_evf_entries.table.gz (92/125/fopen): adding to final database dump
+0060.412 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_evf_sessions.table.tmpr0.gz (93/125/fopen): adding to final database dump
+0060.413 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_evf_sessions.table.gz (94/125/fopen): adding to final database dump
+0060.416 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_inrupp_appender_db.table.tmpr3.gz (95/125/fopen): adding to final database dump
+0060.418 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_inrupp_appender_db.table.gz (96/125/fopen): adding to final database dump
+0060.421 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_access.table.tmpr0.gz (97/125/fopen): adding to final database dump
+0060.424 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_access.table.gz (98/125/fopen): adding to final database dump
+0060.425 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_blob_2021_01.table.tmpr1.gz (99/125/fopen): adding to final database dump
+0060.430 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_blob_2021_01.table.gz (100/125/fopen): adding to final database dump
+0060.433 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_blob_2021_02.table.tmpr1.gz (101/125/fopen): adding to final database dump
+0060.436 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_blob_2021_02.table.gz (102/125/fopen): adding to final database dump
+0060.438 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_blob_2021_03.table.tmpr1.gz (103/125/fopen): adding to final database dump
+0060.441 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_blob_2021_03.table.gz (104/125/fopen): adding to final database dump
+0060.444 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_blob_2021_04.table.tmpr1.gz (105/125/fopen): adding to final database dump
+0060.445 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_blob_2021_04.table.gz (106/125/fopen): adding to final database dump
+0060.448 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_blob_2021_05.table.tmpr1.gz (107/125/fopen): adding to final database dump
+0060.450 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_blob_2021_05.table.gz (108/125/fopen): adding to final database dump
+0060.453 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_blob_2021_06.table.tmpr1.gz (109/125/fopen): adding to final database dump
+0060.456 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_blob_2021_06.table.gz (110/125/fopen): adding to final database dump
+0060.457 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_blob_2021_07.table.tmpr1.gz (111/125/fopen): adding to final database dump
+0060.460 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_blob_2021_07.table.gz (112/125/fopen): adding to final database dump
+0060.461 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_blob_2021_08.table.tmpr1.gz (113/125/fopen): adding to final database dump
+0060.464 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_blob_2021_08.table.gz (114/125/fopen): adding to final database dump
+0060.466 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_blob_2021_09.table.tmpr1.gz (115/125/fopen): adding to final database dump
+0060.469 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_blob_2021_09.table.gz (116/125/fopen): adding to final database dump
+0060.472 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_blob_2021_10.table.tmpr1.gz (117/125/fopen): adding to final database dump
+0060.473 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_blob_2021_10.table.gz (118/125/fopen): adding to final database dump
+0060.476 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_blob_2021_11.table.tmpr1.gz (119/125/fopen): adding to final database dump
+0060.478 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_blob_2021_11.table.gz (120/125/fopen): adding to final database dump
+0060.481 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_blob_2021_12.table.tmpr1.gz (121/125/fopen): adding to final database dump
+0060.484 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_blob_2021_12.table.gz (122/125/fopen): adding to final database dump
+0060.485 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_blob_2022_01.table.tmpr1001.gz (123/125/fopen): adding to final database dump
+0060.492 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_blob_2022_01.table.gz (124/125/fopen): adding to final database dump
+0060.495 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_blob_2022_02.table.tmpr1.gz (125/125/fopen): adding to final database dump
+0060.498 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_blob_2022_02.table.gz (126/125/fopen): adding to final database dump
+0060.501 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_invalidations.table.tmpr0.gz (127/125/fopen): adding to final database dump
+0060.504 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_invalidations.table.gz (128/125/fopen): adding to final database dump
+0060.505 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_numeric_2021_01.table.tmpr1.gz (129/125/fopen): adding to final database dump
+0060.508 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_numeric_2021_01.table.gz (130/125/fopen): adding to final database dump
+0060.509 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_numeric_2021_02.table.tmpr1.gz (131/125/fopen): adding to final database dump
+0060.512 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_numeric_2021_02.table.gz (132/125/fopen): adding to final database dump
+0060.513 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_numeric_2021_03.table.tmpr1.gz (133/125/fopen): adding to final database dump
+0060.516 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_numeric_2021_03.table.gz (134/125/fopen): adding to final database dump
+0060.518 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_numeric_2021_04.table.tmpr1.gz (135/125/fopen): adding to final database dump
+0060.520 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_numeric_2021_04.table.gz (136/125/fopen): adding to final database dump
+0060.522 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_numeric_2021_05.table.tmpr1.gz (137/125/fopen): adding to final database dump
+0060.525 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_numeric_2021_05.table.gz (138/125/fopen): adding to final database dump
+0060.528 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_numeric_2021_06.table.tmpr1.gz (139/125/fopen): adding to final database dump
+0060.530 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_numeric_2021_06.table.gz (140/125/fopen): adding to final database dump
+0060.533 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_numeric_2021_07.table.tmpr1.gz (141/125/fopen): adding to final database dump
+0060.537 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_numeric_2021_07.table.gz (142/125/fopen): adding to final database dump
+0060.540 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_numeric_2021_08.table.tmpr1.gz (143/125/fopen): adding to final database dump
+0060.541 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_numeric_2021_08.table.gz (144/125/fopen): adding to final database dump
+0060.544 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_numeric_2021_09.table.tmpr1.gz (145/125/fopen): adding to final database dump
+0060.546 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_numeric_2021_09.table.gz (146/125/fopen): adding to final database dump
+0060.548 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_numeric_2021_10.table.tmpr1.gz (147/125/fopen): adding to final database dump
+0060.550 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_numeric_2021_10.table.gz (148/125/fopen): adding to final database dump
+0060.553 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_numeric_2021_11.table.tmpr1.gz (149/125/fopen): adding to final database dump
+0060.554 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_numeric_2021_11.table.gz (150/125/fopen): adding to final database dump
+0060.557 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_numeric_2021_12.table.tmpr1.gz (151/125/fopen): adding to final database dump
+0060.560 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_numeric_2021_12.table.gz (152/125/fopen): adding to final database dump
+0060.561 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_numeric_2022_01.table.tmpr1001.gz (153/125/fopen): adding to final database dump
+0060.564 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_numeric_2022_01.table.gz (154/125/fopen): adding to final database dump
+0060.566 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_numeric_2022_02.table.tmpr1.gz (155/125/fopen): adding to final database dump
+0060.569 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_archive_numeric_2022_02.table.gz (156/125/fopen): adding to final database dump
+0060.572 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_brute_force_log.table.tmpr0.gz (157/125/fopen): adding to final database dump
+0060.573 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_brute_force_log.table.gz (158/125/fopen): adding to final database dump
+0060.576 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_custom_dimensions.table.tmpr1.gz (159/125/fopen): adding to final database dump
+0060.577 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_custom_dimensions.table.gz (160/125/fopen): adding to final database dump
+0060.580 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_goal.table.tmpr1.gz (161/125/fopen): adding to final database dump
+0060.582 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_goal.table.gz (162/125/fopen): adding to final database dump
+0060.585 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_locks.table.tmpr1.gz (163/125/fopen): adding to final database dump
+0060.589 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_locks.table.gz (164/125/fopen): adding to final database dump
+0060.592 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_log_action.table.tmpr364.gz (165/125/fopen): adding to final database dump
+0060.594 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_log_action.table.gz (166/125/fopen): adding to final database dump
+0060.597 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_log_conversion.table.tmpr1.gz (167/125/fopen): adding to final database dump
+0060.600 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_log_conversion.table.gz (168/125/fopen): adding to final database dump
+0060.602 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_log_conversion_item.table.tmpr1.gz (169/125/fopen): adding to final database dump
+0060.604 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_log_conversion_item.table.gz (170/125/fopen): adding to final database dump
+0060.608 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_log_link_visit_action.table.tmpr1276.gz (171/125/fopen): adding to final database dump
+0060.610 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_log_link_visit_action.table.gz (172/125/fopen): adding to final database dump
+0060.613 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_log_profiling.table.tmpr0.gz (173/125/fopen): adding to final database dump
+0060.616 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_log_profiling.table.gz (174/125/fopen): adding to final database dump
+0060.617 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_log_visit.table.tmpr207.gz (175/125/fopen): adding to final database dump
+0060.620 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_log_visit.table.gz (176/125/fopen): adding to final database dump
+0060.621 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_logger_message.table.tmpr0.gz (177/125/fopen): adding to final database dump
+0060.624 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_logger_message.table.gz (178/125/fopen): adding to final database dump
+0060.626 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_option.table.tmpr1001.gz (179/125/fopen): adding to final database dump
+0060.629 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_option.table.gz (180/125/fopen): adding to final database dump
+0060.632 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_plugin_setting.table.tmpr19.gz (181/125/fopen): adding to final database dump
+0060.633 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_plugin_setting.table.gz (182/125/fopen): adding to final database dump
+0060.637 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_privacy_logdata_anonymizations.table.tmpr0.gz (183/125/fopen): adding to final database dump
+0060.639 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_privacy_logdata_anonymizations.table.gz (184/125/fopen): adding to final database dump
+0060.641 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_report.table.tmpr0.gz (185/125/fopen): adding to final database dump
+0060.642 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_report.table.gz (186/125/fopen): adding to final database dump
+0060.645 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_report_subscriptions.table.tmpr1.gz (187/125/fopen): adding to final database dump
+0060.648 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_report_subscriptions.table.gz (188/125/fopen): adding to final database dump
+0060.649 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_segment.table.tmpr0.gz (189/125/fopen): adding to final database dump
+0060.652 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_segment.table.gz (190/125/fopen): adding to final database dump
+0060.654 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_sequence.table.tmpr1001.gz (191/125/fopen): adding to final database dump
+0060.656 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_sequence.table.gz (192/125/fopen): adding to final database dump
+0060.658 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_session.table.tmpr1001.gz (193/125/fopen): adding to final database dump
+0060.661 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_session.table.gz (194/125/fopen): adding to final database dump
+0060.664 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_site.table.tmpr2.gz (195/125/fopen): adding to final database dump
+0060.665 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_site.table.gz (196/125/fopen): adding to final database dump
+0060.668 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_site_setting.table.tmpr2.gz (197/125/fopen): adding to final database dump
+0060.670 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_site_setting.table.gz (198/125/fopen): adding to final database dump
+0060.673 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_site_url.table.tmpr1.gz (199/125/fopen): adding to final database dump
+0060.678 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_site_url.table.gz (200/125/fopen): adding to final database dump
+0060.681 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_tagmanager_container.table.tmpr1.gz (201/125/fopen): adding to final database dump
+0060.684 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_tagmanager_container.table.gz (202/125/fopen): adding to final database dump
+0060.686 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_tagmanager_container_release.table.tmpr0.gz (203/125/fopen): adding to final database dump
+0060.689 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_tagmanager_container_release.table.gz (204/125/fopen): adding to final database dump
+0060.692 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_tagmanager_container_version.table.tmpr0.gz (205/125/fopen): adding to final database dump
+0060.693 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_tagmanager_container_version.table.gz (206/125/fopen): adding to final database dump
+0060.697 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_tagmanager_tag.table.tmpr0.gz (207/125/fopen): adding to final database dump
+0060.700 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_tagmanager_tag.table.gz (208/125/fopen): adding to final database dump
+0060.701 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_tagmanager_trigger.table.tmpr0.gz (209/125/fopen): adding to final database dump
+0060.704 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_tagmanager_trigger.table.gz (210/125/fopen): adding to final database dump
+0060.705 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_tagmanager_variable.table.tmpr0.gz (211/125/fopen): adding to final database dump
+0060.709 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_tagmanager_variable.table.gz (212/125/fopen): adding to final database dump
+0060.712 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_tracking_failure.table.tmpr1.gz (213/125/fopen): adding to final database dump
+0060.714 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_tracking_failure.table.gz (214/125/fopen): adding to final database dump
+0060.717 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_twofactor_recovery_code.table.tmpr0.gz (215/125/fopen): adding to final database dump
+0060.720 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_twofactor_recovery_code.table.gz (216/125/fopen): adding to final database dump
+0060.721 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_user.table.tmpr1001.gz (217/125/fopen): adding to final database dump
+0060.724 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_user.table.gz (218/125/fopen): adding to final database dump
+0060.726 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_user_dashboard.table.tmpr1001.gz (219/125/fopen): adding to final database dump
+0060.729 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_user_dashboard.table.gz (220/125/fopen): adding to final database dump
+0060.732 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_user_language.table.tmpr1001.gz (221/125/fopen): adding to final database dump
+0060.734 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_user_language.table.gz (222/125/fopen): adding to final database dump
+0060.737 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_user_token_auth.table.tmpr0.gz (223/125/fopen): adding to final database dump
+0060.739 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_matomo_user_token_auth.table.gz (224/125/fopen): adding to final database dump
+0060.740 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_post_views.table.tmpr1001.gz (225/125/fopen): adding to final database dump
+0060.742 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_post_views.table.gz (226/125/fopen): adding to final database dump
+0060.745 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_rank_math_404_logs.table.tmpr0.gz (227/125/fopen): adding to final database dump
+0060.746 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_rank_math_404_logs.table.gz (228/125/fopen): adding to final database dump
+0060.749 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_rank_math_analytics_gsc.table.tmpr0.gz (229/125/fopen): adding to final database dump
+0060.751 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_rank_math_analytics_gsc.table.gz (230/125/fopen): adding to final database dump
+0060.753 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_rank_math_analytics_objects.table.tmpr44.gz (231/125/fopen): adding to final database dump
+0060.756 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_rank_math_analytics_objects.table.gz (232/125/fopen): adding to final database dump
+0060.757 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_rank_math_internal_links.table.tmpr5.gz (233/125/fopen): adding to final database dump
+0060.760 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_rank_math_internal_links.table.gz (234/125/fopen): adding to final database dump
+0060.761 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_rank_math_internal_meta.table.tmpr1432.gz (235/125/fopen): adding to final database dump
+0060.765 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_rank_math_internal_meta.table.gz (236/125/fopen): adding to final database dump
+0060.775 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_rank_math_redirections.table.tmpr0.gz (237/125/fopen): adding to final database dump
+0060.778 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_rank_math_redirections.table.gz (238/125/fopen): adding to final database dump
+0060.783 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_rank_math_redirections_cache.table.tmpr0.gz (239/125/fopen): adding to final database dump
+0060.786 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_rank_math_redirections_cache.table.gz (240/125/fopen): adding to final database dump
+0060.789 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_smush_dir_images.table.tmpr0.gz (241/125/fopen): adding to final database dump
+0060.792 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_smush_dir_images.table.gz (242/125/fopen): adding to final database dump
+0060.793 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_stcfq_queries.table.tmpr0.gz (243/125/fopen): adding to final database dump
+0060.796 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_stcfq_queries.table.gz (244/125/fopen): adding to final database dump
+0060.797 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_wpforms_tasks_meta.table.tmpr40.gz (245/125/fopen): adding to final database dump
+0060.800 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_wpforms_tasks_meta.table.gz (246/125/fopen): adding to final database dump
+0060.802 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_wpmailsmtp_debug_events.table.tmpr15.gz (247/125/fopen): adding to final database dump
+0060.804 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_wpmailsmtp_debug_events.table.gz (248/125/fopen): adding to final database dump
+0060.809 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_wpmailsmtp_tasks_meta.table.tmpr26.gz (249/125/fopen): adding to final database dump
+0060.813 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db-table-wp_wpmailsmtp_tasks_meta.table.gz (250/125/fopen): adding to final database dump
+0060.837 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db.gz: finished writing out complete database file (1707.8 KB)
+0060.875 (0) Total database tables backed up: 125 (backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db.gz, size: 1748884, sha1: 32da5036a0730f3056792456d392855e62811baf, sha256: b7f2d470232b04159f43ab86ad3e192a5d8ac1b9f52799f98327f4ff9659a96a)
+0060.890 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip: plugins: This file has not yet been successfully uploaded: will queue
+0060.893 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-themes.zip: themes: This file has not yet been successfully uploaded: will queue
+0060.896 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip: uploads: This file has not yet been successfully uploaded: will queue
+0060.897 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-others.zip: others: This file has not yet been successfully uploaded: will queue
+0060.900 (0) backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db.gz: db: This file has not yet been successfully uploaded: will queue
+0060.901 (0) Saving backup history. Total backup size: 392 MB
+0060.908 (0) Requesting upload of the files that have not yet been successfully uploaded (5)
+0060.913 (0) Cloud backup selection (1/1): googledrive with instance (1/1) (last)
+0060.916 (0) Beginning dispatch of backup to remote (googledrive) (instance identifier s-552ac2f0cfb5cc4b79a2142ce54d567c)
+0062.825 (0) Google Drive: quota usage: used=1947.1 MB, total=15360 MB, available=13412.9 MB
+0062.828 (0) Google Drive: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip: Attempting to upload to Google Drive (into folder id: 1OqFiYkmQ1QZCQ5FTZqIz0sMb3E_DXBsW)
+0063.274 (0) Googledrive chunked upload: 1.2 % uploaded (1048576 - increasing chunk size to 2048 KB - memory usage: 13.1 / 44)
+0063.542 (0) Googledrive chunked upload: 3.7 % uploaded (3145728 - increasing chunk size to 4096 KB - memory usage: 13.1 / 44)
+0063.837 (0) Googledrive chunked upload: 8.7 % uploaded (7340032 - increasing chunk size to 8192 KB - memory usage: 13.1 / 44)
+0064.297 (0) Googledrive chunked upload: 18.7 % uploaded (15728640 - increasing chunk size to 16384 KB - memory usage: 13.1 / 44)
+0064.855 (0) Googledrive chunked upload: 38.6 % uploaded (32505856 - increasing chunk size to 32768 KB - memory usage: 13.1 / 44)
+0065.817 (0) Googledrive chunked upload: 78.4 % uploaded (66060288 - increasing chunk size to 65536 KB - memory usage: 13.1 / 44)
+0067.284 (0) Googledrive chunked upload: 100 % uploaded (66060288)
+0067.292 (0) Google Drive: OK: Archive backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip uploaded in 4.46 seconds
+0067.294 (0) Recording as successfully uploaded: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip
+0067.308 (0) Deleting local file: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip: OK
+0067.312 (0) Deleting zip manifest (backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-plugins.zip.list.tmp)
+0067.448 (0) Google Drive: quota usage: used=2027.5 MB, total=15360 MB, available=13332.5 MB
+0067.451 (0) Google Drive: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-themes.zip: Attempting to upload to Google Drive (into folder id: 1OqFiYkmQ1QZCQ5FTZqIz0sMb3E_DXBsW)
+0067.893 (0) Googledrive chunked upload: 47.1 % uploaded (1048576 - increasing chunk size to 2048 KB - memory usage: 13.1 / 44)
+0068.770 (0) Googledrive chunked upload: 100 % uploaded (1048576)
+0068.780 (0) Google Drive: OK: Archive backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-themes.zip uploaded in 1.33 seconds
+0068.782 (0) Recording as successfully uploaded: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-themes.zip
+0068.789 (0) Deleting local file: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-themes.zip: OK
+0068.793 (0) Deleting zip manifest (backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-themes.zip.list.tmp)
+0068.979 (0) Google Drive: quota usage: used=2029.7 MB, total=15360 MB, available=13330.3 MB
+0068.983 (0) Google Drive: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip: Attempting to upload to Google Drive (into folder id: 1OqFiYkmQ1QZCQ5FTZqIz0sMb3E_DXBsW)
+0069.428 (0) Googledrive chunked upload: 0.3 % uploaded (1048576 - increasing chunk size to 2048 KB - memory usage: 13.1 / 44)
+0069.665 (0) Googledrive chunked upload: 1 % uploaded (3145728 - increasing chunk size to 4096 KB - memory usage: 13.1 / 44)
+0070.012 (0) Googledrive chunked upload: 2.3 % uploaded (7340032 - increasing chunk size to 8192 KB - memory usage: 13.1 / 44)
+0070.342 (0) Googledrive chunked upload: 4.9 % uploaded (15728640 - increasing chunk size to 16384 KB - memory usage: 13.1 / 44)
+0070.824 (0) Googledrive chunked upload: 10.1 % uploaded (32505856 - increasing chunk size to 32768 KB - memory usage: 13.1 / 44)
+0071.772 (0) Googledrive chunked upload: 20.5 % uploaded (66060288 - increasing chunk size to 65536 KB - memory usage: 13.1 / 44)
+0073.185 (0) Googledrive chunked upload: 41.3 % uploaded (133169152)
+0074.826 (0) Googledrive chunked upload: 62 % uploaded (200278016)
+0076.495 (0) Googledrive chunked upload: 82.8 % uploaded (267386880)
+0078.495 (0) Googledrive chunked upload: 100 % uploaded (267386880)
+0078.505 (0) Google Drive: OK: Archive backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip uploaded in 9.52 seconds
+0078.508 (0) Recording as successfully uploaded: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip
+0078.532 (0) Deleting local file: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip: OK
+0078.535 (0) Deleting zip manifest (backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-uploads.zip.list.tmp)
+0078.852 (0) Google Drive: quota usage: used=2337.5 MB, total=15360 MB, available=13022.5 MB
+0078.856 (0) Google Drive: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-others.zip: Attempting to upload to Google Drive (into folder id: 1OqFiYkmQ1QZCQ5FTZqIz0sMb3E_DXBsW)
+0079.903 (0) Googledrive chunked upload: 100 % uploaded
+0079.914 (0) Google Drive: OK: Archive backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-others.zip uploaded in 1.06 seconds
+0079.917 (0) Recording as successfully uploaded: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-others.zip
+0079.922 (0) Deleting local file: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-others.zip: OK
+0079.925 (0) Deleting zip manifest (backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-others.zip.list.tmp)
+0080.167 (0) Google Drive: quota usage: used=2337.5 MB, total=15360 MB, available=13022.5 MB
+0080.170 (0) Google Drive: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db.gz: Attempting to upload to Google Drive (into folder id: 1OqFiYkmQ1QZCQ5FTZqIz0sMb3E_DXBsW)
+0080.619 (0) Googledrive chunked upload: 60 % uploaded (1048576 - increasing chunk size to 2048 KB - memory usage: 13.1 / 44)
+0081.553 (0) Googledrive chunked upload: 100 % uploaded (1048576)
+0081.562 (0) Google Drive: OK: Archive backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db.gz uploaded in 1.39 seconds
+0081.565 (0) Recording as successfully uploaded: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db.gz
+0081.570 (0) Deleting local file: backup_2022-01-17-1157_Techsnapie_Magazines_4a037fd48c86-db.gz: OK
+0081.580 (0) Retain: beginning examination of existing backup sets; user setting: retain_files=5, retain_db=5
+0081.582 (0) Number of backup sets in history: 6; groups (db): 1
+0081.585 (0) Examining (for databases) backup set with group_id=0, nonce=4a037fd48c86, datestamp=1642400831 (Jan 17 2022 06:27:11)
+0081.588 (0) This backup set is the backup set just made, so will not be deleted.
+0081.588 (0) Examining (for databases) backup set with group_id=0, nonce=d9b8852e7666, datestamp=1642314787 (Jan 16 2022 06:33:07)
+0081.588 (0) This backup set remains non-empty (f=1/d=1); will retain in history
+0081.589 (0) Examining (for databases) backup set with group_id=0, nonce=d5e78f98700e, datestamp=1642227665 (Jan 15 2022 06:21:05)
+0081.589 (0) This backup set remains non-empty (f=1/d=1); will retain in history
+0081.589 (0) Examining (for databases) backup set with group_id=0, nonce=9098d362803a, datestamp=1642141626 (Jan 14 2022 06:27:06)
+0081.589 (0) This backup set remains non-empty (f=1/d=1); will retain in history
+0081.589 (0) Examining (for databases) backup set with group_id=0, nonce=6fb0367ffb13, datestamp=1642054993 (Jan 13 2022 06:23:13)
+0081.589 (0) This backup set remains non-empty (f=1/d=1); will retain in history
+0081.589 (0) Examining (for databases) backup set with group_id=0, nonce=374c78811287, datestamp=1641968742 (Jan 12 2022 06:25:42)
+0081.589 (0) 1641968742: db: this set includes a database (backup_2022-01-12-1155_Techsnapie_Magazines_374c78811287-db.gz); db count is now 5
+0081.589 (0) 1641968742: db: over retain limit (5); will delete this database
+0081.590 (0) Delete file: backup_2022-01-12-1155_Techsnapie_Magazines_374c78811287-db.gz, service=googledrive
+0082.737 (0) Google Drive: backup_2022-01-12-1155_Techsnapie_Magazines_374c78811287-db.gz: Deletion successful
+0082.744 (0) This backup set remains non-empty (f=1/d=0); will retain in history
+0082.745 (0) Number of backup sets in history: 6; groups (files): 1
+0082.748 (0) Examining (for files) backup set with nonce=4a037fd48c86, datestamp=1642400831 (Jan 17 2022 06:27:11)
+0082.748 (0) This backup set is the backup set just made, so will not be deleted.
+0082.749 (0) This backup set is the backup set just made, so will not be deleted.
+0082.749 (0) This backup set is the backup set just made, so will not be deleted.
+0082.750 (0) This backup set is the backup set just made, so will not be deleted.
+0082.750 (0) This backup set remains non-empty (f=1/d=1); will retain in history
+0082.753 (0) Examining (for files) backup set with nonce=d9b8852e7666, datestamp=1642314787 (Jan 16 2022 06:33:07)
+0082.753 (0) This backup set remains non-empty (f=1/d=1); will retain in history
+0082.753 (0) Examining (for files) backup set with nonce=d5e78f98700e, datestamp=1642227665 (Jan 15 2022 06:21:05)
+0082.753 (0) This backup set remains non-empty (f=1/d=1); will retain in history
+0082.753 (0) Examining (for files) backup set with nonce=9098d362803a, datestamp=1642141626 (Jan 14 2022 06:27:06)
+0082.753 (0) This backup set remains non-empty (f=1/d=1); will retain in history
+0082.753 (0) Examining (for files) backup set with nonce=6fb0367ffb13, datestamp=1642054993 (Jan 13 2022 06:23:13)
+0082.753 (0) This backup set remains non-empty (f=1/d=1); will retain in history
+0082.753 (0) Examining (for files) backup set with nonce=374c78811287, datestamp=1641968742 (Jan 12 2022 06:25:42)
+0082.753 (0) plugins: over retain limit (5); will delete this file entity
+0082.753 (0) themes: over retain limit (5); will delete this file entity
+0082.753 (0) uploads: over retain limit (5); will delete this file entity
+0082.753 (0) others: over retain limit (5); will delete this file entity
+0082.753 (0) Delete file: backup_2022-01-12-1155_Techsnapie_Magazines_374c78811287-plugins.zip, service=googledrive
+0082.756 (0) Delete file: backup_2022-01-12-1155_Techsnapie_Magazines_374c78811287-themes.zip, service=googledrive
+0082.757 (0) Delete file: backup_2022-01-12-1155_Techsnapie_Magazines_374c78811287-uploads.zip, service=googledrive
+0082.760 (0) Delete file: backup_2022-01-12-1155_Techsnapie_Magazines_374c78811287-others.zip, service=googledrive
+0083.539 (0) Google Drive: backup_2022-01-12-1155_Techsnapie_Magazines_374c78811287-others.zip: Deletion successful
+0083.954 (0) Google Drive: backup_2022-01-12-1155_Techsnapie_Magazines_374c78811287-uploads.zip: Deletion successful
+0084.560 (0) Google Drive: backup_2022-01-12-1155_Techsnapie_Magazines_374c78811287-themes.zip: Deletion successful
+0085.033 (0) Google Drive: backup_2022-01-12-1155_Techsnapie_Magazines_374c78811287-plugins.zip: Deletion successful
+0085.038 (0) This backup set is now empty; will remove from history
+0085.041 (0) Deleting log file (log.374c78811287.txt)
+0085.046 (0) Retain: saving new backup history (sets now: 5) and finishing retain operation
+0085.058 (0) Resume backup (4a037fd48c86, 0): finish run
+0085.068 (0) Decremented the semaphore (fd) by 1
+0085.075 (0) Semaphore (fd) unlocked
+0085.077 (0) There were no errors in the uploads, so the 'resume' event (1) is being unscheduled
+0085.085 (0) Fetching RSS news feed
+0085.316 (0) Fetched RSS news feed; result is a: SimplePie
+0085.352 (0) Sending email ('Files and database (Full backup)') report (attachments: 0, size: 0 KB) to: karth...
+0085.708 (0) The backup apparently succeeded and is now complete
