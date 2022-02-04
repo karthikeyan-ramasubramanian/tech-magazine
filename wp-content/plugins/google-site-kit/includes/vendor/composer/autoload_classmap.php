@@ -68,6 +68,7 @@ return array(
     'Google\\Site_Kit\\Core\\Modules\\Module' => $baseDir . '/Core/Modules/Module.php',
     'Google\\Site_Kit\\Core\\Modules\\Module_Registry' => $baseDir . '/Core/Modules/Module_Registry.php',
     'Google\\Site_Kit\\Core\\Modules\\Module_Settings' => $baseDir . '/Core/Modules/Module_Settings.php',
+    'Google\\Site_Kit\\Core\\Modules\\Module_Sharing_Settings' => $baseDir . '/Core/Modules/Module_Sharing_Settings.php',
     'Google\\Site_Kit\\Core\\Modules\\Module_With_Activation' => $baseDir . '/Core/Modules/Module_With_Activation.php',
     'Google\\Site_Kit\\Core\\Modules\\Module_With_Assets' => $baseDir . '/Core/Modules/Module_With_Assets.php',
     'Google\\Site_Kit\\Core\\Modules\\Module_With_Assets_Trait' => $baseDir . '/Core/Modules/Module_With_Assets_Trait.php',

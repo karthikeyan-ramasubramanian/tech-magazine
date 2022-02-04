@@ -4,6 +4,21 @@
 		<loc>https://blogs.techsnapie.com/gallery/</loc>
 	</url>
 	<url>
+		<loc>https://blogs.techsnapie.com/some-cool-gadgets-to-become-a-hacker/</loc>
+		<lastmod>2022-02-03T22:34:30+05:30</lastmod>
+		<image:image>
+			<image:loc>https://blogs.techsnapie.com/wp-content/uploads/2022/01/1568709870903_0..jpg</image:loc>
+		</image:image>
+	</url>
+	<url>
+		<loc>https://blogs.techsnapie.com/dubai-the-luxurious-country/</loc>
+		<lastmod>2022-02-03T22:34:07+05:30</lastmod>
+	</url>
+	<url>
+		<loc>https://blogs.techsnapie.com/ever-you-thought-of-being-a-bibliophile/</loc>
+		<lastmod>2022-02-03T09:12:59+05:30</lastmod>
+	</url>
+	<url>
 		<loc>https://blogs.techsnapie.com/what-are-the-critical-phases-of-pen-testing/</loc>
 		<lastmod>2022-02-02T11:18:00+05:30</lastmod>
 	</url>
@@ -55,13 +70,6 @@
 		<lastmod>2022-01-25T08:57:16+05:30</lastmod>
 	</url>
 	<url>
-		<loc>https://blogs.techsnapie.com/some-cool-gadgets-to-become-a-hacker/</loc>
-		<lastmod>2022-01-23T10:06:01+05:30</lastmod>
-		<image:image>
-			<image:loc>https://blogs.techsnapie.com/wp-content/uploads/2022/01/1568709870903_0..jpg</image:loc>
-		</image:image>
-	</url>
-	<url>
 		<loc>https://blogs.techsnapie.com/5g-network/</loc>
 		<lastmod>2022-01-22T11:17:07+05:30</lastmod>
 		<image:image>
@@ -82,10 +90,6 @@
 		<image:image>
 			<image:loc>https://blogs.techsnapie.com/wp-content/uploads/2021/10/img7-1.png</image:loc>
 		</image:image>
-	</url>
-	<url>
-		<loc>https://blogs.techsnapie.com/dubai-the-luxurious-country/</loc>
-		<lastmod>2022-01-22T08:38:39+05:30</lastmod>
 	</url>
 	<url>
 		<loc>https://blogs.techsnapie.com/best-websites-to-learn-python/</loc>
