@@ -230,7 +230,8 @@ class B2S_Network_Item {
             foreach ($this->mandantenId as $ka => $mandantAll) {
                 $mandantName = isset($mandantenData->{$mandantAll}) ? ($mandantenData->{$mandantAll}) : esc_html__("My profile", "blog2social");
                 if (isset($networkData[$mandantAll][$networkId]) && !empty($networkData[$mandantAll][$networkId])) {
-                    $html .= $this->getAuthItemHtml($networkData[$mandantAll][$networkId], $mandantAll, $mandantName, $networkId, $b2sAuthUrl, $containerMandantId, $sprache);
+                    $b2sAuthUrlTemp = $this->authurl . '&portal_id=' . $networkId . '&transfer=' . (in_array($networkId, $this->oAuthPortal) ? 'oauth' : 'form' ) . '&mandant_id=' . $mandantAll . '&version=3&affiliate_id=' . B2S_Tools::getAffiliateId();
+                    $html .= $this->getAuthItemHtml($networkData[$mandantAll][$networkId], $mandantAll, $mandantName, $networkId, $b2sAuthUrlTemp, $containerMandantId, $sprache);
                 }
             }
         } else {
@@ -889,9 +890,15 @@ class B2S_Network_Item {
             $content .= '<input class="b2s-edit-template-shuffle-hashtags" data-network-type="' . esc_attr($networkType) . '" type="checkbox" ' . ((isset($schema[$networkType]['shuffleHashtags']) && $schema[$networkType]['shuffleHashtags'] == true) ? 'checked="checked"' : '') . ' id="b2s-edit-template-shuffle-hashtags"><label for="b2s-edit-template-shuffle-hashtags"> ' . esc_html__('Hashtag shuffle (Hashtags have to be defined in the text field above)', 'blog2social') . '</label>';
             $content .= '</div>';
             $content .= '</div>';
+            $content .= '<br>';
+            $content .= '<div class="row">';
+            $content .= '<div class="col-md-12">';
+            $content .= esc_html__('Frame colour:', 'blog2social') . ' <input id="b2s-edit-template-colorpicker" type="text" class="b2s-edit-template-colorpicker" value="' . ((isset($schema[$networkType]['frameColor']) && !empty($schema[$networkType]['frameColor'])) ? $schema[$networkType]['frameColor'] : '#ffffff') . '">';
+            $content .= '</div>';
+            $content .= '</div>';
         }
         if ($networkId == 24) {
-            $content .= '<div class="row b2s-edit-template-enable-link-area" data-network-type="' . esc_attr($networkType) . '">';
+            $content .= '<div class="row b2s-edit-template-enable-link-area" style="display:' . (($schema[$networkType]['format'] == 1) ? 'block' : 'none') . '" data-network-type="' . esc_attr($networkType) . '">';
             $content .= '<div class="col-md-12">';
             $content .= '<input class="b2s-edit-template-enable-link" data-network-type="' . esc_attr($networkType) . '" type="checkbox" ' . ((isset($schema[$networkType]['addLink']) && $schema[$networkType]['addLink'] == false) ? '' : 'checked="checked"') . ' id="b2s-edit-template-enable-link[' . esc_attr($networkType) . ']"><label for="b2s-edit-template-enable-link[' . esc_attr($networkType) . ']"> ' . esc_html__('Add a link-URL to the end of my post.', 'blog2social') . '</label>';
             $content .= '</div>';

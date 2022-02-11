@@ -130,6 +130,11 @@ $customizeArea = B2S_System::customizeArea();
                         </ul>
                         <hr>
                         <ul>
+                            <?php if((defined("B2S_PLUGIN_USER_VERSION") && B2S_PLUGIN_USER_VERSION >= 3 && (!defined("B2S_PLUGIN_TRAIL_END") || (defined("B2S_PLUGIN_TRAIL_END") && strtotime(B2S_PLUGIN_TRAIL_END) < time()))) || (defined('B2S_PLUGIN_PERMISSION_INSIGHTS') && B2S_PLUGIN_PERMISSION_INSIGHTS == 1)) { ?>
+                                <li class="b2s-list-margin-left-10">
+                                    <i class="glyphicon glyphicon-signal glyphicon-success"></i> <a href="admin.php?page=blog2social-metrics" class="b2s-sidebar-menu-item"><?php esc_html_e("Social Media Metrics", "blog2social") ?> <span class="label label-success label-sm"><?php esc_html_e("BETA", "blog2social"); ?></span></a> 
+                                </li>
+                            <?php } ?>
                             <li class="b2s-list-margin-left-10">
                                 <i class="glyphicon glyphicon-user glyphicon-success"></i> <a href="admin.php?page=blog2social-network" class="b2s-sidebar-menu-item"><?php esc_html_e("Social Media Networks", "blog2social") ?></a> 
                             </li>

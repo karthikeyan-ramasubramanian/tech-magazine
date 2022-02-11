@@ -33,6 +33,14 @@ if (!B2S_System::isblockedArea('B2S_USER_POLICY', B2S_PLUGIN_ADMIN)) {
         }
     }
 }
+
+$optionMetricsBanner = true;
+if((defined("B2S_PLUGIN_USER_VERSION") && B2S_PLUGIN_USER_VERSION >= 3 && (!defined("B2S_PLUGIN_TRAIL_END") || (defined("B2S_PLUGIN_TRAIL_END") && strtotime(B2S_PLUGIN_TRAIL_END) < time()))) || (defined('B2S_PLUGIN_PERMISSION_INSIGHTS') && B2S_PLUGIN_PERMISSION_INSIGHTS == 1)) {
+    $optionMetricsBanner = $options->_getOption('metrics_banner');
+    if($optionMetricsBanner == false) {
+        $optionMetricsBanner = false;
+    }
+}
 ?>
 <h1><?php echo (!empty($curPageTitle) ? $curPageTitle : ((isset($getPages[$_GET['page']]) && !empty($getPages[$_GET['page']])) ? $getPages[$_GET['page']] : '' )); ?></h1> 
 
@@ -492,3 +500,30 @@ if (!B2S_System::isblockedArea('B2S_MENU_MODUL_RATING', B2S_PLUGIN_ADMIN)) {
     </div>
 </div>
 
+<input type="hidden" id="b2s-metrics-banner-show" value="<?php echo (($optionMetricsBanner) ? 1 : 0); ?>">
+<div class="modal fade" id="b2s-metrics-banner-modal" tabindex="-1" role="dialog" aria-labelledby="b2s-metrics-banner-modal" aria-hidden="true" data-backdrop="false" style="display:none; z-index: 1070;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body text-center" style="background-color: #f4f4f4;">
+                <button type="button" class="close b2s-metrics-banner-close" data-dismiss="modal">&times;</button>
+                <img src="<?php echo plugins_url('/assets/images/metrics/social-symbols.png', B2S_PLUGIN_FILE); ?>" style="width: 80px; float: right; margin-left: -65px;" alt="blog2social">
+                <br>
+                <h3><?php echo esc_html__('Social Media Metrics', 'blog2social') . ' <span class="label label-success label-sm">' . esc_html__("BETA", "blog2social") . '</span>' ?></h3>
+                <br>
+                <?php esc_html_e('You can now track the performance of your post directly in Blog2Social, and you can test it exclusively and for free!', 'blog2social'); ?>
+                <br>
+                <br>
+                <?php esc_html_e('Benefit from the new Social Media Metrics and use the analysis of your social media posts for your further social media strategy.', 'blog2social'); ?>
+                <br>
+                <br>
+                <img src="<?php echo plugins_url('/assets/images/metrics/banner.png', B2S_PLUGIN_FILE); ?>" alt="blog2social">
+                <br>
+                <br>
+                <a href="admin.php?page=blog2social-metrics&metrics_banner=1" class="btn btn-lg btn-success"><?php esc_html_e('Start your free trial for Social Media Metrics', 'blog2social'); ?></a>
+                <br>
+                <br>
+                <span class="b2s-bold"><?php esc_html_e('We hope you enjoy analysing your posts!', 'blog2social'); ?></span>
+            </div>
+        </div>
+    </div>
+</div>

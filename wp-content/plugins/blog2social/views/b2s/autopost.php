@@ -95,3 +95,81 @@ $autoPostItem = new B2S_AutoPost_Item();
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" id="b2sAutoPostAInfoModal" tabindex="-1" role="dialog" aria-labelledby="b2sAutoPostAInfoModal" aria-hidden="true" data-backdrop="false"  style="display:none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="b2s-modal-close close" data-modal-name="#b2sAutoPostAInfoModal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><?php esc_html_e('Info', 'blog2social') ?></h4>
+            </div>
+            <div class="modal-body">
+                <?php esc_html_e('There are two different setting panels in the auto-poster section:', 'blog2social'); ?>
+                <br>
+                <?php esc_html_e('1. for auto-posting your original Wordpress content (posts, pages and media)', 'blog2social'); ?>
+                <br>
+                <?php echo sprintf(__('<a href="%s" target="_blank">How to set up the auto-poster for your own original WordPress posts</a>', 'blog2social'), B2S_Tools::getSupportLink('auto_post_troubleshoot')); ?>
+                <br>
+                <?php echo sprintf(__('<a href="%s" target="_blank">Sharing with the Auto-Poster- Things to check for Troubleshooting</a>', 'blog2social'), B2S_Tools::getSupportLink('auto_post_manuell')); ?>
+                <br>
+                <br>
+                <?php esc_html_e('2. for auto-posting imported posts (imported RSS feeds or posts created / imported with another plugin). ', 'blog2social'); ?>
+                <br>
+                <?php echo sprintf(__('<a href="%s" target="_blank">How to set up the auto-poster for imported content</a>', 'blog2social'), B2S_Tools::getSupportLink('auto_post_import')); ?>
+                <br>
+                <?php echo sprintf(__('<a href="%s" target="_blank">Sharing Imported Posts with the Auto-Poster- Things to check for Troubleshooting</a>', 'blog2social'), B2S_Tools::getSupportLink('auto_post_import_troubleshoot')); ?>
+                <br>
+                <br>
+                <?php esc_html_e('All settings and social networks for the auto-poster can be defined for each WordPress user individually.', 'blog2social'); ?>
+                <br>
+                <?php esc_html_e('Please make sure that each WordPress user or author whose posts should be auto-posted', 'blog2social'); ?>
+                <br>
+                <?php echo sprintf(__('1. is activated with a valid Blog2Social Premium license (<a href="%s" target="_blank">How do I activate my license key?</a>)', 'blog2social'), B2S_Tools::getSupportLink('license_key')); ?>
+                <br>
+                <?php esc_html_e('2. has the selected social media networks connected or assigned (Blog2Social -> Networks)', 'blog2social'); ?>
+                <br>
+                <?php esc_html_e('3. is activated with the correct auto-poster settings (Autoposter FAQ)', 'blog2social'); ?>
+                <br>
+                <br>
+                <?php esc_html_e('Since Blog2Social works WordPress user based, please make sure you activate and define the preferred settings panel for each user.', 'blog2social'); ?>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="b2sAutoPostMInfoModal" tabindex="-1" role="dialog" aria-labelledby="b2sAutoPostMInfoModal" aria-hidden="true" data-backdrop="false"  style="display:none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="b2s-modal-close close" data-modal-name="#b2sAutoPostMInfoModal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><?php esc_html_e('Info', 'blog2social') ?></h4>
+            </div>
+            <div class="modal-body">
+                <?php esc_html_e('There are two different setting panels in the auto-poster section:', 'blog2social'); ?>
+                <br>
+                <?php esc_html_e('1. for auto-posting your original Wordpress content (posts, pages and media)', 'blog2social'); ?>
+                <br>
+                <?php echo sprintf(__('<a href="%s" target="_blank">How to set up the auto-poster for your own original WordPress posts Sharing with the Auto-Poster- Things to check for Troubleshooting</a>', 'blog2social'), B2S_Tools::getSupportLink('auto_post_troubleshoot')); ?>
+                <br>
+                <br>
+                <?php esc_html_e('2. for auto-posting imported posts (imported RSS feeds or posts created / imported with another plugin). ', 'blog2social'); ?>
+                <br>
+                <?php echo sprintf(__('<a href="%s" target="_blank">How to set up the auto-poster for imported content Sharing Imported Posts with the Auto-Poster- Things to check for Troubleshooting</a>', 'blog2social'), B2S_Tools::getSupportLink('auto_post_import')); ?>
+                <br>
+                <br>
+                <?php esc_html_e('All settings and social networks for the auto-poster can be defined for each WordPress user individually.', 'blog2social'); ?>
+                <br>
+                <?php esc_html_e('Please make sure that each WordPress user or author whose posts should be auto-posted', 'blog2social'); ?>
+                <br>
+                <?php echo sprintf(__('1. is activated with a valid Blog2Social Premium license (<a href="%s" target="_blank">How do I activate my license key?</a>)', 'blog2social'), B2S_Tools::getSupportLink('license_key')); ?>
+                <br>
+                <?php esc_html_e('2. has the selected social media networks connected or assigned (Blog2Social -> Networks)', 'blog2social'); ?>
+                <br>
+                <?php esc_html_e('3. is activated with the correct auto-poster settings (Autoposter FAQ)', 'blog2social'); ?>
+                <br>
+                <br>
+                <?php esc_html_e('Since Blog2Social works WordPress user based, please make sure you activate and define the preferred settings panel for each user. ', 'blog2social'); ?>
+            </div>
+        </div>
+    </div>
+</div>

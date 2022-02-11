@@ -698,7 +698,7 @@ jQuery(document).on("click", ".b2s-network-select-btn", function () {
             //TOS XING Groups
             if ((networkId == 8 || networkId == 19) && networkType == 2) {
                 if ((b2sTosXingGroupCount == jQuery('#b2sTosXingGroupCrosspostingLimit').val()) || (networkId == 19 && jQuery('.b2s-network-select-btn[data-network-id="' + networkId + '"][data-network-type="' + networkType + '"][data-network-tos-group-id="' + jQuery(this).attr('data-network-tos-group-id') + '"]').children().hasClass('active'))) {
-                    jQuery('#b2s-tos-xing-group-modal').modal('show');
+                    jQuery('#b2s-tos-xing-group-max-count-modal').modal('show');
                     return false;
                 } else {
                     b2sTosXingGroupCount++;
@@ -2096,7 +2096,7 @@ jQuery(document).on('click', '.b2s-upload-image', function () {
         });
         wpMedia.open();
         wpMedia.on('select', function () {
-            var validExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+            var validExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
             var networkNotAllowGif = jQuery('#b2sNotAllowGif').val().split(";");
             var networkId = jQuery('input[name="b2s[' + networkAuthId + '][network_id]"]').val();
             var attachment = wpMedia.state().get('selection').first().toJSON();
@@ -3185,6 +3185,16 @@ function networkCount(networkAuthId) {
     if (typeof text !== 'undefined' && jQuery('.b2s-post-item-details-item-message-input-allow-html[data-network-auth-id="' + networkAuthId + '"]').length == 0) {
         var textLength = text.length;
         jQuery(".b2s-post-item-countChar[data-network-count='" + networkCountId + "'][data-network-auth-id='" + networkAuthId + "']").html(textLength);
+    }
+    if (jQuery(".b2s-post-item-details-item-message-input[data-network-auth-id='" + networkAuthId + "']").attr('data-network-id') == "12") { //instagram
+        var matches = text.match(/(#[^# ]{1,})/g);
+        if (matches != null && matches.length > 30) {
+            jQuery('.b2s-content-info[data-network-auth-id="' + networkAuthId + '"]').show();
+            jQuery(".b2s-post-item-details-item-message-input[data-network-count='" + networkCountId + "'][data-network-auth-id='" + networkAuthId + "']").addClass("warning");
+        } else {
+            jQuery('.b2s-content-info[data-network-auth-id="' + networkAuthId + '"]').hide();
+            jQuery(".b2s-post-item-details-item-message-input[data-network-count='" + networkCountId + "'][data-network-auth-id='" + networkAuthId + "']").removeClass("warning");
+        }
     }
 }
 

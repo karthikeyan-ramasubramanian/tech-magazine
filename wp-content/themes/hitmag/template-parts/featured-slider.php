@@ -80,7 +80,7 @@ if ( true == get_theme_mod( 'show_slider', true ) ) :
                         ?>
 
                         <li>
-                            <div class="hm-thumb-bg"><img src="<?php echo esc_url( $thumb_url ); ?>" /></div>
+                            <div class="hm-thumb-bg"><img src="<?php echo esc_url( $thumb_url ); ?>" width="135" height="93" alt="" /></div>
                         </li>
 
                     <?php 

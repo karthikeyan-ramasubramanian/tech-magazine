@@ -675,7 +675,16 @@ $networkData = $networkItem->getData();
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <?php echo sprintf(__('Please note: Your Instagram Business Account will be connected with Blog2Social via Facebook. Therefore, please make sure that your Instagram Business Account is linked to a Facebook page and enter the corresponding login data. You will find more information and detailed instructions in the <a href="%s" target="_blank">Instagram Business guide</a>.', 'blog2social'), esc_url(B2S_Tools::getSupportLink('instagram_business_auth_faq'))); ?>
+                        <?php esc_html_e('Please note: In order to connect your Instagram account to Blog2Social, please ensure the following:', 'blog2social') ?>
+                        <br>
+                        <?php esc_html_e('1. Your Instagram account is set to "Business" and not "Creator".', 'blog2social') ?>
+                        <br>
+                        <?php esc_html_e('2. Your Instagram account is linked to a Facebook page.', 'blog2social') ?>
+                        <br>
+                        <?php esc_html_e('3. Blog2Social has the permission to publish your posts.', 'blog2social') ?>
+                        <br>
+                        <br>
+                        <?php echo sprintf(__('You will find more information and detailed instructions in the <a href="%s" target="_blank">Instagram Business guide</a>.', 'blog2social'), esc_url(B2S_Tools::getSupportLink('instagram_business_auth_faq'))); ?>
                         <button class="btn btn-primary pull-right b2s-add-network-continue-btn"><?php esc_html_e('Continue', 'blog2social'); ?></button>
                     </div>
                 </div>

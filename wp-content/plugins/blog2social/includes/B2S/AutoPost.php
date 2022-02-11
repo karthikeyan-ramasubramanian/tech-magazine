@@ -17,7 +17,7 @@ class B2S_AutoPost {
     private $optionPostFormat;
     private $allowHashTag;
     private $userVersion;
-    private $allowHtml = array(4, 11, 14);
+    private $allowHtml = array(4, 11, 14, 25);
     private $default_template;
 
     function __construct($postId = 0, $blogPostData = array(), $current_user_date = '0000-00-00 00:00:00', $myTimeSettings = false, $title = '', $content = '', $excerpt = '', $url = '', $imageUrl = '', $keywords = '', $b2sPostLang = 'en', $optionPostFormat = array(), $allowHashTag = true, $userVersion = 0) {

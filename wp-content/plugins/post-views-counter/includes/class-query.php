@@ -5,10 +5,12 @@ if ( ! defined( 'ABSPATH' ) )
 
 /**
  * Post_Views_Counter_Query class.
- * 
+ *
  * @class Post_Views_Counter_Query
  */
 class Post_Views_Counter_Query {
+
+	private $join_sql = '';
 
 	/**
 	 * Class constructor.
@@ -21,9 +23,10 @@ class Post_Views_Counter_Query {
 
 		// filters
 		add_filter( 'query_vars', [ $this, 'query_vars' ] );
-		add_filter( 'posts_join', [ $this, 'posts_join' ], 10, 2 );
+		add_filter( 'posts_join', [ $this, 'posts_join' ], 100, 2 );
 		add_filter( 'posts_groupby', [ $this, 'posts_groupby' ], 10, 2 );
 		add_filter( 'posts_orderby', [ $this, 'posts_orderby' ], 10, 2 );
+		add_filter( 'posts_distinct', [ $this, 'posts_distinct' ], 10, 2 );
 		add_filter( 'posts_fields', [ $this, 'posts_fields' ], 10, 2 );
 		add_filter( 'the_posts', [ $this, 'the_posts' ], 10, 2 );
 	}
@@ -55,6 +58,7 @@ class Post_Views_Counter_Query {
 	 * Modify the database query to use post_views parameter.
 	 *
 	 * @global object $wpdb
+	 *
 	 * @param string $join
 	 * @param object $query
 	 * @return string
@@ -133,7 +137,7 @@ class Post_Views_Counter_Query {
 					}
 				}
 
-				// after and before dates should be 
+				// after and before dates should be both valid
 				if ( $valid_dates ) {
 					foreach ( $query_chunks as $chunk ) {
 						// year
@@ -233,6 +237,8 @@ class Post_Views_Counter_Query {
 			global $wpdb;
 
 			$join .= " LEFT JOIN " . $wpdb->prefix . "post_views pvc ON pvc.id = " . $wpdb->prefix . "posts.ID" . $sql;
+
+			$this->join_sql = $join;
 		}
 
 		return $join;
@@ -242,6 +248,8 @@ class Post_Views_Counter_Query {
 	 * Group posts using the post ID.
 	 *
 	 * @global object $wpdb
+	 * @global string $pagenow
+	 *
 	 * @param string $groupby
 	 * @param object $query
 	 * @return string
@@ -258,10 +266,50 @@ class Post_Views_Counter_Query {
 			global $wpdb;
 
 			$groupby = trim( $groupby );
+			$groupby_aliases = [];
+			$groupby_values = [];
+			$groupby_sql = '';
+			$groupby_set = false;
 
+			// standard group by
 			if ( strpos( $groupby, $wpdb->prefix . 'posts.ID' ) === false )
-				$groupby = ( $groupby !== '' ? $groupby . ', ' : '') . $wpdb->prefix . 'posts.ID';
+				$groupby_aliases[] = $wpdb->prefix . 'posts.ID';
+			else
+				$groupby_set = true;
 
+			// tax query group by
+			$groupby_aliases[] = $this->get_groupby_meta_aliases( $query );
+
+			// meta query group by
+			if ( $this->join_sql ) {
+				$groupby_aliases[] = $this->get_groupby_tax_aliases( $query, $this->join_sql );
+
+				// clear join to avoid possible issues
+				$this->join_sql = '';
+			}
+
+			// any group by aliases?
+			if ( ! empty( $groupby_aliases ) ) {
+				foreach ( $groupby_aliases as $alias ) {
+					if ( is_array( $alias ) ) {
+						$groupby_values = array_merge( $groupby_values, $alias );
+					} else
+						$groupby_values[] = $alias;
+				}
+			}
+
+			// any group by values?
+			if ( ! empty( $groupby_values ) ) {
+				$groupby = ( $groupby !== '' ? $groupby . ', ' : '' ) . implode( ', ', $groupby_values );
+
+				// set group by flag
+				$groupby_set = true;
+			}
+
+			if ( $groupby_set )
+				$query->pvc_groupby = true;
+
+			// hide empty?
 			if ( ! isset( $query->query['views_query']['hide_empty'] ) || $query->query['views_query']['hide_empty'] === true )
 				$groupby .= ' HAVING post_views > 0';
 		}
@@ -271,8 +319,9 @@ class Post_Views_Counter_Query {
 
 	/**
 	 * Order posts by post views.
-	 * 
+	 *
 	 * @global object $wpdb
+	 *
 	 * @param string $orderby
 	 * @param object $query
 	 * @return string
@@ -283,10 +332,24 @@ class Post_Views_Counter_Query {
 			global $wpdb;
 
 			$order = $query->get( 'order' );
-			$orderby = ( ! isset( $query->query['views_query']['hide_empty'] ) || $query->query['views_query']['hide_empty'] === true ? 'post_views' : 'pvc.count' ) . ' ' . $order . ', ' . $wpdb->prefix . 'posts.ID ' . $order;
+			$orderby = 'post_views ' . $order . ', ' . $wpdb->prefix . 'posts.ID ' . $order;
 		}
 
 		return $orderby;
+	}
+
+	/**
+	 * Add DISTINCT clause.
+	 *
+	 * @param string $distinct
+	 * @param object $query
+	 * @return string
+	 */
+	public function posts_distinct( $distinct, $query ) {
+		if ( ( ( isset( $query->pvc_groupby ) && $query->pvc_groupby ) || ( isset( $query->pvc_orderby ) && $query->pvc_orderby ) || ( isset( $query->pvc_query ) && $query->pvc_query ) || apply_filters( 'pvc_extend_post_object', false, $query ) === true ) && ( strpos( $distinct, 'DISTINCT' ) === false ) )
+			$distinct = $distinct . ' DISTINCT ';
+
+		return $distinct;
 	}
 
 	/**
@@ -297,10 +360,89 @@ class Post_Views_Counter_Query {
 	 * @return string
 	 */
 	public function posts_fields( $fields, $query ) {
-		if ( ( ! isset( $query->query['fields'] ) || $query->query['fields'] === '' ) && ( ( isset( $query->pvc_orderby ) && $query->pvc_orderby ) || ( isset( $query->pvc_query ) && $query->pvc_query ) || apply_filters( 'pvc_extend_post_object', false, $query ) === true ) )
-			$fields = $fields . ', SUM( IFNULL( pvc.count, 0 ) ) AS post_views';
+		if ( ( ! isset( $query->query['fields'] ) || $query->query['fields'] === '' || $query->query['fields'] === 'all' ) && ( ( isset( $query->pvc_orderby ) && $query->pvc_orderby ) || ( isset( $query->pvc_query ) && $query->pvc_query ) || apply_filters( 'pvc_extend_post_object', false, $query ) === true ) )
+			$fields = $fields . ', SUM( COALESCE( pvc.count, 0 ) ) AS post_views';
 
 		return $fields;
+	}
+
+	/**
+	 * Get tax table aliases from query.
+	 *
+	 * @param object $query
+	 * @param string $join_sql
+	 * @return array
+	 */
+	private function get_groupby_tax_aliases( $query, $join_sql ) {
+		$groupby = [];
+
+		// trim join sql
+		$join_sql = trim( $join_sql );
+
+		// any join sql? valid query with tax query?
+		if ( $join_sql !== '' && is_a( $query, 'WP_Query' ) && ! empty( $query->tax_query ) && is_a( $query->tax_query, 'WP_Tax_Query' ) ) {
+			// unfortunately there is no way to get table_aliases by native function
+			// tax query does not have get_clauses either like meta query does
+			// we have to find aliases the hard way
+			$chunks = explode( 'JOIN', $join_sql );
+
+			// any join clauses?
+			if ( ! empty( $chunks ) ) {
+				$aliases = [];
+
+				foreach ( $chunks as $chunk ) {
+					// standard join
+					if ( strpos( $chunk, 'wp_term_relationships ON' ) !== false )
+						$aliases[] = 'wp_term_relationships';
+					// alias join
+					elseif ( strpos( $chunk, 'wp_term_relationships AS' ) !== false && preg_match( '/wp_term_relationships AS ([a-z0-9]+) ON/i', $chunk, $matches ) === 1 )
+						$aliases[] = $matches[1];
+				}
+
+				// any aliases?
+				if ( ! empty( $aliases ) ) {
+					foreach ( array_unique( $aliases ) as $alias ) {
+						$groupby[] = $alias . '.term_taxonomy_id';
+					}
+				}
+			}
+		}
+
+		return $groupby;
+	}
+
+	/**
+	 * Get meta table aliases from query.
+	 *
+	 * @param object $query
+	 * @return array
+	 */
+	private function get_groupby_meta_aliases( $query ) {
+		$groupby = [];
+
+		// valid query with meta query?
+		if ( is_a( $query, 'WP_Query' ) && ! empty( $query->meta_query ) && is_a( $query->meta_query, 'WP_Meta_Query' ) ) {
+			// get meta clauses, we can't use table_aliases here since it's protected value
+			$clauses = $query->meta_query->get_clauses();
+
+			// any meta clauses?
+			if ( ! empty( $clauses ) ) {
+				$aliases = [];
+
+				foreach ( $clauses as $clause ) {
+					$aliases[] = $clause['alias'];
+				}
+
+				// any aliases?
+				if ( ! empty( $aliases ) ) {
+					foreach ( array_unique( $aliases ) as $alias ) {
+						$groupby[] = $alias . '.meta_id';
+					}
+				}
+			}
+		}
+
+		return $groupby;
 	}
 
 	/**

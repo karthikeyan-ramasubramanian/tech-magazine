@@ -1,6 +1,9 @@
 jQuery.noConflict();
 
-/* Calendar-Widget */
+var curSource = new Array();
+curSource[0] = ajaxurl + '?action=b2s_get_calendar_events&filter_network_auth=all&filter_network=all&filter_status=0&b2s_security_nonce=' + jQuery('#b2s_security_nonce').val();
+var newSource = new Array();
+
 jQuery(document).ready(function () {
     jQuery('.b2s-widget-calendar').fullCalendar({
         editable: false,
@@ -21,7 +24,7 @@ jQuery(document).ready(function () {
             center: '',
             right: 'showall today prev,next'
         },
-        eventSources: ajaxurl + '?action=b2s_get_calendar_events&filter_network_auth=all&filter_network=all' + '&b2s_security_nonce=' + jQuery('#b2s_security_nonce').val(),
+        eventSources: curSource[0],
         eventRender: function (event, element) {
             show = true;
             $header = jQuery("<div>").addClass("b2s-calendar-header");
@@ -288,3 +291,68 @@ function isMail(mail) {
     return regex.test(mail);
 }
 
+jQuery(document).on('change', '.b2s-calendar-filter-network-btn', function () {
+    var filter_status = jQuery('#b2s-calendar-filter-status').val();
+    newSource[0] = ajaxurl + '?action=b2s_get_calendar_events&filter_network_auth=all&filter_network=' + jQuery(this).val() + '&filter_status=' + filter_status + '&b2s_security_nonce=' + jQuery('#b2s_security_nonce').val();
+    jQuery('.b2s-widget-calendar').fullCalendar('removeEventSources');
+    jQuery('.b2s-widget-calendar').fullCalendar('addEventSource', newSource[0]);
+    curSource[0] = newSource[0];
+
+    jQuery('.b2s-calendar-filter-network-account-list').html("");
+    jQuery('.b2s-calendar-filter-network-account-list').hide();
+    if (jQuery(this).val() != 'all') {
+        jQuery.ajax({
+            url: ajaxurl,
+            type: "POST",
+            dataType: "json",
+            cache: false,
+            async: false,
+            data: {
+                'action': 'b2s_get_calendar_filter_network_auth',
+                'network_id': jQuery(this).val(),
+                'b2s_security_nonce': jQuery('#b2s_security_nonce').val()
+            },
+            success: function (data) {
+                if (data.result == true) {
+                    jQuery(".b2s-calendar-filter-network-account-list").show();
+                    jQuery(".b2s-calendar-filter-network-account-list").html(data.content);
+                } else {
+                    if (data.error == 'nonce') {
+                        jQuery('.b2s-nonce-check-fail').show();
+                    }
+                }
+            }
+        });
+    }
+    return false;
+});
+
+
+jQuery(document).on('change', '#b2s-calendar-filter-network-auth-sel', function () {
+    var filter_network_details_auth_id = jQuery(this).val();
+    var filter_network_id = jQuery('.b2s-calendar-filter-network-btn:checked').val();
+    var filter_status = jQuery('#b2s-calendar-filter-status').val();
+    newSource[0] = ajaxurl + '?action=b2s_get_calendar_events&filter_network_auth=' + filter_network_details_auth_id + '&filter_network=' + filter_network_id + '&filter_status=' + filter_status + '&b2s_security_nonce=' + jQuery('#b2s_security_nonce').val();
+    jQuery('.b2s-widget-calendar').fullCalendar('removeEventSources');
+    jQuery('.b2s-widget-calendar').fullCalendar('addEventSource', newSource[0]);
+    curSource[0] = newSource[0];
+
+    return false;
+
+});
+
+jQuery(document).on('change', '#b2s-calendar-filter-status', function () {
+    var filter_network_id = jQuery('.b2s-calendar-filter-network-btn:checked').val();
+    var filter_network_details_auth_id = jQuery('#b2s-calendar-filter-network-auth-sel').val();
+    if (typeof filter_network_details_auth_id == 'undefined') {
+        filter_network_details_auth_id = 'all';
+    }
+    var filter_status = jQuery('#b2s-calendar-filter-status').val();
+    newSource[0] = ajaxurl + '?action=b2s_get_calendar_events&filter_network_auth=' + filter_network_details_auth_id + '&filter_network=' + filter_network_id + '&filter_status=' + filter_status + '&b2s_security_nonce=' + jQuery('#b2s_security_nonce').val();
+    jQuery('.b2s-widget-calendar').fullCalendar('removeEventSources');
+    jQuery('.b2s-widget-calendar').fullCalendar('addEventSource', newSource[0]);
+    curSource[0] = newSource[0];
+
+    return false;
+
+});

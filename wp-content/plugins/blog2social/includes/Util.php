@@ -245,14 +245,19 @@ class B2S_Util {
         $featuredImage = wp_get_attachment_url($attachment_id);
         $image_alt = get_post_meta($attachment_id, '_wp_attachment_image_alt', true);
         if ($forceFeaturedImage && $featuredImage != false && !empty($featuredImage)) {
-            return array(0 => array(0 => $featuredImage, 1 => esc_attr($image_alt)));
-        } else {
-            $content = stripcslashes(self::getFullContent($postId, $postContent, $postUrl, $postLang));
-            if (!preg_match_all('%<img.*?src=[\"\'](.*?)[\"\'].*?>%', $content, $matches) && !$featuredImage) {
-                return false;
+            $ext = pathinfo(
+                parse_url($featuredImage, PHP_URL_PATH), 
+                PATHINFO_EXTENSION
+            );
+            if(!in_array($ext, array('jpg', 'png', 'webp'))) {
+                return array(0 => array(0 => $featuredImage, 1 => esc_attr($image_alt)));
             }
-            array_unshift($matches[1], $featuredImage);
         }
+        $content = stripcslashes(self::getFullContent($postId, $postContent, $postUrl, $postLang));
+        if (!preg_match_all('%<img.*?src=[\"\'](.*?)[\"\'].*?>%', $content, $matches) && !$featuredImage) {
+            return false;
+        }
+        array_unshift($matches[1], $featuredImage);
         $rtrnArray = array();
         if (isset($matches[1])) {
             foreach ($matches[1] as $key => $imgUrl) {
@@ -462,7 +467,7 @@ class B2S_Util {
                 return trim($text);
             }
 
-            $stops = array('.', '?', '!', '#');
+            $stops = array('.', '?', '!', '#', '(');
             $min = $count;
             $cleanTruncateWord = true;
             $max = ($max !== false) ? ($max - $min) : ($min - 1);

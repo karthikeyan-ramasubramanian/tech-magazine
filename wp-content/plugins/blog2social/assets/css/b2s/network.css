@@ -900,3 +900,7 @@ ul.b2s-network-item-auth-list li:last-child{
 .b2s-edit-template-preview-image-image-27 {
     margin-top: 10px;
 }
+
+#clr-picker {
+    z-index: 9999;
+}

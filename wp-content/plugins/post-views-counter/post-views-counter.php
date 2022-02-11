@@ -2,7 +2,7 @@
 /*
 Plugin Name: Post Views Counter
 Description: Post Views Counter allows you to display how many times a post, page or custom post type had been viewed in a simple, fast and reliable way.
-Version: 1.3.10
+Version: 1.3.11
 Author: Digital Factory
 Author URI: http://www.dfactory.eu/
 Plugin URI: http://www.dfactory.eu/plugins/post-views-counter/
@@ -12,7 +12,7 @@ Text Domain: post-views-counter
 Domain Path: /languages
 
 Post Views Counter
-Copyright (C) 2014-2021, Digital Factory - info@digitalfactory.pl
+Copyright (C) 2014-2022, Digital Factory - info@digitalfactory.pl
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -31,7 +31,7 @@ if ( ! class_exists( 'Post_Views_Counter' ) ) {
 	 * Post Views Counter final class.
 	 *
 	 * @class Post_Views_Counter
-	 * @version	1.3.10
+	 * @version	1.3.11
 	 */
 	final class Post_Views_Counter {
 
@@ -84,7 +84,7 @@ if ( ! class_exists( 'Post_Views_Counter' ) ) {
 				'icon_class'			=> 'dashicons-chart-bar',
 				'toolbar_statistics'	=> true
 			],
-			'version'	=> '1.3.10'
+			'version'	=> '1.3.11'
 		];
 
 		/**
@@ -331,7 +331,7 @@ if ( ! class_exists( 'Post_Views_Counter' ) ) {
 						// save dismiss state
 						$( '.pvc-notice.is-dismissible' ).on( 'click', '.notice-dismiss, .pvc-dismissible-notice', function ( e ) {
 							var notice_action = 'hide';
-							
+
 							if ( $( e.currentTarget ).hasClass( 'pvc-delay-notice' ) ) {
 								notice_action = 'delay'
 							}
@@ -402,6 +402,7 @@ if ( ! class_exists( 'Post_Views_Counter' ) ) {
 		 * Multisite activation.
 		 *
 		 * @global object $wpdb
+		 *
 		 * @param bool $networkwide
 		 * @return void
 		 */
@@ -428,7 +429,9 @@ if ( ! class_exists( 'Post_Views_Counter' ) ) {
 		/**
 		 * Single site activation.
 		 *
-		 * @global array $wp_roles
+		 * @global object $wpdb
+		 * @global string $charset_collate
+		 *
 		 * @return void
 		 */
 		public function activate_single() {
@@ -463,6 +466,7 @@ if ( ! class_exists( 'Post_Views_Counter' ) ) {
 		 * Multisite deactivation.
 		 *
 		 * @global $wpdb
+		 *
 		 * @param bool $networkwide
 		 * @return void
 		 */
@@ -494,6 +498,7 @@ if ( ! class_exists( 'Post_Views_Counter' ) ) {
 		 * Single site deactivation.
 		 *
 		 * @global $wpdb
+		 *
 		 * @param bool $multi
 		 * @return void
 		 */
@@ -565,6 +570,7 @@ if ( ! class_exists( 'Post_Views_Counter' ) ) {
 		 * Enqueue admin scripts and styles.
 		 *
 		 * @global string $post_type
+		 *
 		 * @param string $page.
 		 * @return void
 		 */

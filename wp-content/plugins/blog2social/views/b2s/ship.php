@@ -493,11 +493,26 @@ if (isset($_GET['type']) && $_GET['type'] == 'draft' && isset($_GET['postId']) &
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="b2s-modal-close close" data-modal-name="#b2s-tos-xing-group-modal">&times;</button>
-                                            <h4 class="modal-title"><?php esc_html_e('Important infomations about XING groups', 'blog2social') ?> </h4>
+                                            <h4 class="modal-title"><?php esc_html_e('About Xing guidelines for crossposting in groups', 'blog2social') ?> </h4>
                                         </div>
                                         <div class="modal-body">
-                                            <?php esc_html_e('Please follow the new XING guidelines for crossposting in XING groups: You can only publish identical content once within one group. You can publish identical posts in up to 3 different groups.', 'blog2Social') ?>
-                                            <a href="<?php echo esc_url(B2S_Tools::getSupportLink('network_tos_blog_032019')); ?>" target="_blank"><?php esc_html_e('Learn more', 'blog2social') ?></a>
+                                            <?php esc_html_e('Good to know: Xing allows publishing identical content once within one group.', 'blog2Social') ?>
+                                            <br><a href="<?php echo esc_url(B2S_Tools::getSupportLink('network_tos_blog_082018')); ?>" target="_blank"><?php esc_html_e('Learn more about the Xing guidelines.', 'blog2social') ?></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div id="b2s-tos-xing-group-max-count-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="b2s-tos-xing-group-max-count-modal" aria-hidden="true" data-backdrop="false"  style="display:none;">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="b2s-modal-close close" data-modal-name="#b2s-tos-xing-group-max-count-modal">&times;</button>
+                                            <h4 class="modal-title"><?php esc_html_e('About Xing guidelines for crossposting in groups', 'blog2social') ?> </h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <?php esc_html_e('Good to know: Xing allows crossposting of identical content in up to 3 different groups.', 'blog2Social') ?>
+                                            <br><a href="<?php echo esc_url(B2S_Tools::getSupportLink('network_tos_blog_082018')); ?>" target="_blank"><?php esc_html_e('Learn more about the Xing guidelines.', 'blog2social') ?></a>
                                         </div>
                                     </div>
                                 </div>
@@ -703,7 +718,16 @@ if (isset($_GET['type']) && $_GET['type'] == 'draft' && isset($_GET['postId']) &
                                         <div class="modal-body">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <?php echo sprintf(__('Please note: Your Instagram Business Account will be connected with Blog2Social via Facebook. Therefore, please make sure that your Instagram Business Account is linked to a Facebook page and enter the corresponding login data. You will find more information and detailed instructions in the <a href="%s" target="_blank">Instagram Business guide</a>.', 'blog2social'), esc_url(B2S_Tools::getSupportLink('instagram_business_auth_faq'))); ?>
+                                                    <?php esc_html_e('Please note: In order to connect your Instagram account to Blog2Social, please ensure the following:', 'blog2social') ?>
+                                                    <br>
+                                                    <?php esc_html_e('1. Your Instagram account is set to "Business" and not "Creator".', 'blog2social') ?>
+                                                    <br>
+                                                    <?php esc_html_e('2. Your Instagram account is linked to a Facebook page.', 'blog2social') ?>
+                                                    <br>
+                                                    <?php esc_html_e('3. Blog2Social has the permission to publish your posts.', 'blog2social') ?>
+                                                    <br>
+                                                    <br>
+                                                    <?php echo sprintf(__('You will find more information and detailed instructions in the <a href="%s" target="_blank">Instagram Business guide</a>.', 'blog2social'), esc_url(B2S_Tools::getSupportLink('instagram_business_auth_faq'))); ?>
                                                     <button class="btn btn-primary pull-right b2s-add-network-continue-btn"><?php esc_html_e('Continue', 'blog2social'); ?></button>
                                                 </div>
                                             </div>

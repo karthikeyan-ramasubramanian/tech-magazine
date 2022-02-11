@@ -41,7 +41,7 @@ li#customize-control-post_sidebar_align img:last-child {
 #customize-control-theme_documentation {
     margin-bottom: 30px;
 }
-
+/*
 #customize-control-taglist_sw .switch input:checked + label:after,
 #customize-control-display_topbar .switch input:checked + label:after,
 #customize-control-excerpt_display .switch input:checked + label:after,
@@ -66,4 +66,4 @@ li#customize-control-post_sidebar_align img:last-child {
 #customize-control-show_slider .switch input:checked + label:after,
 #customize-control-hitmag_boxed_layout .switch input:checked + label:after {
     left: 40px !important;
-}
+}*/

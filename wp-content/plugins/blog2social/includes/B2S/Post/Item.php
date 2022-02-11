@@ -225,9 +225,9 @@ class B2S_Post_Item {
                                      ON posts.`ID` = filter.`post_id`
                              WHERE $addSearchType $addSearchAuthorId $addSearchPostTitle AND $postTypes $sharedToNetworkWhere $leftJoinWhere $orderBy
                         LIMIT " . (($this->currentPage - 1) * $this->results_per_page) . "," . $this->results_per_page;
-
+                                            
                 $this->postData = $wpdb->get_results($sqlPosts);
-
+                
                 if ($this->type == 'publish' || $this->type == 'notice' || $this->type == 'approve') {
                     $sqlPostsTotal = "SELECT DISTINCT COUNT(posts.`ID`)
                             FROM `$wpdb->posts` posts $leftJoin $leftJoin2
@@ -725,16 +725,18 @@ class B2S_Post_Item {
         return $this->postPagination;
     }
 
-    public function getPublishPostDataHtml($post_id = 0, $type = 'publish', $showByDate = '', $sharedByUser = 0) {
+    public function getPublishPostDataHtml($post_id = 0, $type = 'publish', $showByDate = '', $sharedByUser = 0, $sharedOnNetwork = 0) {
         if ($post_id > 0) {
             global $wpdb;
             $addNotAdminPosts = (!B2S_PLUGIN_ADMIN) ? (' AND blog_user_id =' . B2S_PLUGIN_BLOG_USER_ID) : '';
             $addSharedByUser = ($sharedByUser > 0) ? (' AND blog_user_id =' . $sharedByUser) : '';
+            $addSharedOnNetwork = ($sharedOnNetwork > 0) ? (' AND network_id =' . $sharedOnNetwork) : '';
             $addSearchShowByDate = (!empty($showByDate)) ? " AND DATE_FORMAT(`{$wpdb->prefix}b2s_posts`.`publish_date`,'%%Y-%%m-%%d') = '" . $showByDate . "' " : '';
             $addWhere = ($type == 'notice') ? ' AND `' . $wpdb->prefix . 'b2s_posts`.`publish_error_code` != "" ' : ' AND `' . $wpdb->prefix . 'b2s_posts`.`publish_error_code` = "" ';
-            $sqlData = $wpdb->prepare("SELECT `{$wpdb->prefix}b2s_posts`.`id`,`blog_user_id`, `sched_date`,`publish_date`,`publish_link`,`sched_type`,`publish_error_code`,`sched_details_id`,`post_format`,`{$wpdb->prefix}b2s_posts_sched_details`.`sched_data`,`{$wpdb->prefix}b2s_posts_network_details`.`network_id`,`{$wpdb->prefix}b2s_posts_network_details`.`network_type`, `{$wpdb->prefix}b2s_posts_network_details`.`network_auth_id`, `{$wpdb->prefix}b2s_posts_network_details`.`network_display_name` FROM `{$wpdb->prefix}b2s_posts` LEFT JOIN `{$wpdb->prefix}b2s_posts_network_details` ON `{$wpdb->prefix}b2s_posts`.`network_details_id` = `{$wpdb->prefix}b2s_posts_network_details`.`id` LEFT JOIN `{$wpdb->prefix}b2s_posts_sched_details` ON `{$wpdb->prefix}b2s_posts`.`sched_details_id` = `{$wpdb->prefix}b2s_posts_sched_details`.`id` WHERE `{$wpdb->prefix}b2s_posts`.`hide` = 0 AND `{$wpdb->prefix}b2s_posts`.`post_for_approve`= 0  AND (`{$wpdb->prefix}b2s_posts`.`sched_date` = '0000-00-00 00:00:00' OR (`{$wpdb->prefix}b2s_posts`.`sched_type` = 3 AND `{$wpdb->prefix}b2s_posts`.`publish_date` != '0000-00-00 00:00:00')) $addWhere $addNotAdminPosts $addSharedByUser $addSearchShowByDate AND `{$wpdb->prefix}b2s_posts`.`post_id` = %d ORDER BY `{$wpdb->prefix}b2s_posts`.`publish_date` DESC", $post_id);
+            $sqlData = $wpdb->prepare("SELECT `{$wpdb->prefix}b2s_posts`.`id`,`{$wpdb->prefix}b2s_posts`.`blog_user_id`, `sched_date`,`publish_date`,`publish_link`,`sched_type`,`publish_error_code`,`sched_details_id`,`post_format`,`{$wpdb->prefix}b2s_posts_sched_details`.`sched_data`,`{$wpdb->prefix}b2s_posts_network_details`.`network_id`,`{$wpdb->prefix}b2s_posts_network_details`.`network_type`, `{$wpdb->prefix}b2s_posts_network_details`.`network_auth_id`, `{$wpdb->prefix}b2s_posts_network_details`.`network_display_name`, `{$wpdb->prefix}b2s_posts_insights`.`insight`, `{$wpdb->prefix}b2s_posts_insights`.`active` as insightsActive FROM `{$wpdb->prefix}b2s_posts` LEFT JOIN `{$wpdb->prefix}b2s_posts_network_details` ON `{$wpdb->prefix}b2s_posts`.`network_details_id` = `{$wpdb->prefix}b2s_posts_network_details`.`id` LEFT JOIN `{$wpdb->prefix}b2s_posts_sched_details` ON `{$wpdb->prefix}b2s_posts`.`sched_details_id` = `{$wpdb->prefix}b2s_posts_sched_details`.`id` LEFT JOIN `{$wpdb->prefix}b2s_posts_insights` ON `{$wpdb->prefix}b2s_posts`.`id` = `{$wpdb->prefix}b2s_posts_insights`.`b2s_posts_id` WHERE `{$wpdb->prefix}b2s_posts`.`hide` = 0 AND `{$wpdb->prefix}b2s_posts`.`post_for_approve`= 0  AND (`{$wpdb->prefix}b2s_posts`.`sched_date` = '0000-00-00 00:00:00' OR (`{$wpdb->prefix}b2s_posts`.`sched_type` = 3 AND `{$wpdb->prefix}b2s_posts`.`publish_date` != '0000-00-00 00:00:00')) $addWhere $addNotAdminPosts $addSharedByUser $addSharedOnNetwork $addSearchShowByDate AND `{$wpdb->prefix}b2s_posts`.`post_id` = %d ORDER BY `{$wpdb->prefix}b2s_posts`.`publish_date` DESC", $post_id);
             $result = $wpdb->get_results($sqlData);
             $specialPostingData = array(3 => esc_html__('Auto-Posting', 'blog2social'), 4 => esc_html__('Retweet', 'blog2social'), 5 => esc_html__('Re-Share', 'blog2social'));
+            $metricsDoneB2SPostsIds = array();
             if (!empty($result) && is_array($result)) {
                 $networkType = unserialize(B2S_PLUGIN_NETWORK_TYPE);
                 $networkName = unserialize(B2S_PLUGIN_NETWORK);
@@ -742,6 +744,20 @@ class B2S_Post_Item {
                 $content = '<div class="row"><div class="col-md-12"><ul class="list-group">';
                 $content .= '<li class="list-group-item"><label class="checkbox-inline checkbox-all-label"><input class="checkbox-all" data-blog-post-id="' . esc_attr($post_id) . '" name="selected-checkbox-all" value="" type="checkbox"> ' . esc_html__('select all', 'blog2social') . '</label></li>';
                 foreach ($result as $var) {
+                    if($type == 'metrics') {
+                        if(in_array($var->id, $metricsDoneB2SPostsIds)) {
+                            continue;
+                        }
+                        if($var->insight == null || empty($var->insight) || $var->insightsActive == 0) {
+                            continue;
+                        }
+                        $postInsights = json_decode($var->insight, true);
+                        if($postInsights == false || !isset($postInsights['insights']) || empty($postInsights['insights'])) {
+                            continue;
+                        }
+                        $metricsDoneB2SPostsIds[] = $var->id;
+                    }
+                    
                     $specialPosting = (isset($var->sched_type) && isset($specialPostingData[$var->sched_type])) ? ' - <strong>' . esc_html($specialPostingData[$var->sched_type]) . '</strong>' : '';
                     $publishLink = (!empty($var->publish_link)) ? '<a target="_blank" href="' . esc_url($var->publish_link) . '">' . esc_html__('show', 'blog2social') . '</a> | ' : '';
                     $error = '';
@@ -795,8 +811,35 @@ class B2S_Post_Item {
                     
                     $content .= '<div class="media-body">
                                             <strong>' . esc_html($networkName[$var->network_id]) . '</strong> <span class="info">('.esc_html($networkType[$var->network_type]) . esc_html((!empty($var->network_display_name) ? (': ' . $var->network_display_name) : '')).')</span> ' . $error . '
-                                            <p class="info">' . $addPostFormat . sprintf(esc_html($publishText), '<a href="' . esc_url(get_author_posts_url($var->blog_user_id)) . '">' . esc_html((!empty($userInfoName) ? $userInfoName : '-')) . '</a>') . ' ' . esc_html($publishDate) . $specialPosting . '</p>
-                                            <p class="info">' . $publishLink;
+                                            <div class="info">' . $addPostFormat . sprintf(esc_html($publishText), '<a href="' . esc_url(get_author_posts_url($var->blog_user_id)) . '">' . esc_html((!empty($userInfoName) ? $userInfoName : '-')) . '</a>') . ' ' . esc_html($publishDate) . $specialPosting;
+                    
+                    if((B2S_PLUGIN_USER_VERSION >= 3 || (defined('B2S_PLUGIN_PERMISSION_INSIGHTS') && B2S_PLUGIN_PERMISSION_INSIGHTS == 1)) && (($var->network_id == 1 && $var->network_type == 1) || ($var->network_id == 2 && $var->network_type == 0)) && $var->insight !== null && !empty($var->insight)) {
+                        $postInsights = json_decode($var->insight, true);
+                        if($postInsights !== false && isset($postInsights['insights']) && !empty($postInsights['insights']) && isset($postInsights['insights']['data'])) {
+                            $currentPostInsights = $postInsights['insights']['data'];
+                            if(!empty($currentPostInsights) && !empty($currentPostInsights['likes'])) {
+                                end($currentPostInsights['likes']);
+                                $key = key($currentPostInsights['likes']);
+                                $content .= '<div class="pull-right">
+                                <i class="glyphicon glyphicon-eye-open"></i><span class="b2s-insights-impressions-count" data-b2s-post-id="'.esc_attr($var->id).'" style="margin-left: 4px; margin-right: 10px;">'.((isset($currentPostInsights['impressions'][$key])) ? $currentPostInsights['impressions'][$key] : '0').'</span>
+                                        <i class="glyphicon glyphicon-thumbs-up"></i><span class="b2s-insights-likes-count" data-b2s-post-id="'.esc_attr($var->id).'" style="margin-left: 4px; margin-right: 10px;">'.((isset($currentPostInsights['likes'][$key])) ? $currentPostInsights['likes'][$key] : '0').'</span>
+                                        <i class="glyphicon glyphicon-refresh"></i><span class="b2s-insights-reshares-count" data-b2s-post-id="'.esc_attr($var->id).'" style="margin-left: 4px; margin-right: 10px;">'.((isset($currentPostInsights['reshares'][$key])) ? $currentPostInsights['reshares'][$key] : '0').'</span>
+                                        <i class="glyphicon glyphicon-comment"></i><span class="b2s-insights-linkclicks-count" data-b2s-post-id="'.esc_attr($var->id).'" style="margin-left: 4px; margin-right: 10px;">'.((isset($currentPostInsights['comments'][$key])) ? $currentPostInsights['comments'][$key] : '0').'</span>';
+                            } else {
+                                $content .= '<div class="pull-right">
+                                        <i class="glyphicon glyphicon-eye-open"></i><span class="b2s-insights-impressions-count" data-b2s-post-id="'.esc_attr($var->id).'" style="margin-left: 4px; margin-right: 10px;">0</span>
+                                        <i class="glyphicon glyphicon-thumbs-up"></i><span class="b2s-insights-likes-count" data-b2s-post-id="'.esc_attr($var->id).'" style="margin-left: 4px; margin-right: 10px;">0</span>
+                                        <i class="glyphicon glyphicon-refresh"></i><span class="b2s-insights-reshares-count" data-b2s-post-id="'.esc_attr($var->id).'" style="margin-left: 4px; margin-right: 10px;">0</span>
+                                        <i class="glyphicon glyphicon-comment"></i><span class="b2s-insights-linkclicks-count" data-b2s-post-id="'.esc_attr($var->id).'" style="margin-left: 4px; margin-right: 10px;">0</span>';
+                            }
+                            if($type !== 'metrics') {
+                                $content .= '<a href="admin.php?page=blog2social-metrics" class="btn btn-success">Metrics Summary</a></div>';
+                            }
+                        }
+                    }
+                    
+                    
+                    $content .= '</div><p class="info">' . $publishLink;
 
                     $content .= (B2S_PLUGIN_USER_VERSION > 0) ? '<a href="#" class="b2s-post-publish-area-drop-btn" data-post-id="' . esc_attr($var->id) . '">' : '<a href="#" class="b2sPreFeatureModalBtn" data-title="' . esc_attr__('You want to delete a publish post entry?', 'blog2social') . '">';
                     $content .= esc_html__('delete from reporting', 'blog2social') . '</a> ';
@@ -805,9 +848,9 @@ class B2S_Post_Item {
                         $content .= '| <a href="admin.php?page=blog2social-ship&postId=' . $post_id . '&network_auth_id=' . $var->network_auth_id . '">' . esc_html__('re-share', 'blog2social') . '</a>';
                     }
 
-                    $content . '</p>
-                                        </div>
-                                    </div>
+                    $content .= '</p>
+                        </div>
+                        </div>
                                 </li>';
                 }
                 $content .= '<li class="list-group-item"><label class="checkbox-inline checkbox-all-label-btn"><span class="glyphicon glyphicon glyphicon-trash "></span> ';

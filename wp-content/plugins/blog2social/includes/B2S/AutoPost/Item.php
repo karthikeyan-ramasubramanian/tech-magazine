@@ -14,6 +14,7 @@ class B2S_AutoPost_Item {
         $this->options = new B2S_Options(B2S_PLUGIN_BLOG_USER_ID);
         $this->postTypesData = get_post_types(array('public' => true));
         $this->postCategoriesData = get_categories(array('public' => true));
+        $this->postTaxonomiesData = get_taxonomies(array('public' => true));
     }
     
     private function getSettings() {
@@ -37,6 +38,8 @@ class B2S_AutoPost_Item {
         $autoPostImportActive = (isset($optionAutoPostImport['active']) && (int) $optionAutoPostImport['active'] == 1) ? true : false;
         
         $content = '';
+        $content .='<input type="hidden" class="b2s-autopost-m-show-modal" value="' . ((isset($optionAutoPost['active'])) ? '0' : '1') . '">';
+        $content .='<input type="hidden" class="b2s-autopost-a-show-modal" value="' . ((isset($optionAutoPostImport['active'])) ? '0' : '1') . '">';
         $content .='<div class="panel panel-group b2s-auto-post-own-general-warning"><div class="panel-body">';
         $content .='<span class="glyphicon glyphicon-exclamation-sign glyphicon-warning"></span> ' . sprintf(__('Posts for Facebook Profiles will be shown on your "Site & Blog Content" navigation bar in the "Instant Sharing" tab. To share the post on your Facebook Profile just click on the "Share" button next to your post. More information in the <a href="%s" target="_blank">Instant Sharing guide</a>.', 'blog2social'), B2S_Tools::getSupportLink('facebook_instant_sharing'));
         $content .='</div>';
@@ -309,6 +312,37 @@ class B2S_AutoPost_Item {
             $catSelected = (isset($data['post_categories']) && is_array($data['post_categories'])) ? $data['post_categories'] : array();
 
             foreach ($this->postCategoriesData as $k => $v) {
+                $selItem = (in_array($v->term_id, $catSelected)) ? 'selected' : '';
+                $html .= '<option ' . $selItem . ' value="' . esc_attr($v->term_id) . '">' . esc_html($v->name) . '</option>';
+            }
+
+            $html .='</select>';
+            
+            
+            //Custom Taxonomies
+            $html .='<br>';
+            $html .='<br>';
+            $html .='<p>' . esc_html__('Custom taxonomies', 'blog2social');
+            $html .=' <input id="b2s-import-auto-post-taxonomies-state-include" name="b2s-import-auto-post-taxonomies-state" value="0" ' . (((isset($data['post_taxonomies_state']) && (int) $data['post_taxonomies_state'] == 0) || !isset($data['post_taxonomies_state'])) ? 'checked' : '') . ' type="radio"><label class="padding-bottom-3" for="b2s-import-auto-post-taxonomies-state-include">' . esc_html__('Include (Post only...)', 'blog2social') . '</label> ';
+            $html .='<input id="b2s-import-auto-post-taxonomies-state-exclude" name="b2s-import-auto-post-taxonomies-state" value="1" ' . ((isset($data['post_taxonomies_state']) && (int) $data['post_taxonomies_state'] == 1) ? 'checked' : '') . ' type="radio"><label class="padding-bottom-3" for="b2s-import-auto-post-taxonomies-state-exclude">' . esc_html__('Exclude (Do no post ...)', 'blog2social') . '</label>';
+            $html .='</p>';
+            $html .='<select name="b2s-import-auto-post-taxonomies-data[]" data-placeholder="' . esc_html__('Select Taxonomies', 'blog2social') . '" class="b2s-import-auto-post-taxonomies" multiple>';
+
+            $catSelected = (isset($data['post_categories']) && is_array($data['post_categories'])) ? $data['post_categories'] : array();
+
+            $customTaxonomies = array();
+            foreach ($this->postTaxonomiesData as $tax) {
+                if(!in_array($tax, array('category', 'post_tag'))) {
+                    $terms = get_terms(array(
+                        'taxonomy' => $tax
+                    ));
+                    foreach ($terms as $term) {
+                        $customTaxonomies[] = $term;
+                    }
+
+                }
+            }
+            foreach ($customTaxonomies as $k => $v) {
                 $selItem = (in_array($v->term_id, $catSelected)) ? 'selected' : '';
                 $html .= '<option ' . $selItem . ' value="' . esc_attr($v->term_id) . '">' . esc_html($v->name) . '</option>';
             }

@@ -190,6 +190,10 @@ class B2S_Meta {
                 $image = $this->metaData[$type . '_image'];
                 if (isset($this->metaData[$type . '_image_alt']) && !empty($this->metaData[$type . '_image_alt'])) {
                     $image_alt = $this->metaData[$type . '_image_alt'];
+                } else {
+                    if ($id_attachment = attachment_url_to_postid($this->metaData[$type . '_image'])) {
+                        $image_alt = get_post_meta($id_attachment, '_wp_attachment_image_alt', true);
+                    }
                 }
             } else {
                 //is set featured image
@@ -248,6 +252,9 @@ class B2S_Meta {
                     echo '<meta property="og:image" content="' . esc_url(apply_filters('b2s_og_meta_image', $image)) . '"/>' . "\n" . $size;
                 } else {
                     echo '<meta name="twitter:image" content="' . esc_url(apply_filters('b2s_card_meta_image', $image)) . '"/>' . "\n";
+                    if (!empty($image_alt)) {
+                        echo '<meta name="twitter:image:alt" content="' . $image_alt . '"/>' . "\n";
+                    }
                 }
             }
         } else {

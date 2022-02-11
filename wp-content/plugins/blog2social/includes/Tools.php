@@ -26,6 +26,13 @@ class B2S_Tools {
                 if (!defined("B2S_PLUGIN_TRAIL_END")) {
                     define('B2S_PLUGIN_TRAIL_END', $tokenInfo['B2S_PLUGIN_TRAIL_END']);
                 }
+                
+            }
+            if(isset($version->permission_insight)) {
+                $tokenInfo['B2S_PLUGIN_PERMISSION_INSIGHTS'] = (int) $version->permission_insight;
+                if (!defined("B2S_PLUGIN_PERMISSION_INSIGHTS")) {
+                    define('B2S_PLUGIN_PERMISSION_INSIGHTS', $tokenInfo['B2S_PLUGIN_PERMISSION_INSIGHTS']);
+                }
             }
             if (!isset($version->version)) {
                 define('B2S_PLUGIN_NOTICE', 'CONNECTION');
@@ -259,6 +266,15 @@ class B2S_Tools {
         if($type == 'community_lostpw'){
             return 'https://community.blog2social.com/lostpw';
         }
+        if($type == 'license_key'){
+            return ($lang == 'en') ? 'https://www.blog2social.com/en/faq/index.php?solution_id=1062' : '';
+        }
+        if($type == 'auto_post_troubleshoot'){
+            return ($lang == 'en') ? 'https://www.blog2social.com/en/faq/index.php?solution_id=1187' : 'https://www.blog2social.com/de/faq/index.php?action=artikel&cat=9&id=186&artlang=de';
+        }
+        if($type == 'auto_post_import_troubleshoot'){
+            return ($lang == 'en') ? 'https://www.blog2social.com/en/faq/index.php?solution_id=1188' : 'https://www.blog2social.com/de/faq/index.php?action=artikel&cat=9&id=186&artlang=de';
+        }
         if($type == 'auto_post_assign'){
             return ($lang == 'en') ? 'https://www.blog2social.com/en/faq/index.php?action=artikel&cat=3&id=72&artlang=en' : 'https://www.blog2social.com/de/faq/index.php?action=artikel&cat=3&id=79&artlang=de';
         }
@@ -375,6 +391,24 @@ class B2S_Tools {
         }
         if($type == 'network_guide_link_27'){
             return ($lang == 'en') ? 'https://www.blog2social.com/en/faq/index.php?action=artikel&cat=2&id=197&artlang=en' : 'https://www.blog2social.com/de/faq/index.php?action=artikel&cat=2&id=193&artlang=de';
+        }
+        if($type == 'NETWORK_12_NO_PERMISSION'){
+            return ($lang == 'en') ? 'https://www.blog2social.com/en/faq/index.php?solution_id=1195' : 'https://www.blog2social.com/de/faq/index.php?solution_id=1194';
+        }
+        if($type == 'NETWORK_12_ACCESS_RESTRICTED'){
+            return ($lang == 'en') ? 'https://www.blog2social.com/en/faq/index.php?solution_id=1195' : 'https://www.blog2social.com/de/faq/index.php?solution_id=1194';
+        }
+        if($type == 'NETWORK_12_SESSION_INVALID'){
+            return ($lang == 'en') ? 'https://www.blog2social.com/en/faq/index.php?solution_id=1181' : 'https://www.blog2social.com/de/faq/index.php?solution_id=1175';
+        }
+        if($type == 'NETWORK_12_RESOURCE_DOSE_NOT_EXIST'){
+            return ($lang == 'en') ? 'https://www.blog2social.com/en/faq/index.php?solution_id=1198' : 'https://www.blog2social.com/de/faq/index.php?solution_id=1195';
+        }
+        if($type == 'NETWORK_12_NOT_BUSINESS'){
+            return ($lang == 'en') ? 'https://www.blog2social.com/en/faq/index.php?solution_id=1185' : 'https://www.blog2social.com/de/faq/index.php?solution_id=1182';
+        }
+        if($type == 'metrics_feedback'){
+            return ($lang == 'de') ? 'https://docs.google.com/forms/d/e/1FAIpQLSeif2AifR7lbSwYchCg08HysfgLuhMCtktf1qrE75UVxJlpUQ/viewform?usp=sf_link' : 'https://docs.google.com/forms/d/e/1FAIpQLSetoOeysUKSKK15ZgbvOVIfTovM67MNzPyncL7n6OvEwlZp0A/viewform?usp=sf_link  ';
         }
         return false;
     }

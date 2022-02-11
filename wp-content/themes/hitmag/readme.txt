@@ -2,9 +2,9 @@
 
 Contributors: Pubudu Malalasekara
 Requires at least: 4.0
-Tested up to: 5.8.1
+Tested up to: 5.9
 Requires PHP: 5.3
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -54,6 +54,14 @@ Jetpack
 Font Awesome 4 Menus
 
 == Changelog ==
+
+= 1.3.2 =
+* Now flexslider and magnific popup jquery libraries are loaded only where needed. 
+* Updated kirki framework.
+* Added alt attribute to slider thumbnails.
+* Added screen-reader-text for the archive read more button to improve SEO.
+* Tested with WordPress 5.9
+* Fixed a theme styling issue with the social icon block.
 
 = 1.3.1 =
 * Changed the width of the block widget editor area to have a better idea about Post Widgets.

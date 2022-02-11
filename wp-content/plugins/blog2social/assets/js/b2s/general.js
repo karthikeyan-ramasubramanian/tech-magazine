@@ -10,6 +10,10 @@ jQuery(window).on("load", function () {
             jQuery('#b2sModalPrivacyPolicy').modal('show');
         }
     }
+    
+    if(jQuery('#b2s-metrics-banner-show').val() == '0' && jQuery('.b2s-metrics-starting-modal').length == 0) {
+        jQuery('#b2s-metrics-banner-modal').modal('show');
+    }
 });
 
 jQuery(document).on('click', '.b2s-show-feedback-modal', function () {
@@ -344,4 +348,32 @@ jQuery(document).on("click", ".b2s-scroll-modal-down", function (e) {
 
 jQuery(document).on('click', '.b2s-network-auth-info-close', function() {
     jQuery(this).closest('.b2s-network-auth-info').hide();
+});
+
+jQuery(document).on('click', '.b2s-metrics-banner-close', function() {
+    jQuery('#b2s-metrics-banner-modal').modal('hide');
+    jQuery.ajax({
+        url: ajaxurl,
+        type: "POST",
+        dataType: "json",
+        cache: false,
+        data: {
+            'action': 'b2s_metrics_banner_close',
+            'b2s_security_nonce': jQuery('#b2s_security_nonce').val()
+        },
+        error: function () {
+            jQuery('.b2s-server-connection-fail').show();
+            return false;
+        },
+        success: function (data) {
+            if (data.result == false) {
+                if (data.error == 'nonce') {
+                    jQuery('.b2s-nonce-check-fail').show();
+                } else {
+                    jQuery('.b2s-server-connection-fail').show();
+                }
+            }
+            return true;
+        }
+    });
 });

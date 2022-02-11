@@ -14,8 +14,9 @@ if ( ! defined( 'ABSPATH' ) )
 
 /**
  * Get post views for a post or array of posts.
- * 
- * @global $wpdb
+ *
+ * @global object $wpdb
+ *
  * @param int|array $post_id
  * @return int
  */
@@ -36,28 +37,34 @@ if ( ! function_exists( 'pvc_get_post_views' ) ) {
 		FROM " . $wpdb->prefix . "post_views
 		WHERE id IN (" . $post_id . ") AND type = 4";
 
+		// calculate query hash
+		$query_hash = md5( $query );
+
 		// get cached data
-		$post_views = wp_cache_get( md5( $query ), 'pvc-get_post_views' );
+		$post_views = wp_cache_get( $query_hash, 'pvc-get_post_views' );
 
 		// cached data not found?
 		if ( $post_views === false ) {
+			// get post views
 			$post_views = (int) $wpdb->get_var( $query );
-			
+
 			// set the cache expiration, 5 minutes by default
 			$expire = absint( apply_filters( 'pvc_object_cache_expire', 300 ) );
 
-			wp_cache_add( md5( $query ), $post_views, 'pvc-get_post_views', $expire );
+			// add cached post views
+			wp_cache_add( $query_hash, $post_views, 'pvc-get_post_views', $expire );
 		}
 
-		return apply_filters( 'pvc_get_post_views', $post_views, $post_id );
+		return (int) apply_filters( 'pvc_get_post_views', $post_views, $post_id );
 	}
 
 }
 
 /**
  * Get views query.
- * 
- * @global $wpdb
+ *
+ * @global object $wpdb
+ *
  * @param array $args
  * @return int|array
  */
@@ -336,7 +343,7 @@ if ( ! function_exists( 'pvc_get_views' ) ) {
 
 		global $wpdb;
 
-		$query = "SELECT " . ( $args['fields'] === 'date=>views' ? 'pvc.period, ' : '' ) . "SUM( IFNULL( pvc.count, 0 ) ) AS post_views
+		$query = "SELECT " . ( $args['fields'] === 'date=>views' ? 'pvc.period, ' : '' ) . "SUM( COALESCE( pvc.count, 0 ) ) AS post_views
 		FROM " . $wpdb->prefix . "posts wpp
 		LEFT JOIN " . $wpdb->prefix . "post_views pvc ON pvc.id = wpp.ID" . ( $views_query !== '' ? ' ' . $views_query : ' AND pvc.type = 4' ) . ( ! empty( $args['post_id'] ) ? ' AND pvc.id IN (' . $args['post_id'] . ')' : '' ) . "
 		" . ( $args['post_type'] !== '' ? "WHERE wpp.post_type IN (" . $args['post_type'] . ")" : '' ) . "
@@ -422,7 +429,7 @@ if ( ! function_exists( 'pvc_post_views' ) ) {
 
 /**
  * Get most viewed posts.
- * 
+ *
  * @param array $args
  * @return array
  */
@@ -433,7 +440,8 @@ if ( ! function_exists( 'pvc_get_most_viewed_posts' ) ) {
 			[
 				'posts_per_page' => 10,
 				'order'			 => 'desc',
-				'post_type'		 => 'post'
+				'post_type'		 => 'post',
+				'fields'		 => ''
 			],
 			$args
 		);
@@ -446,9 +454,6 @@ if ( ! function_exists( 'pvc_get_most_viewed_posts' ) ) {
 		// force to use post views as order
 		$args['orderby'] = 'post_views';
 
-		// force to get all fields
-		$args['fields'] = '';
-
 		return apply_filters( 'pvc_get_most_viewed_posts', get_posts( $args ), $args );
 	}
 
@@ -456,7 +461,7 @@ if ( ! function_exists( 'pvc_get_most_viewed_posts' ) ) {
 
 /**
  * Display a list of most viewed posts.
- * 
+ *
  * @param array $post_id
  * @param bool $display
  * @return mixed
@@ -502,7 +507,7 @@ if ( ! function_exists( 'pvc_most_viewed_posts' ) ) {
 
 			$html .= '
 			<li>';
-				
+
 				$html .= apply_filters( 'pvc_most_viewed_posts_item_before', $args['item_before'], $post );
 
 				if ( $args['show_post_thumbnail'] && has_post_thumbnail( $post->ID ) ) {
@@ -529,9 +534,9 @@ if ( ! function_exists( 'pvc_most_viewed_posts' ) ) {
 
 				if ( ! empty( $excerpt ) )
 					$html .= '
-				
+
 				<div class="post-excerpt">' . esc_html( $excerpt ) . '</div>';
-				
+
 				$html .= apply_filters( 'pvc_most_viewed_posts_item_after', $args['item_after'], $post );
 
 				$html .= '
@@ -557,7 +562,8 @@ if ( ! function_exists( 'pvc_most_viewed_posts' ) ) {
 /**
  * Update total number of post views for a post.
  *
- * @global $wpdb
+ * @global object $wpdb
+ *
  * @param int $post_id Post ID
  * @param int $post_views Number of post views
  * @return true|int

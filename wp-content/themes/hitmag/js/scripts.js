@@ -6,6 +6,11 @@ jQuery(document).ready(function(){
 });
 
 jQuery(document).ready(function(){
+
+	if ( typeof jQuery.fn.magnificPopup === "undefined" ) {
+		return;
+	}
+
 	jQuery('.image-link').magnificPopup({
 		type: 'image'
 	});
@@ -14,6 +19,9 @@ jQuery(document).ready(function(){
 /* Featured Slider */
 
 jQuery(document).ready(function() {
+	if ( typeof jQuery.fn.flexslider === "undefined" ) {
+		return;
+	}
 	// The slider being synced must be initialized first
 	jQuery('#hm-carousel').flexslider({
 		animation: "slide",

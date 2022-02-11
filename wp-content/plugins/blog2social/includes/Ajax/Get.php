@@ -42,6 +42,7 @@ class Ajax_Get {
         add_action('wp_ajax_b2s_get_network_auth_settings', array($this, 'getNetworkAuthSettings'));
         add_action('wp_ajax_b2s_update_post_box', array($this, 'updatePostBox'));
         add_action('wp_ajax_b2s_get_image_caption', array($this, 'getImageCaption'));
+        add_action('wp_ajax_b2s_load_insights', array($this, 'loadInsights'));
     }
 
     public function getBlogPostStatus() {
@@ -266,9 +267,10 @@ class Ajax_Get {
                 require_once (B2S_PLUGIN_DIR . 'includes/Util.php');
                 $postData = new B2S_Post_Item();
                 $showByDate = isset($_POST['showByDate']) ? (preg_match("#^[0-9\-.\]]+$#", trim($_POST['showByDate'])) ? trim($_POST['showByDate']) : "") : "";
-                $type = (isset($_POST['type']) && in_array($_POST['type'], array('publish', 'notice'))) ? $_POST['type'] : 'publish';
+                $type = (isset($_POST['type']) && in_array($_POST['type'], array('publish', 'notice', 'metrics'))) ? $_POST['type'] : 'publish';
                 $sharedByUser = (isset($_POST['sharedByUser']) && (int) $_POST['sharedByUser'] > 0) ? (int) $_POST['sharedByUser'] : 0;
-                $result = $postData->getPublishPostDataHtml((int) $_POST['postId'], $type, $showByDate, $sharedByUser);
+                $sharedOnNetwork = (isset($_POST['sharedOnNetwork']) && (int) $_POST['sharedOnNetwork'] > 0) ? (int) $_POST['sharedOnNetwork'] : 0;
+                $result = $postData->getPublishPostDataHtml((int) $_POST['postId'], $type, $showByDate, $sharedByUser, $sharedOnNetwork);
                 if ($result !== false) {
                     echo json_encode(array('result' => true, 'postId' => (int) $_POST['postId'], 'content' => $result));
                     wp_die();
@@ -797,6 +799,21 @@ class Ajax_Get {
                 echo json_encode(array('result' => true, 'caption' => $caption));
                 wp_die();
             }
+        } else {
+            echo json_encode(array('result' => false, 'error' => 'nonce'));
+            wp_die();
+        }
+    }
+    
+    public function loadInsights() {
+        if (isset($_GET['b2s_security_nonce']) && (int) wp_verify_nonce($_GET['b2s_security_nonce'], 'b2s_security_nonce') > 0) {
+            require_once (B2S_PLUGIN_DIR . 'includes/B2S/Metrics/Item.php');
+            $metrics = new B2S_Metrics_Item();
+            $filterNetwork = ((isset($_GET['filter_network']) && $_GET['filter_network'] !== 'all' && (int) $_GET['filter_network'] > 0) ? (int) $_GET['filter_network'] : 0);
+            $filterDates = ((isset($_GET['filter_dates']) && is_array($_GET['filter_dates']) && !empty($_GET['filter_dates'])) ? $_GET['filter_dates'] : array());
+            $data = $metrics->getInsightsData($filterNetwork, $filterDates);
+            echo json_encode(array('result' => true, 'data' => $data));
+            wp_die();
         } else {
             echo json_encode(array('result' => false, 'error' => 'nonce'));
             wp_die();
