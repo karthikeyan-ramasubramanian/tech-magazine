@@ -28,14 +28,14 @@ $i       = 1;
 			<?php endif; ?>
             <div class="wbfb_masonry_post_body">
                 <div class="wbfb_masonry_post_text">
-                    <a <?= $args['fbimages_link'] == 'fb_link' ? "href='https://facebook.com/$post->id' target='_blank'" : '' ?>
+                    <a <?= 'fb_link' == $args['fbimages_link'] ? "href='https://facebook.com/$post->id' target='_blank'" : '' ?>
                             data-remodal-target="<?= $post->id ?>" class="wbfb_popup_link">
 						<?= $post->message ?>
                     </a>
                 </div>
 				<?php if ( ! empty( $post->attachments ) ) : ?>
 					<?php foreach ( $post->attachments as $attachment ) : ?>
-                        <a <?= $args['fbimages_link'] == 'fb_link' ? "href='https://facebook.com/$post->id' target='_blank'" : '' ?>
+                        <a <?= 'fb_link' == $args['fbimages_link'] ? "href='https://facebook.com/$post->id' target='_blank'" : '' ?>
                                 data-remodal-target="<?= $post->id ?>" class="wbfb_popup_link">
                             <div class="wbfb_masonry_post_attachment">
 								<?php if ( isset( $post->shared_post ) ): ?>
@@ -53,9 +53,9 @@ $i       = 1;
 											<?php endif; ?>
                                         </div>
                                     </a>
-								<?php elseif ( $attachment->type == 'photo' || $attachment->type == 'gallery' ): ?>
+								<?php elseif ( 'photo' === $attachment->type || 'gallery' === $attachment->type ): ?>
                                     <img src="<?= $post->full_picture ?>" alt="">
-								<?php elseif ( $attachment->type == 'video_inline' || $attachment->type == 'video_autoplay' ): ?>
+								<?php elseif ( 'video_inline' === $attachment->type || 'video_autoplay' === $attachment->type ): ?>
                                     <img src="<?= $attachment->media->image->src ?>" alt="">
 								<?php else: ?>
                                     <img src="<?= $attachment->media->image->src ?? $post->full_picture ?>" alt="">

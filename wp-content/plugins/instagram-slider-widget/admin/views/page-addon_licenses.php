@@ -26,7 +26,7 @@ if( is_array($data) ) {
 
         $slug = $component['name'];
 
-        if( $component['type'] == 'wordpress' ) {
+        if( 'wordpress' == $component['type'] ) {
             $slug = $component['base_path'];
         }
 

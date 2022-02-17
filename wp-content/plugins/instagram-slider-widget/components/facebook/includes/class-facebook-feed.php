@@ -57,13 +57,13 @@ class WIS_Facebook_Feed extends WIS_Feed {
 	 */
 	protected function setDefaults() {
 		$this->templates = apply_filters( 'wis/facebook/sliders', [
-			"masonry" => 'Masonry',
+			'masonry' => 'Masonry',
 		] );
 
 		$this->linkto = apply_filters( 'wis/facebook/options/link_to', [
-			"fb_popup" => 'Popup',
-			"fb_link"  => 'Facebook link',
-			"fb_none"  => 'None',
+			'fb_popup' => 'Popup',
+			'fb_link'  => 'Facebook link',
+			'fb_none'  => 'None',
 		] );
 
 		$this->defaults = [
@@ -162,7 +162,6 @@ class WIS_Facebook_Feed extends WIS_Feed {
 	 *
 	 * @param array $haystack The array to search in
 	 * @param string $current The string value to search in array;
-	 *
 	 */
 	public function selected( $haystack, $current ) {
 		if ( is_array( $haystack ) && in_array( $current, $haystack ) ) {
@@ -208,7 +207,7 @@ class WIS_Facebook_Feed extends WIS_Feed {
 	 */
 	public function display_images() {
 		$this->public_enqueue();
-		$output = "";
+		$output = '';
 
 		$args = $this->getAdaptiveInstance();
 
@@ -219,7 +218,6 @@ class WIS_Facebook_Feed extends WIS_Feed {
 		$accounts = $this->getAccounts();
 		$account  = ( new FacebookAccount() )->fromArray( $accounts[ $args['account'] ] );
 
-
 		$account_posts = $this->feed_query( $account, $args['refresh_hour'], $args['images_number'] * 2 );
 
 		if ( empty( $account_posts ) ) {
@@ -227,11 +225,11 @@ class WIS_Facebook_Feed extends WIS_Feed {
 		}
 
 		$orderby = $args['orderby'];
-		if ( $orderby == 'rand' ) {
+		if ( 'rand' == $orderby ) {
 			shuffle( $account_posts );
 		} else {
 			$orderby = explode( '-', $orderby );
-			if ( $orderby[0] == 'date' ) {
+			if ( 'date' == $orderby[0] ) {
 				$func = 'sort_timestamp_' . $orderby[1];
 			} else {
 				$func = 'sort_popularity_' . $orderby[1];
@@ -246,10 +244,10 @@ class WIS_Facebook_Feed extends WIS_Feed {
 			$args['account'] = $account;
 		}
 
-		if ( $args['fbimages_link'] == 'fb_popup' && WIS_Plugin::app()->is_premium() ) {
+		if ( 'fb_popup' == $args['fbimages_link'] && WIS_Plugin::app()->is_premium() ) {
 			$this->popup_script_enqueue();
 			$args['account'] = $account;
-			$output          .= $this->render_template( 'popup', $args );
+			$output         .= $this->render_template( 'popup', $args );
 		}
 
 		$output .= $this->render_template( $args['template'], $args );

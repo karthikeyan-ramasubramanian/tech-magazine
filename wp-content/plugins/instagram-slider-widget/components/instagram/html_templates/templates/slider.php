@@ -5,8 +5,8 @@ $images  = $args['images'];
 $feed_id = $args['feed_id'];
 $args    = $args['template_args'];
 
-$direction_nav = ( $args['controls'] == 'prev_next' ) ? 'true' : 'false';
-$control_nav   = ( $args['controls'] == 'numberless' ) ? 'true' : 'false';
+$direction_nav = ( 'prev_next' === $args['controls'] ) ? 'true' : 'false';
+$control_nav   = ( 'numberless' === $args['controls'] ) ? 'true' : 'false';
 
 ?>
 <div class='pllexislider pllexislider-normal instaslider-nr-<?php echo $feed_id; ?>'>

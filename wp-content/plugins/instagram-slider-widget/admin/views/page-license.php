@@ -1,11 +1,11 @@
 <div class="wrap">
-    <div class="factory-bootstrap-450 factory-fontawesome-000">
+    <div class="factory-bootstrap-454 factory-fontawesome-000">
 		<?php wp_nonce_field( 'license' ); ?>
         <div id="wis-license-wrapper"
              data-loader="<?php echo WIS_PLUGIN_URL . '/admin/assets/img/loader.gif'; ?>"
              data-plugin="<?php echo get_class( $this->plugin ) ?>">
 
-            <div class="factory-bootstrap-450 onp-page-wrap <?php echo $this->get_license_type() ?>-license-manager-content"
+            <div class="factory-bootstrap-454 onp-page-wrap <?php echo $this->get_license_type() ?>-license-manager-content"
                  id="license-manager">
                 <div>
                     <h3><?php printf( __( 'Activate %s', 'instagram-slider-widget' ), $this->plan_name ) ?></h3>
@@ -15,7 +15,7 @@
 
                 <div class="onp-container">
                     <div class="license-details">
-						<?php if ( $this->get_license_type() == 'free' ): ?>
+						<?php if ( 'free' == $this->get_license_type() ): ?>
                             <a href="<?php echo $this->plugin->get_support()->get_pricing_url( true, 'license_page' ); ?>"
                                class="purchase-premium" target="_blank" rel="noopener">
                             <span class="btn btn-gold btn-inner-wrap">
@@ -59,7 +59,7 @@
                                     </p>
 								<?php endif; ?>
 
-								<?php if ( $this->get_license_type() == 'trial' ): ?>
+								<?php if ( 'trial' == $this->get_license_type() ): ?>
                                     <p class="activate-error-hint">
 										<?php printf( __( 'Your license has expired, please extend the license to get updates and support.', 'instagram-slider-widget' ), '' ) ?>
                                     </p>
@@ -90,7 +90,7 @@
                                     </td>
 									<?php if ( $this->is_premium ): ?>
                                         <td class="license-param license-param-days">
-											<?php if ( $this->get_license_type() == 'trial' ): ?>
+											<?php if ( 'trial' == $this->get_license_type() ): ?>
                                                 <span class="license-value"><?php _e( 'EXPIRED!', 'instagram-slider-widget' ) ?></span>
                                                 <span class="license-value-name"><?php _e( 'please update the key', 'instagram-slider-widget' ) ?></span>
 											<?php else: ?>

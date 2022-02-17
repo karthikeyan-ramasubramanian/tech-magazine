@@ -2,11 +2,10 @@
 /*
 Plugin Name: Social Slider Feed
 Plugin URI: https://cm-wp.com/instagram-slider-widget
-Version: 2.0.2
+Version: 2.0.3
 Description: Shows Instagram, Facebook and YouTube responsive feeds in widgets, posts, pages, or anywhere else using shortcodes
 Author: creativemotion
 Author URI: https://cm-wp.com/
-Requires at least: 5.0
 Requires PHP: 7.0
 Text Domain: instagram-slider-widget
 Domain Path: /languages
@@ -20,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Подключаем класс проверки совместимости
-require_once( dirname( __FILE__ ) . '/libs/factory/core/includes/class-factory-requirements.php' );
+require_once dirname( __FILE__ ) . '/libs/factory/core/includes/class-factory-requirements.php';
 //require_once( dirname( __FILE__ ) . '/vendor/autoload.php' );
 
 $plugin_info = [
@@ -81,19 +80,19 @@ $plugin_info = [
 	'subscribe_settings' => [ 'group_id' => '105407119' ],
 
 	'load_factory_modules' => [
-		[ 'libs/factory/bootstrap', 'factory_bootstrap_450', 'admin' ],
-		[ 'libs/factory/forms', 'factory_forms_447', 'admin' ],
-		[ 'libs/factory/pages', 'factory_pages_449', 'admin' ],
-		[ 'libs/factory/freemius', 'factory_freemius_138', 'all' ],
-		[ 'libs/factory/adverts', 'factory_adverts_128', 'admin' ],
-		[ 'libs/factory/templates', 'factory_templates_102', 'admin' ],
-		[ 'libs/factory/logger', 'factory_logger_115', 'all' ],
+		[ 'libs/factory/bootstrap', 'factory_bootstrap_454', 'admin' ],
+		[ 'libs/factory/forms', 'factory_forms_450', 'admin' ],
+		[ 'libs/factory/pages', 'factory_pages_452', 'admin' ],
+		[ 'libs/factory/freemius', 'factory_freemius_140', 'all' ],
+		[ 'libs/factory/adverts', 'factory_adverts_130', 'admin' ],
+		[ 'libs/factory/templates', 'factory_templates_106', 'admin' ],
+		[ 'libs/factory/logger', 'factory_logger_118', 'all' ],
 	],
 ];
 
 global $wis_compatibility;
 
-$wis_compatibility = new Wbcr_Factory450_Requirements( __FILE__, array_merge( $plugin_info, [
+$wis_compatibility = new Wbcr_Factory453_Requirements( __FILE__, array_merge( $plugin_info, [
 	'plugin_already_activate'          => defined( 'WIS_PLUGIN_ACTIVE' ),
 	'required_php_version'             => '7.0',
 	'required_wp_version'              => '4.8.0',

@@ -42,8 +42,8 @@ class WIS_Feeds {
 		}
 
 		$this->social      = $social_name;
-		$this->option_name = WIS_FEEDS_OPTION . "_" . $social_name;
-		$this->last_id     = WIS_Plugin::app()->getPopulateOption( WIS_FEEDS_OPTION . "_last_id", 0 );
+		$this->option_name = WIS_FEEDS_OPTION . '_' . $social_name;
+		$this->last_id     = WIS_Plugin::app()->getPopulateOption( WIS_FEEDS_OPTION . '_last_id', 0 );
 		$this->get_feeds();
 	}
 
@@ -82,7 +82,7 @@ class WIS_Feeds {
 
 		$this->feeds[ $this->last_id ] = $feed;
 		WIS_Plugin::app()->updatePopulateOption( $this->option_name, $this->feeds );
-		WIS_Plugin::app()->updatePopulateOption( WIS_FEEDS_OPTION . "_last_id", $this->last_id );
+		WIS_Plugin::app()->updatePopulateOption( WIS_FEEDS_OPTION . '_last_id', $this->last_id );
 
 		return $this->last_id;
 	}

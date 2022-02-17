@@ -284,7 +284,7 @@ class WIS_Youtube_Feed extends WIS_Feed {
 
 				if ( $args['orderby'] != 'rand' ) {
 					$args['orderby'] = explode( '-', $args['orderby'] );
-					if ( $args['orderby'][0] == 'date' ) {
+					if ( 'date' == $args['orderby'][0] ) {
 						$func = 'sort_timestamp_' . $args['orderby'][1];
 					} else {
 						$func = 'sort_popularity_' . $args['orderby'][1];
@@ -305,7 +305,7 @@ class WIS_Youtube_Feed extends WIS_Feed {
 					] );
 				}
 
-				if ( $args['yimages_link'] == 'ypopup' && WIS_Plugin::app()->is_premium() ) {
+				if ( 'ypopup' == $args['yimages_link'] && WIS_Plugin::app()->is_premium() ) {
 					$output .= apply_filters( 'wyt/pro/display', $args, $images_data );
 				}
 

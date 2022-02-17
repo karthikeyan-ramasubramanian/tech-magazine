@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class ISWUpdate010800 extends Wbcr_Factory450_Update{
+class ISWUpdate010800 extends Wbcr_Factory453_Update{
 
 	public function install() {
 		if(is_multisite()){
@@ -67,7 +67,7 @@ class ISWUpdate010800 extends Wbcr_Factory450_Update{
 
 		foreach ( $option_value as $key => $widget_options ) {
 
-			if($key === '_multiwidget') {
+			if('_multiwidget' === $key) {
 				$new_option_value['_multiwidget'] = $widget_options;
 				continue;
 			}

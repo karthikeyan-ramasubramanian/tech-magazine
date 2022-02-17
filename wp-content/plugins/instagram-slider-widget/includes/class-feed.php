@@ -64,6 +64,7 @@ abstract class WIS_Feed {
 
 	public function __wakeup() {
 		$this->setDefaults();
+		$this->instance  = wp_parse_args( $this->instance, $this->defaults );
 		$this->is_mobile = self::isMobile();
 	}
 
@@ -91,7 +92,7 @@ abstract class WIS_Feed {
 	}
 
 	public static function isMobile() {
-		return preg_match( "/(android|ios|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"] );
+		return preg_match( '/(android|ios|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i', $_SERVER['HTTP_USER_AGENT'] );
 	}
 
 	/**
@@ -150,7 +151,6 @@ abstract class WIS_Feed {
 			$trigger = 1;
 		}
 
-
 		if ( isset( $old_args['saved_images'] ) ) {
 			unset( $old_args['saved_images'] );
 		}
@@ -163,7 +163,7 @@ abstract class WIS_Feed {
 			$trigger = 1;
 		}
 
-		if ( $trigger == 1 ) {
+		if ( 1 === $trigger ) {
 			return true;
 		}
 
@@ -179,7 +179,7 @@ abstract class WIS_Feed {
 	 * @return false|string
 	 */
 	protected function render_template( $template_name, $args ) {
-		$path           = "";
+		$path           = '';
 		$path_component = $this->component_dir . "/html_templates/$template_name.php";
 		if ( file_exists( $path_component ) ) {
 			$path = $path_component;
@@ -188,7 +188,7 @@ abstract class WIS_Feed {
 		if ( $path ) {
 			ob_start();
 			include $path;
-			extract( $args );
+			extract( $args ); // @codingStandardsIgnoreLine
 
 			return ob_get_clean();
 		} else {
@@ -199,5 +199,5 @@ abstract class WIS_Feed {
 	/**
 	 * Render feed form
 	 */
-	abstract function form();
+	abstract public function form();
 }

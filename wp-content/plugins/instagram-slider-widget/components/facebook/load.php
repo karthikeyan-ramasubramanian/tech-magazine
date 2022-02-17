@@ -10,6 +10,7 @@ define( 'WIS_FACEBOOK_ACCOUNT_PROFILES_OPTION_NAME', 'facebook_account_profiles'
 
 define( 'WFB_FACEBOOK_SELF_URL', 'https://graph.facebook.com/' );
 
+require_once WFB_COMPONENT_DIR . "/includes/functions.php";
 require_once WFB_COMPONENT_DIR . "/includes/Api/facebook-account.php";
 require_once WFB_COMPONENT_DIR . "/includes/Api/facebook-api.php";
 require_once WFB_COMPONENT_DIR . "/includes/Api/facebook-post.php";

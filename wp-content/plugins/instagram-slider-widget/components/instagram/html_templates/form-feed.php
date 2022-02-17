@@ -60,7 +60,7 @@ $search_for = $instance['search_for'] ?? '';
 
                         </div>
                         <div class="form-group" id="wis-feed-account"
-							<?php echo $search_for !== 'account' ? 'style="display:none;"' : ''; ?>>
+							<?php echo 'account' !== $search_for ? 'style="display:none;"' : ''; ?>>
 							<?php
 							if ( count( $accounts ) ) {
 								?>
@@ -83,7 +83,7 @@ $search_for = $instance['search_for'] ?? '';
 							?>
                         </div>
                         <div class="form-group" id="wis-feed-account_business"
-							<?php echo $search_for !== 'account_business' ? 'style="display:none;"' : ''; ?>>
+							<?php echo 'account_business' !== $search_for ? 'style="display:none;"' : ''; ?>>
 							<?php
 							if ( count( $accounts_business ) ) {
 								?>
@@ -104,7 +104,7 @@ $search_for = $instance['search_for'] ?? '';
 							?>
                         </div>
                         <div class="form-group" id="wis-feed-username"
-							<?php echo $search_for !== 'username' ? 'style="display:none;"' : ''; ?>>
+							<?php echo 'username' !== $search_for ? 'style="display:none;"' : ''; ?>>
                             <label class="form-label" for="username"><?php _e( 'Username', 'instagram-slider-widget' ); ?></label>
                             <div class="input-group">
                                 <span class="input-group-addon">instagram.com/</span>
@@ -113,7 +113,7 @@ $search_for = $instance['search_for'] ?? '';
                             </div>
                         </div>
                         <div class="form-group" id="wis-feed-hashtag"
-							<?php echo $search_for !== 'hashtag' ? 'style="display:none;"' : ''; ?>>
+							<?php echo 'hashtag' !== $search_for ? 'style="display:none;"' : ''; ?>>
                             <label class="form-label" for="hashtag"><?php _e( 'Hashtag', 'instagram-slider-widget' ); ?></label>
                             <div class="input-group">
                                 <span class="input-group-addon">#</span>
@@ -243,7 +243,7 @@ $search_for = $instance['search_for'] ?? '';
                                 <span class="jr-description"><?php _e( '* use this field only if the above option is set to <strong>Custom Link</strong>', 'instagram-slider-widget' ); ?></span>
                             </div>
                             <div id="wis-field-show_feed_header" class="form-group"
-								<?php echo $search_for !== 'account_business' ? 'style="display:none;"' : ''; ?>>
+								<?php echo 'account_business' !== $search_for ? 'style="display:none;"' : ''; ?>>
                                 <label class="form-switch" for="show_feed_header">
                                     <input class="form-input" id="show_feed_header" name="show_feed_header" type="checkbox"
                                            value="1" <?php checked( '1', $instance['show_feed_header'] ); ?> />
@@ -252,7 +252,7 @@ $search_for = $instance['search_for'] ?? '';
                                 </label>
                             </div>
                             <div id="wis-field-enable_stories" class="form-group"
-								<?php echo $search_for !== 'account_business' ? 'style="display:none;"' : ''; ?>>
+								<?php echo 'account_business' !== $search_for ? 'style="display:none;"' : ''; ?>>
                                 <label class="form-switch" for="enable_stories">
                                     <input class="form-input" id="enable_stories" name="enable_stories" type="checkbox"
                                            value="1" <?php echo $this->plugin->is_premium() ? checked( '1', $instance['enable_stories'] ) : ''; ?>
@@ -284,7 +284,7 @@ $search_for = $instance['search_for'] ?? '';
                                 </label>
                             </div>
                             <div id="wis-field-blocked_words" class="form-group"
-								<?php echo $search_for == 'hashtag' ? 'style="display:none;"' : ''; ?>>
+								<?php echo 'hashtag' == $search_for ? 'style="display:none;"' : ''; ?>>
                                 <label class="form-label" for="blocked_words">
 									<?php _e( 'Block words', 'instagram-slider-widget' ); ?>
                                 </label>
@@ -293,7 +293,7 @@ $search_for = $instance['search_for'] ?? '';
                                 <div class="jr-description"><?php _e( 'Enter comma-separated words. If one of them occurs in the image description, the image will not be displayed', 'instagram-slider-widget' ); ?></div>
                             </div>
                             <div id="wis-field-allowed_words" class="form-group"
-								<?php echo $search_for == 'hashtag' ? 'style="display:none;"' : ''; ?>>
+								<?php echo 'hashtag' == $search_for ? 'style="display:none;"' : ''; ?>>
                                 <label class="form-label" for="allowed_words">
 									<?php _e( 'Allow words', 'instagram-slider-widget' ); ?>
                                 </label>
@@ -323,6 +323,7 @@ $search_for = $instance['search_for'] ?? '';
                                             <option value='masonry' disabled="disabled">Masonry</option>
                                             <option value='highlight' disabled="disabled">Highlight</option>
                                             <option value='showcase' disabled="disabled">Shopifeed - Thumbnails</option>
+                                            <option value="masonry_lite" disabled="disabled">Masonry Lite</option>
                                         </optgroup>
 										<?php
 									}
@@ -369,6 +370,37 @@ $search_for = $instance['search_for'] ?? '';
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="masonry_lite_settings" <?php echo 'masonry_lite' != $instance['template'] ? 'style="display:none;"' : ''; ?>>
+                                <div id="wis-field-masonry-cols" class="form-group">
+                                    <div class="input-group">
+                                        <label class="form-label form-inline" for="masonry_lite_cols">
+					                        <?php _e( 'Columns:', 'instagram-slider-widget' ); ?>
+                                        </label>
+                                        <div class="input-group">
+                                            <input class="form-input" id="masonry_lite_cols" name="masonry_lite_cols"
+                                                   type="number" min="1"
+                                                   max="6"
+                                                   value="<?php echo $instance['masonry_lite_cols']; ?>"/>
+                                            <span class="input-group-addon"><?php _e( 'cols', 'instagram-slider-widget' ); ?></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="wis-field-masonry-gap" class="form-group">
+                                    <div class="input-group">
+                                        <label class="form-label form-inline" for="masonry_lite_gap">
+				                            <?php _e( 'Gap:', 'instagram-slider-widget' ); ?>
+                                        </label>
+                                        <div class="input-group">
+                                            <input class="form-input" id="masonry_lite_gap" name="masonry_lite_gap"
+                                                   type="number"
+                                                   value="<?php echo $instance['masonry_lite_gap']; ?>"/>
+                                            <span class="input-group-addon"><?php _e( 'px', 'instagram-slider-widget' ); ?></span>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                             <div class="slick_settings" <?php echo 'slick_slider' != $instance['template'] ? 'style="display:none;"' : ''; ?>>
                                 <div id="wis-field-enable_control_buttons" class="form-group">
@@ -434,7 +466,7 @@ $search_for = $instance['search_for'] ?? '';
                                     </label>
                                 </div>
                             </div>
-                            <div class="highlight_settings" <?php echo 'highlight' != $instance['template'] ? 'style="display:none;"' : ''; ?>>
+                            <div class="highlight_settings" <?php echo 'highlight' !== $instance['template'] ? 'style="display:none;"' : ''; ?>>
                                 <div id="wis-field-highlight_offset" class="form-group">
                                     <div class="input-group">
                                         <label class="form-label" for="highlight_offset">

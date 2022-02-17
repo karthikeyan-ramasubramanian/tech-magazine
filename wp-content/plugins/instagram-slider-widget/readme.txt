@@ -2,7 +2,7 @@
 Contributors: creativemotion
 Tags: instagram, instagram feed, instagram gallery, instagram photos, Instagram widget
 Requires at least: 5.0
-Tested up to: 5.8
+Tested up to: 5.9
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -10,7 +10,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Display Instagram, Facebook and YouTube feeds in widgets, posts, pages, or anywhere else using shortcodes
 
 == Description ==
-= Latest update includes refreshed interface. No addons for each social network anymore! Instagram, Facebook, YouTube feeds are available all in one plugin.   =
+= Latest update includes refreshed interface. No addons for each social network anymore! Instagram, Facebook, YouTube and TikTok feeds are available all in one plugin.   =
 
 == Important ==
 The plugin has moved to the new Instagram Basic Display API.
@@ -107,6 +107,12 @@ If you don't use an account in the widget, go to the plugin settings and add an 
 10. Highlight
 
 == Changelog ==
+
+= 2.0.3 =
+* Fix Facebook shortcode
+* Fix Slick slider arrows
+* WP 5.9 compatibility
+* Minor fixes
 
 = 2.0.2 =
 * Fix Slider normal description

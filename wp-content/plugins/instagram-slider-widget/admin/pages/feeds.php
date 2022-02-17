@@ -59,29 +59,29 @@ class WIS_FeedsPage extends WIS_Page {
 	 * @param WIS_Plugin $plugin
 	 */
 	public function __construct( $plugin ) {
-		$this->id             = "feeds";
+		$this->id             = 'feeds';
 		$this->page_title     = __( 'Social Slider Feeds', 'instagram-slider-widget' );
 		$this->menu_title     = __( 'Social Slider Feeds', 'instagram-slider-widget' );
 		$this->menu_sub_title = __( 'Feeds', 'instagram-slider-widget' );
 		$this->menu_tab_title = __( 'Feeds', 'instagram-slider-widget' );
 		$this->menu_icon      = '~/admin/assets/img/wis.png';
-		$this->capabilitiy    = "manage_options";
+		$this->capabilitiy    = 'manage_options';
 
 		parent::__construct( $plugin );
 
-		$this->plugin   = $plugin;
+		$this->plugin = $plugin;
 	}
 
 	public function assets( $scripts, $styles ) {
 		parent::assets( $scripts, $styles );
 
 		//$this->styles->required = [];
-		$this->styles->add( WIS_PLUGIN_URL . "/admin/assets/css/feeds.css", [], 'wis-feeds-style', WIS_PLUGIN_VERSION );
+		$this->styles->add( WIS_PLUGIN_URL . '/admin/assets/css/feeds.css', [], 'wis-feeds-style', WIS_PLUGIN_VERSION );
 		//$this->styles->add( WIS_PLUGIN_URL . "/admin/assets/css/spectre.css", [], 'wis-feeds-forms', WIS_PLUGIN_VERSION );
-		$this->scripts->add( WIS_PLUGIN_URL . "/admin/assets/js/feeds.js", [ 'jquery' ], 'wis-feeds-script', WIS_PLUGIN_VERSION );
+		$this->scripts->add( WIS_PLUGIN_URL . '/admin/assets/js/feeds.js', [ 'jquery' ], 'wis-feeds-script', WIS_PLUGIN_VERSION );
 		$this->scripts->localize( 'wis_feeds', [
-			'add_account_nonce'   => wp_create_nonce( "addAccountByToken" ),
-			'wis_nonce'           => wp_create_nonce( "addAccountByToken" ),
+			'add_account_nonce'   => wp_create_nonce( 'addAccountByToken' ),
+			'wis_nonce'           => wp_create_nonce( 'addAccountByToken' ),
 			'remove_account'      => __( 'Are you sure want to delete this feed?', 'instagram-slider-widget' ),
 			'nonce'               => wp_create_nonce( 'wis_nonce' ),
 			'modal_close_confirm' => __( "You haven't finished adding the feed. Are you sure you want to close the window?", 'instagram-slider-widget' ),
@@ -142,7 +142,8 @@ class WIS_FeedsPage extends WIS_Page {
 		$data = [
 			'socials' => $socials,
 		];
-		echo $this->render( $this->template_name, $data );
+
+		echo $this->render( $this->template_name, $data ); // @codingStandardsIgnoreLine
 	}
 
 	/**
@@ -236,7 +237,7 @@ class WIS_FeedsPage extends WIS_Page {
 
 		// FORM
 		$this->styles->required = [];
-		$this->styles->add( WIS_PLUGIN_URL . "/admin/assets/css/spectre.css", [], 'wis-feeds-forms', WIS_PLUGIN_VERSION );
+		$this->styles->add( WIS_PLUGIN_URL . '/admin/assets/css/spectre.css', [], 'wis-feeds-forms', WIS_PLUGIN_VERSION );
 
 		if ( $feed_id ) {
 			$feed = $feeds->get_feed( $feed_id );
@@ -256,7 +257,7 @@ class WIS_FeedsPage extends WIS_Page {
 
 		$_SERVER['REQUEST_URI'] = remove_query_arg( 'action' );
 		$_SERVER['REQUEST_URI'] = remove_query_arg( 'feed' );
-		wp_redirect( $_SERVER['REQUEST_URI'] );
+		wp_safe_redirect( $_SERVER['REQUEST_URI'] );
 	}
 
 	public function get_hideShow_fields() {

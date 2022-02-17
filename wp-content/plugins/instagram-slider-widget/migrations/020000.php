@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class ISWUpdate020000 extends Wbcr_Factory450_Update {
+class ISWUpdate020000 extends Wbcr_Factory453_Update {
 
 	public function install() {
 		require_once WIS_PLUGIN_DIR . "/includes/class-feeds.php";
@@ -31,7 +31,7 @@ class ISWUpdate020000 extends Wbcr_Factory450_Update {
 		$widgets = get_option( 'widget_jr_insta_slider' );
 
 		foreach ( $widgets as $num => $options ) {
-			if ( $num == '_multiwidget' ) {
+			if ( '_multiwidget' == $num ) {
 				$new_widgets[ $num ] = $options;
 				continue;
 			}
@@ -58,7 +58,7 @@ class ISWUpdate020000 extends Wbcr_Factory450_Update {
 		$widgets = get_option( 'widget_wyoutube_feed' );
 
 		foreach ( $widgets as $num => $options ) {
-			if ( $num == '_multiwidget' ) {
+			if ( '_multiwidget' == $num ) {
 				$new_widgets[ $num ] = $options;
 				continue;
 			}

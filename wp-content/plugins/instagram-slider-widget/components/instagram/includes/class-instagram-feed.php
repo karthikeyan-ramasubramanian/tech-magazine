@@ -50,6 +50,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @property int|string enable_stories
  * @property int|string highlight_offset
  * @property int|string highlight_pattern
+ * @property int|string masonry_lite_cols
+ * @property int|string masonry_lite_gap
  * @property int|string m_template
  * @property int|string m_images_number
  * @property int|string m_columns
@@ -71,6 +73,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @property int|string m_slick_slides_padding
  * @property int|string m_gutter
  * @property int|string m_masonry_image_width
+ * @property int|string m_masonry_lite_cols
+ * @property int|string m_masonry_lite_gap
  * @property int|string m_highlight_offset
  * @property int|string m_highlight_pattern
  * @property int|string m_enable_ad
@@ -121,7 +125,7 @@ class WIS_Instagram_Feed extends WIS_Feed {
 
 		$ajax = json_encode( [
 			'url'   => admin_url( 'admin-ajax.php' ),
-			'nonce' => wp_create_nonce( "addAccountByToken" ),
+			'nonce' => wp_create_nonce( 'addAccountByToken' ),
 		] );
 		wp_add_inline_script( WIS_Plugin::app()->getPrefix() . 'jr-insta', "var ajax = $ajax;" );
 
@@ -132,17 +136,17 @@ class WIS_Instagram_Feed extends WIS_Feed {
 		$this->profiles = new WIS_Instagram_Profiles();
 
 		$this->templates = apply_filters( 'wis/sliders', [
-			"slider"           => 'Slider - Normal',
-			"slider-overlay"   => 'Slider - Overlay Text',
-			"thumbs"           => 'Thumbnails',
-			"thumbs-no-border" => 'Thumbnails - Without Border',
+			'slider'           => 'Slider - Normal',
+			'slider-overlay'   => 'Slider - Overlay Text',
+			'thumbs'           => 'Thumbnails',
+			'thumbs-no-border' => 'Thumbnails - Without Border',
 		] );
 
 		$this->linkto = apply_filters( 'wis/options/link_to', [
-			"image_link" => 'Instagram Image',
-			"image_url"  => 'Image URL',
-			"custom_url" => 'Custom Link',
-			"none"       => 'None',
+			'image_link' => 'Instagram Image',
+			'image_url'  => 'Image URL',
+			'custom_url' => 'Custom Link',
+			'none'       => 'None',
 		] );
 
 		$this->defaults = [
@@ -173,7 +177,7 @@ class WIS_Instagram_Feed extends WIS_Feed {
 			'animation'              => 'slide',
 			'caption_words'          => 20,
 			'shopifeed_phone'        => '',
-			'shopifeed_color'        => "#DA004A",
+			'shopifeed_color'        => '#DA004A',
 			'shopifeed_columns'      => 3,
 			'slidespeed'             => 7000,
 			'description'            => [],
@@ -187,16 +191,18 @@ class WIS_Instagram_Feed extends WIS_Feed {
 			'enable_ad'              => 0,
 			'enable_icons'           => 0,
 			'slick_slides_padding'   => 0,
-			'show_feed_header'       => 1,
-			'enable_stories'         => 1,
+			'show_feed_header'       => 0,
+			'enable_stories'         => 0,
 			'highlight_offset'       => 1,
 			'highlight_pattern'      => 6,
+			'masonry_lite_cols'      => 4,
+			'masonry_lite_gap'       => 10,
 
 			'm_template'               => 'slider',
 			'm_images_number'          => 20,
 			'm_columns'                => 4,
 			'm_shopifeed_phone'        => '',
-			'm_shopifeed_color'        => "#DA004A",
+			'm_shopifeed_color'        => '#DA004A',
 			'm_shopifeed_columns'      => 3,
 			'm_controls'               => 'prev_next',
 			'm_animation'              => 'slide',
@@ -204,8 +210,8 @@ class WIS_Instagram_Feed extends WIS_Feed {
 			'm_description'            => [],
 			'm_caption_words'          => 20,
 			'm_enable_control_buttons' => 0,
-			'm_show_feed_header'       => 1,
-			'm_enable_stories'         => 1,
+			'm_show_feed_header'       => 0,
+			'm_enable_stories'         => 0,
 			'm_keep_ratio'             => 0,
 			'm_slick_img_size'         => 300,
 			'm_slick_slides_to_show'   => 3,
@@ -222,6 +228,8 @@ class WIS_Instagram_Feed extends WIS_Feed {
 			'm_blocked_words'          => '',
 			'm_allowed_words'          => '',
 			'm_powered_by_link'        => '',
+			'm_masonry_lite_cols'      => 2,
+			'm_masonry_lite_gap'       => 5,
 		];
 	}
 
@@ -249,7 +257,7 @@ class WIS_Instagram_Feed extends WIS_Feed {
 
 		if ( count( $accounts ) ) {
 			$s_for = 'account';
-		} else if ( count( $accounts_business ) ) {
+		} elseif ( count( $accounts_business ) ) {
 			$s_for = 'account_business';
 		} else {
 			$s_for = 'username';
@@ -258,7 +266,7 @@ class WIS_Instagram_Feed extends WIS_Feed {
 
 		$args = [
 			'_this'             => $this,
-			'is_update'         => $feed_id ? true : false,
+			'is_update'         => (bool) $feed_id,
 			'add_link'          => WIS_Page::instance()->getActionUrl( 'add' ),
 			'feeds'             => $feeds->feeds,
 			'instance'          => $this->instance,
@@ -267,7 +275,7 @@ class WIS_Instagram_Feed extends WIS_Feed {
 			'sliders'           => $this->getTemplates(),
 			'options_linkto'    => $this->getLinkto(),
 		];
-		echo WIS_Page::instance()->render( WIG_COMPONENT_VIEWS_DIR . '/form-feed', $args );
+		echo WIS_Page::instance()->render( WIG_COMPONENT_VIEWS_DIR . '/form-feed', $args ); // phpcs:ignore
 	}
 
 	/**
@@ -275,7 +283,6 @@ class WIS_Instagram_Feed extends WIS_Feed {
 	 *
 	 * @param array $haystack The array to search in
 	 * @param string $current The string value to search in array;
-	 *
 	 */
 	public function selected( $haystack, $current ) {
 
@@ -315,7 +322,7 @@ class WIS_Instagram_Feed extends WIS_Feed {
 		if ( $return ) {
 			return $data;
 		} else {
-			echo $data;
+			echo $data; // @codingStandardsIgnoreLine
 		}
 
 		return true;
@@ -324,6 +331,10 @@ class WIS_Instagram_Feed extends WIS_Feed {
 	/**
 	 * Stores the fetched data from instagram in WordPress DB using transients
 	 *
+	 * @param $search_for
+	 * @param $cache_hours
+	 * @param $nr_images
+	 *
 	 * @return array|string of localy saved instagram data
 	 */
 	public function feed_query( $search_for, $cache_hours, $nr_images ) {
@@ -331,13 +342,13 @@ class WIS_Instagram_Feed extends WIS_Feed {
 		if ( isset( $search_for['account'] ) && ! empty( $search_for['account'] ) ) {
 			$search        = 'account';
 			$search_string = $search_for['account'];
-		} else if ( isset( $search_for['account_business'] ) && ! empty( $search_for['account_business'] ) ) {
+		} elseif ( isset( $search_for['account_business'] ) && ! empty( $search_for['account_business'] ) ) {
 			$search        = 'account_business';
 			$search_string = $search_for['account_business'];
-		} else if ( isset( $search_for['username'] ) && ! empty( $search_for['username'] ) ) {
+		} elseif ( isset( $search_for['username'] ) && ! empty( $search_for['username'] ) ) {
 			$search        = 'user';
 			$search_string = $search_for['username'];
-		} else if ( isset( $search_for['hashtag'] ) && ! empty( $search_for['hashtag'] ) ) {
+		} elseif ( isset( $search_for['hashtag'] ) && ! empty( $search_for['hashtag'] ) ) {
 			$search              = 'hashtag';
 			$search_string       = $search_for['hashtag'];
 			$blocked_users       = isset( $search_for['blocked_users'] ) && ! empty( $search_for['blocked_users'] ) ? str_replace( '@', '', $search_for['blocked_users'] ) : false;
@@ -393,17 +404,17 @@ class WIS_Instagram_Feed extends WIS_Feed {
 
 					$args = [
 						'access_token' => $account['token'],
-						'fields'       => "id,username,caption,comments_count,like_count,media_type,media_url,permalink,timestamp,children{media_url,media_type},owner,thumbnail_url",
+						'fields'       => 'id,username,caption,comments_count,like_count,media_type,media_url,permalink,timestamp,children{media_url,media_type},owner,thumbnail_url',
 						'limit'        => 50,
 					];
 
-					$url      = WFB_FACEBOOK_SELF_URL . $account['id'] . "/media";
+					$url      = WFB_FACEBOOK_SELF_URL . $account['id'] . '/media';
 					$response = wp_remote_get( add_query_arg( $args, $url ) );
 					if ( 200 == wp_remote_retrieve_response_code( $response ) ) {
 						$media   = json_decode( wp_remote_retrieve_body( $response ), true );
 						$results = $media['data'];
 
-						$stories_url      = WFB_FACEBOOK_SELF_URL . $account['id'] . "/stories";
+						$stories_url      = WFB_FACEBOOK_SELF_URL . $account['id'] . '/stories';
 						$url              = add_query_arg( [
 							'access_token' => $account['token'],
 							'fields'       => 'media_type,media_url,permalink,timestamp',
@@ -421,14 +432,11 @@ class WIS_Instagram_Feed extends WIS_Feed {
 						if ( ! count( $results ) ) {
 							return [ 'error' => __( 'There are no publications in this account yet', 'instagram-slider-widget' ) ];
 						}
-
-
 					} else {
 						if ( $instaData ) {
 							$results = $instaData;
 						}
 					}
-
 				} else {
 					if ( ! isset( $_GET['access_token'] ) ) {
 						//Обновляем данные профиля: подписчики, количество постов
@@ -455,7 +463,6 @@ class WIS_Instagram_Feed extends WIS_Feed {
 						}
 					}
 				}
-
 			} else { //hashtag
 				$account = $this->getAccountForHashtag();
 				//$account = false;
@@ -465,7 +472,7 @@ class WIS_Instagram_Feed extends WIS_Feed {
 						'user_id'      => $account['id'],
 						'q'            => $search_string,
 					];
-					$url      = WFB_FACEBOOK_SELF_URL . "ig_hashtag_search";
+					$url      = WFB_FACEBOOK_SELF_URL . 'ig_hashtag_search';
 					$response = wp_remote_get( add_query_arg( $args, $url ) );
 					if ( 200 == wp_remote_retrieve_response_code( $response ) ) {
 						$media    = json_decode( wp_remote_retrieve_body( $response ), true );
@@ -473,10 +480,10 @@ class WIS_Instagram_Feed extends WIS_Feed {
 							'access_token' => $account['token'],
 							'user_id'      => $account['id'],
 							//,timestamp
-							'fields'       => "id,caption,media_type,media_url,comments_count,like_count,permalink,children{media_type,media_url}",
+							'fields'       => 'id,caption,media_type,media_url,comments_count,like_count,permalink,children{media_type,media_url}',
 							'limit'        => 50,
 						];
-						$url      = WFB_FACEBOOK_SELF_URL . $media['data'][0]['id'] . "/recent_media";
+						$url      = WFB_FACEBOOK_SELF_URL . $media['data'][0]['id'] . '/recent_media';
 						$response = wp_remote_get( add_query_arg( $args, $url ) );
 						if ( 200 == wp_remote_retrieve_response_code( $response ) ) {
 							$media            = json_decode( wp_remote_retrieve_body( $response ), true );
@@ -487,7 +494,10 @@ class WIS_Instagram_Feed extends WIS_Feed {
 					}
 				} else {
 					$url                     = str_replace( '{tag}', urlencode( trim( $search_string ) ), self::TAG_URL );
-					$response                = wp_remote_get( $url, [ 'sslverify' => false, 'timeout' => 60 ] );
+					$response                = wp_remote_get( $url, [
+						'sslverify' => false,
+						'timeout'   => 60,
+					] );
 					$results                 = json_decode( $response['body'], true );
 					$hashtag_response_status = $response['response']['code'];
 				}
@@ -496,9 +506,9 @@ class WIS_Instagram_Feed extends WIS_Feed {
 			if ( isset( $results ) && is_array( $results ) ) {
 				if ( 'user' == $search ) {
 					$entry_data = isset( $results['entry_data']['ProfilePage'][0]['graphql']['user']['edge_owner_to_timeline_media']['edges'] ) ? $results['entry_data']['ProfilePage'][0]['graphql']['user']['edge_owner_to_timeline_media']['edges'] : [];
-				} else if ( 'account' == $search || 'account_business' == $search ) {
+				} elseif ( 'account' == $search || 'account_business' == $search ) {
 					$entry_data = $results;
-				} else if ( 'hashtag' == $search ) {
+				} elseif ( 'hashtag' == $search ) {
 					if ( isset( $results['hashtag'] ) ) {
 						$entry_data = $results['data'];
 					} else {
@@ -513,7 +523,7 @@ class WIS_Instagram_Feed extends WIS_Feed {
 				$i = 0;
 				foreach ( $entry_data as $current => $result ) {
 					if ( ! isset( $result['caption'] ) ) {
-						$result['caption'] = "";
+						$result['caption'] = '';
 					}
 
 					if ( $i >= $nr_images ) {
@@ -531,7 +541,7 @@ class WIS_Instagram_Feed extends WIS_Feed {
 						//Чёрный список не работает, так как API не отдает имя пользователя, который создал пост
 						if ( isset( $results['hashtag'] ) ) {
 							$result['fbapi'] = true;
-							if ( isset( $result['media_type'] ) && $result['media_type'] == 'VIDEO' ) {
+							if ( isset( $result['media_type'] ) && 'VIDEO' === $result['media_type'] ) {
 								//$nr_images++;
 								continue;
 							}
@@ -546,12 +556,11 @@ class WIS_Instagram_Feed extends WIS_Feed {
 
 					if ( 'account' == $search ) {
 						$image_data = $this->to_media_model_from_account( $result );
-					} else if ( 'account_business' == $search ) {
+					} elseif ( 'account_business' == $search ) {
 						$image_data = $this->to_media_model_from_account_business( $result );
-					} else if ( 'hashtag' == $search && $results['hashtag'] ) {
+					} elseif ( 'hashtag' == $search && $results['hashtag'] ) {
 						$image_data = $this->to_media_model_from_hashtag( $result );
 					}
-
 
 					if ( $this->is_blocked_by_word( $blocked_words, $image_data['caption'] ) ) {
 						$nr_images ++;
@@ -565,17 +574,20 @@ class WIS_Instagram_Feed extends WIS_Feed {
 
 					$instaData[] = $image_data;
 				} // end -> foreach
-
-			} else if ( isset( $hashtag_response_status ) && $hashtag_response_status == 429 && is_user_logged_in() && $search == 'hashtag' ) {
+			} elseif ( isset( $hashtag_response_status ) && 429 == $hashtag_response_status && is_user_logged_in() && 'hashtag' === $search ) {
 				return [ 'error' => __( "Can't receive images by hashtag. Please connect a business account and try again.", 'instagram-slider-widget' ) ];
 			}
 
 			update_option( $opt_name, $new_opts );
 
+			$insta_imgs_cache = 'insta_imgs_cache';
 			if ( is_array( $instaData ) && ! empty( $instaData ) ) {
 				set_transient( $opt_name, $instaData, $cache_hours * 60 * 60 );
+				WIS_Plugin::app()->updateoption( $insta_imgs_cache, $instaData );
+			} else {
+				$instaData = WIS_Plugin::app()->getOption( $insta_imgs_cache, [] );
+				WIS_Plugin::app()->logger->error( 'Feed query failed! Try reconnecting your account in the plugin settings.' );
 			}
-
 		}
 
 		return $instaData;
@@ -585,8 +597,6 @@ class WIS_Instagram_Feed extends WIS_Feed {
 	 * Runs the query for images and returns the html
 	 *
 	 * @return string
-	 * @throws Exception
-	 * @throws Exception
 	 */
 	public function display_images() {
 		$this->widget_scripts_enqueue();
@@ -606,11 +616,11 @@ class WIS_Instagram_Feed extends WIS_Feed {
 		$enable_ad        = $this->get( 'enable_ad' );
 		$orderby          = $this->get( 'orderby' );
 
-		if ( $searchfor == 'hashtag' ) {
+		if ( 'hashtag' === $searchfor ) {
 			$search_for['hashtag'] = $hashtag;
-		} else if ( $searchfor == 'account' ) {
+		} elseif ( 'account' === $searchfor ) {
 			$search_for['account'] = $account;
-		} else if ( $searchfor == 'account_business' ) {
+		} elseif ( 'account_business' === $searchfor ) {
 			$search_for['account_business'] = $account_business;
 		} else {
 			$search_for['username'] = $username;
@@ -622,16 +632,16 @@ class WIS_Instagram_Feed extends WIS_Feed {
 		$args = $this->getAdaptiveInstance();
 		//WIS_Plugin::app()->logger->info( "Feed options: " . json_encode( $args ) );
 
-		$is_business = ( $searchfor == 'account_business' );
+		$is_business = ( 'account_business' === $searchfor );
 		if ( $is_business ) {
 			$accounts = $this->getAccountsBusiness();
 		} else {
 			$accounts = $this->getAccounts();
 		}
 
-		if ( $template == 'slick_slider' || $template == 'masonry' || $template == 'highlight' || $template == 'showcase' ) {
+		if ( $template == 'slick_slider' || $template == 'masonry_lite' || $template == 'masonry' || $template == 'highlight' || $template == 'showcase' ) {
 			if ( defined( 'WISP_PLUGIN_ACTIVE' ) && WISP_PLUGIN_ACTIVE == true ) {
-				return apply_filters( 'wis/pro/display_images', "", $args, $this );
+				return apply_filters( 'wis/pro/display_images', '', $args, $this );
 			}
 		}
 
@@ -663,11 +673,11 @@ class WIS_Instagram_Feed extends WIS_Feed {
 			unset( $images_data['stories'] );
 		}
 
-		if ( $orderby == 'rand' ) {
+		if ( 'rand' == $orderby ) {
 			shuffle( $images_data );
 		} else {
 			$orderby = explode( '-', $orderby );
-			if ( $orderby[0] == 'date' ) {
+			if ( 'date' == $orderby[0] ) {
 				$func = 'sort_timestamp_' . $orderby[1];
 			} else {
 				$func = $is_business ? 'sort_popularity_' . $orderby[1] : 'sort_timestamp_' . $orderby[1];
@@ -677,18 +687,18 @@ class WIS_Instagram_Feed extends WIS_Feed {
 		}
 
 		foreach ( $images_data as $key => &$image_data ) {
-			if ( $key === 'stories' ) {
+			if ( 'stories' === $key ) {
 				continue;
 			}
 
 			$images_link = $args['images_link'];
 			if ( 'image_link' == $images_link || 'popup' == $images_link ) {
 				$image_data['link_to'] = $image_data['link'] ?? '';
-			} else if ( 'user_url' == $images_link ) {
+			} elseif ( 'user_url' == $images_link ) {
 				$image_data['link_to'] = 'https://www.instagram.com/' . $username . '/';
-			} else if ( 'image_url' == $images_link ) {
+			} elseif ( 'image_url' == $images_link ) {
 				$image_data['link_to'] = $image_data['url'];
-			} else if ( 'custom_url' == $images_link ) {
+			} elseif ( 'custom_url' == $images_link ) {
 				$image_data['link_to'] = $args['custom_url'];
 			}
 
@@ -703,7 +713,7 @@ class WIS_Instagram_Feed extends WIS_Feed {
 
 		$output .= $this->render_template( "templates/{$template}", $template_args );
 
-		if ( $enable_ad && ! defined( "WISP_PLUGIN_ACTIVE" ) ) {
+		if ( $enable_ad && ! defined( 'WISP_PLUGIN_ACTIVE' ) ) {
 			$output .= '
                 <div class="wis-template-ad" style="font-size: 1.0rem; margin-top: 2%; text-align: center; color: rgba(22,22,22,0.72);" >
                     <a target="_blank" style="color: rgba(22,22,22,0.72); text-decoration: none" href="https://cm-wp.com/instagram-slider-widget/" >
@@ -729,20 +739,14 @@ class WIS_Instagram_Feed extends WIS_Feed {
 	private function sanitize( $input ) {
 
 		if ( ! empty( $input ) ) {
-			$utf8_2byte       = 0xC0 /*1100 0000*/
-			;
-			$utf8_2byte_bmask = 0xE0 /*1110 0000*/
-			;
-			$utf8_3byte       = 0xE0 /*1110 0000*/
-			;
-			$utf8_3byte_bmask = 0XF0 /*1111 0000*/
-			;
-			$utf8_4byte       = 0xF0 /*1111 0000*/
-			;
-			$utf8_4byte_bmask = 0xF8 /*1111 1000*/
-			;
+			$utf8_2byte       = 0xC0; /*1100 0000*/
+			$utf8_2byte_bmask = 0xE0; /*1110 0000*/
+			$utf8_3byte       = 0xE0; /*1110 0000*/
+			$utf8_3byte_bmask = 0XF0; /*1111 0000*/
+			$utf8_4byte       = 0xF0; /*1111 0000*/
+			$utf8_4byte_bmask = 0xF8; /*1111 1000*/
 
-			$sanitized = "";
+			$sanitized = '';
 			$len       = strlen( $input );
 			for ( $i = 0; $i < $len; ++ $i ) {
 
@@ -751,10 +755,10 @@ class WIS_Instagram_Feed extends WIS_Feed {
 
 				if ( ( $byte & $utf8_2byte_bmask ) == $utf8_2byte ) {
 					$mb_char .= $input[ ++ $i ];
-				} else if ( ( $byte & $utf8_3byte_bmask ) == $utf8_3byte ) {
+				} elseif ( ( $byte & $utf8_3byte_bmask ) == $utf8_3byte ) {
 					$mb_char .= $input[ ++ $i ];
 					$mb_char .= $input[ ++ $i ];
-				} else if ( ( $byte & $utf8_4byte_bmask ) == $utf8_4byte ) {
+				} elseif ( ( $byte & $utf8_4byte_bmask ) == $utf8_4byte ) {
 					// Replace with ? to avoid MySQL exception
 					$mb_char = '';
 					$i       += 3;
@@ -779,7 +783,10 @@ class WIS_Instagram_Feed extends WIS_Feed {
 	private function get_data_by_username( $username ) {
 
 		$url      = str_replace( '{username}', urlencode( trim( $username ) ), self::USERNAME_URL );
-		$response = wp_remote_get( $url, [ 'sslverify' => false, 'timeout' => 60 ] );
+		$response = wp_remote_get( $url, [
+			'sslverify' => false,
+			'timeout'   => 60,
+		] );
 
 		if ( strstr( $response['body'], '-cx-PRIVATE-Page__main' ) ) {
 			return [ 'error' => __( 'Account not found or for this account there are restrictions on Instagram by age', 'instagram-slider-widget' ) ];
@@ -953,7 +960,7 @@ class WIS_Instagram_Feed extends WIS_Feed {
 		$m['timestamp'] = strtotime( $media['timestamp'] );
 		$m['url']       = $media['media_url'];
 
-		if ( $media['media_type'] == 'VIDEO' ) {
+		if ( 'VIDEO' == $media['media_type'] ) {
 			$size = getimagesize( $media['thumbnail_url'] );
 		} else {
 			$size = getimagesize( $media['media_url'] );
@@ -1019,7 +1026,7 @@ class WIS_Instagram_Feed extends WIS_Feed {
 		$m['comments']  = $media['comments_count'];
 		$m['likes']     = $media['like_count'];
 
-		if ( $media['media_type'] == 'VIDEO' ) {
+		if ( 'VIDEO' == $media['media_type'] ) {
 			$size = getimagesize( $media['thumbnail_url'] );
 		} else {
 			$size = getimagesize( $media['media_url'] );
@@ -1085,7 +1092,7 @@ class WIS_Instagram_Feed extends WIS_Feed {
 			$m['sizes']['standard']  = $media_url;
 			$m['sizes']['full']      = $media_url;
 
-			if ( $media['media_type'] == 'VIDEO' ) {
+			if ( 'VIDEO' == $media['media_type'] ) {
 				$size = getimagesize( $value['thumbnail_url'] );
 			} else {
 				$size = getimagesize( $media_url );
@@ -1104,7 +1111,7 @@ class WIS_Instagram_Feed extends WIS_Feed {
 			$m['link']    = 'https://www.instagram.com/p/' . $value['shortcode'] . '/';
 			$m['user_id'] = $value['owner']['id'];
 
-			$m['caption'] = isset( $value['edge_media_to_caption']['edges'][0]['node']['text'] ) ? $value['edge_media_to_caption']['edges'][0]['node']['text'] : "";
+			$m['caption'] = isset( $value['edge_media_to_caption']['edges'][0]['node']['text'] ) ? $value['edge_media_to_caption']['edges'][0]['node']['text'] : '';
 
 			$m['timestamp']     = $value['taken_at_timestamp'];
 			$m['url']           = $value['display_url'];

@@ -21,6 +21,12 @@
             showSelector(template, '.' + prefix + 'masonry_notice');
         }
 
+        if (template.val() !== 'masonry_lite') {
+            hideSelector(template, '.' + prefix + 'masonry_lite_settings');
+        } else {
+            showSelector(template, '.' + prefix + 'masonry_lite_settings');
+        }
+
         if (template.val() !== 'slick_slider') {
             hideSelector(template, '.' + prefix + 'slick_settings');
         } else {

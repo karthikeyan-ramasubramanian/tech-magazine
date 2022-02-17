@@ -20,9 +20,9 @@
 		exit;
 	}
 
-	if( !class_exists('Wbcr_FactoryForms447_ColorControl') ) {
+	if( !class_exists('Wbcr_FactoryForms450_ColorControl') ) {
 
-		class Wbcr_FactoryForms447_ColorControl extends Wbcr_FactoryForms447_Control {
+		class Wbcr_FactoryForms450_ColorControl extends Wbcr_FactoryForms450_Control {
 
 			public $type = 'color';
 

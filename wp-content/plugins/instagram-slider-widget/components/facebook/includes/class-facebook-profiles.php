@@ -104,7 +104,7 @@ class WIS_Facebook_Profiles extends WIS_Profiles {
 	 * @return string
 	 */
 	public function content() {
-		if ( isset( $_GET['tab'] ) && $_GET['tab'] == 'facebook' ) {
+		if ( isset( $_GET['tab'] ) && 'facebook' === $_GET['tab'] ) {
 			if ( isset( $_GET['token_error'] ) ) {
 				$_SERVER['REQUEST_URI'] = str_replace( '#_', '', remove_query_arg( 'token_error' ) );
 			} else {

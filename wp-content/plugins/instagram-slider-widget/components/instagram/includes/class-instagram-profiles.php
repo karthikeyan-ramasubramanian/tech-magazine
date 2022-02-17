@@ -205,8 +205,8 @@ class WIS_Instagram_Profiles extends WIS_Profiles {
 	 * @return string
 	 */
 	public function content() {
-		if ( isset( $_GET['tab'] ) && $_GET['tab'] == 'instagram' ) {
-			if ( isset( $_GET['type'] ) && $_GET['type'] == 'business' ) {
+		if ( isset( $_GET['tab'] ) && 'instagram' === $_GET['tab'] ) {
+			if ( isset( $_GET['type'] ) && 'business' === $_GET['type'] ) {
 				if ( isset( $_GET['token_error'] ) ) {
 					$token_error = wp_strip_all_tags( $_GET['token_error'] );
 					echo '<div class="notice notice-error"><p>' . $token_error . '</p></div>';

@@ -133,10 +133,10 @@ class WIS_WidgetsPage extends WIS_Page {
 		$insta_widgets    = get_option( 'widget_jr_insta_slider', [] );
 		$youtube_widgets  = get_option( 'widget_wyoutube_feed', [] );
 		$facebook_widgets = get_option( 'widget_wfacebook_feed', [] );
-		$demo_widgets     = include( WIS_PLUGIN_DIR . "/includes/demo_widgets.php" );
+		$demo_widgets     = include WIS_PLUGIN_DIR . "/includes/demo_widgets.php";
 		$account          = $this->get_current_account();
 
-		if ( isset( $_GET['do'] ) && $_GET['do'] == 'add_demo' ) {
+		if ( isset( $_GET['do'] ) && 'add_demo' === $_GET['do'] ) {
 			if ( isset( $sidebars_widgets['jr-insta-shortcodes'] ) && ! empty( $account ) ) {
 				$next_id = $this->get_next_widget_id( $insta_widgets );
 
@@ -197,7 +197,7 @@ class WIS_WidgetsPage extends WIS_Page {
 	public function get_next_widget_id( $widgets ) {
 		$i = 0;
 		foreach ( $widgets as $key => $widget ) {
-			if ( $key !== '_multiwidget' ) {
+			if ( '_multiwidget' !== $key ) {
 				$i = $key;
 			}
 		}
