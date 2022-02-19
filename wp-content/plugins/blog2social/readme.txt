@@ -5,7 +5,7 @@ Tags: auto post, auto publish, social media scheduling, social media calendar, s
 Donate link: https://paypal.me/adenion
 Requires at least: 4.7.0
 Tested up to: 5.9
-Stable tag: 6.9.1
+Stable tag: 6.9.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -234,6 +234,8 @@ To get started with the basics of Blog2Social and maybe find some useful tips an
 7. Keep track of your shared posts and scheduling plan with the Social Media Calendar.
 
 == Changelog ==
+= 6.9.2 = 
+Bugfixing Pinterest Connection
 = 6.9.1 = 
 Bugfixing Installing
 = 6.9.0 = 
@@ -310,6 +312,8 @@ Usability Optimization, Rebrandly integration, url parameter settings
 New Image Posts, Imgur, Animated Gifs and Emojis
 
 == Upgrade Notice ==
+= 6.9.2 = 
+Bugfixing Pinterest Connection
 = 6.9.1 = 
 Bugfixing Installing
 = 6.9.0 = 
