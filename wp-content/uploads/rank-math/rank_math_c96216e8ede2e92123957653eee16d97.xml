@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="//blogs.techsnapie.com/main-sitemap.xsl"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd http://www.google.com/schemas/sitemap-image/1.1 http://www.google.com/schemas/sitemap-image/1.1/sitemap-image.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
+		<loc>https://blogs.techsnapie.com/author/yogesh_kb/</loc>
+		<lastmod>2022-02-19T20:54:53+05:30</lastmod>
+	</url>
+	<url>
+		<loc>https://blogs.techsnapie.com/author/kavya_suresh/</loc>
+		<lastmod>2022-02-19T08:54:44+05:30</lastmod>
+	</url>
+	<url>
+		<loc>https://blogs.techsnapie.com/author/harshini/</loc>
+		<lastmod>2022-02-19T08:42:59+05:30</lastmod>
+	</url>
+	<url>
 		<loc>https://blogs.techsnapie.com/author/karthi_keyan/</loc>
 		<lastmod>2022-02-19T02:23:11+05:30</lastmod>
 	</url>
@@ -11,18 +23,6 @@
 	<url>
 		<loc>https://blogs.techsnapie.com/author/sangavi_kumar/</loc>
 		<lastmod>2022-02-18T23:55:53+05:30</lastmod>
-	</url>
-	<url>
-		<loc>https://blogs.techsnapie.com/author/kavya_suresh/</loc>
-		<lastmod>2022-02-18T23:54:50+05:30</lastmod>
-	</url>
-	<url>
-		<loc>https://blogs.techsnapie.com/author/harshini/</loc>
-		<lastmod>2022-02-18T22:02:33+05:30</lastmod>
-	</url>
-	<url>
-		<loc>https://blogs.techsnapie.com/author/yogesh_kb/</loc>
-		<lastmod>2022-02-18T12:59:09+05:30</lastmod>
 	</url>
 	<url>
 		<loc>https://blogs.techsnapie.com/author/pavithra/</loc>
