@@ -7,7 +7,7 @@ $box_tabs = array
         'profile' => array
         (
             'id'       => 'mab-tab-profile-'.$random_id,
-            'label'    => ( $settings['about_the_author'] ? $settings['about_the_author'] : __( 'About the author', 'molongui-authorship' ) ),
+            'label'    => ( $options['about_the_author'] ? $options['about_the_author'] : __( 'About the author', 'molongui-authorship' ) ),
             'label_id' => 'm-a-box-string-about-the-author',
             'checked'  => true,
             'display'  => true,
@@ -15,7 +15,7 @@ $box_tabs = array
         'related' => array
         (
             'id'       => 'mab-tab-related-'.$random_id,
-            'label'    => ( $settings['related_posts'] ? $settings['related_posts'] : __( 'Related posts', 'molongui-authorship' ) ),
+            'label'    => ( $options['related_posts'] ? $options['related_posts'] : __( 'Related posts', 'molongui-authorship' ) ),
             'label_id' => 'm-a-box-string-related-posts',
             'checked'  => false,
             'display'  => $show_related,
@@ -29,12 +29,12 @@ $box_tabs = array
         ),
     ),
 );
-if ( !empty( $settings['tabs_position'] ) ) $position = explode('-', $settings['tabs_position'] );
+if ( !empty( $options['tabs_position'] ) ) $position = explode('-', $options['tabs_position'] );
 $nav_class  = '';
 $nav_class .= ' m-a-box-tabs-'.$position[0];
 $nav_class .= isset( $position[1] ) ? ' m-a-box-tabs-'.$position[1] : '';
 $tab_class  = '';
-$tab_class .= ( ( !empty( $settings['tabs_border'] ) ) ? ' m-a-box-tab-border-'.$settings['tabs_border'] : '' );
+$tab_class .= ( ( !empty( $options['tabs_border'] ) ) ? ' m-a-box-tab-border-'.$options['tabs_border'] : '' );
 $active_class = 'm-a-box-tab-active';
 ?>
 
@@ -62,7 +62,7 @@ foreach ( $box_tabs['tabs'] as $box_tab ) :
         ?>
             <label for="<?php echo $box_tab['id']; ?>"
                    class="m-a-box-tab <?php echo $tab_class; echo ( $box_tab['checked'] ? ' '.$active_class : '' ); ?>"
-                   style="<?php echo ( ( !empty( $settings['tabs_text_color'] ) ) ? 'color:'.$settings['tabs_text_color'] : '' ); //echo $tab_style; echo ( $box_tab['checked'] ? $active_style : '' ); ?>">
+                   style="<?php echo ( ( !empty( $options['tabs_text_color'] ) ) ? 'color:'.$options['tabs_text_color'] : '' ); //echo $tab_style; echo ( $box_tab['checked'] ? $active_style : '' ); ?>">
                 <span class="<?php echo $box_tab['label_id']; ?>"><?php echo $box_tab['label']; ?></span>
             </label>
         <?php

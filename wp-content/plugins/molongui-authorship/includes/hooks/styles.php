@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) or exit;
 function authorship_register_admin_styles()
 {
-    $file = apply_filters( 'authorship/admin/styles', MOLONGUI_AUTHORSHIP_FOLDER . ( is_rtl() ? '/assets/css/admin-rtl.77ae.min.css' : '/assets/css/admin.02ae.min.css' ) );
+    $file = apply_filters( 'authorship/admin/styles', MOLONGUI_AUTHORSHIP_FOLDER . ( is_rtl() ? '/assets/css/admin-rtl.51f4.min.css' : '/assets/css/admin.a53f.min.css' ) );
     $deps = array( 'wp-color-picker' );
 
     authorship_register_style( $file, 'admin', $deps );
@@ -18,12 +18,14 @@ function authorship_enqueue_admin_styles()
         (
             'profile', 'users', 'user', 'user-edit',
             MOLONGUI_AUTHORSHIP_CPT, 'edit-'.MOLONGUI_AUTHORSHIP_CPT,
-            'molongui_page_molongui-authorship'
+            'authors_page_molongui-authorship',
+            'molongui_page_molongui-authorship',
+            'toplevel_page_authors',
         )
     );
     if ( !in_array( $screen->id, $screens ) ) return;
     wp_enqueue_style( 'wp-color-picker' );
-    $file = apply_filters( 'authorship/admin/styles', MOLONGUI_AUTHORSHIP_FOLDER . ( is_rtl() ? '/assets/css/admin-rtl.77ae.min.css' : '/assets/css/admin.02ae.min.css' ) );
+    $file = apply_filters( 'authorship/admin/styles', MOLONGUI_AUTHORSHIP_FOLDER . ( is_rtl() ? '/assets/css/admin-rtl.51f4.min.css' : '/assets/css/admin.a53f.min.css' ) );
 
     authorship_enqueue_style( $file, 'admin', true );
 }
@@ -34,3 +36,31 @@ function authorship_admin_extra_styles()
     $css .= "";
     return apply_filters( 'authorship/admin/extra_styles', $css );
 }
+function authorship_inline_styles()
+{
+    $options = authorship_get_options();
+
+    if ( $options['guest_authors'] or $options['enable_multi_authors'] )
+    {
+        ?>
+        <style>
+            .molongui-disabled-link
+            {
+                border-bottom: none !important;
+                text-decoration: none !important;
+                color: inherit !important;
+                cursor: inherit !important;
+            }
+            .molongui-disabled-link:hover,
+            .molongui-disabled-link:hover span
+            {
+                border-bottom: none !important;
+                text-decoration: none !important;
+                color: inherit !important;
+                cursor: inherit !important;
+            }
+        </style>
+        <?php
+    }
+}
+add_action( 'wp_head', 'authorship_inline_styles' );

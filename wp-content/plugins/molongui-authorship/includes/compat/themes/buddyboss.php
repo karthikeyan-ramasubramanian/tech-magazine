@@ -14,9 +14,10 @@ add_filter( '_authorship/get_avatar_data/filter/author', function( $author, $id_
         ) {
             if ( !is_admin() )
             {
-                $author       = new stdClass();
-                $author->type = 'user';
-                $author->user = wp_get_current_user();
+                $author         = new stdClass();
+                $author->object = wp_get_current_user();
+                $author->id     = $author->object->ID;
+                $author->type   = 'user';
             }
         }
     }
@@ -39,10 +40,8 @@ add_filter( '_authorship/get_avatar_data/filter/author', function( $author, $id_
         if ( is_guest_post( $post->ID ) )
         {
             $main = get_main_author( $post->ID );
-            $author_class = new \Molongui\Authorship\Includes\Author( $main->id, 'guest' );
-            $author->type  = 'guest';
-            $author->guest = $author_class->get();
-            if ( isset( $author->user ) ) unset( $author->user );
+            $author->id   = $main->id;
+            $author->type = 'guest';
         }
     }
     return $author;

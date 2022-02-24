@@ -136,6 +136,14 @@ if ( !function_exists( 'molongui_enqueue_semantic_ui_popup' ) )
         wp_enqueue_style( 'molongui-popup'  );
     }
 }
+function authorship_enqueue_semantic()
+{
+    molongui_enqueue_semantic_ui_transition(); // Dependency. Required by Semantic UI Dropdown
+    molongui_enqueue_semantic_ui_icon();       // Used by Semantic UI Dropdown. Not a hard dependency
+    molongui_enqueue_semantic_ui_label();      // Used by Semantic UI Dropdown. Not a hard dependency
+    molongui_enqueue_semantic_ui_dropdown();
+    molongui_enqueue_semantic_ui_popup();
+}
 if ( !function_exists( 'molongui_enqueue_select2' ) )
 {
     function molongui_enqueue_select2()

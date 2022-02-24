@@ -5,6 +5,7 @@ namespace MailPoet\Config;
 if (!defined('ABSPATH')) exit;
 
 
+use MailPoet\AdminPages\Pages\Automation;
 use MailPoet\AdminPages\Pages\ExperimentalFeatures;
 use MailPoet\AdminPages\Pages\FormEditor;
 use MailPoet\AdminPages\Pages\Forms;
@@ -22,6 +23,7 @@ use MailPoet\AdminPages\Pages\SubscribersImport;
 use MailPoet\AdminPages\Pages\WelcomeWizard;
 use MailPoet\AdminPages\Pages\WooCommerceSetup;
 use MailPoet\DI\ContainerWrapper;
+use MailPoet\Features\FeaturesController;
 use MailPoet\Util\License\License;
 use MailPoet\WP\Functions as WPFunctions;
 
@@ -46,18 +48,23 @@ class Menu {
   /** @var Router */
   private $router;
 
+  /** @var FeaturesController */
+  private $featuresController;
+
   public function __construct(
     AccessControl $accessControl,
     WPFunctions $wp,
     ServicesChecker $servicesChecker,
     ContainerWrapper $container,
-    Router $router
+    Router $router,
+    FeaturesController $featuresController
   ) {
     $this->accessControl = $accessControl;
     $this->wp = $wp;
     $this->servicesChecker = $servicesChecker;
     $this->container = $container;
     $this->router = $router;
+    $this->featuresController = $featuresController;
   }
 
   public function init() {
@@ -393,6 +400,18 @@ class Menu {
       'mailpoet-logs',
       [$this, 'logs']
     );
+
+    // Automation
+    if ($this->featuresController->isSupported(FeaturesController::AUTOMATION)) {
+      $this->wp->addSubmenuPage(
+        self::MAIN_PAGE_SLUG,
+        $this->setPageTitle('Automation'),
+        'Automation',
+        AccessControl::PERMISSION_MANAGE_EMAILS,
+        'mailpoet-automation',
+        [$this, 'automation']
+      );
+    }
   }
 
   public function disableWPEmojis() {
@@ -422,6 +441,10 @@ class Menu {
 
   public function help() {
     $this->container->get(Help::class)->render();
+  }
+
+  public function automation() {
+    $this->container->get(Automation::class)->render();
   }
 
   public function experimentalFeatures() {

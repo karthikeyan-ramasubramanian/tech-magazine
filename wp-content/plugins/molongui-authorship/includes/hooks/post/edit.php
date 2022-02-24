@@ -49,7 +49,8 @@ function authorship_post_trash( $post_id )
     $post_type = authorship_get_post_type( $post_id );
     if ( !molongui_is_post_type_enabled( MOLONGUI_AUTHORSHIP_PREFIX, $post_type ) ) return;
     authorship_post_clear_object_cache();
-    if ( in_array( get_post_meta( $post_id, '_wp_trash_meta_status' ), array( 'publish', 'private' ) ) )
+    $post_status = authorship_post_status( $post_type );
+    if ( in_array( get_post_meta( $post_id, '_wp_trash_meta_status', true ), $post_status ) )
     {
         authorship_decrement_post_counter( get_post_type( $post_id ), get_post_authors( $post_id, 'ref' ) );
     }
@@ -60,7 +61,8 @@ function authorship_post_untrash( $post_id )
     $post_type = authorship_get_post_type( $post_id );
     if ( !molongui_is_post_type_enabled( MOLONGUI_AUTHORSHIP_PREFIX, $post_type ) ) return;
     authorship_post_clear_object_cache();
-    if ( in_array( get_post_meta( $post_id, '_wp_trash_meta_status' ), array( 'publish', 'private' ) ) )
+    $post_status = authorship_post_status( $post_type );
+    if ( in_array( get_post_meta( $post_id, '_wp_trash_meta_status', true ), $post_status ) )
     {
         authorship_increment_post_counter( get_post_type( $post_id ), get_post_authors( $post_id, 'ref' ) );
     }
@@ -82,24 +84,24 @@ function authorship_post_add_meta_boxes( $post_type )
         add_meta_box
         (
             'authorboxdiv'
-            ,__( "Authors", 'molongui-authorship' )
-            ,'authorship_post_render_author_metabox'
+            , __( "Authors", 'molongui-authorship' )
+            , 'authorship_post_render_author_metabox'
+            , $post_type
+            , 'side'
+            , 'high'
+        );
+    }
+    if ( authorship_is_feature_enabled( 'box' ) and in_array( $post_type, authorship_box_post_types() ) )
+    {
+        add_meta_box
+        (
+            'showboxdiv'
+            ,__( "Author Box", 'molongui-authorship' )
+            ,'authorship_post_render_box_metabox'
             ,$post_type
             ,'side'
             ,'high'
         );
-        if ( authorship_is_feature_enabled( 'box' ) )
-        {
-            add_meta_box
-            (
-                'showboxdiv'
-                ,__( "Authorship Box", 'molongui-authorship' )
-                ,'authorship_post_render_box_metabox'
-                ,$post_type
-                ,'side'
-                ,'high'
-            );
-        }
     }
 }
 add_action( 'add_meta_boxes', 'authorship_post_add_meta_boxes' );
@@ -254,12 +256,13 @@ function authorship_post_previous_status( $post_id )
 add_action( 'pre_post_update', 'authorship_post_previous_status' );
 function authorship_post_save_authors( $data, $post_id, $class = '', $fn = '' )
 {
+    $post_status      = authorship_post_status( get_post_type( $post_id ) );
     $old_post_status  = apply_filters( 'authorship/post/save/previous/status', 'publish' );
     $new_post_status  = get_post_status( $post_id );
     $old_post_authors = get_post_meta( $post_id, '_molongui_author', false );
     $new_post_authors = authorship_is_feature_enabled( 'multi' ) ? $data['molongui_authors'] : array( $data['_molongui_author'] );
     $did_author_change = isset( $new_post_authors ) ? !molongui_are_arrays_equal( $old_post_authors, $new_post_authors ) : true;
-    $did_status_change = ( ( $new_post_status !== $old_post_status ) and !( in_array( $old_post_status, array( 'publish', 'private' ) ) and in_array( $new_post_status, array( 'publish', 'private' ) ) ) );
+    $did_status_change = ( ( $new_post_status !== $old_post_status ) and !( in_array( $old_post_status, $post_status ) and in_array( $new_post_status, $post_status ) ) );
     if ( !$did_author_change and !$did_status_change ) return;
     if ( !$did_author_change and $did_status_change ) goto update_authorship_counters;
     if ( empty( $new_post_authors ) and in_array( $data['post_type'], molongui_supported_post_types( MOLONGUI_AUTHORSHIP_PREFIX ) ) )
@@ -280,11 +283,11 @@ function authorship_post_save_authors( $data, $post_id, $class = '', $fn = '' )
     update_authorship_counters:
     if ( $did_status_change )
     {
-        if ( in_array( $new_post_status, array( 'publish', 'private' ) ) )
+        if ( in_array( $new_post_status, $post_status ) )
         {
             authorship_increment_post_counter( $data['post_type'], $new_post_authors );
         }
-        elseif ( in_array( $old_post_status, array( 'publish', 'private' ) ) )
+        elseif ( in_array( $old_post_status, $post_status ) )
         {
             authorship_decrement_post_counter( $data['post_type'], $old_post_authors );
         }

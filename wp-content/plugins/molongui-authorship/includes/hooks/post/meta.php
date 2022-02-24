@@ -5,9 +5,9 @@ defined( 'ABSPATH' ) or exit;
 function authorship_post_add_author_meta()
 {
     global $post;
-    $settings = get_option( MOLONGUI_AUTHORSHIP_SEO_SETTINGS );
+    $options = authorship_get_options();
     if ( empty( $post ) or empty( $post->ID ) ) return;
-    if ( !$settings['add_html_meta'] and !$settings['add_opengraph_meta'] and !$settings['add_facebook_meta'] and !$settings['add_twitter_meta'] ) return;
+    if ( !$options['add_html_meta'] and !$options['add_opengraph_meta'] and !$options['add_facebook_meta'] and !$options['add_twitter_meta'] ) return;
     $authors = get_post_authors( $post->ID );
     if ( empty( $authors ) ) return;
     if ( authorship_has_pro() ) $meta = "\n<!-- Author Meta Tags by Molongui Authorship Pro " . MOLONGUI_AUTHORSHIP_VERSION . ", visit: " . MOLONGUI_AUTHORSHIP_WEB . " -->\n";
@@ -24,32 +24,32 @@ function authorship_post_add_author_meta()
         {
             $author = new Author( $wp_query->get( 'author' ), 'user' );
         }
-        if ( !empty( $settings['add_html_meta'] ) ) $meta .= '<meta name="author" content="'.$author->get_name().'">'."\n";
-        if ( !empty( $settings['add_opengraph_meta'] ) ) $meta .= authorship_post_add_opengraph_archive_meta();
+        if ( !empty( $options['add_html_meta'] ) ) $meta .= '<meta name="author" content="'.$author->get_name().'">'."\n";
+        if ( !empty( $options['add_opengraph_meta'] ) ) $meta .= authorship_post_add_opengraph_archive_meta();
     }
     elseif ( is_singular() )
     {
-        switch ( $settings['multi_author_meta'] )
+        switch ( $options['multi_author_meta'] )
         {
             case 'main':
                 if ( !$main_author = get_main_author( $post->ID ) ) return;
                 $author = new Author( $main_author->id, $main_author->type );
-                if ( !empty( $settings['add_html_meta'] ) ) $meta .= '<meta name="author" content="'.$author->get_name().'">'."\n";
-                if ( !empty( $settings['add_facebook_meta'] ) ) $meta .= authorship_post_add_facebook_author_meta( $author );
-                if ( !empty( $settings['add_twitter_meta'] ) ) $meta .= authorship_post_add_twitter_author_meta( $author );
-                if ( !empty( $settings['add_opengraph_meta'] ) and empty( $settings['add_facebook_meta'] ) ) $meta .= authorship_post_add_opengraph_author_meta( $author );
+                if ( !empty( $options['add_html_meta'] ) ) $meta .= '<meta name="author" content="'.$author->get_name().'">'."\n";
+                if ( !empty( $options['add_facebook_meta'] ) ) $meta .= authorship_post_add_facebook_author_meta( $author );
+                if ( !empty( $options['add_twitter_meta'] ) ) $meta .= authorship_post_add_twitter_author_meta( $author );
+                if ( !empty( $options['add_opengraph_meta'] ) and empty( $options['add_facebook_meta'] ) ) $meta .= authorship_post_add_opengraph_author_meta( $author );
 
             break;
 
             case 'aio':
-                if ( !empty( $settings['add_html_meta'] ) ) $meta .= '<meta name="author" content="'.mount_byline( $authors, count( $authors ) ).'">'."\n";
+                if ( !empty( $options['add_html_meta'] ) ) $meta .= '<meta name="author" content="'.mount_byline( $authors, count( $authors ) ).'">'."\n";
 
                 foreach ( $authors as $auth )
                 {
                     $author = new Author( $auth->id, $auth->type );
-                    if ( !empty( $settings['add_facebook_meta'] ) ) $meta .= authorship_post_add_facebook_author_meta( $author );
-                    if ( !empty( $settings['add_twitter_meta'] ) ) $meta .= authorship_post_add_twitter_author_meta( $author );
-                    if ( !empty( $settings['add_opengraph_meta'] ) and empty( $settings['add_facebook_meta'] ) ) $meta .= authorship_post_add_opengraph_author_meta( $author );
+                    if ( !empty( $options['add_facebook_meta'] ) ) $meta .= authorship_post_add_facebook_author_meta( $author );
+                    if ( !empty( $options['add_twitter_meta'] ) ) $meta .= authorship_post_add_twitter_author_meta( $author );
+                    if ( !empty( $options['add_opengraph_meta'] ) and empty( $options['add_facebook_meta'] ) ) $meta .= authorship_post_add_opengraph_author_meta( $author );
                 }
 
             break;
@@ -60,10 +60,10 @@ function authorship_post_add_author_meta()
                 foreach ( $authors as $auth )
                 {
                     $author = new Author( $auth->id, $auth->type );
-                    if ( !empty( $settings['add_html_meta'] ) ) $meta .= '<meta name="author" content="'.$author->get_name().'">'."\n";
-                    if ( !empty( $settings['add_facebook_meta'] ) ) $meta .= authorship_post_add_facebook_author_meta( $author );
-                    if ( !empty( $settings['add_twitter_meta'] ) ) $meta .= authorship_post_add_twitter_author_meta( $author );
-                    if ( !empty( $settings['add_opengraph_meta'] ) and empty( $settings['add_facebook_meta'] ) ) $meta .= authorship_post_add_opengraph_author_meta( $author );
+                    if ( !empty( $options['add_html_meta'] ) ) $meta .= '<meta name="author" content="'.$author->get_name().'">'."\n";
+                    if ( !empty( $options['add_facebook_meta'] ) ) $meta .= authorship_post_add_facebook_author_meta( $author );
+                    if ( !empty( $options['add_twitter_meta'] ) ) $meta .= authorship_post_add_twitter_author_meta( $author );
+                    if ( !empty( $options['add_opengraph_meta'] ) and empty( $options['add_facebook_meta'] ) ) $meta .= authorship_post_add_opengraph_author_meta( $author );
                 }
 
             break;

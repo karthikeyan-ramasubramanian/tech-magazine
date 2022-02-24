@@ -124,11 +124,11 @@ if ( !function_exists( 'molongui_get_post_types' ) )
 }
 if ( !function_exists('molongui_supported_post_types') )
 {
-    function molongui_supported_post_types( $plugin_id, $type = 'all', $setting = false )
+    function molongui_supported_post_types( $plugin_id, $type = 'all', $select = false )
     {
         $post_types = $options = array();
-        $settings = (array) get_option( molongui_get_constant( $plugin_id, 'MAIN_SETTINGS' ) );
-        if ( !isset( $settings['post_types'] ) ) return ( $setting ? $options : $post_types );
+        $settings = authorship_get_options();
+        if ( !isset( $settings['post_types'] ) ) return ( $select ? $options : $post_types );
         foreach ( molongui_get_post_types( $type, 'objects', false ) as $post_type_name => $post_type_object )
         {
             if ( in_array( $post_type_name, explode( ",", $settings['post_types'] ) ) )
@@ -137,7 +137,7 @@ if ( !function_exists('molongui_supported_post_types') )
                 $options[]    = array( 'id' => $post_type_name, 'label' => $post_type_object->labels->name, 'singular' => $post_type_object->labels->singular_name );
             }
         }
-        return ( $setting ? $options : $post_types );
+        return ( $select ? $options : $post_types );
     }
 }
 if ( !function_exists('molongui_enabled_post_screens') )
@@ -151,13 +151,14 @@ if ( !function_exists('molongui_enabled_post_screens') )
 }
 if ( !function_exists('molongui_post_categories') )
 {
-    function molongui_post_categories( $setting = false )
+    function molongui_post_categories( $setting = false, $hide_empty = true )
     {
         $categories = $options = array();
 	    $post_categories = get_categories( array
         (
-		    'orderby' => 'name',
-            'order'   => 'ASC',
+		    'orderby'    => 'name',
+            'order'      => 'ASC',
+            'hide_empty' => $hide_empty,
 	    ));
         foreach ( $post_categories as $category )
         {
@@ -414,17 +415,6 @@ if ( !function_exists( 'molongui_get_support' ) )
 	{
         return admin_url( '/admin.php?page=molongui-support' );
 	}
-}
-if ( !function_exists( 'molongui_get_plugin_settings' ) )
-{
-	function molongui_get_plugin_settings( $id = '', $names = '' )
-    {
-        if ( empty( $id ) or empty( $names ) ) return;
-        $settings = array();
-        if ( is_array( $names ) ) foreach ( $names as $name ) $settings = array_merge( $settings, (array) get_option( molongui_get_constant( $id, $name.'_SETTINGS' ) ) );
-        else $settings = get_option( molongui_get_constant( $id, $names.'_SETTINGS' ) );
-        return $settings;
-    }
 }
 if ( !function_exists( 'get_molongui_id_from_filepath' ) )
 {

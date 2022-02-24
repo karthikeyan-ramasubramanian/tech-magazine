@@ -53,7 +53,7 @@ function authorship_render_plugins_page()
 }
 function authorship_render_support_page()
 {
-    $tidio_url = 'https://www.tidiochat.com/chat/foioudbu7xqepgvwseufnvhcz6wkp7am';
+    $tidio_url = authorship_get_tidio();
 
     include MOLONGUI_AUTHORSHIP_DIR . 'views/common/html-page-support.php';
 }
@@ -69,7 +69,13 @@ function authorship_render_support_page()
             if ( $value['type'] == 'section' )
             {
                 if ( isset( $value['display'] ) and !$value['display'] ) continue;
-                $tabs[$value['id']] = array( 'display' => $value['display'], 'id' => $value['id'], 'name' => ucfirst( $value['name'] ) );
+                $tabs[$value['id']] = array
+                (
+                    'display' => empty( $value['display'] ) ? true : $value['display'],
+                    'access'  => empty( $value['access']  ) ? 'public' : $value['access'],
+                    'id'      => $value['id'],
+                    'name'    => ucfirst( $value['name'] )
+                );
                 $parent = $value['id'];
             }
             else
@@ -96,13 +102,19 @@ function authorship_render_support_page()
             }
             foreach ( $tabs as $tab )
             {
-                $nav_items    .= '<li class="m-section-nav-tab '.( $tab['id'] == $current_tab ? 'is-selected' : '' ).'"><a class="m-section-nav-tab__link" href="#'.$tab['id'].'" data-id="'.$tab['id'].'" role="menuitem"><span class="m-section-nav-tab__text">' . $tab['name'] . '</span></a></li>';
+                if ( 'private' !== $tab['access'] )
+                {
+                    $nav_items .= '<li class="m-section-nav-tab '.( $tab['id'] == $current_tab ? 'is-selected' : '' ).'"><a class="m-section-nav-tab__link" href="#'.$tab['id'].'" data-id="'.$tab['id'].'" role="menuitem"><span class="m-section-nav-tab__text">' . $tab['name'] . '</span></a></li>';
+                }
                 $div_contents .= '<section id="'.$tab['id'].'" class="m-tab '.( $tab['id'] == $current_tab ? 'current' : '' ).'">';
                 if ( isset( ${'tab_'.$tab['id']} ) )
                 {
+                    $group = '';
                     foreach ( ${'tab_'.$tab['id']} as $option )
                     {
-                        $html = new \Molongui\Authorship\Includes\Libraries\Common\Option( $tab['id'], $option, MOLONGUI_AUTHORSHIP_PREFIX.'_' );
+                        if ( 'header' === $option['type'] ) $group = empty( $option['id'] ) ? '' : str_replace( '_header', '', $option['id'] );
+
+                        $html = new \Molongui\Authorship\Includes\Libraries\Common\Option( $option, $group, '', MOLONGUI_AUTHORSHIP_PREFIX.'_' );
                         $div_contents .= $html;
                     }
                 }
@@ -121,7 +133,7 @@ function authorship_render_support_page()
 
             foreach ( ${'tab_0'} as $tab_content )
             {
-                $option = new \Molongui\Authorship\Includes\Libraries\Common\Option( 0, $tab_content, MOLONGUI_AUTHORSHIP_PREFIX );
+                $option = new \Molongui\Authorship\Includes\Libraries\Common\Option( $tab_content, '', '', MOLONGUI_AUTHORSHIP_PREFIX );
                 $div_contents .= $option;
             }
 

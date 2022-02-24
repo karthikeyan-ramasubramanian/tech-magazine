@@ -24,9 +24,9 @@ add_filter( 'molongui_edit_main_query_only', function( $default, &$query )
     $fn    = 'render';
     $class = 'ET_Builder_Module_Blog';
     if ( $key = array_search( $fn, array_column( $dbt, 'function' ) ) and
-         isset( $dbt[$key]['class'] ) and ( $dbt[$key]['class'] == $class ) )
+        isset( $dbt[$key]['class'] ) and ( $dbt[$key]['class'] == $class ) )
     {
-       return false;
+        return false;
     }
     return $default;
 }, 10, 2 );

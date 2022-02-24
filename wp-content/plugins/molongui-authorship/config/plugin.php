@@ -9,10 +9,10 @@ $config = array
     'tag'   => 'Authorship',
     'web'   => 'https://www.molongui.com/authorship/',
     'demo'  => 'https://demos.molongui.com/test-drive-molongui-authorship-pro/',
-    'db'  => 18,
+    'db'  => 19,
     'cpt' => 'guest_author',
     'has_pro' => true,
-    'min_pro' => '1.3.0',
+    'min_pro' => '1.4.0',
 );
 $plugin_id = strtolower( str_replace( ' ', '-', $config['brand'] . ' ' . $config['name'] ) );
 $plugin_px = str_replace( '-', '_', $plugin_id );
@@ -36,13 +36,6 @@ $constants = array
     'DB_VERSION'        => $plugin_px.'_db_version',
     'INSTALLATION'      => $plugin_px.'_installation',
     'NOTICES'           => $plugin_px.'_notices',
-    'MAIN_SETTINGS'     => $plugin_px.'_main',
-
-    'BOX_SETTINGS'      => $plugin_px.'_box',
-    'BYLINE_SETTINGS'   => $plugin_px.'_byline',
-    'ARCHIVES_SETTINGS' => $plugin_px.'_archives',
-    'SEO_SETTINGS'      => $plugin_px.'_seo',
-    'COMPAT_SETTINGS'   => $plugin_px.'_compat',
     'HAS_PRO' => $config['has_pro'],
     'MIN_PRO' => $config['min_pro'],
 );

@@ -52,7 +52,7 @@ function authorship_filter_archive_title( $title )
 {
     global $wp_query;
     if ( !is_author() and !is_guest_author() ) return $title;
-    $options = get_option( MOLONGUI_AUTHORSHIP_ARCHIVES_SETTINGS, '' );
+    $options = authorship_get_options();
     if ( is_guest_author() and isset( $wp_query->guest_author_id ) )
     {
         $prefix  = !empty( $options['guest_archive_title_prefix'] ) ? $options['guest_archive_title_prefix'] : '';

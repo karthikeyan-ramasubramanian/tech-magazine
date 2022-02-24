@@ -80,8 +80,11 @@ function authorship_post_quick_edit_fill_fields()
                     var $q_editor = $('#edit-' + post_id);
                     var $post_row = $('#post-' + post_id);
                     var authorSelect = document.getElementById('_molongui_author');
+                    if ( typeof(authorSelect) === 'undefined' || authorSelect === null ) return false;
                     var authorList = $q_editor.find('ul#molongui_authors');
+                    if ( typeof(authorList) === 'undefined' || authorList === null ) return false;
                     var container = document.getElementById('molongui-author-selectr');
+                    if ( typeof(container) === 'undefined' || container === null ) return false;
                     if (container.hasChildNodes()) container.removeChild(container.firstElementChild);
                     container.prepend(authorSelect);
                     $.molonguiInitAuthorSelector(authorSelect, authorList, '');

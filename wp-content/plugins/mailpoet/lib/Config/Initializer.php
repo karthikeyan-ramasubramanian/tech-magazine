@@ -7,7 +7,9 @@ if (!defined('ABSPATH')) exit;
 
 use MailPoet\API\JSON\API;
 use MailPoet\AutomaticEmails\AutomaticEmails;
+use MailPoet\Automation\Automation;
 use MailPoet\Cron\CronTrigger;
+use MailPoet\Features\FeaturesController;
 use MailPoet\InvalidStateException;
 use MailPoet\PostEditorBlocks\PostEditorBlock;
 use MailPoet\PostEditorBlocks\WooCommerceBlocksIntegration;
@@ -89,6 +91,12 @@ class Initializer {
   /** @var SubscriberActivityTracker */
   private $subscriberActivityTracker;
 
+  /** @var Automation */
+  private $automation;
+
+  /** @var FeaturesController */
+  private $featuresController;
+
   const INITIALIZED = 'MAILPOET_INITIALIZED';
 
   public function __construct(
@@ -112,7 +120,9 @@ class Initializer {
     Localizer $localizer,
     AutomaticEmails $automaticEmails,
     SubscriberActivityTracker $subscriberActivityTracker,
-    AssetsLoader $assetsLoader
+    AssetsLoader $assetsLoader,
+    Automation $automation,
+    FeaturesController $featuresController
   ) {
     $this->rendererFactory = $rendererFactory;
     $this->accessControl = $accessControl;
@@ -135,6 +145,8 @@ class Initializer {
     $this->automaticEmails = $automaticEmails;
     $this->subscriberActivityTracker = $subscriberActivityTracker;
     $this->assetsLoader = $assetsLoader;
+    $this->automation = $automation;
+    $this->featuresController = $featuresController;
   }
 
   public function init() {
@@ -152,6 +164,10 @@ class Initializer {
           'data-beacon-article' => '596de7db2c7d3a73488b2f8d',
         ]
       ));
+    }
+
+    if ($this->featuresController->isSupported(FeaturesController::AUTOMATION)) {
+      $this->automation->initialize();
     }
 
     // activation function

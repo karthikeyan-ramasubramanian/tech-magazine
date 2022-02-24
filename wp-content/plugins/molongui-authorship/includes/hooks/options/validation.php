@@ -1,17 +1,17 @@
 <?php
 defined( 'ABSPATH' ) or exit;
-function authorship_validate_main_options( $settings, $current, $option )
+function authorship_validate_freemium_options( $options, $current )
 {
-    $post_types = explode( ",", $settings['post_types'] );
-    $settings['post_types'] = "";
-    if ( in_array( 'post', $post_types ) ) $settings['post_types'] .= "post,";
-    if ( in_array( 'page', $post_types ) ) $settings['post_types'] .= "page,";
-    $settings['post_types'] = rtrim( $settings['post_types'], ',' );
+    $post_types = explode( ",", $options['post_types'] );
+    $options['post_types'] = "";
+    if ( in_array( 'post', $post_types ) ) $options['post_types'] .= "post,";
+    if ( in_array( 'page', $post_types ) ) $options['post_types'] .= "page,";
+    $options['post_types'] = rtrim( $options['post_types'], ',' );
 
-    return $settings;
+    return $options;
 }
-add_filter( 'authorship/validate_main_options', 'authorship_validate_main_options', 10, 3 );
-function authorship_validate_box_options( $settings, $current, $option )
+add_filter( 'authorship/validate_options', 'authorship_validate_freemium_options', 10, 2 );
+function authorship_validate_customizer_options( $options, $current )
 {
     $customizer_settings = array
     (
@@ -79,25 +79,27 @@ function authorship_validate_box_options( $settings, $current, $option )
     );
     foreach ( $customizer_settings as $customizer_setting )
     {
-        if ( !isset( $settings[$customizer_setting] ) and isset( $current[$customizer_setting] ) )
+        if ( !isset( $options[$customizer_setting] ) and isset( $current[$customizer_setting] ) )
         {
-            $settings[$customizer_setting] = $current[$customizer_setting];
+            $options[$customizer_setting] = $current[$customizer_setting];
         }
     }
 
-    return $settings;
+    return $options;
 }
-add_filter( 'authorship/validate_box_options', 'authorship_validate_box_options', 10, 3 );
-function authorship_validate_byline_options( $settings, $current, $option )
+add_filter( 'authorship/validate_options', 'authorship_validate_customizer_options', 10, 2 );
+function authorship_validate_options( $options, $current )
 {
-    if ( isset( $settings['byline_multiauthor_separator']      ) ) $settings['byline_multiauthor_separator']      = str_replace( array( "*", "?", "/" ), "", trim( $settings['byline_multiauthor_separator'] ) );
-    if ( isset( $settings['byline_multiauthor_last_separator'] ) ) $settings['byline_multiauthor_last_separator'] = str_replace( array( "*", "?", "/" ), "", trim( $settings['byline_multiauthor_last_separator'] ) );
+    if ( empty( $options['avatar_width'] ) ) $options['avatar_width'] = 150;
+    if ( empty( $options['avatar_height'] ) ) $options['avatar_height'] = 150;
+    if ( isset( $options['byline_multiauthor_separator']      ) ) $options['byline_multiauthor_separator']      = str_replace( array( "*", "?", "/" ), "", trim( $options['byline_multiauthor_separator'] ) );
+    if ( isset( $options['byline_multiauthor_last_separator'] ) ) $options['byline_multiauthor_last_separator'] = str_replace( array( "*", "?", "/" ), "", trim( $options['byline_multiauthor_last_separator'] ) );
 
-    return $settings;
+    return $options;
 }
-add_filter( 'authorship/validate_byline_options', 'authorship_validate_byline_options', 10, 3 );
+add_filter( 'authorship/validate_options', 'authorship_validate_options', 10, 2 );
 add_action( 'authorship/options', 'authorship_add_defaults' );
-function authorship_validate_refresh_settings( $value, $old_value, $option )
+function authorship_validate_refresh_options( $value, $old_value, $option )
 {
     $refresh_premium_settings = array
     (
@@ -137,7 +139,7 @@ function authorship_validate_refresh_settings( $value, $old_value, $option )
 
     return $value;
 }
-add_filter( "pre_update_option_molongui_authorship_box", 'authorship_validate_refresh_settings', 10, 3 );
+add_filter( "pre_update_option_molongui_authorship_options", 'authorship_validate_refresh_options', 10, 3 );
 function authorship_validate_customize_changeset( $data, $filter_context )
 {
     if ( 'publish' !== $filter_context['status'] ) return $data;
@@ -164,11 +166,11 @@ function authorship_validate_customize_changeset( $data, $filter_context )
             'default'  => 'full',
         ),
     );
-    $current = (array) get_option( MOLONGUI_AUTHORSHIP_BOX_SETTINGS );
+    $current = authorship_get_options();
 
     foreach ( $data as $changed_option => $item )
     {
-        $option = strtr( $changed_option, array( 'molongui_authorship_box[' => '', ']' => '' ) );
+        $option = strtr( $changed_option, array( 'molongui_authorship_options[' => '', ']' => '' ) );
         if ( !in_array( $option, array_keys( $refresh_premium_settings ) ) ) continue;
         if ( !in_array( $item['value'], $refresh_premium_settings[$option]['accepted'] ) )
         {

@@ -3,8 +3,8 @@
 use Molongui\Authorship\Includes\Author;
 defined( 'ABSPATH' ) or exit;
 if ( molongui_is_request( 'admin' ) ) return;
-$seo = get_option( MOLONGUI_AUTHORSHIP_SEO_SETTINGS );
-if ( !empty( $seo['add_opengraph_meta'] ) )
+$options = authorship_get_options();
+if ( !empty( $options['add_opengraph_meta'] ) )
 {
     add_filter( 'wpseo_opengraph_type' , 'authorship_wpseo_remove_opengraph', 999, 1 );
     add_filter( 'wpseo_opengraph_desc' , 'authorship_wpseo_remove_opengraph', 999, 1 );

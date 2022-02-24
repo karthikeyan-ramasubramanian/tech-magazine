@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) or exit;
 function authorship_register_box_styles()
 {
-    $file = apply_filters( 'authorship/box/styles', MOLONGUI_AUTHORSHIP_FOLDER . ( is_rtl() ? '/assets/css/author-box-rtl.a9d2.min.css' : '/assets/css/author-box.4a30.min.css' ) );
+    $file = apply_filters( 'authorship/box/styles', MOLONGUI_AUTHORSHIP_FOLDER . ( is_rtl() ? '/assets/css/author-box-rtl.49bc.min.css' : '/assets/css/author-box.33a6.min.css' ) );
 
     authorship_register_style( $file, 'box' );
 }
@@ -10,17 +10,17 @@ add_action( 'wp_enqueue_scripts', 'authorship_register_box_styles' );
 function authorship_enqueue_box_styles()
 {
     if ( !authorship_is_feature_enabled( 'box' ) or !authorship_is_feature_enabled( 'box_styles' ) ) return;
-    $file = apply_filters( 'authorship/box/styles', MOLONGUI_AUTHORSHIP_FOLDER . ( is_rtl() ? '/assets/css/author-box-rtl.a9d2.min.css' : '/assets/css/author-box.4a30.min.css' ) );
+    $file = apply_filters( 'authorship/box/styles', MOLONGUI_AUTHORSHIP_FOLDER . ( is_rtl() ? '/assets/css/author-box-rtl.49bc.min.css' : '/assets/css/author-box.33a6.min.css' ) );
 
     authorship_enqueue_style( $file, 'box' );
 }
 function authorship_box_extra_styles()
 {
-    $settings = molongui_get_plugin_settings( MOLONGUI_AUTHORSHIP_PREFIX, array( 'main', 'box', 'compat' ) );
+    $options = authorship_get_options();
     $css = '';
-    $bp  = empty( $settings['breakpoint'] ) ? '600' : $settings['breakpoint'];
+    $bp  = empty( $options['breakpoint'] ) ? '600' : $options['breakpoint'];
     $css .= ":root{ --m-a-box-bp: " . $bp . "px; --m-a-box-bp-l: " . --$bp . "px; }";
-    if ( $settings['enable_cdn_compat'] )
+    if ( $options['enable_cdn_compat'] )
     {
         $bp_low_limit = $bp - 1;
         $item_spacing = '20';
@@ -44,20 +44,20 @@ function authorship_box_extra_styles()
 
         $css .= $eqcss;
     }
-    if ( 'tabbed' === $settings['layout'] )
+    if ( 'tabbed' === $options['box_layout'] )
     {
-        if ( !empty( $settings['tabs_position'] ) ) $position = explode('-', $settings['tabs_position'] );
+        if ( !empty( $options['tabs_position'] ) ) $position = explode('-', $options['tabs_position'] );
         if ( !empty( $position[0] ) ) $position = $position[0];
         else $position = 'top';
-        if ( !empty( $settings['tabs_border'] ) ) $border = $settings['tabs_border'];
+        if ( !empty( $options['tabs_border'] ) ) $border = $options['tabs_border'];
         else $border = 'around';
         $nav_style    = '';
         $tab_style    = '';
         $active_style = '';
-        if ( !empty( $settings['tabs_background'] ) ) $nav_style .= ' background-color:'.$settings['tabs_background'].';';
-        if ( !empty( $settings['tabs_color'] ) )      $tab_style .= ' background-color:'.$settings['tabs_color'].';';
-        $tabs_background_style        = 'background-color: '.$settings['tabs_color'].';';
-        $tabs_active_background_style = 'background-color: '.$settings['tabs_active_color'].';';
+        if ( !empty( $options['tabs_background'] ) ) $nav_style .= ' background-color:'.$options['tabs_background'].';';
+        if ( !empty( $options['tabs_color'] ) )      $tab_style .= ' background-color:'.$options['tabs_color'].';';
+        $tabs_background_style        = 'background-color: '.$options['tabs_color'].';';
+        $tabs_active_background_style = 'background-color: '.$options['tabs_active_color'].';';
         $css .= "
                 .m-a-box .m-a-box-tabs nav.m-a-box-tabs-{$position} { {$nav_style} }
                 .m-a-box .m-a-box-tabs nav label { {$tab_style} }
@@ -74,11 +74,11 @@ function authorship_box_extra_styles()
                 .m-a-box .m-a-box-tabs .m-a-box-related .m-a-box-related-entry-title,
                 .m-a-box .m-a-box-tabs .m-a-box-related .m-a-box-related-entry-title a
                 {
-                    color: {$settings['related_text_color']};
+                    color: {$options['related_text_color']};
                 }
             ";
     }
-    return apply_filters( 'authorship/box/extra_styles', $css, $settings );
+    return apply_filters( 'authorship/box/extra_styles', $css, $options );
 }
 function authorship_box_update_font_path( $contents )
 {

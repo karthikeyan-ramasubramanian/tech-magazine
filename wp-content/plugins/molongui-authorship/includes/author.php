@@ -158,7 +158,7 @@ class Author
 	public function get_url()
 	{
 		$url = '';
-		$opt = \get_option( MOLONGUI_AUTHORSHIP_ARCHIVES_SETTINGS );
+		$options = \authorship_get_options();
         if ( !empty( $this->author ) )
         {
             switch ( $this->type )
@@ -182,7 +182,7 @@ class Author
             }
 		}
 		if ( empty( $url ) and $this->display_errors ) $url = \sprintf( __( 'No %s exists with the given ID (%s).', 'molongui-authorship' ), ( $this->type == 'guest' ? __( 'guest author', 'molongui-authorship' ) : __( 'user', 'molongui-authorship' ) ), $this->id );
-		return \apply_filters( 'authorship/author/url', $url, $this->id, $this->type, $this->author, $opt );
+		return \apply_filters( 'authorship/author/url', $url, $this->id, $this->type, $this->author, $options );
 	}
 	public function get_link()
 	{
@@ -305,11 +305,46 @@ class Author
 		}
 		return \apply_filters( 'authorship/author/post_count', $count, $this->id, $this->type, $this->author, $post_types );
 	}
+	public function get_user_roles()
+    {
+        $user_roles = array();
+        if ( empty( $this->author ) ) $this->author = $this->get( $this->id, $this->type );
+
+        switch ( $this->type )
+        {
+            case 'user':
+                $user_meta  = get_userdata( $this->id );
+                $user_roles = $user_meta->roles;
+            break;
+
+            case 'guest':
+                $user_roles = array( _x( "Guest author", 'User role', 'molongui-authorship' ) );
+            break;
+        }
+        return \apply_filters( 'authorship/author/user_roles', $user_roles, $this->id, $this->type, $this->author );
+    }
+	public function get_user_login()
+    {
+        $user_login = array();
+        if ( empty( $this->author ) ) $this->author = $this->get( $this->id, $this->type );
+
+        switch ( $this->type )
+        {
+            case 'user':
+                $user_login = $this->author->user_login;
+            break;
+
+            case 'guest':
+                $user_login = '';
+            break;
+        }
+        return \apply_filters( 'authorship/author/user_login', $user_login, $this->id, $this->type, $this->author );
+    }
 	public function get_avatar( $size = 'full', $context = 'screen', $source = null, $default = null )
 	{
-		$avatar = '';
-		$attr   = array();
-        $opt    = \molongui_get_plugin_settings( MOLONGUI_AUTHORSHIP_PREFIX, array( 'main', 'box' ) );
+		$avatar  = '';
+		$attr    = array();
+        $options = \authorship_get_options();
         if ( \is_array( $size ) )
         {
             $width  = $size[0];
@@ -327,23 +362,23 @@ class Author
 		{
             if ( \authorship_is_feature_enabled( 'box_styles' ) )
             {
-                $width  = $opt['avatar_width'];
-                $height = $opt['avatar_height'];
+                $width  = $options['avatar_width'];
+                $height = $options['avatar_height'];
                 $size   = array( $width, $height );
             }
-            $attr = array( 'class' => 'm-radius-'.$opt['avatar_style'].' molongui-border-style-'.$opt['avatar_border_style'].' molongui-border-width-'.$opt['avatar_border_width'].'-px', 'style' => 'border-color:'.$opt['avatar_border_color'].';' );
+            $attr = array( 'class' => 'm-radius-'.$options['avatar_style'].' molongui-border-style-'.$options['avatar_border_style'].' molongui-border-width-'.$options['avatar_border_width'].'-px', 'style' => 'border-color:'.$options['avatar_border_color'].';' );
             if ( \authorship_is_feature_enabled( 'microdata' ) ) $attr = \array_merge( $attr, array( 'itemprop' => 'image' ) );
 		}
-        switch ( empty( $source ) ? $opt['avatar_src'] : $source )
+        switch ( empty( $source ) ? $options['avatar_src'] : $source )
         {
             case 'gravatar':
-                if ( $context != 'url' ) $avatar = $this->get_gravatar( $this->get_mail(), \array_merge( $attr, array( 'width' => $width, 'height' => $height ) ), $opt );
+                if ( $context != 'url' ) $avatar = $this->get_gravatar( $this->get_mail(), \array_merge( $attr, array( 'width' => $width, 'height' => $height ) ), $options );
                 else $avatar = \get_avatar_url( $this->get_mail() );
 
             break;
 
             case 'acronym':
-                if ( $context != 'url' ) $avatar = $this->get_acronym( $this->get_name(), $opt );
+                if ( $context != 'url' ) $avatar = $this->get_acronym( $this->get_name(), $options );
                 else $avatar = '';
 
             break;
@@ -376,15 +411,15 @@ class Author
                 }
                 if ( empty( $avatar ) and $context != 'url' )
                 {
-                    switch ( empty( $default ) ? $opt['avatar_local_fallback'] : $default )
+                    switch ( empty( $default ) ? $options['avatar_local_fallback'] : $default )
                     {
                         case 'gravatar':
-                            $avatar = $this->get_gravatar( $this->get_mail(), \array_merge( $attr, array( 'width' => $width, 'height' => $height ) ), $opt );
+                            $avatar = $this->get_gravatar( $this->get_mail(), \array_merge( $attr, array( 'width' => $width, 'height' => $height ) ), $options );
 
                         break;
 
                         case 'acronym':
-                            $avatar = $this->get_acronym( $this->get_name(), $opt );
+                            $avatar = $this->get_acronym( $this->get_name(), $options );
 
                         break;
 
@@ -399,9 +434,9 @@ class Author
         }
 		return \apply_filters( 'authorship/author/get_avatar', $avatar, $this->id, $this->type, $size, $context );
 	}
-	public function get_gravatar ( $mail, $attr, $settings = array() )
+	public function get_gravatar ( $mail, $attr, $options = array() )
 	{
-        if ( empty( $settings ) ) $settings = \molongui_get_plugin_settings( MOLONGUI_AUTHORSHIP_PREFIX, array( 'main', 'box' ) );
+        if ( empty( $options ) ) $options = \authorship_get_options();
         $attr['force_display'] = true;
         $size  = \get_option( 'thumbnail_size_w', 96 );
         $has_w = !empty( $attr['width'] );
@@ -411,9 +446,9 @@ class Author
         elseif (  $has_w and !$has_h ) $size = $attr['width'];
         elseif ( !$has_w and  $has_h ) $size = $attr['height'];
         $attr['extra_attr']  = '';
-        $attr['extra_attr'] .= 'style = "border-color:'.$settings['avatar_border_color'].';"';
+        $attr['extra_attr'] .= 'style = "border-color:' . $options['avatar_border_color'].';"';
         if ( \authorship_is_feature_enabled( 'microdata' ) ) $attr['extra_attr'] .= 'itemprop = "image"';
-        $default = $settings['avatar_default_gravatar'];
+        $default = $options['avatar_default_gravatar'];
         if ( $default == 'random' )
         {
             $defaults = array( 'mp', 'identicon', 'monsterid', 'wavatar', 'retro', 'robohash', 'blank' );
@@ -424,12 +459,12 @@ class Author
         \remove_filter( 'authorship/get_avatar_data/skip', '__return_true' );
 		return ( !$gravatar ? '' : $gravatar );
 	}
-	public function get_acronym ( $name, $settings = array() )
+	public function get_acronym ( $name, $options = array() )
 	{
 		if ( empty( $name ) ) return '';
-		if ( empty( $settings ) ) $settings = \molongui_get_plugin_settings( MOLONGUI_AUTHORSHIP_PREFIX, array( 'box' ) );
+		if ( empty( $options ) ) $options = \authorship_get_options();
 		$html  = '';
-		$html .= '<div data-avatar-type="acronym" class="m-radius-'.$settings['avatar_style'] . ' molongui-border-style-'.$settings['avatar_border_style'] . ' molongui-border-width-'.$settings['avatar_border_width'].'-px' . ' acronym-container" style="width:'.$settings['avatar_width'].'px; height:'.$settings['avatar_height'].'px; background:'.$settings['avatar_bg_color'].'; color:'.$settings['avatar_text_color'].';">';
+		$html .= '<div data-avatar-type="acronym" class="m-radius-' . $options['avatar_style'] . ' molongui-border-style-' . $options['avatar_border_style'] . ' molongui-border-width-' . $options['avatar_border_width'].'-px' . ' acronym-container" style="width:' . $options['avatar_width'].'px; height:' . $options['avatar_height'].'px; background:' . $options['avatar_bg_color'].'; color:' . $options['avatar_text_color'].';">';
 		$html .= '<div class="molongui-vertical-aligned">';
 		$html .= \molongui_get_acronym( $name );
 		$html .= '</div>';
@@ -459,6 +494,8 @@ class Author
         $data['company_link']      = $this->get_meta( 'company_link' );
         $data['bio']               = $this->get_bio();
         $data['post_count']        = $this->get_post_count();
+        $data['user_roles']        = $this->get_user_roles();
+        $data['user_login']        = $this->get_user_login();
         $data['box']               = $this->get_meta( 'box_display' );
         $data['show_meta_mail']    = $this->get_meta( 'show_meta_mail' );
         $data['show_meta_phone']   = $this->get_meta( 'show_meta_phone' );
@@ -472,7 +509,9 @@ class Author
     }
     function get_posts_count( $post_type = 'post' )
     {
-        $count = \count( $this->get_posts( array( 'fields' => 'ids', 'post_type' => $post_type, 'post_status' => array( 'publish', 'private' ) ) ) );
+        $post_status = authorship_post_status( $post_type );
+
+        $count = \count( $this->get_posts( array( 'fields' => 'ids', 'post_type' => $post_type, 'post_status' => $post_status ) ) );
         return \apply_filters( 'authorship/author/posts_count', $count, $this->id, $this->type, $post_type );
     }
     public function get_posts( $args = null )
@@ -510,11 +549,11 @@ class Author
             break;
 
             case 'related':
-                $opt                           = \get_option( MOLONGUI_AUTHORSHIP_BOX_SETTINGS );
-                $parsed_args['post_type']      = \explode( ",", $opt['related_post_types'] );
-                $parsed_args['posts_per_page'] = $opt['related_items'];
-                $parsed_args['orderby']        = $opt['related_orderby'];
-                $parsed_args['order']          = $opt['related_order'];
+                $options                       = \authorship_get_options();
+                $parsed_args['post_type']      = \explode( ",", $options['related_post_types'] );
+                $parsed_args['posts_per_page'] = $options['related_items'];
+                $parsed_args['orderby']        = $options['related_orderby'];
+                $parsed_args['order']          = $options['related_order'];
 
             break;
         }

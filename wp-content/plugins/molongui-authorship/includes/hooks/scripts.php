@@ -16,13 +16,13 @@ function authorship_enqueue_front_scripts()
 add_action( 'wp_enqueue_scripts', 'authorship_enqueue_front_scripts' );
 function authorship_front_script_params()
 {
-    $settings = get_option( MOLONGUI_AUTHORSHIP_BYLINE_SETTINGS );
+    $options = authorship_get_options();
     $params   = array
     (
-        'byline_prefix'         => ( !empty( $settings['byline_prefix'] ) ? $settings['byline_prefix'] : '' ),
-        'byline_suffix'         => ( !empty( $settings['byline_suffix'] ) ? $settings['byline_suffix'] : '' ),
-        'byline_separator'      => ( !empty( $settings['byline_multiauthor_separator'] ) ? $settings['byline_multiauthor_separator'].' ' : ', ' ),
-        'byline_last_separator' => ( !empty( $settings['byline_multiauthor_last_separator'] ) ? ' '.$settings['byline_multiauthor_last_separator'].' ' : ' '.__( "and", 'molongui-authorship' )." " ),
+        'byline_prefix'         => ( !empty( $options['byline_prefix'] ) ? $options['byline_prefix'] : '' ),
+        'byline_suffix'         => ( !empty( $options['byline_suffix'] ) ? $options['byline_suffix'] : '' ),
+        'byline_separator'      => ( !empty( $options['byline_multiauthor_separator'] ) ? $options['byline_multiauthor_separator'].' ' : ', ' ),
+        'byline_last_separator' => ( !empty( $options['byline_multiauthor_last_separator'] ) ? ' '.$options['byline_multiauthor_last_separator'].' ' : ' '.__( "and", 'molongui-authorship' )." " ),
         'byline_link_title'     => __( "View all posts by", 'molongui-authorship' ),
         'byline_dom_tree'       => apply_filters( 'authorship/byline/dom_tree', '' ),
     );

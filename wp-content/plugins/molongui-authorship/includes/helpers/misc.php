@@ -3,20 +3,20 @@ defined( 'ABSPATH' ) or exit;
 function authorship_is_feature_enabled( $feature = null )
 {
     if ( empty( $feature ) ) return false;
-    $settings = molongui_get_plugin_settings( MOLONGUI_AUTHORSHIP_PREFIX, array( 'main', 'box', 'byline', 'seo', 'compat' ) );
+    $options = authorship_get_options();
 
     $features = array
     (
+        'box'           => 'author_box',
         'multi'         => 'enable_multi_authors',
-        'guest'         => 'enable_guest_authors',
-        'box'           => 'enable_author_boxes',
+        'guest'         => 'guest_authors',
         'avatar'        => 'enable_local_avatars',
         'user_profile'  => 'enable_user_profiles',
         'author_search' => 'enable_search_by_author',
         'guest_search'  => 'enable_guests_in_search',
         'cache'         => 'enable_cache',
         'box_styles'    => 'enable_author_box_styles',
-        'microdata'     => 'enable_author_box_schema',
+        'microdata'     => 'box_schema',
         'byline_tags'   => 'enable_byline_template_tags',
         'theme_compat'  => 'enable_theme_compat',
         'plugin_compat' => 'enable_plugin_compat',
@@ -24,7 +24,7 @@ function authorship_is_feature_enabled( $feature = null )
         'guest_in_api'  => 'enable_guests_in_api',
     );
 
-    return !empty( $settings[$features[$feature]] );
+    return !empty( $options[$features[$feature]] );
 }
 function authorship_byline_takeover()
 {
@@ -37,7 +37,7 @@ function authorship_get_social_networks( $query = 'all', $networks = array() )
     if ( empty( $networks ) ) return $sn;
     if ( 'all' !== $query )
     {
-        $options = get_option( MOLONGUI_AUTHORSHIP_MAIN_SETTINGS );
+        $options = authorship_get_options();
         if ( empty( $options ) or !isset( $options['social_networks'] ) ) return $sn;
         $config = explode( ",", $options['social_networks'] );
     }

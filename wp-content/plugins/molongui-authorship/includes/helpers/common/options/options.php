@@ -2,6 +2,24 @@
 defined( 'ABSPATH' ) or exit;
 function authorship_get_options()
 {
+    $options = (array) get_option( MOLONGUI_AUTHORSHIP_PREFIX.'_options', array() );
+
+    if ( empty( $options ) ) $options = authorship_get_defaults();
+
+    return $options;
+}
+function authorship_get_defaults()
+{
+    return apply_filters( 'authorship/default_options', array() );
+}
+function authorship_add_defaults()
+{
+    $options  = authorship_get_options();
+    $defaults = authorship_get_defaults();
+    update_option( MOLONGUI_AUTHORSHIP_PREFIX.'_options', array_merge( $defaults, $options ) );
+}
+function authorship_get_config()
+{
     global $wpdb;
     $entries = $wpdb->get_results
     (
@@ -14,29 +32,6 @@ function authorship_get_options()
         $options = array();
         foreach ( $entries as $entry ) $options[$entry['option_name']] = maybe_unserialize( $entry['option_value'] );
     }
-    return ( empty( $options ) ) ? false : $options;
-}
-function authorship_merge_options( $array )
-{
-    $merged = array();
-    foreach ( $array as $key => $value )
-    {
-        $defaults = call_user_func( MOLONGUI_AUTHORSHIP_PREFIX.'_get_default_settings' );
 
-        $default_key = str_replace( MOLONGUI_AUTHORSHIP_PREFIX.'_', '', $key );
-        if ( is_array( $value ) and !empty( $defaults[$default_key] ) )
-        {
-            $merged[$key] = array_merge( $defaults[$default_key], $array[$key] );
-        }
-        else
-        {
-            $merged[$key] = $value;
-        }
-        unset( $defaults[$default_key] );
-    }
-    foreach ( $defaults as $key => $value )
-    {
-        $merged[MOLONGUI_AUTHORSHIP_PREFIX.'_'.$key] = $value;
-    }
-    return $merged;
+    return empty( $options ) ? false : $options;
 }

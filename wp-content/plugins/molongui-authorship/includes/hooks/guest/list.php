@@ -42,15 +42,30 @@ function authorship_guest_fill_list_columns( $column, $ID )
     }
     elseif ( $column == 'guestDisplayBox' )
     {
-        $settings = get_option( MOLONGUI_AUTHORSHIP_BOX_SETTINGS );
-
         $value = $author->get_meta( 'box_display' );
-        $icon  = ( empty( $value ) or $value == 'default' ) ? ( 'hide' === $settings['display'] ? 'hidden' : 'visibility' ) : ( 'hide' === $value ? 'hidden' : 'visibility' );
+
+        switch ( $value )
+        {
+            case 'show':
+                $icon = 'visibility';
+                $tip  = __( "Visible", 'molongui-authorship' );
+            break;
+
+            case 'hide':
+                $icon = 'hidden';
+                $tip  = __( "Hidden", 'molongui-authorship' );
+            break;
+
+            default:
+                $icon = 'admin-generic';
+                $tip  = __( "Visibility depends on global plugin settings", 'molongui-authorship' );
+            break;
+        }
 
         $html  = '<div id="box_display_'.$ID.'" data-display-box="'.$value.'">';
         $html .= '<div class="m-tooltip">';
         $html .= '<span class="dashicons dashicons-'.$icon.'"></span>';
-        $html .= '<span class="m-tooltip__text m-tooltip__top m-tooltip__w50">'.( $icon == 'visibility' ? __( "Show", 'molongui-authorship' ) : __( "Hide", 'molongui-authorship' ) ).'</span>';
+        $html .= '<span class="m-tooltip__text m-tooltip__top m-tooltip__w100">'.$tip.'</span>';
         $html .= '</div>';
         $html .= '</div>';
 

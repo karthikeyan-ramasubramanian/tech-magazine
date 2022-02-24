@@ -52,15 +52,20 @@ add_filter( 'jnews_default_query_args', function( $args )
 {
     global $wp_query;
     if ( is_admin() or !$wp_query->is_main_query() ) return $args;
+    if ( empty( $wp_query->get( 'meta_query' ) ) ) return $args;
     $dbt = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 15 );
-    if ( ( $wp_query->is_author() or array_key_exists( 'guest-author-name', $wp_query->query_vars ) )
-         and
-         isset( $dbt[9]['function'] ) and $dbt[9]['function'] == "render_content" and isset( $dbt[9]['class'] ) and $dbt[9]['class'] == "JNews\Archive\AuthorArchive"
-    )
+    if ( is_author() or is_guest_author() )
     {
-        unset( $args['author__in'] );
-        $args['meta_query'] = $wp_query->get( 'meta_query' );
+        $fn    = 'render_content';
+        $class = 'JNews\Archive\AuthorArchive';
+
+        if ( $key = array_search( $fn, array_column( $dbt, 'function' ) ) and isset( $dbt[$key]['class'] ) and ( $dbt[$key]['class'] == $class ) )
+        {
+            if ( is_guest_author() ) unset( $args['author__in'] );
+            $args['meta_query'] = $wp_query->get( 'meta_query' );
+        }
     }
+
     return $args;
 }, 99, 1 );
 add_filter( 'molongui_authorship_dont_filter_the_author_display_name', function( $default, $display_name, $user_id, $original_user_id, $post, $dbt )

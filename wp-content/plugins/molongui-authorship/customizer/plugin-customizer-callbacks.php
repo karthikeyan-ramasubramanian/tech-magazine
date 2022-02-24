@@ -42,11 +42,11 @@ function molongui_authorship_sanitize_setting( $input, $setting )
 			else return $input;
 			return implode(',', $input_values );
 		}
-		$box = get_option( MOLONGUI_AUTHORSHIP_BOX_SETTINGS );
+		$options = authorship_get_options();
 		preg_match('/\[(.*?)\]/', $setting->id, $setting_name);
-		if ( !empty( $box[$setting_name[1]] ) )
+		if ( !empty( $options[$setting_name[1]] ) )
 		{
-			if ( in_array( $box[$setting_name[1]], $accepted ) ) return $box[$setting_name[1]];
+			if ( in_array( $options[$setting_name[1]], $accepted ) ) return $options[$setting_name[1]];
 		}
 		return $setting->default ;
 	}
@@ -70,41 +70,41 @@ function molongui_authorship_sanitize_checkbox( $input, $setting )
 }
 function molongui_get_customizer_setting( $control, $setting, $value )
 {
-    if ( null !== $control->manager->get_setting('molongui_authorship_box['.$setting.']') )
+    if ( null !== $control->manager->get_setting('molongui_authorship_options['.$setting.']') )
     {
-        return $control->manager->get_setting('molongui_authorship_box['.$setting.']')->value() == $value;
+        return $control->manager->get_setting('molongui_authorship_options['.$setting.']')->value() == $value;
     }
     else return false;
 }
 function molongui_active_ribbon_layout_setting( $control )
 {
-    if ( null !== $control->manager->get_setting('molongui_authorship_box[profile_layout]') )
+    if ( null !== $control->manager->get_setting('molongui_authorship_options[profile_layout]') )
     {
-        $layout = $control->manager->get_setting('molongui_authorship_box[profile_layout]')->value();
+        $layout = $control->manager->get_setting('molongui_authorship_options[profile_layout]')->value();
         return ( ( $layout == 'layout-7' or $layout == 'layout-8' ) ? true : false );
     }
     else return false;
 }
 function molongui_active_ribbon_border_setting( $control )
 {
-	return ( $control->manager->get_setting('molongui_authorship_box[bottom_border_style]')->value() == 'none' ? false : true );
+	return ( $control->manager->get_setting('molongui_authorship_options[bottom_border_style]')->value() == 'none' ? false : true );
 }
 function molongui_active_headline_setting( $control )
 {
-    if ( null !== $control->manager->get_setting('molongui_authorship_box[show_headline]') and null !== $control->manager->get_setting('molongui_authorship_box[layout]') )
+    if ( null !== $control->manager->get_setting('molongui_authorship_options[show_headline]') and null !== $control->manager->get_setting('molongui_authorship_options[layout]') )
     {
-        return ( ( $control->manager->get_setting('molongui_authorship_box[show_headline]')->value() != '1' or $control->manager->get_setting('molongui_authorship_box[layout]')->value() == 'template-3' ) ? false : true );
+        return ( ( $control->manager->get_setting('molongui_authorship_options[show_headline]')->value() != '1' or $control->manager->get_setting('molongui_authorship_options[layout]')->value() == 'template-3' ) ? false : true );
     }
     else return false;
 }
 function molongui_active_tabs_border_setting( $control )
 {
-	return ( $control->manager->get_setting('molongui_authorship_box[tabs_border]')->value() == 'none' ? false : true );
+	return ( $control->manager->get_setting('molongui_authorship_options[tabs_border]')->value() == 'none' ? false : true );
 }
 function molongui_active_tabs_border_color_setting( $control )
 {
-	$box_border  = $control->manager->get_setting('molongui_authorship_box[box_border]')->value();
-	$tab_border  = $control->manager->get_setting('molongui_authorship_box[tabs_border]')->value();
+	$box_border  = $control->manager->get_setting('molongui_authorship_options[box_border]')->value();
+	$tab_border  = $control->manager->get_setting('molongui_authorship_options[tabs_border]')->value();
 
 	$box_borders = array( 'all', 'horizontals', 'top' );
 	$tab_borders = array( 'none', 'around' );
@@ -113,8 +113,8 @@ function molongui_active_tabs_border_color_setting( $control )
 }
 function molongui_active_tabs_border_style_width_setting( $control )
 {
-	$box_border  = $control->manager->get_setting('molongui_authorship_box[box_border]')->value();
-	$tab_border  = $control->manager->get_setting('molongui_authorship_box[tabs_border]')->value();
+	$box_border  = $control->manager->get_setting('molongui_authorship_options[box_border]')->value();
+	$tab_border  = $control->manager->get_setting('molongui_authorship_options[tabs_border]')->value();
 
 	$box_borders = array( 'all', 'horizontals', 'top' );
 	$tab_borders = array( 'none', 'around', 'bottom' );
@@ -123,26 +123,26 @@ function molongui_active_tabs_border_style_width_setting( $control )
 }
 function molongui_active_tabs_background_setting( $control )
 {
-    if ( null !== $control->manager->get_setting('molongui_authorship_box[tabs_position]') )
+    if ( null !== $control->manager->get_setting('molongui_authorship_options[tabs_position]') )
     {
-        return ( $control->manager->get_setting('molongui_authorship_box[tabs_position]')->value() == 'top-full' ? false : true );
+        return ( $control->manager->get_setting('molongui_authorship_options[tabs_position]')->value() == 'top-full' ? false : true );
     }
     else return false;
 }
 function molongui_active_icons_setting( $control )
 {
-    if ( null !== $control->manager->get_setting('molongui_authorship_box[show_icons]') )
+    if ( null !== $control->manager->get_setting('molongui_authorship_options[show_icons]') )
     {
-        return ( $control->manager->get_setting('molongui_authorship_box[show_icons]')->value() == '1' ? true : false );
+        return ( $control->manager->get_setting('molongui_authorship_options[show_icons]')->value() == '1' ? true : false );
     }
     else return false;
 }
 function molongui_active_icons_color_setting( $control )
 {
-    if ( null !== $control->manager->get_setting('molongui_authorship_box[icons_style]') and null !== $control->manager->get_setting('molongui_authorship_box[show_icons]') )
+    if ( null !== $control->manager->get_setting('molongui_authorship_options[icons_style]') and null !== $control->manager->get_setting('molongui_authorship_options[show_icons]') )
     {
         $no_color_styles = array( 'branded', 'branded-boxed', 'branded-squared-reverse', 'branded-circled-reverse' );
-        return ( ( in_array( $control->manager->get_setting('molongui_authorship_box[icons_style]')->value(), $no_color_styles ) or $control->manager->get_setting('molongui_authorship_box[show_icons]')->value() != '1' ) ? false : true );
+        return ( ( in_array( $control->manager->get_setting('molongui_authorship_options[icons_style]')->value(), $no_color_styles ) or $control->manager->get_setting('molongui_authorship_options[show_icons]')->value() != '1' ) ? false : true );
     }
     else return false;
 }

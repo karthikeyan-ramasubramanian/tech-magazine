@@ -207,9 +207,19 @@ if ( !function_exists( 'molongui_get_authors' ) )
 {
     function molongui_get_authors( $type = 'authors', $include_users = array(), $exclude_users = array(), $include_guests = array(), $exclude_guests = array(), $order = 'ASC', $orderby = 'name', $get_data = false, $with_posts = false, $post_types = array( 'post' ) )
     {
-        $authors  = array();
-        $settings = get_option( MOLONGUI_AUTHORSHIP_MAIN_SETTINGS );
-        if ( isset( $orderby ) and $orderby == 'post_count' ) $with_posts = true;
+        $authors = array();
+        $options = authorship_get_options();
+        if ( !empty( $orderby ) )
+        {
+            if ( 'post_count' === $orderby )
+            {
+                $with_posts = true;
+            }
+            elseif ( 'id' === $orderby )
+            {
+                $orderby = 'ID';
+            }
+        }
         if ( $with_posts ) $get_data = true;
         if ( $type == 'authors' or $type == 'users' )
         {
@@ -244,7 +254,7 @@ if ( !function_exists( 'molongui_get_authors' ) )
                 foreach ( $users as $user ) $authors[] = array( 'id' => $user->ID, 'type' => 'user', 'ref' => 'user-'.$user->ID, 'name' => $user->display_name );
             }
         }
-        if ( ( $type == 'authors' or $type == 'guests' ) and !empty( $settings['enable_guest_authors'] ) )
+        if ( ( $type == 'authors' or $type == 'guests' ) and !empty( $options['guest_authors'] ) )
         {
             if ( isset( $orderby ) and $orderby == 'include' ) $orderby = 'post__in';
             $guests = molongui_get_guests( array( 'post__in' => $include_guests, 'post__not_in' => $exclude_guests, 'order' => $order, 'orderby' => $orderby ) ); // Array of stdClass objects.
@@ -272,11 +282,19 @@ if ( !function_exists( 'molongui_get_authors' ) )
             }
         }
         if ( in_array( $orderby, array( 'include', 'post__in' ) ) ) return $authors;
-        if ( $orderby == 'post_count' )
+        if ( 'post_count' === $orderby )
         {
             usort( $authors, function ( $a, $b ) use ( $orderby, $post_types )
             {
                 return $a[$orderby][$post_types[0]] - $b[$orderby][$post_types[0]];
+            });
+        }
+        elseif ( 'ID' === $orderby )
+        {
+            $key = 'id';
+            usort( $authors, function ( $a, $b ) use ( $key )
+            {
+                return $a[$key] - $b[$key];
             });
         }
         else
@@ -320,4 +338,8 @@ if ( !function_exists( 'authorship_get_archived_guests' ) )
 
         return $archived_guests;
     }
+}
+function authorship_decode_author_ref( $post_id )
+{
+
 }

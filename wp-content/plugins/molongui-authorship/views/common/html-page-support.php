@@ -70,9 +70,7 @@ defined( 'ABSPATH' ) or exit;
                         <select name="plugin" required>
                             <option value="">---</option>
                             <option value="Molongui Authorship">Molongui Authorship</option>
-                            <option value="Molongui Authorship Pro">Molongui Authorship Pro</option>
                             <option value="Molongui Deals, Sales Promotions and Upsells for WooCommerce">Molongui Deals, Sales Promotions and Upsells for WooCommerce</option>
-                            <option value="Molongui Deals, Sales Promotions and Upsells Pro">Molongui Deals, Sales Promotions and Upsells Pro</option>
                         </select>
                     </p>
                     <p>
@@ -186,6 +184,13 @@ defined( 'ABSPATH' ) or exit;
         ),
     );
     include 'parts/html-part-footer.php';
+
     ?>
 
 </div><!-- !molongui-page-support -->
+
+<?php
+
+authorship_enqueue_common_options_styles();
+authorship_enqueue_support_styles();
+authorship_enqueue_support_scripts();

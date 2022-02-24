@@ -4,6 +4,70 @@ namespace Molongui\Authorship\Includes;
 \defined( 'ABSPATH' ) or exit;
 class DB_Update
 {
+    public function db_update_19()
+    {
+        $main     = \get_option( 'molongui_authorship_main' );
+        $box      = \get_option( 'molongui_authorship_box' );
+        $byline   = \get_option( 'molongui_authorship_byline' );
+        $archives = \get_option( 'molongui_authorship_archives' );
+        $seo      = \get_option( 'molongui_authorship_seo' );
+        $compat   = \get_option( 'molongui_authorship_compat' );
+        $options  = \array_merge( $main, $box, $byline, $archives, $seo, $compat );
+        $options['author_box'] = $options['enable_author_boxes'];
+        $options['guest_authors'] = $options['enable_guest_authors'];
+        $options['guest_pages'] = $options['guest_archive_enabled'];
+        $options['guests_menu_level'] = $options['guest_menu_item_level'];
+        $options['box_hook_priority'] = $options['order'];
+        $options['box_layout_multiauthor'] = $options['multiauthor_box_layout'];
+        $options['box_layout'] = $options['layout'];
+        $options['box_schema'] = $options['enable_author_box_schema'];
+        switch( $options['display'] )
+        {
+            case 'posts':
+                $options['box_post_types_auto']   = 'post';
+                $options['box_post_types_manual'] = '';
+                break;
+            case 'pages':
+                $options['box_post_types_auto']   = 'page';
+                $options['box_post_types_manual'] = '';
+                break;
+            case 'show':
+                $options['box_post_types_auto']   = $options['post_types'];
+                $options['box_post_types_manual'] = '';
+                break;
+            case 'hide':
+                $options['box_post_types_auto']   = '';
+                $options['box_post_types_manual'] = $options['post_types'];
+                break;
+        }
+        $options['guests_menu']         = ( 'top' === $options['guests_menu_level'] ? false : true );
+        $options['authors_menu']        = true;
+        $options['molongui_menu']       = false; // Actually not necessary if set to 'false'
+        $options['posts_submenu']       = true;
+        $options['settings_submenu']    = true;
+        $options['appearance_submenu']  = true;
+        $options['assets_cdn']          = true;
+        unset( $options['enable_author_boxes'] );
+        unset( $options['enable_guest_authors'] );
+        unset( $options['guest_archive_enabled'] );
+        unset( $options['display'] );
+        unset( $options['guest_menu_item_level'] );
+        unset( $options['order'] );
+        unset( $options['multiauthor_box_layout'] );
+        unset( $options['layout'] );
+        unset( $options['enable_author_box_schema'] );
+        \update_option( 'molongui_authorship_options', $options );
+        \delete_option( 'molongui_authorship_main' );
+        \delete_option( 'molongui_authorship_box' );
+        \delete_option( 'molongui_authorship_byline' );
+        \delete_option( 'molongui_authorship_archives' );
+        \delete_option( 'molongui_authorship_seo' );
+        \delete_option( 'molongui_authorship_compat' );
+        if ( $options['guest_authors'] or $options['enable_multi_authors'] )
+        {
+            \add_option( 'molongui_authorship_update_post_authors', true );
+        }
+    }
     public function db_update_18()
     {
         $strings = \get_option( 'molongui_authorship_strings' );

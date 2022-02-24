@@ -93,9 +93,9 @@ add_filter( 'authorship/author/post_count', 'authorship_deprecated_filter_get_po
 function authorship_deprecated_filter_link_guest( $value, $guest_id )
 {
     $author = new Author( $guest_id, 'guest' );
-    $opt = get_option( MOLONGUI_AUTHORSHIP_ARCHIVES_SETTINGS );
+    $options = authorship_get_options();
 
-    return apply_filters_deprecated( 'authorship/filter/link/guest', array( $value, $guest_id, 'guest', $author, $opt ), '4.2.0', 'authorship/author/url' );
+    return apply_filters_deprecated( 'authorship/filter/link/guest', array( $value, $guest_id, 'guest', $author, $options ), '4.2.0', 'authorship/author/url' );
 }
 add_filter( 'authorship/author/url', 'authorship_deprecated_filter_link_guest', 0, 2 );
 function authorship_deprecated_filter_avatar_skip( $value, $args, $dbt )

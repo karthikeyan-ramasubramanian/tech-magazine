@@ -8,6 +8,7 @@ if ( !\class_exists('Molongui\Authorship\Includes\Libraries\Common\Option') )
     {
         public $_saved;
         public $_tab;
+        public $_group;
         public $_data;
         public $_type;
         public $_id;
@@ -31,10 +32,11 @@ if ( !\class_exists('Molongui\Authorship\Includes\Libraries\Common\Option') )
         public $_upload_title;
         public $_upload_button;
         public $_options_prefix;
-        public function __construct( $tab = '', $data = null, $prefix = 'molongui' )
+        public function __construct( $data = null, $group, $key = '', $prefix = 'molongui' )
         {
-            $this->_saved = \get_option( $tab );
-            $this->_tab 			= $tab;
+            if ( empty( $key ) ) $key = MOLONGUI_AUTHORSHIP_PREFIX.'_options';
+            $this->_saved = (array) \get_option( $key, array() );
+            $this->_group			= $group;
             $this->_data 			= $data;
             $this->_type			= $data['type'];
 
@@ -61,7 +63,7 @@ if ( !\class_exists('Molongui\Authorship\Includes\Libraries\Common\Option') )
             $this->_link            = ( isset( $data['link'] ) ) ? $data['link'] : '';
             $this->_upload_title 	= __( "Insert ", 'molongui-authorship' ) . $this->_name;
             $this->_upload_button	= __( "Choose as ", 'molongui-authorship' ) . $this->_name;
-            $this->_options_prefix	= $prefix;
+$this->_options_prefix	= $prefix;
         }
         private function _help()
         {
@@ -116,19 +118,25 @@ if ( !\class_exists('Molongui\Authorship\Includes\Libraries\Common\Option') )
         }
         private function prepend()
         {
-            $help = $this->_help();
+            $help  = $this->_help();
+            $group = empty( $this->_group ) ? '' : ' data-m-group="'.$this->_group.'"';
+            $deps  = empty( $this->_data['deps'] ) ? ' data-m-deps="1"' : ' data-deps="'.$this->_data['deps'].'" data-m-deps="1"';
+            $hide  = empty( $this->_data['advanced'] ) ? '' : ' data-m-option="advanced" data-m-hide="1" style="display: none;"';
 
-            $html  = '<div class="m-card"'. ( !empty( $this->_data['deps'] ) ? ' data-deps="'.$this->_data['deps'].'"'  : '' ) . ' >';
+            $html  = '<div class="m-card '. ( empty( $this->_data['class'] ) ? '' : $this->_data['class'] ).'"'. $group . $deps . $hide . ' >';
             $html .= $help;
             $html .= !empty( $this->_data['title'] ) ? '<div class="m-option-title">'.$this->_data['title'].'</div>'  : '';
             $html .= !empty( $this->_data['desc']  ) ? '<p class="m-option-description">'.$this->_data['desc'].'</p>' : '';
-            $html .= '<div class="m-option">';
+
+            $class = empty( $this->_data['notice'] ) ? '' : ' has-notice';
+            $html .= '<div class="m-option' . $class . '">';
 
             return $html;
         }
         private function append()
         {
             $html  = '';
+            $html .= empty( $this->_data['notice'] ) ? '' : '<div class="m-option-notice">'.$this->_data['notice'].'</div>';
             $html .= '</div>'; // Close .m-option
             $html .= '</div>'; // Close .m-card
 
@@ -148,7 +156,6 @@ if ( !\class_exists('Molongui\Authorship\Includes\Libraries\Common\Option') )
                 case 'radio-text':      return $this->radio_text();      break;
                 case 'number':          return $this->number();          break;
                 case 'inline-number':   return $this->inline_number();   break;
-                case 'slider':          return $this->slider();          break;
                 case 'button':          return $this->button();          break;
                 case 'export':          return $this->export();          break;
                 case 'header':          return $this->header();          break;
@@ -159,6 +166,7 @@ if ( !\class_exists('Molongui\Authorship\Includes\Libraries\Common\Option') )
                 case 'inline-dropdown': return $this->inline_dropdown(); break;
                 case 'banner':          return $this->banner();          break;
                 case 'select_wp_page':  return $this->select_wp_page();  break;
+                case 'unveil':          return $this->unveil();          break;
                 default	:               return '';
             }
         }
@@ -169,7 +177,6 @@ if ( !\class_exists('Molongui\Authorship\Includes\Libraries\Common\Option') )
         private function header()
         {
             $output = '';
-            $button = ( empty( $this->_data['button'] ) or !$this->_data['button']['display'] ) ? false : true;
 
             \ob_start();
             ?>
@@ -177,26 +184,34 @@ if ( !\class_exists('Molongui\Authorship\Includes\Libraries\Common\Option') )
                 <div class="m-card-header__label">
                     <span class="m-card-header__label-text"><?php echo $this->_data['label']; ?></span>
                 </div>
-                <?php if ( $button ) : ?>
+                <?php if ( !empty( $this->_data['buttons'] ) ) : ?>
                     <div class="m-card-header__actions">
-                        <?php switch ( $this->_data['button']['type'] ) :
-                            case 'input': ?>
-                                <input type="file" <?php echo empty( $this->_data['button']['id'] ) ? '' : 'id="'.$this->_data['button']['id'].'" name="'.$this->_data['button']['id'].'"'; ?> class="m-file-upload" accept="<?php echo $this->_data['button']['accept']; ?>" data-multiple-caption="{count} files selected" <?php echo ( $this->_data['button']['multi'] ? 'multiple' : '' ); ?> />
-                                <label for="<?php echo empty( $this->_data['button']['id'] ) ? '' : $this->_data['button']['id']; ?>" class="m-button is-compact <?php echo $this->_data['button']['class']; ?>"><?php echo $this->_data['button']['label']; ?></label>
+                        <?php foreach ( $this->_data['buttons'] as $button ) :
+                            if ( !$button['display'] ) continue;
+                            switch ( $button['type'] ) :
+                                case 'input': ?>
+                                    <input type="file" <?php echo empty( $button['id'] ) ? '' : 'id="'.$button['id'].'" name="'.$button['id'].'"'; ?> class="m-file-upload" accept="<?php echo $button['accept']; ?>" data-multiple-caption="{count} files selected" <?php echo ( $button['multi'] ? 'multiple' : '' ); ?> />
+                                    <label for="<?php echo empty( $button['id'] ) ? '' : $button['id']; ?>" class="m-button is-compact <?php echo $button['class']; ?>"><?php echo $button['label']; ?></label>
                                 <?php break; ?>
-                            <?php case 'download': ?>
-                                <button type="submit" <?php echo empty( $this->_data['button']['id'] ) ? '' : 'id="'.$this->_data['button']['id'].'"'; ?> <?php echo empty( $this->_data['button']['disabled'] ) ? '' : 'disabled=""'; ?> class="m-button is-compact <?php echo $this->_data['button']['class']; ?>"><?php echo $this->_data['button']['label']; ?></button>
+                                <?php case 'download': ?>
+                                    <button type="submit" <?php echo empty( $button['id'] ) ? '' : 'id="'.$button['id'].'"'; ?> <?php echo empty( $button['disabled'] ) ? '' : 'disabled=""'; ?> class="m-button is-compact <?php echo $button['class']; ?>" title="<?php echo $button['title']; ?>"><?php echo $button['label']; ?></button>
                                 <?php break; ?>
-                            <?php case 'action': ?>
-                                <button type="submit" <?php echo empty( $this->_data['button']['id'] ) ? '' : 'id="'.$this->_data['button']['id'].'"'; ?> <?php echo empty( $this->_data['button']['disabled'] ) ? '' : 'disabled=""'; ?> class="m-button is-compact <?php echo $this->_data['button']['class']; ?>"><?php echo $this->_data['button']['label']; ?></button>
+                                <?php case 'action': ?>
+                                    <button type="submit" <?php echo empty( $button['id'] ) ? '' : 'id="'.$button['id'].'"'; ?> <?php echo empty( $button['disabled'] ) ? '' : 'disabled=""'; ?> class="m-button is-compact <?php echo $button['class']; ?>" title="<?php echo $button['title']; ?>"><?php echo $button['label']; ?></button>
                                 <?php break; ?>
-                            <?php case 'link': ?>
-                                <button type="submit" <?php echo empty( $this->_data['button']['id'] ) ? '' : 'id="'.$this->_data['button']['id'].'"'; ?> <?php echo empty( $this->_data['button']['disabled'] ) ? '' : 'disabled=""'; ?> class="m-button is-compact <?php echo $this->_data['button']['class']; ?>"><?php echo $this->_data['button']['label']; ?></button>
+                                <?php case 'link': ?>
+                                    <a <?php echo empty( $button['id'] ) ? '' : 'id="'.$button['id'].'"'; ?> class="m-button is-secondary is-compact <?php echo $button['class']; ?>" href="<?php echo $button['href']; ?>" target="<?php echo empty( $button['target'] ) ? '_self' : $button['target']; ?>" title="<?php echo $button['title']; ?>" <?php echo empty( $button['disabled'] ) ? '' : 'disabled=""'; ?>>
+                                        <?php echo $button['label']; ?>
+                                    </a>
                                 <?php break; ?>
-                            <?php case 'save':default: ?>
-                                <button type="submit" <?php echo empty( $this->_data['button']['id'] ) ? '' : 'id="'.$this->_data['button']['id'].'"'; ?> <?php echo empty( $this->_data['button']['disabled'] ) ? '' : 'disabled=""'; ?> class="m-button m-button-save is-compact <?php echo $this->_data['button']['class']; ?>"><?php echo $this->_data['button']['label']; ?></button>
+                                <?php case 'advanced': ?>
+                                    <button type="" <?php echo empty( $button['id'] ) ? '' : 'id="'.$button['id'].'"'; ?> <?php echo empty( $button['disabled'] ) ? '' : 'disabled=""'; ?> class="m-button m-button-advanced is-secondary is-compact <?php echo $button['class']; ?>" title="<?php echo $button['title']; ?>" data-m-target="<?php echo str_replace( '_header', '', $this->_data['id'] ); ?>" data-m-state="hidding"><?php echo $button['label']; ?></button>
+                                    <?php break; ?>
+                                <?php case 'save':default: ?>
+                                    <button type="submit" <?php echo empty( $button['id'] ) ? '' : 'id="'.$button['id'].'"'; ?> <?php echo empty( $button['disabled'] ) ? '' : 'disabled=""'; ?> class="m-button m-button-save is-compact <?php echo $button['class']; ?>" title="<?php echo $button['title']; ?>"><?php echo $button['label']; ?></button>
                                 <?php break; ?>
                             <?php endswitch; ?>
+                        <?php endforeach; ?>
                     </div>
                 <?php endif; ?>
             </div>
@@ -210,7 +225,7 @@ if ( !\class_exists('Molongui\Authorship\Includes\Libraries\Common\Option') )
             $output = '';
             \ob_start();
             ?>
-            <a class="m-card is-card-link is-compact" <?php echo empty( $this->_data['id'] ) ? '' : 'id="'.$this->_data['id'].'"'; ?> href="<?php echo $this->_data['href']; ?>" target="<?php echo $this->_data['target']; ?>" title="<?php echo ( empty( $this->_data['help'] ) ? '' : $this->_data['help'] ); ?>" <?php echo ( empty ( $this->_data['deps'] ) ? '' : 'data-deps="'.$this->_data['deps'].'"' ); ?>>
+            <a class="m-card is-card-link is-compact <?php echo ( empty( $this->_data['class'] ) ? '' : $this->_data['class'] ); ?>" <?php echo empty( $this->_data['id'] ) ? '' : 'id="'.$this->_data['id'].'"'; ?> href="<?php echo $this->_data['href']; ?>" target="<?php echo $this->_data['target']; ?>" title="<?php echo ( empty( $this->_data['help'] ) ? '' : $this->_data['help'] ); ?>" <?php echo ( empty ( $this->_data['deps'] ) ? '' : 'data-deps="'.$this->_data['deps'].'"' ); ?>>
                 <svg class="gridicon gridicons-external m-card__link-indicator" height="24" width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M19 13v6c0 1.105-.895 2-2 2H5c-1.105 0-2-.895-2-2V7c0-1.105.895-2 2-2h6v2H5v12h12v-6h2zM13 3v2h4.586l-7.793 7.793 1.414 1.414L19 6.414V11h2V3h-8z"></path></g></svg>
                 <?php echo $this->_data['label']; ?>
             </a>
@@ -222,14 +237,19 @@ if ( !\class_exists('Molongui\Authorship\Includes\Libraries\Common\Option') )
         private function banner()
         {
             $output = '';
-            $title  = empty( $this->_data['title'] )  ? $this->_data['label'] : $this->_data['title'];
-            $desc   = empty( $this->_data['desc'] )   ? false : true;
-            $button = empty( $this->_data['button'] ) ? false : true;
-            $badge  = empty( $this->_data['badge'] )  ? __( "PRO", 'molongui-authorship' ) : $this->_data['badge'];
+            $group  = empty( $this->_group )            ? '' : ' data-m-group="'.$this->_group.'"';
+            $deps   = empty( $this->_data['deps'] )     ? ' data-m-deps="1"' : ' data-deps="'.$this->_data['deps'].'" data-m-deps="1"';
+            $hide   = empty( $this->_data['advanced'] ) ? '' : ' data-m-option="advanced" style="display: none;"';
+            $title  = empty( $this->_data['title'] )    ? $this->_data['label'] : $this->_data['title'];
+            $desc   = empty( $this->_data['desc'] )     ? false : true;
+            $button = empty( $this->_data['button'] )   ? false : true;
+            $badge  = empty( $this->_data['badge'] )    ? __( "PRO", 'molongui-authorship' ) : $this->_data['badge'];
 
             \ob_start();
             ?>
-            <div class="m-card m-banner <?php echo ( empty( $this->_data['class'] ) ? '' : $this->_data['class'] ); ?>" id="<?php echo $this->_data['id'].'_ad'; ?>" <?php echo ( empty ( $this->_data['deps'] ) ? '' : 'data-deps="'.$this->_data['deps'].'"' ); ?>>
+            <div class="m-card m-banner <?php echo ( empty( $this->_data['class'] ) ? '' : $this->_data['class'] ); ?>"
+                 id="<?php echo $this->_data['id'].'_ad'; ?>"
+                 <?php echo $group . $deps . $hide; ?>>
                 <div class="m-banner__icon-plan">
                     <div class="m-plan-icon">
                         <div class="m-plan-icon__text">
@@ -263,7 +283,7 @@ if ( !\class_exists('Molongui\Authorship\Includes\Libraries\Common\Option') )
             $help  = $this->_help();
 
             $output  = '';
-            $output .= '<div class="m-card"' . ( empty( $this->_data['id'] ) ? '' : 'id="'.$this->_data['id'].'"' ) . '>';
+            $output .= '<div class="m-card '. ( empty( $this->_data['class'] ) ? '' : $this->_data['class'] ) . '"' . ( empty( $this->_data['id'] ) ? '' : 'id="'.$this->_data['id'].'"' ) . '>';
             $output .= $help;
             $output .= !empty( $this->_data['title'] ) ? '<div class="m-option-title">'.$title.'</div>'  : '';
             $output .= !empty( $this->_data['desc']  ) ? '<p class="m-option-description">'.$this->_data['desc'].'</p>' : '';
@@ -276,7 +296,7 @@ if ( !\class_exists('Molongui\Authorship\Includes\Libraries\Common\Option') )
             $output  = $this->prepend();
 
             $output .= '<label for="'.$this->_id.'" class="custom-switch m-toggle '.$this->_data['class'].'">';
-            $output .= '<input type="checkbox" class="custom-switch-input" id="'.$this->_id.'" name="'.$this->_tab.'['.$this->_id.']" '.\checked( $this->_value, true, false ).'>';
+            $output .= '<input type="checkbox" class="custom-switch-input" id="'.$this->_id.'" name="'.$this->_id.'" '.\checked( $this->_value, true, false ).'>';
             $output .= '<span class="custom-switch-indicator"></span>';
             $output .= '<span class="custom-switch-description">'.$this->_data['label'].'</span>';
             $output .= '</label>';
@@ -295,7 +315,7 @@ if ( !\class_exists('Molongui\Authorship\Includes\Libraries\Common\Option') )
                 $value = ( ( isset( $toggle['id'] ) and isset( $this->_saved[$toggle['id']] ) ) ? \esc_html( $this->_saved[$toggle['id']] ) : $toggle['default'] );
 
                 $output .= '<label for="'.$toggle['id'].'" class="custom-switch m-toggle">';
-                $output .= '<input type="checkbox" class="custom-switch-input" id="'.$toggle['id'].'" name="'.$this->_tab.'['.$toggle['id'].']" '.\checked( $value, true, false ).'>';
+                $output .= '<input type="checkbox" class="custom-switch-input" id="'.$toggle['id'].'" name="'.$toggle['id'].'" '.\checked( $value, true, false ).'>';
                 $output .= '<span class="custom-switch-indicator"></span>';
                 $output .= '<span class="custom-switch-description">'.$toggle['label'].'</span>';
                 $output .= '</label>';
@@ -316,7 +336,7 @@ if ( !\class_exists('Molongui\Authorship\Includes\Libraries\Common\Option') )
             \ob_start();
             ?>
             <div class="ui dropdown selection fluid <?php echo $multi; ?> <?php echo $search; ?> <?php echo $this->_data['class']; ?>">
-                <input type="hidden" id="<?php echo $this->_id; ?>" name="<?php echo $this->_tab.'['.$this->_id.']'; ?>" value="<?php echo $value; ?>">
+                <input type="hidden" id="<?php echo $this->_id; ?>" name="<?php echo $this->_id; ?>" value="<?php echo $value; ?>">
                 <i class="dropdown icon"></i>
                 <div class="text default"><?php echo $this->_data['default']; ?></div>
                 <div class="menu">
@@ -329,7 +349,12 @@ if ( !\class_exists('Molongui\Authorship\Includes\Libraries\Common\Option') )
                     <?php foreach( $this->_data['options'] as $option ) : ?>
                         <div class="item <?php echo ( !empty( $option['disabled'] ) ? 'disabled' : '' ); ?>" data-value="<?php echo $option['id']; ?>">
                             <?php if ( !empty( $option['icon'] ) ) : ?><i class="<?php echo $option['icon']; ?>"></i><?php endif; ?>
-                            <?php echo $option['label']; ?>
+                            <?php if ( !empty( $option['disabled'] ) ) : ?>
+                                <span class="description is-pro"><?php _e( "PRO", 'molongui-authorship' ); ?></span>
+                                <span class="text"><?php echo $option['label']; ?></span>
+                            <?php else : ?>
+                                <?php echo $option['label']; ?>
+                            <?php endif; ?>
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -349,7 +374,14 @@ if ( !\class_exists('Molongui\Authorship\Includes\Libraries\Common\Option') )
             }
             else
             {
-                $value = !empty( $this->_data['default'] ) ? $this->_data['options'][$this->_data['default']]['label'] : $this->_data['options'][\array_keys( $this->_data['options'] )[0]]['label'];
+                if ( !empty( $this->_data['default'] ) and isset( $this->_data['options'][$this->_data['default']] ) )
+                {
+                    $value = $this->_data['options'][$this->_data['default']]['label'];
+                }
+                else
+                {
+                    $value = $this->_data['options'][\array_keys( $this->_data['options'] )[0]]['label'];
+                }
             }
             $tmp = \explode( '{input}', $this->_data['label'] );
             foreach ( $tmp as $key => $part ) if ( !empty( $part ) ) $tmp[$key] = '<label class="label-inline-dropdown" for="'.$this->_id.'">'.$part.'</label>';
@@ -358,7 +390,7 @@ if ( !\class_exists('Molongui\Authorship\Includes\Libraries\Common\Option') )
             \ob_start();
             ?>
             <div class="ui dropdown inline <?php echo $this->_data['class']; ?>">
-                <input type="text" id="<?php echo $this->_id; ?>" name="<?php echo $this->_tab.'['.$this->_id.']'; ?>" value="<?php echo $saved; ?>">
+                <input type="text" id="<?php echo $this->_id; ?>" name="<?php echo $this->_id; ?>" value="<?php echo $saved; ?>">
                 <div class="text"><?php echo $value; ?></div>
                 <i class="dropdown icon"></i>
                 <div class="menu transition hidden">
@@ -413,7 +445,7 @@ if ( !\class_exists('Molongui\Authorship\Includes\Libraries\Common\Option') )
             <div class="custom-controls-stacked">
                 <?php foreach( $this->_data['options'] as $key => $option ) : ?>
                     <label class="custom-control custom-radio">
-                        <input type="radio" class="custom-control-input" id="<?php echo $this->_id . '_' . $key; ?>" name="<?php echo $this->_tab.'['.$this->_id.']'; ?>" data-id="<?php echo $this->_id; ?>" value="<?php echo $option['value']; ?>" <?php \checked( $this->_value, $option['value'], true ); ?>>
+                        <input type="radio" class="custom-control-input" id="<?php echo $this->_id . '_' . $key; ?>" name="<?php echo $this->_id; ?>" data-id="<?php echo $this->_id; ?>" value="<?php echo $option['value']; ?>" <?php \checked( $this->_value, $option['value'], true ); ?>>
                         <div class="custom-control-label"><?php echo $option['label']; ?></div>
                     </label>
                 <?php endforeach; ?>
@@ -433,7 +465,7 @@ if ( !\class_exists('Molongui\Authorship\Includes\Libraries\Common\Option') )
             <div class="selectgroup <?php echo $this->_id; ?>">
                 <?php foreach( $this->_data['options'] as $value => $label ) : ?>
                     <label class="selectgroup-item" for="<?php echo $this->_id.'_'.$value; ?>">
-                        <input type="radio" id="<?php echo $this->_id.'_'.$value; ?>" name="<?php echo $this->_tab.'['.$this->_id.']'; ?>" data-id="<?php echo $this->_id; ?>" value="<?php echo $value; ?>" class="selectgroup-input" <?php \checked( $this->_value, $value, true ); ?>>
+                        <input type="radio" id="<?php echo $this->_id.'_'.$value; ?>" name="<?php echo $this->_id; ?>" data-id="<?php echo $this->_id; ?>" value="<?php echo $value; ?>" class="selectgroup-input" <?php \checked( $this->_value, $value, true ); ?>>
                         <span class="selectgroup-button"><?php echo $label; ?></span>
                     </label>
                 <?php endforeach; ?>
@@ -453,7 +485,7 @@ if ( !\class_exists('Molongui\Authorship\Includes\Libraries\Common\Option') )
                 <label class="" for="<?php echo $this->_id; ?>">
                     <?php echo $this->_data['label']; ?>
                 </label>
-                <input type="number" id="<?php echo $this->_id; ?>" name="<?php echo $this->_tab.'['.$this->_id.']'; ?>" value="<?php echo $this->_value; ?>" class="" min="<?php echo $this->_min; ?>" max="<?php echo $this->_max; ?>">
+                <input type="number" id="<?php echo $this->_id; ?>" name="<?php echo $this->_id; ?>" value="<?php echo $this->_value; ?>" class="" min="<?php echo $this->_min; ?>" max="<?php echo $this->_max; ?>" placeholder="<?php echo $this->_data['placeholder']; ?>">
             </div>
             <?php
             $output .= \ob_get_clean();
@@ -465,7 +497,7 @@ if ( !\class_exists('Molongui\Authorship\Includes\Libraries\Common\Option') )
         {
             $output = $this->prepend();
 
-            $input  = '<input type="number" id="'. $this->_id .'" name="'. $this->_tab.'['.$this->_id.']' .'" value="'. $this->_value .'" class="">';
+            $input  = '<input type="number" id="'. $this->_id .'" name="'. $this->_id .'" value="'. $this->_value .'" class="" placeholder="'.$this->_data['placeholder'].'">';
             $inline = \str_replace( '{input}', $input, $this->_data['label'] );
 
             \ob_start();
@@ -486,11 +518,11 @@ if ( !\class_exists('Molongui\Authorship\Includes\Libraries\Common\Option') )
             $output = $this->prepend();
             \ob_start();
             ?>
-            <div class="m-text <?php echo ( empty ( $this->_data['class'] ) ? '' : $this->_data['class'] ); ?>">
+            <div class="m-text">
                 <label class="" for="<?php echo $this->_id; ?>">
                     <?php echo $this->_data['label']; ?>
                 </label>
-                <input type="text" id="<?php echo $this->_id; ?>" name="<?php echo $this->_tab.'['.$this->_id.']'; ?>" value="<?php echo $this->_value; ?>" class="" placeholder="<?php echo $this->_data['placeholder']; ?>">
+                <input type="text" id="<?php echo $this->_id; ?>" name="<?php echo $this->_id; ?>" value="<?php echo $this->_value; ?>" class="" placeholder="<?php echo $this->_data['placeholder']; ?>">
 
             </div>
             <?php
@@ -503,7 +535,7 @@ if ( !\class_exists('Molongui\Authorship\Includes\Libraries\Common\Option') )
         {
             $output = $this->prepend();
 
-            $input  = '<input type="text" id="'. $this->_id .'" name="'. $this->_tab.'['.$this->_id.']' .'" value="'. $this->_value .'" class="" placeholder="'.$this->_data['placeholder'].'">';
+            $input  = '<input type="text" id="'. $this->_id .'" name="'. $this->_id .'" value="'. $this->_value .'" class="" placeholder="'.$this->_data['placeholder'].'">';
             $inline = \str_replace( '{input}', $input, $this->_data['label'] );
 
             \ob_start();
@@ -528,7 +560,7 @@ if ( !\class_exists('Molongui\Authorship\Includes\Libraries\Common\Option') )
                 <label class="" for="<?php echo $this->_id; ?>">
                     <?php echo $this->_data['label']; ?>
                 </label>
-                <input type="text" class="colorpicker" id="<?php echo $this->_id; ?>" name="<?php echo $this->_tab.'['.$this->_id.']'; ?>" value="<?php echo $this->_value; ?>">
+                <input type="text" class="colorpicker" id="<?php echo $this->_id; ?>" name="<?php echo $this->_id; ?>" value="<?php echo $this->_value; ?>">
 
             </div>
             <?php
@@ -546,7 +578,7 @@ if ( !\class_exists('Molongui\Authorship\Includes\Libraries\Common\Option') )
                 <label class="" for="<?php echo $this->_id; ?>">
                     <?php echo $this->_data['label']; ?>
                 </label>
-                <textarea id="<?php echo $this->_id; ?>" name="<?php echo $this->_tab.'['.$this->_id.']'; ?>" rows="<?php echo $this->_data['rows']; ?>" placeholder="<?php echo $this->_data['placeholder']; ?>"><?php echo $this->_value; ?></textarea>
+                <textarea id="<?php echo $this->_id; ?>" name="<?php echo $this->_id; ?>" rows="<?php echo $this->_data['rows']; ?>" placeholder="<?php echo $this->_data['placeholder']; ?>"><?php echo $this->_value; ?></textarea>
             </div>
             <?php
             $output .= \ob_get_clean();
@@ -573,16 +605,16 @@ if ( !\class_exists('Molongui\Authorship\Includes\Libraries\Common\Option') )
                                 <label for="<?php echo empty( $this->_data['button']['id'] ) ? '' : $this->_data['button']['id']; ?>" class="m-button is-compact <?php echo $this->_data['button']['class']; ?>"><?php echo $this->_data['button']['label']; ?></label>
                             <?php break; ?>
                             <?php case 'download': ?>
-                                <button type="submit" <?php echo empty( $this->_data['button']['id'] ) ? '' : 'id="'.$this->_data['button']['id'].'"'; ?> <?php echo empty( $this->_data['button']['disabled'] ) ? '' : 'disabled=""'; ?> class="m-button is-compact <?php echo $this->_data['button']['class']; ?>"><?php echo $this->_data['button']['label']; ?></button>
+                                <button type="submit" <?php echo empty( $this->_data['button']['id'] ) ? '' : 'id="'.$this->_data['button']['id'].'"'; ?> <?php echo empty( $this->_data['button']['disabled'] ) ? '' : 'disabled=""'; ?> class="m-button is-compact <?php echo $this->_data['button']['class']; ?>" title="<?php echo $this->_data['button']['title']; ?>"><?php echo $this->_data['button']['label']; ?></button>
                             <?php break; ?>
                             <?php case 'action': ?>
-                                <button type="submit" <?php echo empty( $this->_data['button']['id'] ) ? '' : 'id="'.$this->_data['button']['id'].'"'; ?> <?php echo empty( $this->_data['button']['disabled'] ) ? '' : 'disabled=""'; ?> class="m-button is-compact <?php echo $this->_data['button']['class']; ?>"><?php echo $this->_data['button']['label']; ?></button>
+                                <button type="submit" <?php echo empty( $this->_data['button']['id'] ) ? '' : 'id="'.$this->_data['button']['id'].'"'; ?> <?php echo empty( $this->_data['button']['disabled'] ) ? '' : 'disabled=""'; ?> class="m-button is-compact <?php echo $this->_data['button']['class']; ?>" title="<?php echo $this->_data['button']['title']; ?>"><?php echo $this->_data['button']['label']; ?></button>
                             <?php break; ?>
                             <?php case 'link': ?>
-                                <button type="submit" <?php echo empty( $this->_data['button']['id'] ) ? '' : 'id="'.$this->_data['button']['id'].'"'; ?> <?php echo empty( $this->_data['button']['disabled'] ) ? '' : 'disabled=""'; ?> class="m-button is-compact <?php echo $this->_data['button']['class']; ?>"><?php echo $this->_data['button']['label']; ?></button>
+                                <button type="submit" <?php echo empty( $this->_data['button']['id'] ) ? '' : 'id="'.$this->_data['button']['id'].'"'; ?> <?php echo empty( $this->_data['button']['disabled'] ) ? '' : 'disabled=""'; ?> class="m-button is-compact <?php echo $this->_data['button']['class']; ?>" title="<?php echo $this->_data['button']['title']; ?>"><?php echo $this->_data['button']['label']; ?></button>
                             <?php break; ?>
                             <?php case 'save':default: ?>
-                                <button type="submit" <?php echo empty( $this->_data['button']['id'] ) ? '' : 'id="'.$this->_data['button']['id'].'"'; ?> <?php echo empty( $this->_data['button']['disabled'] ) ? '' : 'disabled=""'; ?> class="m-button m-button-save is-compact <?php echo $this->_data['button']['class']; ?>"><?php echo $this->_data['button']['label']; ?></button>
+                                <button type="submit" <?php echo empty( $this->_data['button']['id'] ) ? '' : 'id="'.$this->_data['button']['id'].'"'; ?> <?php echo empty( $this->_data['button']['disabled'] ) ? '' : 'disabled=""'; ?> class="m-button m-button-save is-compact <?php echo $this->_data['button']['class']; ?>" title="<?php echo $this->_data['button']['title']; ?>"><?php echo $this->_data['button']['label']; ?></button>
                             <?php break; ?>
                             <?php endswitch; ?>
                     </div>
@@ -593,7 +625,7 @@ if ( !\class_exists('Molongui\Authorship\Includes\Libraries\Common\Option') )
 
             return $output;
         }
-        function export()
+        private function export()
         {
             $output = '';
             $button = ( empty( $this->_data['button'] ) or !$this->_data['button']['display'] ) ? false : true;
@@ -616,6 +648,23 @@ if ( !\class_exists('Molongui\Authorship\Includes\Libraries\Common\Option') )
                         <label id="<?php echo empty( $this->_data['button']['id'] ) ? '' : $this->_data['button']['id']; ?>" for="<?php echo empty( $this->_data['button']['id'] ) ? '' : $this->_data['button']['id']; ?>" class="m-button is-compact <?php echo $this->_data['button']['class']; ?>"><?php echo $this->_data['button']['label']; ?></label>
                     </div>
                 <?php endif; ?>
+            </div>
+            <?php
+            $output .= \ob_get_clean();
+
+            return $output;
+        }
+        private function unveil()
+        {
+            $output = '';
+
+            \ob_start();
+            ?>
+            <div id="<?php echo $this->_id; ?>" class="m-unveil <?php echo ( empty ( $this->_data['class'] ) ? '' : $this->_data['class'] ); ?>"
+                 data-show="<?php echo $this->_data['label']['show']; ?>" data-hide="<?php echo $this->_data['label']['hide']; ?>">
+                <span>
+                    <?php echo $this->_data['label']['show']; ?>
+                </span>
             </div>
             <?php
             $output .= \ob_get_clean();

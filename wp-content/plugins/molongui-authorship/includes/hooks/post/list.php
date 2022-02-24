@@ -34,7 +34,7 @@ function authorship_post_fill_list_columns( $column, $ID )
     if ( $column == 'molongui-author' )
     {
         $authors = get_post_authors( $ID );
-        $settings = get_option( MOLONGUI_AUTHORSHIP_MAIN_SETTINGS );
+        $options = authorship_get_options();
         if ( !$authors ) return;
         foreach ( $authors as $author )
         {
@@ -43,14 +43,14 @@ function authorship_post_fill_list_columns( $column, $ID )
             if ( $author->type == 'guest' )
             {
                 $display_name = esc_html( get_the_title( $author->id ) );
-                $name_link    = $settings['author_name_action'] == 'edit' ? admin_url( "post.php?post=$author->id&action=edit" ) : admin_url( "edit.php?post_type=$post_type&guest=$author->id" );
+                $name_link    = $options['author_name_action'] == 'edit' ? admin_url( "post.php?post=$author->id&action=edit" ) : admin_url( "edit.php?post_type=$post_type&guest=$author->id" );
                 $author_tag   = __( 'guest', 'molongui-authorship' );
             }
             else
             {
                 $user         = get_userdata( $author->id );
                 $display_name = esc_html( $user->display_name );
-                $name_link    = $settings['author_name_action'] == 'edit' ? admin_url( "user-edit.php?user_id=$author->id" ) : admin_url( "edit.php?post_type=$post_type&author=$author->id" );
+                $name_link    = $options['author_name_action'] == 'edit' ? admin_url( "user-edit.php?user_id=$author->id" ) : admin_url( "edit.php?post_type=$post_type&author=$author->id" );
                 $author_tag   = __( 'user', 'molongui-authorship' );
             }
 
@@ -61,8 +61,8 @@ function authorship_post_fill_list_columns( $column, $ID )
                 </a>
                 <?php if ( authorship_is_feature_enabled( 'guest' ) ) : ?>
                     <span style="font-family: 'Courier New', Courier, monospace; font-size: 81%; color: #a2a2a2;" >
-                            [<?php echo $author_tag; ?>]
-                        </span>
+                        [<?php echo $author_tag; ?>]
+                    </span>
                 <?php endif; ?>
             </p>
             <?php
@@ -72,31 +72,60 @@ function authorship_post_fill_list_columns( $column, $ID )
     }
     elseif ( $column == 'molongui-box' )
     {
-        $settings = get_option( MOLONGUI_AUTHORSHIP_BOX_SETTINGS );
-        $value    = get_post_meta( $ID, '_molongui_author_box_display', true );
-        if ( empty( $value ) or $value == 'default' )
+        switch ( get_post_meta( $ID, '_molongui_author_box_display', true ) )
         {
-            switch( $settings['display'] )
-            {
-                case 'hide' : $pts = array(); break;
-                case 'show' : $pts = molongui_supported_post_types( MOLONGUI_AUTHORSHIP_PREFIX ); break;
-                case 'posts': $pts = array( 'post' ); break;
-                case 'pages': $pts = array( 'page' ); break;
-            }
-            global $post, $post_type;
-            $pt = ( isset( $post->post_type ) ? $post->post_type : '' );
-            if ( empty( $post->post_type ) and $post_type == 'page' ) $pt = 'page';
-            if ( in_array( $pt, $pts) ) $icon = 'visibility';
-            else $icon = 'hidden';
-        }
-        else
-        {
-            $icon = 'hide' === $value ? 'hidden' : 'visibility';
+            case 'show':
+                $icon = 'visibility';
+                $tip  = __( "Visible", 'molongui-authorship' );
+            break;
+
+            case 'hide':
+                $icon = 'hidden';
+                $tip  = __( "Hidden", 'molongui-authorship' );
+            break;
+
+            default:
+
+                global $post, $post_type;
+                if ( !empty( $post->post_type ) )
+                {
+                    $current_post_type = $post->post_type;
+                }
+                else
+                {
+                    $current_post_type = ( 'page' === $post_type ? 'page' : '' );
+                }
+
+                if ( !empty( $current_post_type ) )
+                {
+                    if ( in_array( $current_post_type, authorship_box_post_types( 'auto' ) ) )
+                    {
+                        $icon = 'visibility';
+                        $tip  = __( "Visible", 'molongui-authorship' );
+                    }
+                    elseif ( in_array( $current_post_type, authorship_box_post_types( 'manual' ) ) )
+                           {
+                           $icon = 'hidden';
+                        $tip  = __( "Hidden because no post configuration provided", 'molongui-authorship' );
+                    }
+                    else
+                    {
+                        $icon = 'hidden';
+                        $tip  = __( "Hidden", 'molongui-authorship' );
+                    }
+                }
+                else
+                {
+                    $icon = 'minus';
+                    $tip  = __( "Cannot determine visibility for this post type", 'molongui-authorship' );
+                }
+
+            break;
         }
 
         $html  = '<div class="m-tooltip">';
         $html .= '<span class="dashicons dashicons-'.$icon.'"></span>';
-        $html .= '<span class="m-tooltip__text m-tooltip__top">'.( $icon == 'visibility' ? __( "Show", 'molongui-authorship' ) : __( "Hide", 'molongui-authorship' ) ).'</span>';
+        $html .= '<span class="m-tooltip__text m-tooltip__top m-tooltip__w100">'.$tip.'</span>';
         $html .= '</div>';
 
         echo $html;

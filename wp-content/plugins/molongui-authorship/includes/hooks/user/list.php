@@ -47,52 +47,27 @@ function authorship_user_fill_columns( $value, $column, $ID )
         switch ( get_user_meta( $ID, 'molongui_author_box_display', true ) )
         {
             case 'show':
-
-                $html  = '<div class="m-tooltip">';
-                $html .= '<span class="dashicons dashicons-visibility"></span>';
-                $html .= '<span class="m-tooltip__text m-tooltip__top m-tooltip__w50">' . __( "Show" ) . '</span>';
-                $html .= '</div>';
-
-                return $html;
-
+                $icon = 'visibility';
+                $tip  = __( "Visible", 'molongui-authorship' );
             break;
 
             case 'hide':
-
-                $html  = '<div class="m-tooltip">';
-                $html .= '<span class="dashicons dashicons-hidden"></span>';
-                $html .= '<span class="m-tooltip__text m-tooltip__top m-tooltip__w50">' . __( "Hide" ) . '</span>';
-                $html .= '</div>';
-
-                return $html;
-
+                $icon = 'hidden';
+                $tip  = __( "Hidden", 'molongui-authorship' );
             break;
 
-            case 'default':
             default:
-                $settings = get_option( MOLONGUI_AUTHORSHIP_BOX_SETTINGS );
-
-                if ( $settings['display'] == 'hide' )
-                {
-                    $html  = '<div class="m-tooltip">';
-                    $html .= '<span class="dashicons dashicons-hidden"></span>';
-                    $html .= '<span class="m-tooltip__text m-tooltip__top m-tooltip__w50">' . __( "Hide" ) . '</span>';
-                    $html .= '</div>';
-
-                    return $html;
-                }
-                else
-                {
-                    $html  = '<div class="m-tooltip">';
-                    $html .= '<span class="dashicons dashicons-visibility"></span>';
-                    $html .= '<span class="m-tooltip__text m-tooltip__top m-tooltip__w50">' . __( "Show" ) . '</span>';
-                    $html .= '</div>';
-
-                    return $html;
-                }
-
+                $icon = 'admin-generic';
+                $tip  = __( "Visibility depends on global plugin settings", 'molongui-authorship' );
             break;
         }
+
+        $html  = '<div class="m-tooltip">';
+        $html .= '<span class="dashicons dashicons-'.$icon.'"></span>';
+        $html .= '<span class="m-tooltip__text m-tooltip__top m-tooltip__w100">'.$tip.'</span>';
+        $html .= '</div>';
+
+        return $html;
     }
 
     return $value;

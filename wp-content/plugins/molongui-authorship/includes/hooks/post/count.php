@@ -25,12 +25,12 @@ function authorship_post_counters_update_completed()
         delete_option( 'm_update_post_counters_complete' );
         delete_option( 'm_update_post_counters_running' );
 
-        $message = '<p>' . sprintf( __( '%sAuthorship Data Updater%s - The database update process is now complete. Thank you for updating %s to the latest version!', 'molongui-authorship' ), '<strong>', '</strong>', MOLONGUI_AUTHORSHIP_TITLE ) . '</p>';
+        $message = '<p>' . sprintf( __( '%sAuthorship Data Updater%s - The update process is now complete. All posts counters are updated now.', 'molongui-authorship' ), '<strong>', '</strong>' ) . '</p>';
         echo '<div class="notice notice-success is-dismissible">' . $message . '</div>';
     }
     elseif ( get_option( 'm_update_post_counters_running' ) )
     {
-        $message = '<p>' . sprintf( __( '%sAuthorship Data Updater%s - Database update process is running in the background.', 'molongui-authorship' ), '<strong>', '</strong>' ) . '</p>';
+        $message = '<p>' . sprintf( __( '%sAuthorship Data Updater%s - Posts counters update process is running in the background. It could take quite a long time to complete. Please be patient.', 'molongui-authorship' ), '<strong>', '</strong>' ) . '</p>';
         echo '<div class="notice notice-warning is-dismissible">' . $message . '</div>';
     }
 }

@@ -3,6 +3,9 @@ defined( 'ABSPATH' ) or exit;
 if ( !authorship_is_feature_enabled( 'multi' ) ) return;
 function authorship_post_allow_coauthors_edit( $allcaps, $caps, $args, $user )
 {
+    global $in_comment_loop;
+    if ( $in_comment_loop ) return $allcaps;
+
     $cap     = $args[0];
     $post_id = isset( $args[2] ) ? $args[2] : 0;
 

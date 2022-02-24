@@ -1,6 +1,6 @@
 <?php
 
-if ( !empty( $settings['show_icons'] ) )
+if ( !empty( $options['show_icons'] ) )
 {
 	$networks = authorship_get_social_networks( 'active' );
     if ( $author['show_social_web'] )   $networks['web']   = array ( 'name' => 'Website', 'url' => 'https://www.example.com/', 'color' => '#333', 'premium' => false, );
@@ -16,28 +16,28 @@ if ( !empty( $settings['show_icons'] ) )
 		}
 	}
 	if ( !$continue ) return;
-	if ( isset( $settings['icons_style'] ) )
+	if ( isset( $options['icons_style'] ) )
 	{
-		$ico_style = $settings['icons_style'];
+		$ico_style = $options['icons_style'];
 		if ( $ico_style == 'default' ) $ico_style = '';
 	}
-	if ( isset( $settings['icons_size'] ) ) $ico_size = $settings['icons_size'];
+	if ( isset( $options['icons_size'] ) ) $ico_size = $options['icons_size'];
 	else $ico_size = 'normal';
 	$ico_color = '';
-	if ( isset( $settings['icons_color'] ) and $settings['icons_color'] != 'inherit' )
+	if ( isset( $options['icons_color'] ) and $options['icons_color'] != 'inherit' )
 	{
-		switch ( $settings['icons_style'] )
+		switch ( $options['icons_style'] )
 		{
 			case 'squared':
 			case 'circled':
 
-				$ico_color = 'border-color: ' . $settings['icons_color'] . '; background-color: ' . $settings['icons_color'] . ';';
+				$ico_color = 'border-color: ' . $options['icons_color'] . '; background-color: ' . $options['icons_color'] . ';';
 
 			break;
 
 			case 'boxed':
 
-				$ico_color = 'border-color: ' . $settings['icons_color'] . '; color: ' . $settings['icons_color'] . ';';
+				$ico_color = 'border-color: ' . $options['icons_color'] . '; color: ' . $options['icons_color'] . ';';
 
 			break;
 
@@ -53,21 +53,21 @@ if ( !empty( $settings['show_icons'] ) )
 			case 'branded-squared':
 			case 'branded-circled':
 
-				$ico_color = 'background-color: ' . $settings['icons_color'];
+				$ico_color = 'background-color: ' . $options['icons_color'];
 
 			break;
 
 			case 'default':
 			default:
 
-				$ico_color = 'color: ' . $settings['icons_color'] . ';';
+				$ico_color = 'color: ' . $options['icons_color'] . ';';
 
 			break;
 		}
 	}
-	$nofollow = $settings['add_nofollow'] ? 'rel="nofollow"' : '' ;
-    $target = !empty( $settings['social_link_target'] ) ? $settings['social_link_target'] : '_blank' ;
-	echo '<div class="m-a-box-item m-a-box-social '.( ( isset( $settings['profile_layout'] ) and !in_array( $settings['profile_layout'], array( 'layout-7', 'layout-8' ) ) and isset( $settings['profile_valign'] ) and !empty( $settings['profile_valign'] ) and $settings['profile_valign'] != 'center' ) ? 'molongui-align-self-'.$settings['profile_valign'] : '' ).'">';
+	$nofollow = $options['add_nofollow'] ? 'rel="nofollow"' : '' ;
+    $target = !empty( $options['social_link_target'] ) ? $options['social_link_target'] : '_blank' ;
+	echo '<div class="m-a-box-item m-a-box-social '.( ( isset( $options['profile_layout'] ) and !in_array( $options['profile_layout'], array( 'layout-7', 'layout-8' ) ) and isset( $options['profile_valign'] ) and !empty( $options['profile_valign'] ) and $options['profile_valign'] != 'center' ) ? 'molongui-align-self-'.$options['profile_valign'] : '' ).'">';
         foreach ( $networks as $id => $network )
         {
             $url = $author[$id];
@@ -77,13 +77,13 @@ if ( !empty( $settings['show_icons'] ) )
 	            if ( $id == 'mail' )
 	            {
                     $mail = sanitize_email( $url );
-		            if ( !empty( $settings['encode_email'] ) ) $url = molongui_ascii_encode( 'mailto:'.$mail );
+		            if ( !empty( $options['encode_email'] ) ) $url = molongui_ascii_encode( 'mailto:'.$mail );
 		            else $url = 'mailto:'.$mail;
 	            }
 	            elseif ( $id == 'phone' )
 	            {
 		            $phone = $url;
-		            if ( !empty( $settings['encode_phone'] ) ) $url = molongui_ascii_encode( 'tel:'.$phone );
+		            if ( !empty( $options['encode_phone'] ) ) $url = molongui_ascii_encode( 'tel:'.$phone );
 		            else $url = 'tel:'.$phone;
 	            }
 	            else

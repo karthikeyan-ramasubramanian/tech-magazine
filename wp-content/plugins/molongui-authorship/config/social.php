@@ -823,4 +823,11 @@ return array
         'color'    => '#ff0084',
         'premium'  => true,
     ),
+    'stackexchange' => array
+    (
+        'name'     => 'Stack Exchange',
+        'url'      => 'https://topic.stackexchange.com/users/hash/username/',
+        'color'    => '#1e5397',
+        'premium'  => false,
+    ),
 );

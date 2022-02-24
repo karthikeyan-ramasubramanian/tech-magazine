@@ -31,7 +31,7 @@ class Activator
 		if ( $update_db->db_update_needed() ) $update_db->run_update();
 		self::save_installation_data();
 		self::add_default_options();
-		self::update_post_counters();
+		self::run_background_tasks();
 	}
 	public static function activate_on_new_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta )
 	{
@@ -55,14 +55,21 @@ class Activator
     public static function add_default_options()
     {
         require_once MOLONGUI_AUTHORSHIP_DIR . 'includes/helpers/common/plugins.php';
-        require_once MOLONGUI_AUTHORSHIP_DIR . 'includes/helpers/options.php';
+        require_once MOLONGUI_AUTHORSHIP_DIR . 'includes/helpers/common/options/options.php';
 
         \authorship_add_defaults();
     }
-    public static function update_post_counters()
+    public static function run_background_tasks()
     {
         if ( \defined( 'DISABLE_WP_CRON' ) and DISABLE_WP_CRON ) return;
-        \add_option( 'molongui_authorship_update_post_counters', true );
+
+        $options = authorship_get_options();
+
+        if ( $options['guest_authors'] or $options['enable_multi_authors'] )
+        {
+            \add_option( 'molongui_authorship_update_post_authors', true );
+            \add_option( 'molongui_authorship_update_post_counters', true );
+        }
     }
 
 } // class

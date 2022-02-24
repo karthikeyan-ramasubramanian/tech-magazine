@@ -30,7 +30,7 @@ foreach( $author['posts'] as $related )
 
                 <!-- Related entry title -->
                 <div class="m-a-box-related-entry-title">
-                    <a class="molongui-remove-text-underline" style="color: <?php echo $settings['related_text_color']; ?>" <?php echo ( $add_microdata ? 'itemprop="url"' : '' ); ?> href="<?php echo get_permalink( $related->ID ); ?>">
+                    <a class="molongui-remove-text-underline" style="color: <?php echo $options['related_text_color']; ?>" <?php echo ( $add_microdata ? 'itemprop="url"' : '' ); ?> href="<?php echo get_permalink( $related->ID ); ?>">
                         <span <?php echo ( $add_microdata ? 'itemprop="headline"' : '' ); ?>><?php echo $related->post_title; ?></span>
                     </a>
                 </div>

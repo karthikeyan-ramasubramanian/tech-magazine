@@ -3,20 +3,20 @@
 use Molongui\Authorship\Includes\Author;
 defined( 'ABSPATH' ) or exit;
 if ( !authorship_byline_takeover() ) return;
-function authorship_filter_author_link( $link )
+function authorship_filter_author_link( $link, $author_id, $author_nicename )
 {
     if ( molongui_is_request( 'admin' ) ) return $link;
-    $dbt = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 8 );
+    $dbt = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS );
     if ( empty( $dbt ) ) return $link;
-    $args = array( 'link' => &$link, 'dbt' => $dbt );
+    $args = array( 'link' => &$link, 'author_id' => $author_id, 'author_nicename' => $author_nicename, 'dbt' => $dbt );
     if ( apply_filters_ref_array( 'authorship/filter_author_link', array( false, &$args ) ) ) return $link;
     return authorship_author_link( $link );
 }
-add_filter( 'author_link', 'authorship_filter_author_link', 999, 1 );
+add_filter( 'author_link', 'authorship_filter_author_link', 999, 3 );
 function authorship_author_link( $link, $post_id = null )
 {
-    $settings = molongui_get_plugin_settings( MOLONGUI_AUTHORSHIP_PREFIX, array( 'byline', 'archives' ) );
-    if ( empty( $settings['byline_name_link'] ) )
+    $options = authorship_get_options();
+    if ( empty( $options['byline_name_link'] ) )
     {
         return apply_filters( 'authorship/author_link', '#molongui-disabled-link', array( 'url' => '#molongui-disabled-link', 'link' => $link, 'pid' => $post_id ) );
     }
@@ -30,10 +30,10 @@ function authorship_author_link( $link, $post_id = null )
     }
     $authors = get_post_authors( $post_id );
     if ( !$authors ) return $link;
-    $modifiers_tag = ( ( !empty( $settings['byline_prefix'] ) or !empty( $settings['byline_suffix'] ) ) and authorship_has_pro() ) ? '?m_bm=true' : '';
-    if ( is_multiauthor_post( $post_id ) and !empty( $settings['byline_multiauthor_link'] ) and $settings['byline_multiauthor_display'] != 'main' )
+    $modifiers_tag = ( ( !empty( $options['byline_prefix'] ) or !empty( $options['byline_suffix'] ) ) and authorship_has_pro() ) ? '?m_bm=true' : '';
+    if ( is_multiauthor_post( $post_id ) and !empty( $options['byline_multiauthor_link'] ) and $options['byline_multiauthor_display'] != 'main' )
     {
-        switch ( $settings['byline_multiauthor_display'] )
+        switch ( $options['byline_multiauthor_display'] )
         {
             case 'main':
                 $count = 1;
@@ -43,7 +43,7 @@ function authorship_author_link( $link, $post_id = null )
             case '1':
             case '2':
             case '3':
-                $count = min( count( $authors ), (int)$settings['byline_multiauthor_display'] );
+                $count = min( count( $authors ), (int)$options['byline_multiauthor_display'] );
 
             break;
 

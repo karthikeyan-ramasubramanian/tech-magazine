@@ -3,18 +3,18 @@ defined( 'ABSPATH' ) or exit;
 
 /*!
  * Plugin Name:       Molongui Authorship
- * Description:       Co-authors, guest authors, author box, local avatar and more. All you need for your authors in just one plugin.
+ * Description:       Best Author Box for WordPress! Easy, Beautiful and Responsive. Add authors, co-authors, multiple authors and guest authors to your WordPress posts.
  * Plugin URI:        https://www.molongui.com/authorship/
  * Text Domain:       molongui-authorship
  * Domain Path:       /i18n/
  * Requires PHP:      5.5.0
  * Requires at least: 5.2
- * Tested up to:      5.8
+ * Tested up to:      5.9
  * Author:            Molongui
  * Author URI:        https://www.molongui.com/
  * License:           GPL v3 or later
  * License URI:       http://www.gnu.org/licenses/gpl-3.0.txt
- * Version:           4.4.4
+ * Version:           4.5.1
  *
  * This plugin is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation, either version 3 of the License, or any later version.
@@ -36,7 +36,7 @@ elseif ( version_compare( get_bloginfo( 'version' ), '5.2', '<' ) )
 }
 else
 {
-    define( 'MOLONGUI_AUTHORSHIP_VERSION', '4.4.4' );
+    define( 'MOLONGUI_AUTHORSHIP_VERSION', '4.5.1' );
     define( 'MOLONGUI_AUTHORSHIP_FILE', __FILE__ );
     define( 'MOLONGUI_AUTHORSHIP_DIR', plugin_dir_path( MOLONGUI_AUTHORSHIP_FILE ) );
     require MOLONGUI_AUTHORSHIP_DIR . 'includes/plugin.php';

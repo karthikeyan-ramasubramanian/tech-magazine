@@ -17,7 +17,10 @@ defined( 'ABSPATH' ) or exit;
             <?php foreach( $args['links'] as $link ) : ?>
                 <?php if ( $link['display'] ) : ?>
                     <li class="m-page-footer__link-item">
-                        <a rel="noopener noreferrer" class="m-page-footer__link" target="_blank" href="<?php echo $link['href']; ?>">
+                        <a rel="noopener noreferrer" class="m-page-footer__link"
+                           target="<?php echo empty( $link['target'] ) ? '_blank' : $link['target']; ?>"
+                           title="<?php echo empty( $link['tip'] ) ? '' : $link['tip']; ?>"
+                           href="<?php echo $link['href']; ?>">
                             <?php echo $link['prefix']; ?>
                                 <?php echo $link['label']; ?>
                             <?php echo $link['suffix']; ?>

@@ -62,9 +62,9 @@ defined( 'ABSPATH' ) or exit;
     <?php
         $plugin_url    = MOLONGUI_AUTHORSHIP_WEB;
         $support_url   = 'https://www.molongui.com/support/';
-        $docs_url      = 'https://www.molongui.com/docs/' . MOLONGUI_AUTHORSHIP_TITLE;
+        $docs_url      = 'https://www.molongui.com/docs/' . MOLONGUI_AUTHORSHIP_NAME;
         $changelog_url = did_action( 'authorship_pro/loaded' ) ? $docs_url.'/changelog/changelog-pro-version/' : $docs_url.'/changelog/changelog-free-version/';
-        $demo_url      = 'https://demos.molongui.com/test-drive-'.MOLONGUI_AUTHORSHIP_TITLE.'-pro/';
+        $demo_url      = 'https://demos.molongui.com/test-drive-'.MOLONGUI_AUTHORSHIP_NAME.'-pro/';
 
         $args = array
         (
@@ -132,6 +132,8 @@ defined( 'ABSPATH' ) or exit;
 
     ?>
 
+    <?php authorship_enqueue_common_options_scripts(); ?>
+    <?php authorship_enqueue_common_options_styles();  ?>
     <?php do_action( 'authorship/options/after_footer' ); ?>
 
 </div> <!-- #molongui-options -->

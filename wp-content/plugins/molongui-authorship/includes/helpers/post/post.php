@@ -137,8 +137,8 @@ if ( !function_exists( 'get_byline' ) )
         }
         if ( $authors = get_post_authors( $pid ) )
         {
-            $settings = get_option( MOLONGUI_AUTHORSHIP_BYLINE_SETTINGS );
-            switch ( $settings['byline_multiauthor_display'] )
+            $options = authorship_get_options();
+            switch ( $options['byline_multiauthor_display'] )
             {
                 case 'main':
 
@@ -179,9 +179,9 @@ if ( !function_exists( 'mount_byline' ) )
         $string = '';
         $total  = count( $authors );
         $i = 0;
-        $settings = get_option( MOLONGUI_AUTHORSHIP_BYLINE_SETTINGS );
-        $separator      = ( !empty( $separator ) ? $separator : ( !empty( $settings['byline_multiauthor_separator'] ) ? $settings['byline_multiauthor_separator'] : ',' ) );
-        $last_separator = ( !empty( $last_separator ) ? $last_separator : ( !empty( $settings['byline_multiauthor_last_separator'] ) ? $settings['byline_multiauthor_last_separator'] : __( 'and', 'molongui-authorship' ) ) );
+        $options = authorship_get_options();
+        $separator      = ( !empty( $separator ) ? $separator : ( !empty( $options['byline_multiauthor_separator'] ) ? $options['byline_multiauthor_separator'] : ',' ) );
+        $last_separator = ( !empty( $last_separator ) ? $last_separator : ( !empty( $options['byline_multiauthor_last_separator'] ) ? $options['byline_multiauthor_last_separator'] : __( 'and', 'molongui-authorship' ) ) );
         if ( $qty < $total )
         {
             for ( $j = 0; $j < $qty; $j++ )
@@ -215,7 +215,7 @@ if ( !function_exists( 'get_coauthored_posts' ) )
 {
     function get_coauthored_posts( $authors, $get_all = false, $exclude = array(), $entry = 'post', $meta_query = array() )
     {
-        $settings = get_option( MOLONGUI_AUTHORSHIP_BOX_SETTINGS );
+        $options = authorship_get_options();
         switch ( $entry )
         {
             case 'all':
@@ -227,7 +227,7 @@ if ( !function_exists( 'get_coauthored_posts' ) )
             break;
 
             case 'related':
-                $entries = explode( ",", $settings['related_post_types'] );
+                $entries = explode( ",", $options['related_post_types'] );
             break;
 
             default:
@@ -258,9 +258,9 @@ if ( !function_exists( 'get_coauthored_posts' ) )
         $args = array
         (
             'post_type'      => $entries,
-            'orderby'        => !empty( $settings['related_orderby'] ) ? $settings['related_orderby'] : 'date',
-            'order'          => !empty( $settings['related_order'] )   ? $settings['related_order']   : 'desc',
-            'posts_per_page' => $get_all ? '-1' : $settings['related_items'],
+            'orderby'        => !empty( $options['related_orderby'] ) ? $options['related_orderby'] : 'date',
+            'order'          => !empty( $options['related_order'] )   ? $options['related_order']   : 'desc',
+            'posts_per_page' => $get_all ? '-1' : $options['related_items'],
             'post__not_in'   => $exclude,
             'meta_query'     => $mq,
             'site_id'        => get_current_blog_id(),
@@ -350,4 +350,15 @@ if ( !function_exists( 'isAuthor' ) )
 
         return is_author();
     }
+}
+function authorship_post_status( $post_type = '' )
+{
+    $post_status = array( 'draft', 'publish', 'future', 'pending', 'private' );
+
+    if ( ( is_array( $post_type ) and in_array( 'attachment', $post_type ) ) or 'attachment' === $post_type )
+    {
+        $post_status[] = 'inherit';
+    }
+
+    return apply_filters( 'authorship/post_status', $post_status );
 }

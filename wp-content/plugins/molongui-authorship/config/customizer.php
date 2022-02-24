@@ -28,7 +28,7 @@ return array
 			(
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[scheme]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[scheme]',
 					'display' => true,
 					'setting' => array
 					(
@@ -91,7 +91,7 @@ return array
 			(
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[layout]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[layout]',
 					'display' => true,
 					'setting' => array
 					(
@@ -139,7 +139,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[position]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[position]',
 					'display' => true,
 					'setting' => array
 					(
@@ -187,7 +187,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[box_margin]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[box_margin]',
 					'display' => true,
 					'setting' => array
 					(
@@ -222,7 +222,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[box_width]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[box_width]',
 					'display' => true,
 					'setting' => array
 					(
@@ -257,7 +257,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[box_border]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[box_border]',
 					'display' => true,
 					'setting' => array
 					(
@@ -335,7 +335,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[box_border_style]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[box_border_style]',
 					'display' => true,
 					'setting' => array
 					(
@@ -389,7 +389,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[box_border_width]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[box_border_width]',
 					'display' => true,
 					'setting' => array
 					(
@@ -424,7 +424,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[box_border_color]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[box_border_color]',
 					'display' => true,
 					'setting' => array
 					(
@@ -455,7 +455,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[box_background]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[box_background]',
 					'display' => true,
 					'setting' => array
 					(
@@ -486,7 +486,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[box_shadow]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[box_shadow]',
 					'display' => true,
 					'setting' => array
 					(
@@ -549,7 +549,7 @@ return array
 			(
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[show_headline]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[show_headline]',
 					'display' => true,
 					'setting' => array
 					(
@@ -591,7 +591,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[headline]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[headline]',
 					'display' => true,
 					'setting' => array
 					(
@@ -643,7 +643,7 @@ return array
 				),
                 array
                 (
-                    'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[headline_text_size]',
+                    'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[headline_text_size]',
                     'display' => true,
                     'setting' => array
                     (
@@ -679,7 +679,7 @@ return array
                 ),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[headline_text_style]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[headline_text_style]',
 					'display' => true,
 					'setting' => array
 					(
@@ -745,7 +745,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[headline_text_case]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[headline_text_case]',
 					'display' => true,
 					'setting' => array
 					(
@@ -799,7 +799,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[headline_text_align]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[headline_text_align]',
 					'display' => true,
 					'setting' => array
 					(
@@ -853,7 +853,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[headline_text_color]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[headline_text_color]',
 					'display' => true,
 					'setting' => array
 					(
@@ -893,13 +893,13 @@ return array
 			'priority'           => '',
 			'type'               => '',
 			'capability'         => 'manage_options',
-            'active_callback' => function( $control ) { return molongui_get_customizer_setting( $control, 'layout', 'tabbed' ); },
+            'active_callback' => function( $control ) { return molongui_get_customizer_setting( $control, 'box_layout', 'tabbed' ); },
 			'description_hidden' => true,
 			'fields'             => array
 			(
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[tabs_position]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[tabs_position]',
 					'display' => true,
 					'setting' => array
 					(
@@ -953,7 +953,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[tabs_color]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[tabs_color]',
 					'display' => true,
 					'setting' => array
 					(
@@ -984,7 +984,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[tabs_active_color]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[tabs_active_color]',
 					'display' => true,
 					'setting' => array
 					(
@@ -1015,7 +1015,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[tabs_background]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[tabs_background]',
 					'display' => true,
 					'setting' => array
 					(
@@ -1046,7 +1046,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[tabs_text_color]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[tabs_text_color]',
 					'display' => true,
 					'setting' => array
 					(
@@ -1077,7 +1077,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[about_the_author]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[about_the_author]',
 					'display' => true,
 					'setting' => array
 					(
@@ -1109,7 +1109,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[related_posts]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[related_posts]',
 					'display' => true,
 					'setting' => array
 					(
@@ -1156,7 +1156,7 @@ return array
 			(
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[profile_layout]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[profile_layout]',
 					'display' => true,
 					'setting' => array
 					(
@@ -1234,7 +1234,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[profile_valign]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[profile_valign]',
 					'display' => true,
 					'setting' => array
 					(
@@ -1282,7 +1282,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[profile_title]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[profile_title]',
 					'display' => true,
 					'setting' => array
 					(
@@ -1309,12 +1309,12 @@ return array
 							'placeholder' => __( "Author Profile", 'molongui-authorship' ),
 						),
 						'allow_addition'  => false,
-						'active_callback' => function( $control ) { return molongui_get_customizer_setting( $control, 'layout', 'stacked' ); },
+						'active_callback' => function( $control ) { return molongui_get_customizer_setting( $control, 'box_layout', 'stacked' ); },
 					),
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[bottom_background_color]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[bottom_background_color]',
 					'display' => true,
 					'setting' => array
 					(
@@ -1345,7 +1345,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[bottom_border_style]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[bottom_border_style]',
 					'display' => true,
 					'setting' => array
 					(
@@ -1405,7 +1405,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[bottom_border_width]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[bottom_border_width]',
 					'display' => true,
 					'setting' => array
 					(
@@ -1440,7 +1440,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[bottom_border_color]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[bottom_border_color]',
 					'display' => true,
 					'setting' => array
 					(
@@ -1486,7 +1486,7 @@ return array
 			(
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[show_avatar]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[show_avatar]',
 					'display' => true,
 					'setting' => array
 					(
@@ -1531,7 +1531,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[avatar_src]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[avatar_src]',
 					'display' => true,
 					'setting' => array
 					(
@@ -1582,7 +1582,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[avatar_local_fallback]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[avatar_local_fallback]',
 					'display' => true,
 					'setting' => array
 					(
@@ -1633,7 +1633,7 @@ return array
 				),
                 array
                 (
-                    'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[avatar_default_gravatar]',
+                    'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[avatar_default_gravatar]',
                     'display' => true,
                     'setting' => array
                     (
@@ -1714,7 +1714,7 @@ return array
                 ),
                 array
                 (
-                    'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[avatar_width]',
+                    'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[avatar_width]',
                     'display' => true,
                     'setting' => array
                     (
@@ -1748,7 +1748,7 @@ return array
                 ),
                 array
                 (
-                    'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[avatar_height]',
+                    'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[avatar_height]',
                     'display' => true,
                     'setting' => array
                     (
@@ -1782,7 +1782,7 @@ return array
                 ),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[avatar_style]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[avatar_style]',
 					'display' => true,
 					'setting' => array
 					(
@@ -1830,7 +1830,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[avatar_border_style]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[avatar_border_style]',
 					'display' => true,
 					'setting' => array
 					(
@@ -1890,7 +1890,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[avatar_border_width]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[avatar_border_width]',
 					'display' => true,
 					'setting' => array
 					(
@@ -1925,7 +1925,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[avatar_border_color]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[avatar_border_color]',
 					'display' => true,
 					'setting' => array
 					(
@@ -1956,7 +1956,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[avatar_text_color]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[avatar_text_color]',
 					'display' => true,
 					'setting' => array
 					(
@@ -1987,7 +1987,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[avatar_bg_color]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[avatar_bg_color]',
 					'display' => true,
 					'setting' => array
 					(
@@ -2018,7 +2018,7 @@ return array
 				),
                 array
                 (
-                    'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[avatar_link_to_archive]',
+                    'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[avatar_link_to_archive]',
                     'display' => true,
                     'setting' => array
                     (
@@ -2095,7 +2095,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[name_text_size]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[name_text_size]',
 					'display' => true,
 					'setting' => array
 					(
@@ -2131,7 +2131,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[name_text_style]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[name_text_style]',
 					'display' => true,
 					'setting' => array
 					(
@@ -2197,7 +2197,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[name_text_case]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[name_text_case]',
 					'display' => true,
 					'setting' => array
 					(
@@ -2251,7 +2251,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[name_text_align]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[name_text_align]',
 					'display' => true,
 					'setting' => array
 					(
@@ -2305,7 +2305,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[name_text_color]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[name_text_color]',
 					'display' => true,
 					'setting' => array
 					(
@@ -2336,7 +2336,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[name_link_to_archive]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[name_link_to_archive]',
 					'display' => true,
 					'setting' => array
 					(
@@ -2378,7 +2378,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[name_inherited_underline]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[name_inherited_underline]',
 					'display' => true,
 					'setting' => array
 					(
@@ -2435,7 +2435,7 @@ return array
 			(
                 array
                 (
-                    'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[show_meta]',
+                    'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[show_meta]',
                     'display' => true,
                     'setting' => array
                     (
@@ -2500,7 +2500,7 @@ return array
 				 ),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[meta_text_size]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[meta_text_size]',
 					'display' => true,
 					'setting' => array
 					(
@@ -2536,7 +2536,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[meta_text_style]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[meta_text_style]',
 					'display' => true,
 					'setting' => array
 					(
@@ -2602,7 +2602,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[meta_text_case]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[meta_text_case]',
 					'display' => true,
 					'setting' => array
 					(
@@ -2656,7 +2656,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[meta_text_align]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[meta_text_align]',
 					'display' => true,
 					'setting' => array
 					(
@@ -2710,7 +2710,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[meta_text_color]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[meta_text_color]',
 					'display' => true,
 					'setting' => array
 					(
@@ -2741,7 +2741,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[at]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[at]',
 					'display' => true,
 					'setting' => array
 					(
@@ -2773,7 +2773,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[web]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[web]',
 					'display' => true,
 					'setting' => array
 					(
@@ -2805,7 +2805,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[more_posts]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[more_posts]',
 					'display' => true,
 					'setting' => array
 					(
@@ -2832,12 +2832,12 @@ return array
 							'placeholder' => __( "+ posts", 'molongui-authorship' ),
 						),
 						'allow_addition'  => false,
-						'active_callback' => function( $control ) { return ( ( molongui_get_customizer_setting( $control, 'show_meta', '1' ) and molongui_get_customizer_setting( $control, 'layout', 'slim' ) ) ? true : false ); },
+						'active_callback' => function( $control ) { return ( ( molongui_get_customizer_setting( $control, 'show_meta', '1' ) and molongui_get_customizer_setting( $control, 'box_layout', 'slim' ) ) ? true : false ); },
 					),
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[bio]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[bio]',
 					'display' => true,
 					'setting' => array
 					(
@@ -2864,12 +2864,12 @@ return array
 							'placeholder' => __( 'Bio', 'molongui-authorship' ),
 						),
 						'allow_addition'  => false,
-						'active_callback' => function( $control ) { return ( ( molongui_get_customizer_setting( $control, 'show_meta', '1' ) and molongui_get_customizer_setting( $control, 'layout', 'slim' ) ) ? true : false ); },
+						'active_callback' => function( $control ) { return ( ( molongui_get_customizer_setting( $control, 'show_meta', '1' ) and molongui_get_customizer_setting( $control, 'box_layout', 'slim' ) ) ? true : false ); },
 					),
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[meta_separator]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[meta_separator]',
 					'display' => true,
 					'setting' => array
 					(
@@ -3039,7 +3039,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[bio_text_size]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[bio_text_size]',
 					'display' => true,
 					'setting' => array
 					(
@@ -3075,7 +3075,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[bio_line_height]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[bio_line_height]',
 					'display' => true,
 					'setting' => array
 					(
@@ -3110,7 +3110,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[bio_text_style]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[bio_text_style]',
 					'display' => true,
 					'setting' => array
 					(
@@ -3164,7 +3164,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[bio_text_case]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[bio_text_case]',
 					'display' => false,
 					'setting' => array
 					(
@@ -3218,7 +3218,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[bio_text_align]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[bio_text_align]',
 					'display' => true,
 					'setting' => array
 					(
@@ -3272,7 +3272,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[bio_text_color]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[bio_text_color]',
 					'display' => true,
 					'setting' => array
 					(
@@ -3303,7 +3303,7 @@ return array
 				),
                 array
                 (
-                    'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[bio_field]',
+                    'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[bio_field]',
                     'display' => true,
                     'setting' => array
                     (
@@ -3364,7 +3364,7 @@ return array
 			(
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[show_icons]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[show_icons]',
 					'display' => true,
 					'setting' => array
 					(
@@ -3409,7 +3409,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[icons_style]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[icons_style]',
 					'display' => true,
 					'setting' => array
 					(
@@ -3499,7 +3499,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[icons_color]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[icons_color]',
 					'display' => true,
 					'setting' => array
 					(
@@ -3530,7 +3530,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[icons_size]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[icons_size]',
 					'display' => true,
 					'setting' => array
 					(
@@ -3580,7 +3580,7 @@ return array
 			(
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[related_layout]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[related_layout]',
 					'display' => true,
 					'setting' => array
 					(
@@ -3628,7 +3628,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[related_title]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[related_title]',
 					'display' => true,
 					'setting' => array
 					(
@@ -3655,12 +3655,12 @@ return array
 							'placeholder' => __( "Related Entries", 'molongui-authorship' ),
 						),
 						'allow_addition'  => false,
-						'active_callback' => function( $control ) { return molongui_get_customizer_setting( $control, 'layout', 'stacked' ); },
+						'active_callback' => function( $control ) { return molongui_get_customizer_setting( $control, 'box_layout', 'stacked' ); },
 					),
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[no_related_posts]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[no_related_posts]',
 					'display' => true,
 					'setting' => array
 					(
@@ -3727,7 +3727,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[related_text_size]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[related_text_size]',
 					'display' => true,
 					'setting' => array
 					(
@@ -3763,7 +3763,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[related_text_style]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[related_text_style]',
 					'display' => true,
 					'setting' => array
 					(
@@ -3817,7 +3817,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[related_text_case]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[related_text_case]',
                     'display' => true,
                     'setting' => array
                     (
@@ -3871,7 +3871,7 @@ return array
 				),
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_box[related_text_color]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[related_text_color]',
 					'display' => true,
 					'setting' => array
 					(

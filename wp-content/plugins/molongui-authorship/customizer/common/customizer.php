@@ -126,7 +126,7 @@ if ( !class_exists( 'Molongui\Authorship\Customizer\Common\Customizer' ) )
 			{
 				wp_enqueue_style( 'molongui-framework-preview', MOLONGUI_AUTHORSHIP_URL . $fpath, array(), MOLONGUI_AUTHORSHIP_VERSION );
 			}
-			$fpath = 'customizer/common/js/scripts.da39.min.js';
+			$fpath = 'customizer/common/js/scripts.2fc8.min.js';
 			if ( file_exists( MOLONGUI_AUTHORSHIP_DIR . $fpath ) )
 			{
 				wp_enqueue_script( 'molongui-framework-preview', MOLONGUI_AUTHORSHIP_URL . $fpath, array( 'jquery', 'customize-preview' ), MOLONGUI_AUTHORSHIP_VERSION );

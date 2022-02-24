@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the MailPoet 3 (New) package.
 msgid ""
 msgstr ""
-"Project-Id-Version: MailPoet 3 (New) 3.81.0\n"
+"Project-Id-Version: MailPoet 3 (New) 3.82.0\n"
 "Report-Msgid-Bugs-To: http://support.mailpoet.com/\n"
-"POT-Creation-Date: 2022-02-16 12:30:31+00:00\n"
+"POT-Creation-Date: 2022-02-22 10:31:34+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -50,7 +50,7 @@ msgid "You do not have the required permissions."
 msgstr ""
 
 #: lib/API/JSON/Endpoint.php:30 lib/API/JSON/ErrorHandler.php:17
-#: lib/API/JSON/ErrorResponse.php:27
+#: lib/API/JSON/ErrorResponse.php:27 lib/Automation/API/API.php:70
 msgid "An unknown error occurred."
 msgstr ""
 
@@ -631,6 +631,14 @@ msgstr ""
 msgid "Please contact our technical support for assistance."
 msgstr ""
 
+#: lib/Automation/Exceptions.php:29
+msgid "Method not allowed."
+msgstr ""
+
+#: lib/Automation/Exceptions.php:35
+msgid "No JSON body passed."
+msgstr ""
+
 #: lib/Config/AccessControl.php:69
 msgid "Admin menu item"
 msgstr ""
@@ -663,7 +671,7 @@ msgstr ""
 msgid "MailPoet version update is in progress, please refresh the page in a minute."
 msgstr ""
 
-#: lib/Config/Capabilities.php:80 lib/Config/Menu.php:471
+#: lib/Config/Capabilities.php:80 lib/Config/Menu.php:494
 #: lib/Config/PrivacyPolicy.php:12
 msgid "MailPoet"
 msgstr ""
@@ -672,7 +680,7 @@ msgstr ""
 msgid "MailPoet Newsletter"
 msgstr ""
 
-#: lib/Config/Initializer.php:145
+#: lib/Config/Initializer.php:157
 msgid "Unable to connect to the database (the database is unable to open a file or folder), the connection is likely not configured correctly. Please read our [link] Knowledge Base article [/link] for steps how to resolve it."
 msgstr ""
 
@@ -762,100 +770,100 @@ msgstr[1] ""
 msgid "Settings imported"
 msgstr ""
 
-#: lib/Config/Menu.php:118 lib/Config/Menu.php:119 views/newsletters.html:86
+#: lib/Config/Menu.php:125 lib/Config/Menu.php:126 views/newsletters.html:86
 msgid "Emails"
 msgstr ""
 
-#: lib/Config/Menu.php:131
+#: lib/Config/Menu.php:138
 msgctxt "newsletters per page (screen options)"
 msgid "Number of newsletters per page"
 msgstr ""
 
-#: lib/Config/Menu.php:143 lib/Newsletter/Shortcodes/ShortcodesHelper.php:42
+#: lib/Config/Menu.php:150 lib/Newsletter/Shortcodes/ShortcodesHelper.php:42
 #: views/newsletter/editor.html:364 views/newsletters.html:88
 #: views/newsletters.html:228
 msgid "Newsletter"
 msgstr ""
 
-#: lib/Config/Menu.php:144 views/newsletter/editor.html:328
+#: lib/Config/Menu.php:151 views/newsletter/editor.html:328
 msgid "Newsletter Editor"
 msgstr ""
 
-#: lib/Config/Menu.php:156 lib/Config/Menu.php:157 views/forms.html:47
+#: lib/Config/Menu.php:163 lib/Config/Menu.php:164 views/forms.html:47
 #: views/mp2migration.html:13
 msgid "Forms"
 msgstr ""
 
-#: lib/Config/Menu.php:169
+#: lib/Config/Menu.php:176
 msgctxt "forms per page (screen options)"
 msgid "Number of forms per page"
 msgstr ""
 
-#: lib/Config/Menu.php:181 lib/Config/Menu.php:182
+#: lib/Config/Menu.php:188 lib/Config/Menu.php:189
 msgid "Form Editor"
 msgstr ""
 
-#: lib/Config/Menu.php:201 lib/Config/Menu.php:202
+#: lib/Config/Menu.php:208 lib/Config/Menu.php:209
 msgid "Select Form Template"
 msgstr ""
 
-#: lib/Config/Menu.php:222 lib/Config/Menu.php:223
+#: lib/Config/Menu.php:229 lib/Config/Menu.php:230
 #: views/subscribers/subscribers.html:38
 msgid "Subscribers"
 msgstr ""
 
-#: lib/Config/Menu.php:235
+#: lib/Config/Menu.php:242
 msgctxt "subscribers per page (screen options)"
 msgid "Number of subscribers per page"
 msgstr ""
 
-#: lib/Config/Menu.php:247 lib/Config/Menu.php:248
+#: lib/Config/Menu.php:254 lib/Config/Menu.php:255
 #: views/subscribers/importExport/import.html:6
 #: views/subscribers/importExport/import.html:101
 #: views/subscribers/subscribers.html:139
 msgid "Import"
 msgstr ""
 
-#: lib/Config/Menu.php:260 lib/Config/Menu.php:261
+#: lib/Config/Menu.php:267 lib/Config/Menu.php:268
 #: views/subscribers/importExport/export.html:6
 #: views/subscribers/importExport/export.html:80
 #: views/subscribers/subscribers.html:140
 msgid "Export"
 msgstr ""
 
-#: lib/Config/Menu.php:273 lib/Config/Menu.php:274 views/forms.html:81
+#: lib/Config/Menu.php:280 lib/Config/Menu.php:281 views/forms.html:81
 #: views/newsletters.html:152 views/newsletters.html:293 views/segments.html:49
 #: views/subscribers/subscribers.html:99
 msgid "Lists"
 msgstr ""
 
-#: lib/Config/Menu.php:286
+#: lib/Config/Menu.php:293
 msgctxt "segments per page (screen options)"
 msgid "Number of segments per page"
 msgstr ""
 
-#: lib/Config/Menu.php:298 lib/Config/Menu.php:299 views/mp2migration.html:14
+#: lib/Config/Menu.php:305 lib/Config/Menu.php:306 views/mp2migration.html:14
 #: views/newsletters.html:153 views/settings.html:35
 msgid "Settings"
 msgstr ""
 
-#: lib/Config/Menu.php:311 lib/Config/Menu.php:312
+#: lib/Config/Menu.php:318 lib/Config/Menu.php:319
 msgid "Help"
 msgstr ""
 
-#: lib/Config/Menu.php:325 lib/Config/Menu.php:326
+#: lib/Config/Menu.php:332 lib/Config/Menu.php:333
 msgid "Premium"
 msgstr ""
 
-#: lib/Config/Menu.php:338 lib/Config/Menu.php:339
+#: lib/Config/Menu.php:345 lib/Config/Menu.php:346
 msgid "Welcome Wizard"
 msgstr ""
 
-#: lib/Config/Menu.php:351 lib/Config/Menu.php:352
+#: lib/Config/Menu.php:358 lib/Config/Menu.php:359
 msgid "WooCommerce Setup"
 msgstr ""
 
-#: lib/Config/Menu.php:364
+#: lib/Config/Menu.php:371
 msgid "Migration"
 msgstr ""
 
@@ -3943,45 +3951,33 @@ msgstr ""
 msgid "%d seconds"
 msgstr ""
 
-#: lib/Twig/Functions.php:176 views/settings.html:259
+#: lib/Twig/Functions.php:171 views/settings.html:259
 msgid "every minute"
 msgstr ""
 
-#: lib/Twig/Functions.php:177 views/settings.html:260
+#: lib/Twig/Functions.php:172 views/settings.html:260
 msgid "every %1$d minutes"
 msgstr ""
 
-#: lib/Twig/Functions.php:178 views/settings.html:261
+#: lib/Twig/Functions.php:173 views/settings.html:261
 msgid "every hour"
 msgstr ""
 
-#: lib/Twig/Functions.php:179 views/settings.html:262
+#: lib/Twig/Functions.php:174 views/settings.html:262
 msgid "every %1$d hours"
 msgstr ""
 
-#: lib/Twig/Functions.php:275
-msgid "EXCELLENT"
-msgstr ""
-
-#: lib/Twig/Functions.php:277
-msgid "GOOD"
-msgstr ""
-
-#: lib/Twig/Functions.php:279
-msgid "BAD"
-msgstr ""
-
-#: lib/Twig/Functions.php:285 views/newsletters.html:182
+#: lib/Twig/Functions.php:270 views/newsletters.html:182
 #: views/segments.html:239 views/subscribers/subscribers.html:161
 msgid "Excellent"
 msgstr ""
 
-#: lib/Twig/Functions.php:287 views/newsletters.html:184
+#: lib/Twig/Functions.php:272 views/newsletters.html:184
 #: views/segments.html:242 views/subscribers/subscribers.html:164
 msgid "Good"
 msgstr ""
 
-#: lib/Twig/Functions.php:289 views/newsletters.html:186
+#: lib/Twig/Functions.php:274 views/newsletters.html:186
 msgid "Average"
 msgstr ""
 
@@ -4154,22 +4150,27 @@ msgid "Our free version is limited to [subscribersLimit] subscribers. You need t
 msgstr ""
 
 #: views/emails/statsNotification.html:184
+#: views/emails/statsNotificationAutomatedEmails.html:139
 msgid "clicked"
 msgstr ""
 
 #: views/emails/statsNotification.html:236
+#: views/emails/statsNotificationAutomatedEmails.html:180
 msgid "opened"
 msgstr ""
 
 #: views/emails/statsNotification.html:268
+#: views/emails/statsNotificationAutomatedEmails.html:199
 msgid "machine-opened"
 msgstr ""
 
 #: views/emails/statsNotification.html:320
+#: views/emails/statsNotificationAutomatedEmails.html:239
 msgid "unsubscribed"
 msgstr ""
 
 #: views/emails/statsNotification.html:352
+#: views/emails/statsNotificationAutomatedEmails.html:258
 msgid "bounced"
 msgstr ""
 
@@ -4183,14 +4184,6 @@ msgstr ""
 
 #: views/emails/statsNotification.html:478
 msgid "View all stats"
-msgstr ""
-
-#: views/emails/statsNotificationAutomatedEmails.html:135
-msgid "open rate"
-msgstr ""
-
-#: views/emails/statsNotificationAutomatedEmails.html:188
-msgid "click rate"
 msgstr ""
 
 #: views/emails/statsNotificationLayout.html:86

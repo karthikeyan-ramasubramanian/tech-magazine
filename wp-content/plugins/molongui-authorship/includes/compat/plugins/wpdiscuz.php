@@ -25,9 +25,10 @@ add_filter( '_authorship/get_avatar_data/filter/author', function( $author, $id_
         {
             if ( is_int( $id_or_email ) )
             {
-                if ( !is_object( $author->user ) ) $author->user = new WP_User();
-                $author->user->ID = $id_or_email;
-                $author->type     = 'user';
+                if ( !is_object( $author->object ) ) $author->object = new WP_User();
+                $author->object->ID = $id_or_email;
+                $author->id         = $id_or_email;
+                $author->type       = 'user';
             }
         }
     }

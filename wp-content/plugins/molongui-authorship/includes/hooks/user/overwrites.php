@@ -7,12 +7,12 @@ function authorship_get_user_by( $user, $field, $value )
 {
     global $pagenow;
     if ( is_admin() and ( !defined( 'DOING_AJAX' ) or !DOING_AJAX )
-        or $pagenow == 'wp-login.php'
-        or $field == 'login'
+         or $pagenow == 'wp-login.php'
+         or $field == 'login'
     )  return $user;
     global $in_comment_loop;
     if ( $in_comment_loop ) return $user;
-    $dbt = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 8 );
+    $dbt = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS );
     if ( empty( $dbt ) ) return $user;
     global $wp_query;
     global $post;
