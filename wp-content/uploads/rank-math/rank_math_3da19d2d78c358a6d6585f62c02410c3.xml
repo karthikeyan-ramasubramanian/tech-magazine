@@ -2,7 +2,7 @@
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<sitemap>
 		<loc>https://blogs.techsnapie.com/post-sitemap.xml</loc>
-		<lastmod>2022-03-02T06:34:16+05:30</lastmod>
+		<lastmod>2022-03-05T07:28:29+05:30</lastmod>
 	</sitemap>
 	<sitemap>
 		<loc>https://blogs.techsnapie.com/page-sitemap.xml</loc>
@@ -10,10 +10,10 @@
 	</sitemap>
 	<sitemap>
 		<loc>https://blogs.techsnapie.com/category-sitemap.xml</loc>
-		<lastmod>2022-03-02T06:34:16+05:30</lastmod>
+		<lastmod>2022-03-05T07:28:29+05:30</lastmod>
 	</sitemap>
 	<sitemap>
 		<loc>https://blogs.techsnapie.com/author-sitemap.xml</loc>
-		<lastmod>2022-03-05T04:57:29+05:30</lastmod>
+		<lastmod>2022-03-05T12:58:29+05:30</lastmod>
 	</sitemap>
 </sitemapindex>
