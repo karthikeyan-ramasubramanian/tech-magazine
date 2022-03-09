@@ -4,6 +4,14 @@
 		<loc>https://blogs.techsnapie.com/gallery/</loc>
 	</url>
 	<url>
+		<loc>https://blogs.techsnapie.com/what-is-r-programming-language/</loc>
+		<lastmod>2022-03-08T07:52:48+05:30</lastmod>
+		<image:image>
+			<image:loc>https://blogs.techsnapie.com/wp-content/uploads/2022/03/Features-of-R-Programming-1-2.png</image:loc>
+			<image:caption><![CDATA[Features of R]]></image:caption>
+		</image:image>
+	</url>
+	<url>
 		<loc>https://blogs.techsnapie.com/top-5-big-data-tools-mostly-used-in-2022/</loc>
 		<lastmod>2022-03-06T10:02:27+05:30</lastmod>
 	</url>
