@@ -57,7 +57,7 @@ if ( !function_exists( 'molongui_register_sortable' ) )
 {
     function molongui_register_sortable()
     {
-        $version = '1.10.2'; //'1.13.0';
+        $version = '1.10.2'; //'1.14.0';
 
         if ( apply_filters( 'authorship/assets/load_remote', true ) )
         {

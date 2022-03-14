@@ -1,5 +1,12 @@
 ﻿== Changelog ==
 
+= 1.2.45.1 =
+* Move to a new authentication system for Constant Contact v3 integration. [Learn more](https://mailoptin.io/article/connect-mailoptin-with-constant-contact/#v3)
+
+= 1.2.45.0 =
+* Added support for new Constant Contact v3 integration endpoints - REAUTHORIZE URGENTLY.
+* Added new sidebar and inpost optin themes.
+
 = 1.2.44.0 =
 * Pro feature [Sync WooCommerce customers to ESP support after a purchase](https://mailoptin.io/?p=32886&ref=changelog).
 * Added filter to disable gutenberg block.

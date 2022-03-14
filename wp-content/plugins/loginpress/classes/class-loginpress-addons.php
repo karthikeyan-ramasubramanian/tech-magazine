@@ -236,6 +236,10 @@ if ( ! class_exists( 'LoginPress_Addons' ) ) :
 				return true;
 			}else if( LoginPress_Pro::get_license_id() == 4 and in_array('loginpress-pro-agency', $categories) ){
 				return true;
+			}else if( LoginPress_Pro::get_license_id() == 5){
+				return true;
+			}else if( LoginPress_Pro::get_license_id() == 6){
+				return true;
 			}else if( LoginPress_Pro::get_license_id() == 7 and in_array('loginpress-pro-agency', $categories) ){
 				return true;
 			}else if( LoginPress_Pro::get_license_id() == 8 and in_array('loginpress-pro-agency', $categories) ){

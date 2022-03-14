@@ -3,7 +3,7 @@ Contributors: Constant Contact
 Tags: email, marketing, newsletter, subscribe, contact form, constant contact, crm, automations, ecommerce, promotion, offers, retargeting
 Requires at least: 4.6
 Tested up to: 5.8
-Stable tag: 1.4.9
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 5.6
@@ -104,6 +104,7 @@ Creative Mail by Constant Contact [Privacy Notice](https://www.endurance.com/pri
 6. Enhance your brand with LogoBuilder
 
 == Changelog ==
+* 1.5.0 - Fix WooCommerce product lists, improved WooCommerce order workflows and improved contact management.
 * 1.4.9 - Fixes regarding WooCoomerce and Contact Sync Updates.
 * 1.4.8 - Redirect to main Creativ Email templates page when user has abandoned cart template deactivated. Fix sync error with contact form 7. Added automation trigger for customer buying products.
 * 1.4.7 - Fix currency type being shown in "Abandoned Cart" emails for WooCommerce.

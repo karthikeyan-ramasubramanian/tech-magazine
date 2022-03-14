@@ -9,7 +9,7 @@ function authorship_add_authors_menu()
     (
         _x( "Authors", "Page title", 'molongui-authorship' ),
         _x( "Authors", "Menu title", 'molongui-authorship' ),
-        'manage_options',
+        'edit_others_posts',
         'authors',
         'authorship_render_authors_screen',
         'dashicons-ellipsis', //molongui_get_base64_svg( authorship_authors_menu_icon() ),
@@ -31,7 +31,7 @@ function authorship_add_authors_submenu()
         'authors',
         _x( "Authors", "Page title", 'molongui-authorship' ),
         _x( "View All", "Authors submenu title", 'molongui-authorship' ),
-        'manage_options',
+        'edit_others_posts',
         'authors',
         'authorship_render_authors_screen'
     );
@@ -42,7 +42,7 @@ function authorship_add_authors_submenu()
         'authors',
         _x( "Add New Author", "Page title", 'molongui-authorship' ),
         _x( "Add New", "Authors submenu title", 'molongui-authorship' ),
-        'manage_options',
+        'edit_others_posts',
         'author-new',
         'authorship_render_add_author_screen',
         5

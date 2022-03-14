@@ -6,6 +6,7 @@ namespace CreativeMail\Managers;
 use CreativeMail\CreativeMail;
 use CreativeMail\Helpers\EnvironmentHelper;
 use CreativeMail\Helpers\OptionsHelper;
+use CreativeMail\Modules\Contacts\Models\OptActionBy;
 use stdClass;
 use WC_Coupon;
 use WC_Order;
@@ -751,6 +752,32 @@ class CheckoutManager
         }
     }
 
+    private function get_opt_action_by($products_detail) {
+        return OptActionBy::Visitor;
+    }
+
+    private function get_opt_in_checkbox_value($products_detail) {
+        if (!empty($products_detail["ce4wp_checkout_consent"])) {
+            return $products_detail["ce4wp_checkout_consent"][0]; //this value appears to be in array;
+        }
+
+        return null;
+    }
+
+    private function get_opt_in($products_detail) {
+        $checkbox_value = $this->get_opt_in_checkbox_value($products_detail);
+        if ($checkbox_value == true)
+           return true;
+        return null;
+    }
+
+    private function get_opt_out($products_detail) {
+        $checkbox_value = $this->get_opt_in_checkbox_value($products_detail);
+        if ($checkbox_value == false)
+            return true;
+        return null;
+    }
+
     public function add_order_completed_wc_hooks() {
         add_action('woocommerce_order_status_completed', array($this, 'order_completed_trigger_wc_hook'), 10, 1);
     }
@@ -760,6 +787,8 @@ class CheckoutManager
         if ( empty( $order ) ) {
             return;
         }
+
+        $products_detail = get_post_meta($order_id);
 
         $endpoint = '/v1.0/wc/order_completed';
         $decimal_point = 2;
@@ -779,6 +808,11 @@ class CheckoutManager
         $requestItem->customer_id = $order->get_user_id();
         // Order Billing
         $requestItem->order->billing->email = $order->get_billing_email();
+
+        $requestItem->order->billing->opt_action_by = $this->get_opt_action_by($products_detail);
+        $requestItem->order->billing->opt_in = $this->get_opt_in($products_detail);
+        $requestItem->order->billing->opt_out = $this->get_opt_out($products_detail);
+
         $requestItem->order->billing->first_name = $order->get_billing_first_name();
         $requestItem->order->billing->last_name = $order->get_billing_last_name();
         $requestItem->order->billing->is_first_time_buyer = count(wc_get_orders(array('email' => $order->get_billing_email()))) <= 1;

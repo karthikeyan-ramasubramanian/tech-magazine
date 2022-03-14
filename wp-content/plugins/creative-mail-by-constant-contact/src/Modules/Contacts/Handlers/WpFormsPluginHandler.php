@@ -62,6 +62,17 @@ class WpFormsPluginHandler extends BaseContactFormPluginHandler
             }
         }
 
+        if(empty($contactModel -> firstName) && empty($contactModel -> lastName) && !empty($nameField) && !empty($nameField['value']))
+        {
+            $nameValues = preg_split ('/ /', $nameField['value']);
+            $arrLength = count($nameValues);
+            $contactModel->setFirstName($nameValues[0]);
+            if($arrLength > 1)
+            {
+                $contactModel->setLastName($nameValues[$arrLength - 1]);
+            }
+        }
+
         $phoneField = $this->get_form_type_field($formData, 'phone');
         if (!empty($phoneField)) {
             if (!empty($phoneField['value'])) {

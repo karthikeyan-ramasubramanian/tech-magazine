@@ -124,6 +124,7 @@ class Newsletters {
     $data['has_mss_key_specified'] = Bridge::isMSSKeySpecified();
     $data['mss_key_pending_approval'] = $this->servicesChecker->isMailPoetAPIKeyPendingApproval();
     $data['current_wp_user'] = $this->wp->wpGetCurrentUser()->to_array();
+    $data['current_wp_user_email'] = $this->wp->wpGetCurrentUser()->user_email;
     $data['current_wp_user_firstname'] = $this->wp->wpGetCurrentUser()->user_firstname;
     $data['site_url'] = $this->wp->siteUrl();
     $data['roles'] = $wp_roles->get_names(); // phpcs:ignore Squiz.NamingConventions.ValidVariableName.MemberNotCamelCaps
@@ -162,6 +163,8 @@ class Newsletters {
     $data['premium_plugin_download_url'] = $pluginInformation->download_link ?? null; // phpcs:ignore Squiz.NamingConventions.ValidVariableName.MemberNotCamelCaps
     $data['premium_plugin_activation_url'] = $installer->generatePluginActivationUrl(Installer::PREMIUM_PLUGIN_PATH);
     $data['plugin_partial_key'] = $this->servicesChecker->generatePartialApiKey();
+    $data['email_volume_limit_reached'] = $this->subscribersFeature->checkEmailVolumeLimitIsReached();
+    $data['email_volume_limit'] = $this->subscribersFeature->getEmailVolumeLimit();
 
     if (!$data['premium_plugin_active']) {
       $data['free_premium_subscribers_limit'] = License::FREE_PREMIUM_SUBSCRIBERS_LIMIT;

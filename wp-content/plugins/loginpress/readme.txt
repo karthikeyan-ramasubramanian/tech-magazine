@@ -4,7 +4,7 @@ Tested up to: 5.9
 Contributors: WPBrigade, hiddenpearls, AbdulWahab610
 Author URI: https://wpbrigade.com/?utm_source=loginpress-lite&utm_medium=author-url-link
 Tags: wp-login, login, login customizer, custom login, wordpress login,
-Stable tag: 1.5.12
+Stable tag: 1.5.13
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,19 +19,19 @@ LoginPress Plugin would give you and your users a feeling that it is a custom lo
 
 `[youtube https://www.youtube.com/watch?v=GMAwsHomJlE]`
 
-**[Why You Should Upgrade to PRO ??](https://loginpress.pro?utm_source=loginpress-lite&utm_medium=link&utm_campaign=pro-upgrade)**
+**[Why You Should Upgrade to LoginPress Pro?](https://loginpress.pro?utm_source=loginpress-lite&utm_medium=link&utm_campaign=pro-upgrade)**
 `[youtube https://www.youtube.com/watch?v=9snT9rWxO4g]`
 
 [Checkout the Pro version](https://loginpress.pro?utm_source=loginpress-lite&utm_medium=link&utm_campaign=pro-upgrade)
 
 LoginPress plugin is built using The Customizer API which is getting popular for live-previewing any changes to the layouts of WordPress. So, with LoginPress you can preview your login page changes instantly. This login customizer plugin is easy enough & required no coding skills. Just have options for each element on the login form and make a new customized login page within seconds.
 
-[LoginPress Documentation](https://loginpress.pro/documentation/)
+[LoginPress Documentation](https://loginpress.pro/documentation/?utm_source=loginpress-lite)
 
 > Multilingual & Translatable
 > WPML Compatible
 
-** LoginPress Addons **
+**LoginPress Addons:**
 
 We have a collection of great Free and Pro addons that makes LoginPress more powerful. Upgrade to Pro package and enjoy the show.
 
@@ -131,7 +131,7 @@ If you like this plugin, then consider checking out our other amazing plugins:
 
 LoginPress is absolutely, positively the most <a href="https://loginpress.pro?utm_source=loginpress-lite&utm_medium=link&utm_campaign=pro-upgrade" rel="friend" title="Best Custom login form plugin">beginner friendly WordPress custom login form plugin</a> on the market. It is both easy and powerful.
 
-Also, I'm the founder of <a href="https://WPBrigade.com/" rel="friend">WPBrigade</a>, We do custom WordPress themes for clients and can transform any website in WordPress. It was a huge priority for me to make a WordPress custom login form plugin that beginners can use without any training.
+Also, I'm the founder of <a href="https://WPBrigade.com/?utm_source=loginpress-lite" rel="friend">WPBrigade</a>, We do custom WordPress themes for clients and can transform any website in WordPress. It was a huge priority for me to make a WordPress custom login form plugin that beginners can use without any training.
 
 I feel that we have done that here. I hope you enjoy using LoginPress.
 
@@ -220,6 +220,10 @@ Please visit <a target="_blank" rel="friend" href="https://loginpress.pro?utm_so
 23. Custom Login page (Company theme) Example #23 with Captcha [Pro feature](https://loginpress.pro?utm_source=loginpress-lite&utm_medium=screenshots&utm_campaign=pro-upgrade)
 
 == Changelog ==
+
+= 1.5.13 – 2022-03-01 =
+* BugFix: Slider control layout in customizer.
+* BugFix: Show LoginPress addons to download after activating on agency license.
 
 = 1.5.12 – 2022-02-02 =
 * BugFix: Apply escaping at `redirect-page` attribute on the optin page.
@@ -642,5 +646,5 @@ Please visit <a target="_blank" rel="friend" href="https://loginpress.pro?utm_so
 
 == Upgrade Notice ==
 
-= 1.5.12 =
+= 1.5.13 =
 * Important Release, upgrade immediately. Compatible with 5.9

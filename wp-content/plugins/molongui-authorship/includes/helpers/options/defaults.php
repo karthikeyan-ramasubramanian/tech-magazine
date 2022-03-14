@@ -157,11 +157,6 @@ function authorship_set_defaults()
         'add_facebook_meta'  => true,
         'add_twitter_meta'   => true,
         'multi_author_meta'  => 'many',
-
-        'enable_byline_template_tags' => false,
-        'enable_theme_compat'         => true,
-        'enable_plugin_compat'        => true,
-        'enable_sc_text_widget'       => false,
         'authors_menu'       => true,
         'guests_menu'        => false,
         'molongui_menu'      => false,
@@ -170,6 +165,10 @@ function authorship_set_defaults()
         'settings_submenu'   => true,
         'author_name_action' => 'filter',
         'enable_cache' => true,
+        'assets_cdn'   => true,
+        'enable_byline_template_tags' => false,
+        'enable_theme_compat'  => true,
+        'enable_plugin_compat' => true,
     );
 }
 add_filter( 'authorship/default_options', 'authorship_set_defaults' );

@@ -189,11 +189,20 @@ class ApiManager
                 self::ROUTE_METHODS           => 'GET',
                 self::ROUTE_CALLBACK          => function ($request) {
                     $productData = array();
+                    $products = array();
                     $active_plugins = apply_filters('active_plugins', get_option('active_plugins'));
                     if (in_array('woocommerce/woocommerce.php', $active_plugins)) {
                         $page = 1;
-                        if (property_exists($request,'page')) {
-                            $page = (int)$request['page'];
+                        $limit = 25;
+
+                        $pageFromRequest = $request->get_param('page');
+                        if(!empty($pageFromRequest) && $pageFromRequest != '{page}') {
+                            $page = $pageFromRequest;
+                        }
+
+                        $pageLimitFromRequest = $request->get_param('limit');
+                        if(!empty($pageLimitFromRequest) && $pageLimitFromRequest != '{limit}') {
+                            $limit = $pageLimitFromRequest;
                         }
 
                         $types = array_merge( array_keys( wc_get_product_types() ) );
@@ -205,16 +214,21 @@ class ApiManager
                         // Get 25 most recent products
                         $products = wc_get_products(
                             array(
-                            'limit' => 25,
-                            'paged' => $page,
-                            'type' => $types
+                                'limit' => $limit,
+                                'paginate' => true,
+                                'paged' => $page,
+                                'type' => $types
                             )
                         );
-                        foreach ($products as $product) {
+
+                        foreach ($products->products as $product) {
                             array_push($productData, new WCProductModel($product->get_data()));
                         }
                     }
-                    return $this->modify_response(new WP_REST_Response($productData, 200));
+                    $response = new WP_REST_Response($productData, 200);
+                    $response->header( 'X-WP-Total',  $products->total );
+                    $response->header( 'X-WP-TotalPages', $products->max_num_pages );
+                    return $this->modify_response($response);
                 }
             ),
             array (
@@ -305,6 +319,63 @@ class ApiManager
 
                     $blocks = $this->find_pages_by_content_tag("wp:ce4wp/subscribe");
                     return $this->modify_response(new WP_REST_Response($blocks, 200));
+                }
+            ),
+            array (
+                self::ROUTE_PATH                => '/check_if_previously_purchased',
+                self::ROUTE_METHODS             => 'GET',
+                self::ROUTE_CALLBACK            => function ($request) {
+
+                    $active_plugins = apply_filters('active_plugins', get_option('active_plugins'));
+                    if (in_array('woocommerce/woocommerce.php', $active_plugins)) {
+
+						$product_ID = $request->get_param('product');
+                        $email = $request->get_param('email');
+                        $daysPassedFloat = 86400 * $request->get_param('daysPassed');
+                        $daysPassed = round($daysPassedFloat);
+
+                        $currentDay = new \DateTime();
+                        $currentDate = $currentDay->format('Y-m-d H:i:s');
+                        $currentTime = strtotime($currentDate);
+
+                        $date = new \DateTime();
+                        $date->sub(new \DateInterval("PT{$daysPassed}S"));
+                        $initial_date = $date->format('Y-m-d H:i:s');
+                        $initialTime = strtotime($initial_date);
+                        $exists = false;
+
+                        $order = wc_get_orders( array(
+                            'billing_email' => $email,
+                            'date_created' => "$initialTime...$currentTime",
+							'status' => array('wc-completed')
+                        ));
+
+                        if(!empty($product_ID)) {
+
+							foreach ($order as $itemsKey => $item) {
+                                $orderData = $item->get_data();
+
+								foreach($orderData['line_items'] as $lineItem) {
+									$product = $lineItem->get_product()->get_data();
+
+									foreach($product_ID as $p_ID) {
+										if($p_ID == $product['id']) {
+											$exists = true;
+										}
+									}
+								}
+                                if($exists) {
+                                    break;
+                                }
+                            }
+                        }
+                        else {
+                            if(!empty($order)) {
+                                $exists = true;
+                            }
+                        }
+                        return $this->modify_response(new WP_REST_Response($exists, 200));
+                    }
                 }
             )
         );

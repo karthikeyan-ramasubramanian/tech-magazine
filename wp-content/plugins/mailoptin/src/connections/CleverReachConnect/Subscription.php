@@ -60,7 +60,7 @@ class Subscription extends AbstractCleverReachConnect
     
             //checking is conversion_page is empty, then set defaults to home_url()
             if(empty($this->extras['conversion_page'])) {
-                $payload['conversion_page'] = home_url();
+                $this->extras['conversion_page'] = home_url();
             }
     
             //also checking if the referrer is empty, then set to conversion_page
@@ -104,7 +104,9 @@ class Subscription extends AbstractCleverReachConnect
                 }
             }
 
-            $response = $this->cleverreachInstance()->addSubscriber($group_id, $this->email, array_filter($subscriber_data, [$this, 'data_filter']), $doi_data);
+            $subscriber_data = apply_filters('mo_connections_cleverreach_optin_payload', array_filter($subscriber_data, [$this, 'data_filter']), $this);
+
+            $response = $this->cleverreachInstance()->addSubscriber($group_id, $this->email, $subscriber_data, $doi_data);
 
             if (isset($response->id) && ! empty($response->id)) {
                 return parent::ajax_success();

@@ -17,7 +17,10 @@ function authorship_render_box( $content )
     if ( empty( $html ) ) return $content;
     global $multipage, $page, $numpages;
     $box_position = get_post_meta( $post->ID, '_molongui_author_box_position', true );
-    if ( empty( $box_position ) or $box_position == 'default' ) $box_position = $options['box_position'];
+    if ( empty( $box_position ) or $box_position == 'default' )
+    {
+        $box_position = !empty( $options['box_position'] ) ? $options['box_position'] : 'below';
+    }
     switch ( $box_position )
     {
         case "both":

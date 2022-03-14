@@ -12,7 +12,7 @@ $config = array
     'db'  => 19,
     'cpt' => 'guest_author',
     'has_pro' => true,
-    'min_pro' => '1.4.0',
+    'min_pro' => '1.3.0', //'1.4.0',
 );
 $plugin_id = strtolower( str_replace( ' ', '-', $config['brand'] . ' ' . $config['name'] ) );
 $plugin_px = str_replace( '-', '_', $plugin_id );
@@ -38,6 +38,12 @@ $constants = array
     'NOTICES'           => $plugin_px.'_notices',
     'HAS_PRO' => $config['has_pro'],
     'MIN_PRO' => $config['min_pro'],
+    'MAIN_SETTINGS'     => $plugin_px.'_options',
+    'BOX_SETTINGS'      => $plugin_px.'_options',
+    'BYLINE_SETTINGS'   => $plugin_px.'_options',
+    'ARCHIVES_SETTINGS' => $plugin_px.'_options',
+    'SEO_SETTINGS'      => $plugin_px.'_options',
+    'COMPAT_SETTINGS'   => $plugin_px.'_options',
 );
 if ( isset( $dont_load_constants ) and $dont_load_constants )
 {

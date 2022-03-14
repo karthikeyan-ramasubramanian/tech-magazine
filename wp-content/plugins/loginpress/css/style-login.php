@@ -1151,6 +1151,13 @@ body.login label[for="authcode"]+input{
  * @since 1.5.11
  */
 if ( version_compare( $GLOBALS['wp_version'], '5.9', '>=' ) && ! empty( get_available_languages() ) ) : ?>
+[for="language-switcher-locales"]:after{
+	display: none;
+}
+.language-switcher{
+	clear: both;
+	padding-top: 1px;
+}
 .login #language-switcher input[type="submit"]{
 	margin: 0;
 	color: #2271b1;

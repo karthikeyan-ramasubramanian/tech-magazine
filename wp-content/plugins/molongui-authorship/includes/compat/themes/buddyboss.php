@@ -46,6 +46,29 @@ add_filter( '_authorship/get_avatar_data/filter/author', function( $author, $id_
     }
     return $author;
 }, 10, 3 );
+add_filter( 'bp_core_get_user_domain', function( $domain, $user_id, $user_nicename, $user_login )
+{
+    if ( apply_filters( 'authorship/buddyboss_author_link', false ) ) return $domain;
+
+    $options = authorship_get_options();
+
+    if ( $options['guest_authors'] or $options['enable_multi_authors'] )
+    {
+        $fn   = 'bp_core_get_user_domain';
+        $file = '/template-parts/entry-meta.php';
+        $dbt  = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 10 );
+        if ( empty( $dbt ) ) return $domain;
+        if ( $i = array_search( $fn, array_column( $dbt, 'function' ) )
+            and
+            ( isset( $dbt[$i]['file'] ) and substr_compare( $dbt[$i]['file'], $file, strlen( $dbt[$i]['file'] )-strlen( $file ), strlen( $file ) ) === 0 )
+        )
+        {
+            $domain = get_author_posts_url( $user_id, $user_nicename );
+        }
+    }
+
+    return $domain;
+}, 10, 4 );
 add_filter( 'authorship/get_avatar_data/skip', function( $default, $args, $dbt )
 {
     global $is_related_posts;

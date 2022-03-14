@@ -21,12 +21,12 @@ class ConstantContactV3 extends OAuth2
     /**
      * {@inheritdoc}
      */
-    protected $authorizeUrl = 'https://api.cc.email/v3/idfed';
+    protected $authorizeUrl = 'https://authz.constantcontact.com/oauth2/default/v1/authorize';
 
     /**
      * {@inheritdoc}
      */
-    protected $accessTokenUrl = 'https://idfed.constantcontact.com/as/token.oauth2';
+    protected $accessTokenUrl = 'https://authz.constantcontact.com/oauth2/default/v1/token';
 
     /**
      * {@inheritdoc}
@@ -36,9 +36,7 @@ class ConstantContactV3 extends OAuth2
     /**
      * {@inheritdoc}
      */
-    protected $scope = 'contact_data campaign_data';
-
-    protected $supportRequestState = false;
+    protected $scope = 'contact_data campaign_data offline_access';
 
     /**
      * {@inheritdoc}
@@ -46,6 +44,16 @@ class ConstantContactV3 extends OAuth2
     protected function initialize()
     {
         parent::initialize();
+
+        $this->tokenExchangeHeaders = [
+            'Content-Type' => 'application/x-www-form-urlencoded',
+            'Authorization' => sprintf('Basic %s', base64_encode($this->clientId . ':' . $this->clientSecret))
+        ];
+
+        $this->tokenExchangeParameters = [
+            'grant_type'   => 'authorization_code',
+            'redirect_uri' => $this->callback
+        ];
 
         $refresh_token = $this->getStoredData('refresh_token');
 
@@ -95,61 +103,11 @@ class ConstantContactV3 extends OAuth2
             $headers     // Request Headers
         );
 
-        // The token is expired after 7200 seconds it's used.
-        if ((time() > ($this->getStoredData('date_created') + 7190)) || (401 == $this->httpClient->getResponseHttpCode())) {
-
-            $new_access_token = $this->mailoptin_external_token_refresh();
-
-            $headers['Authorization'] = sprintf('Bearer %s', $new_access_token);
-
-            $response = $this->httpClient->request(
-                $url,
-                $method,     // HTTP Request Method. Defaults to GET.
-                $parameters, // Request Parameters
-                $headers     // Request Headers
-            );
-        }
-
         $this->validateApiResponse('Signed API request has returned an error');
 
         $response = (new Data\Parser())->parse($response);
 
         return $response;
-    }
-
-    /**
-     * @throws \Exception
-     */
-    public function mailoptin_external_token_refresh()
-    {
-        $refresh_token = $this->tokenRefreshParameters['refresh_token'];
-
-        $response = AbstractConnect::static_oauth_token_refresh('constantcontactv3', $refresh_token);
-
-        if (isset($response['success']) && $response['success'] === true) {
-
-            $time_now = time();
-
-            if (isset($response['data']['access_token'])) {
-                $this->storeData('access_token', $response['data']['access_token']);
-            }
-
-            if (isset($response['data']['refresh_token'])) {
-                $this->storeData('refresh_token', $response['data']['refresh_token']);
-            }
-
-            $option_name = MAILOPTIN_CONNECTIONS_DB_OPTION_NAME;
-            $old_data    = get_option($option_name, []);
-            $new_data    = [
-                'ctctv3_access_token'  => $response['data']['access_token'],
-                'ctctv3_refresh_token' => $response['data']['refresh_token'],
-                'ctctv3_date_created'  => $time_now
-            ];
-
-            update_option($option_name, array_merge($old_data, $new_data));
-
-            return $response['data']['access_token'];
-        }
     }
 
     /**

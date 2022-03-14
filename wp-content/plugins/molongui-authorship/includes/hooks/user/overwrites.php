@@ -12,7 +12,7 @@ function authorship_get_user_by( $user, $field, $value )
     )  return $user;
     global $in_comment_loop;
     if ( $in_comment_loop ) return $user;
-    $dbt = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS );
+    $dbt = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 12 );
     if ( empty( $dbt ) ) return $user;
     global $wp_query;
     global $post;

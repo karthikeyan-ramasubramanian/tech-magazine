@@ -152,6 +152,10 @@ class Authors_List_Table extends DynamicParent
 
         if ( !isset( $data ) )
         {
+            add_filter( 'authorship/get_author_data/fields', array( $this, 'author_fields' ) );
+            add_filter( 'authorship/get_avatar/size', array( $this, 'avatar_size' ) );
+            add_filter( 'authorship/get_avatar/context', array( $this, 'avatar_context' ) );
+
             $data = molongui_get_authors( $type, array(), array(), array(), array(), $order, $orderby, true, false, array( 'post' ) );
 
             if ( !in_array( $role_filter, array( 'all', 'guests' ) ) )
@@ -183,6 +187,32 @@ class Authors_List_Table extends DynamicParent
             'total_pages' => ceil( $total_authors / $items_per_page ),
         ));
     }
+    public function author_fields( $default )
+    {
+        return array
+        (
+            'id',
+            'type',
+            'name',
+            'mail',
+            'archive',
+            'img',
+            'bio',
+            'post_count',
+            'user_roles',
+            'user_login',
+            'box',
+            'social',
+        );
+    }
+    public function avatar_size( $default )
+    {
+        return array( 60, 60 );
+    }
+    public function avatar_context( $default )
+    {
+        return 'screen';
+    }
     private function filter_table_data( $table_data, $search_key, $search_in )
     {
         $filtered_table_data = array_values( array_filter( $table_data, function( $row ) use( $search_key, $search_in )
@@ -213,7 +243,7 @@ class Authors_List_Table extends DynamicParent
         switch ( $column_name )
         {
             case 'avatar':
-                $result = get_the_post_thumbnail( $author_id, array( 60, 60 ) );
+                $result = $item['img'];
             break;
 
             case 'name':
@@ -281,7 +311,8 @@ class Authors_List_Table extends DynamicParent
                 $result =  '';
                 foreach ( molongui_supported_post_types( MOLONGUI_AUTHORSHIP_PREFIX, 'all', true ) as $post_type )
                 {
-                    $link = admin_url( 'edit.php?post_type='.$post_type['id'].'&guest='.$author_id );
+                    $type = 'user' === $item['type'] ? 'author' : 'guest';
+                    $link = admin_url( 'edit.php?post_type='.$post_type['id'].'&'.$type.'='.$author_id );
                     if ( isset( $item[$column_name][$post_type['id']] ) and $item[$column_name][$post_type['id']] > 0 ) $result .= '<div><a href="'.$link.'">'.$item[$column_name][$post_type['id']].' '.$post_type['label'].'</a></div>';
                 }
                 if ( !$result ) $result = __( 'None' );

@@ -246,6 +246,21 @@ If you have purchased a Pro plugin at [molongui.com](https://www.molongui.com/),
 
 > <strong>Important</strong>: if you use a caching plugin, please flush cache after any plugin update.
 
+= 4.5.3 (2022-03-10) =
+
+* Fixed missing plugin asset when being loaded locally
+* Fixed wrong database schema version
+
+= 4.5.2 (2022-03-01) =
+
+* Improved compatibility with the BuddyBoss theme when BuddyPress plugin is enabled
+* Improved compatibility with the Post Grid plugin
+* Fixed missing box position option
+* Fixed user avatar not displayed on authors table
+* Fixed wrong entries link for users on authors table
+* Fixed Authors menu not available for editors
+* Fixed PHP fatal error on sites running an Elegant Themes theme
+
 = 4.5.1 (2022-02-22) =
 
 * Removed unnecessary debug options

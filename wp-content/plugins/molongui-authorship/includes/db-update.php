@@ -20,6 +20,7 @@ class DB_Update
         $options['box_hook_priority'] = $options['order'];
         $options['box_layout_multiauthor'] = $options['multiauthor_box_layout'];
         $options['box_layout'] = $options['layout'];
+        $options['box_position'] = $options['position'];
         $options['box_schema'] = $options['enable_author_box_schema'];
         switch( $options['display'] )
         {

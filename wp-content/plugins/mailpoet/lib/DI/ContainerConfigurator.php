@@ -42,7 +42,7 @@ class ContainerConfigurator implements IContainerConfigurator {
     $container->autowire(\MailPoet\AdminPages\Pages\NewsletterEditor::class)->setPublic(true);
     $container->autowire(\MailPoet\AdminPages\Pages\Newsletters::class)->setPublic(true);
     $container->autowire(\MailPoet\AdminPages\Pages\MP2Migration::class)->setPublic(true);
-    $container->autowire(\MailPoet\AdminPages\Pages\Premium::class)->setPublic(true);
+    $container->autowire(\MailPoet\AdminPages\Pages\Upgrade::class)->setPublic(true);
     $container->autowire(\MailPoet\AdminPages\Pages\Segments::class)->setPublic(true);
     $container->autowire(\MailPoet\AdminPages\Pages\Settings::class)->setPublic(true);
     $container->autowire(\MailPoet\AdminPages\Pages\Subscribers::class)->setPublic(true);
@@ -281,6 +281,7 @@ class ContainerConfigurator implements IContainerConfigurator {
     $container->autowire(\MailPoet\Mailer\WordPress\WordpressMailerReplacer::class);
     $container->autowire(\MailPoet\Mailer\Methods\Common\BlacklistCheck::class);
     $container->autowire(\MailPoet\Mailer\MetaInfo::class);
+    $container->autowire(\MailPoet\Mailer\Methods\ErrorMappers\MailPoetMapper::class)->setPublic(true);
     // Subscribers
     $container->autowire(\MailPoet\Subscribers\NewSubscriberNotificationMailer::class)->setPublic(true);
     $container->autowire(\MailPoet\Subscribers\ConfirmationEmailMailer::class)->setPublic(true);

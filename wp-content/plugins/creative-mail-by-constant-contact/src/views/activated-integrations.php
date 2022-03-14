@@ -5,6 +5,7 @@ use CreativeMail\Helpers\EnvironmentHelper;
 
 $available_integrations = CreativeMail::get_instance()->get_integration_manager()->get_active_plugins();
 $activated_integrations = CreativeMail::get_instance()->get_integration_manager()->get_activated_integrations();
+$activated_templates = CreativeMail::get_instance()->get_email_manager()->get_managed_email_notifications();
 
 ?>
 
@@ -29,10 +30,36 @@ $activated_integrations = CreativeMail::get_instance()->get_integration_manager(
     document.getElementById('activated_plugins_form').submit()
   }
 
+  // Let customer know that contacts will be synced if WooCommerce email templates are enabled even if the integration is disabled
+  function showWooCommerceTemplateConsentModal() {
+      var wooCommerceModal = document.getElementById('woocommerce-consent-modal');
+      if (wooCommerceModal) {
+          wooCommerceModal.style.display = "block";
+      }
+  }
+
+  function closeWooCommerceTemplateConsentModal (activateCheckbox) {
+      var wooCommerceModal = document.getElementById('woocommerce-consent-modal');
+      var wooCommerceCheckbox = document.getElementById('activated-plugins-check-woocommerce');
+
+      if (wooCommerceCheckbox && activateCheckbox === true) {
+          document.getElementById('activated-plugins-check-woocommerce').checked = true;
+      }
+
+      if (wooCommerceModal) {
+          document.getElementById('woocommerce-consent-modal').style.display = "none";
+      }
+  }
+
   function onChecked(slug){
       var card = document.getElementById('activated-plugins-' + slug);
       if(card !== undefined && card !== null) {
           card.classList.toggle("ce4wp-selected")
+      }
+
+      var checkbox = document.getElementById('activated-plugins-check-' + slug);
+      if (card.id === 'activated-plugins-woocommerce' && checkbox.checked === false) {
+          showWooCommerceTemplateConsentModal();
       }
   }
 </script>
@@ -149,5 +176,74 @@ $activated_integrations = CreativeMail::get_instance()->get_integration_manager(
       </div>
     </div>
   </div>
+
+  <!-- WooCommerce Template Consent modal -->
+  <?php
+    function get_active_options($option)
+    {
+        return $option->active === true;
+    }
+
+    if (sizeof(array_filter($activated_templates, 'get_active_options')) > 0) {
+        echo'
+        <div id="woocommerce-consent-modal" role="presentation" class="ce4wp-dialog-root" height="auto" variant="default" style="display: none;">
+          <div class="ce4wp-backdrop-root" aria-hidden="true" style="opacity: 1; "></div>
+          <div class="ce4wp-dialog-container" role="none presentation" tabindex="-1" style="opacity: 1; ">
+            <div class="ce4wp-dialog-wrapper" role="dialog">
+              <div width="100%" class="ce4wp-dialog-header">
+                <div class="ce4wp-dialog-header-title">
+                  <div class="ce4wp-dialog-header-title-wrapper">
+                    <div class="ce4wp-dialog-header-title-wrapper-content">
+                      <h3 class="ce4wp-typography-root ce4wp-typography-h3">' . __('Disabling WooCommerce', 'ce4wp') . '</h3>
+                    </div>
+                  </div>
+                </div>
+                <div class="ce4wp-dialog-header-close">
+                  <div class="ce4wp-dialog-header-close-wrapper" onclick="closeWooCommerceTemplateConsentModal(true)">
+                    <div class="ce4wp-dialog-header-close-wrapper-button">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="black" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div  id="consent-modal-activated-loader" height="auto" class="ce4wp-dialog-content  ce4wp-hidden">
+                <div class="ce4wp-loader" role="progressbar" style="width: 40px; height: 40px;">
+                  <svg class="core-test-MuiCircularProgress-svg" viewBox="22 22 44 44">
+                    <circle class="core-test-MuiCircularProgress-circle core-test-MuiCircularProgress-circleIndeterminate" cx="44" cy="44" r="20.2" fill="none" stroke-width="3.6"></circle>
+                  </svg>
+                </div>
+              </div>
+              <div id="consent-modal-activated-content">
+                <div height="auto" class="ce4wp-dialog-content">
+                  <div>
+                    <div class="ce4wp-pb-3">
+                      <span>' . __( 'Before you disable the WooCommerce integration, please keep in mind the following:', 'ce4wp') . '</span>
+                    </div>
+                    <div class="ce4wp-pb-3">
+                      <span>' . __( 'If you have enabled CreativeMail to handle WooCommerce emails, contacts\' email addresses will continue to be synced.', 'ce4wp') . '</span>
+                    </div>
+                    <div class="ce4wp-pb-3">
+                      <span>' . __( 'If you wish to stop contacts from being synced, please make sure to disable all WooCommerce emails from being handled by CreativeMail.', 'ce4wp')  . '</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="ce4wp-dialog-footer">
+                  <div class="ce4wp-dialog-footer-close">
+                    <div class="ce4wp-dialog-footer-close-wrapper">
+                      <button class="ce4wp-button-base-root ce4wp-button-root ce4wp-button-contained ce4wp-button-contained-primary" type="button" onclick="closeWooCommerceTemplateConsentModal(false)">
+                        <span class="MuiButton-label">' . __('Got it!', 'ce4wp') . '</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        ';
+    }
+  ?>
 </form>
 

@@ -5,12 +5,12 @@
 <!-- <?php echo MOLONGUI_AUTHORSHIP_WEB; ?> -->
 <div class="molongui-clearfix"></div>
 <div id="mab-<?php echo $random_id; ?>"
-     class="m-a-box <?php echo $options['box_class']; ?>"
+     class="m-a-box <?php echo ( isset( $options['box_class'] ) ? $options['box_class'] : '' ); ?>"
     <?php echo ( apply_filters( '_authorship/doing_shortcode/author_box', false ) ? 'data-is-shortcode="yes"' : '' ); ?>
      data-plugin-release="<?php echo MOLONGUI_AUTHORSHIP_VERSION; ?>"
      data-plugin-version="<?php echo authorship_has_pro() ? 'pro' : 'lite'; ?>"
-     data-box-layout="<?php echo $options['box_layout']; ?>"
-     data-box-position="<?php echo $options['box_position']; ?>"
+     data-box-layout="<?php echo ( isset( $options['box_layout'] ) ? $options['box_layout'] : '' ); ?>"
+     data-box-position="<?php echo ( isset( $options['box_position'] ) ? $options['box_position'] : '' ); ?>"
      data-multiauthor="<?php echo ( $is_multiauthor ? 'true' : 'false' ); ?>"
      data-authors-count="<?php echo count( $authors ); ?>"
      style="<?php echo ( ( !empty( $options['box_width'] ) )  ? 'width: '  . $options['box_width']  . '%;' : '' );?>

@@ -68,10 +68,10 @@ class Tags
             <p><?= $content ?></p>
             <p>
                 <a href="<?= $upsell_url ?>" style="margin-right: 10px;" class="button-primary" target="_blank">
-                    <?php esc_html_e('Upgrade to MailOptin Premium', 'wp-user-avatar'); ?>
+                    <?php esc_html_e('Upgrade to MailOptin Premium', 'mailoptin'); ?>
                 </a>
                 <a href="<?= $doc_url ?>" target="_blank">
-                    <?php esc_html_e('Learn more', 'wp-user-avatar'); ?>
+                    <?php esc_html_e('Learn more', 'mailoptin'); ?>
                 </a>
             </p>
         </div>

@@ -574,7 +574,7 @@ class Connect extends AbstractMailChimpConnect implements ConnectionInterface
 
                 $output = ['' => __('Select...', 'mailoptin')];
 
-                $response = $this->mc_list_instance()->getSegments($list_id, ['count' => 100, 'fields' => 'segments.id,segments.name']);
+                $response = $this->mc_list_instance()->getSegments($list_id, ['count' => 1000, 'fields' => 'segments.id,segments.name']);
 
                 if (isset($response->segments) && is_array($response->segments)) {
                     foreach ($response->segments as $segment) {

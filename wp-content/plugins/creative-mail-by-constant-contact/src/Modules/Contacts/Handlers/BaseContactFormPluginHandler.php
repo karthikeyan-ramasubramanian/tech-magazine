@@ -19,7 +19,7 @@ abstract class BaseContactFormPluginHandler
     protected $emailFields = array('your-email', 'email', 'e-mail', 'emailaddress', 'email_address', 'email address', 'email-address', 'e-mail address', 'UserEmailAddress');
     protected $firstnameFields = array('firstname', 'first_name', 'name', 'your-name', 'first name', 'first-name', 'first', 'UserFirstName');
     protected $lastnameFields = array('lastname', 'last_name', 'last name', 'last-name', 'last', 'UserLastName');
-    protected $consentFields = array('acceptance', 'consent');
+    protected $consentFields = array('accept-this', 'acceptance', 'consent');
 
     public function upsertContact($model)
     {

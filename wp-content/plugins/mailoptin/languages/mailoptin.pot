@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the MailOptin - Lite package.
 msgid ""
 msgstr ""
-"Project-Id-Version: MailOptin - Lite 1.2.44.0\n"
+"Project-Id-Version: MailOptin - Lite 1.2.45.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mailoptin\n"
-"POT-Creation-Date: 2022-02-04 15:06:03+00:00\n"
+"POT-Creation-Date: 2022-03-10 10:26:08+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -61,7 +61,7 @@ msgid "ActiveCampaign"
 msgstr ""
 
 #: src/connections/ActiveCampaignConnect/Connect.php:203
-#: src/connections/Ctctv3Connect/Connect.php:135
+#: src/connections/Ctctv3Connect/Connect.php:170
 #: src/connections/GEMConnect/Connect.php:97
 #: src/connections/JiltConnect/Connect.php:213
 #: src/connections/KlaviyoConnect/Connect.php:113
@@ -106,10 +106,10 @@ msgstr ""
 #: src/core/src/Admin/SettingsPage/AddEmailCampaign.php:78
 #: src/core/src/Admin/SettingsPage/Email_Campaign_List.php:382
 #: src/core/src/AjaxHandler.php:1178
-#: src/core/src/OptinForms/AbstractOptinTheme.php:1119
-#: src/core/src/OptinForms/AbstractOptinTheme.php:1143
-#: src/core/src/OptinForms/AbstractOptinTheme.php:1156
-#: src/core/src/OptinForms/AbstractOptinTheme.php:1213
+#: src/core/src/OptinForms/AbstractOptinTheme.php:1133
+#: src/core/src/OptinForms/AbstractOptinTheme.php:1164
+#: src/core/src/OptinForms/AbstractOptinTheme.php:1177
+#: src/core/src/OptinForms/AbstractOptinTheme.php:1234
 #: src/core/src/OptinForms/SidebarWidgets.php:115
 #: src/core/src/Repositories/ConnectionsRepository.php:23
 msgid "Select..."
@@ -122,7 +122,7 @@ msgstr ""
 #: src/connections/ConvertFoxConnect/ConnectSettingsPage.php:20
 #: src/connections/ConvertKitConnect/ConnectSettingsPage.php:19
 #: src/connections/CtctConnect/ConnectSettingsPage.php:31
-#: src/connections/Ctctv3Connect/ConnectSettingsPage.php:29
+#: src/connections/Ctctv3Connect/ConnectSettingsPage.php:27
 #: src/connections/DripConnect/ConnectSettingsPage.php:19
 #: src/connections/EmailOctopusConnect/ConnectSettingsPage.php:20
 #: src/connections/EmmaConnect/ConnectSettingsPage.php:19
@@ -160,7 +160,7 @@ msgstr ""
 #: src/connections/ConvertFoxConnect/ConnectSettingsPage.php:26
 #: src/connections/ConvertKitConnect/ConnectSettingsPage.php:25
 #: src/connections/CtctConnect/ConnectSettingsPage.php:45
-#: src/connections/Ctctv3Connect/ConnectSettingsPage.php:43
+#: src/connections/Ctctv3Connect/ConnectSettingsPage.php:29
 #: src/connections/DripConnect/ConnectSettingsPage.php:25
 #: src/connections/EmailOctopusConnect/ConnectSettingsPage.php:26
 #: src/connections/EmmaConnect/ConnectSettingsPage.php:25
@@ -205,6 +205,7 @@ msgstr ""
 #: src/connections/ActiveCampaignConnect/ConnectSettingsPage.php:45
 #: src/connections/ConvertFoxConnect/ConnectSettingsPage.php:36
 #: src/connections/ConvertKitConnect/ConnectSettingsPage.php:35
+#: src/connections/Ctctv3Connect/ConnectSettingsPage.php:67
 #: src/connections/EmailOctopusConnect/ConnectSettingsPage.php:36
 #: src/connections/GetResponseConnect/ConnectSettingsPage.php:58
 #: src/connections/KlaviyoConnect/ConnectSettingsPage.php:35
@@ -251,8 +252,8 @@ msgstr ""
 #: src/connections/AweberConnect/Subscription.php:108
 #: src/connections/CampaignMonitorConnect/Subscription.php:77
 #: src/connections/CampaignMonitorConnect/Subscription.php:82
-#: src/connections/CleverReachConnect/Subscription.php:113
-#: src/connections/CleverReachConnect/Subscription.php:118
+#: src/connections/CleverReachConnect/Subscription.php:115
+#: src/connections/CleverReachConnect/Subscription.php:120
 #: src/connections/ConvertFoxConnect/Subscription.php:135
 #: src/connections/ConvertFoxConnect/Subscription.php:140
 #: src/connections/ConvertKitConnect/Subscription.php:81
@@ -265,8 +266,8 @@ msgstr ""
 #: src/connections/DripConnect/Subscription.php:120
 #: src/connections/EmailOctopusConnect/Subscription.php:95
 #: src/connections/EmailOctopusConnect/Subscription.php:100
-#: src/connections/EmmaConnect/Subscription.php:91
-#: src/connections/EmmaConnect/Subscription.php:97
+#: src/connections/EmmaConnect/Subscription.php:93
+#: src/connections/EmmaConnect/Subscription.php:99
 #: src/connections/FacebookCustomAudienceConnect/Subscription.php:47
 #: src/connections/FacebookCustomAudienceConnect/Subscription.php:52
 #: src/connections/FluentCRMConnect/Subscription.php:112
@@ -334,7 +335,6 @@ msgstr ""
 #: src/connections/CampaignMonitorConnect/ConnectSettingsPage.php:32
 #: src/connections/CleverReachConnect/ConnectSettingsPage.php:32
 #: src/connections/CtctConnect/ConnectSettingsPage.php:32
-#: src/connections/Ctctv3Connect/ConnectSettingsPage.php:30
 #: src/connections/HubspotConnect/ConnectSettingsPage.php:36
 #: src/connections/InfusionsoftConnect/ConnectSettingsPage.php:32
 #: src/connections/JiltConnect/ConnectSettingsPage.php:30
@@ -352,7 +352,7 @@ msgstr ""
 #: src/connections/CampaignMonitorConnect/ConnectSettingsPage.php:37
 #: src/connections/CleverReachConnect/ConnectSettingsPage.php:37
 #: src/connections/CtctConnect/ConnectSettingsPage.php:37
-#: src/connections/Ctctv3Connect/ConnectSettingsPage.php:35
+#: src/connections/Ctctv3Connect/ConnectSettingsPage.php:34
 #: src/connections/HubspotConnect/ConnectSettingsPage.php:41
 #: src/connections/InfusionsoftConnect/ConnectSettingsPage.php:37
 #: src/connections/JiltConnect/ConnectSettingsPage.php:35
@@ -366,7 +366,7 @@ msgstr ""
 #: src/connections/CampaignMonitorConnect/ConnectSettingsPage.php:42
 #: src/connections/CleverReachConnect/ConnectSettingsPage.php:42
 #: src/connections/CtctConnect/ConnectSettingsPage.php:42
-#: src/connections/Ctctv3Connect/ConnectSettingsPage.php:40
+#: src/connections/Ctctv3Connect/ConnectSettingsPage.php:39
 #: src/connections/HubspotConnect/ConnectSettingsPage.php:46
 #: src/connections/InfusionsoftConnect/ConnectSettingsPage.php:42
 #: src/connections/JiltConnect/ConnectSettingsPage.php:40
@@ -380,7 +380,6 @@ msgstr ""
 #: src/connections/CampaignMonitorConnect/ConnectSettingsPage.php:46
 #: src/connections/CleverReachConnect/ConnectSettingsPage.php:46
 #: src/connections/CtctConnect/ConnectSettingsPage.php:46
-#: src/connections/Ctctv3Connect/ConnectSettingsPage.php:44
 #: src/connections/HubspotConnect/ConnectSettingsPage.php:50
 #: src/connections/InfusionsoftConnect/ConnectSettingsPage.php:46
 #: src/connections/JiltConnect/ConnectSettingsPage.php:44
@@ -1097,7 +1096,7 @@ msgid "Select ConvertKit sequences subscribers will be added to."
 msgstr ""
 
 #: src/connections/ConvertKitConnect/Connect.php:179
-#: src/connections/Ctctv3Connect/Connect.php:197
+#: src/connections/Ctctv3Connect/Connect.php:232
 #: src/connections/GetResponseConnect/Connect.php:112
 #: src/connections/OntraportConnect/Connect.php:135
 msgid "Subscriber Tags"
@@ -1136,6 +1135,7 @@ msgid "Log in to your %sConvertKit account%s to get your api key."
 msgstr ""
 
 #: src/connections/ConvertKitConnect/ConnectSettingsPage.php:45
+#: src/connections/Ctctv3Connect/ConnectSettingsPage.php:72
 msgid "Enter API Secret"
 msgstr ""
 
@@ -1163,13 +1163,11 @@ msgid "Constant Contact"
 msgstr ""
 
 #: src/connections/CtctConnect/ConnectSettingsPage.php:34
-#: src/connections/Ctctv3Connect/ConnectSettingsPage.php:32
 msgid ""
 "Only re-authorize if you want to connect another Constant Contact account."
 msgstr ""
 
 #: src/connections/CtctConnect/ConnectSettingsPage.php:48
-#: src/connections/Ctctv3Connect/ConnectSettingsPage.php:46
 msgid ""
 "Authorization is required to grant <strong>%s</strong> access to interact "
 "with your Constant Contact account."
@@ -1179,119 +1177,172 @@ msgstr ""
 msgid "Constant Contact Connection"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/AbstractCtctv3Connect.php:44
+#: src/connections/Ctctv3Connect/AbstractCtctv3Connect.php:64
 msgid "Constant Contact (v3) access token not found."
 msgstr ""
 
-#: src/connections/Ctctv3Connect/AbstractCtctv3Connect.php:48
+#: src/connections/Ctctv3Connect/AbstractCtctv3Connect.php:68
 msgid "Constant Contact (v3) refresh token not found."
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:47
-#: src/connections/Ctctv3Connect/ConnectSettingsPage.php:50
+#: src/connections/Ctctv3Connect/Connect.php:54
+#: src/connections/Ctctv3Connect/ConnectSettingsPage.php:53
 msgid "Constant Contact (v3)"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:130
+#: src/connections/Ctctv3Connect/Connect.php:165
 #: src/connections/InfusionsoftConnect/Connect.php:270
 #: src/connections/KlaviyoConnect/Connect.php:114
 msgid "Job Title"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:131
+#: src/connections/Ctctv3Connect/Connect.php:166
 #: src/core/src/Admin/Customizer/EmailCampaign/CustomizerControls.php:778
 msgid "Company Name"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:132
+#: src/connections/Ctctv3Connect/Connect.php:167
 msgid "Birthday Month"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:133
+#: src/connections/Ctctv3Connect/Connect.php:168
 msgid "Birthday Day"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:134
+#: src/connections/Ctctv3Connect/Connect.php:169
 #: src/connections/InfusionsoftConnect/Connect.php:281
 msgid "Anniversary"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:138
+#: src/connections/Ctctv3Connect/Connect.php:173
 msgid "Home Address Street"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:139
+#: src/connections/Ctctv3Connect/Connect.php:174
 msgid "Home Address City"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:140
+#: src/connections/Ctctv3Connect/Connect.php:175
 msgid "Home Address State"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:141
+#: src/connections/Ctctv3Connect/Connect.php:176
 msgid "Home Address Postal Code"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:142
+#: src/connections/Ctctv3Connect/Connect.php:177
 msgid "Home Address Country"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:145
+#: src/connections/Ctctv3Connect/Connect.php:180
 msgid "Work Address Street"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:146
+#: src/connections/Ctctv3Connect/Connect.php:181
 msgid "Work Address City"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:147
+#: src/connections/Ctctv3Connect/Connect.php:182
 msgid "Work Address State"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:148
+#: src/connections/Ctctv3Connect/Connect.php:183
 msgid "Work Address Postal Code"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:149
+#: src/connections/Ctctv3Connect/Connect.php:184
 msgid "Work Address Country"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:152
+#: src/connections/Ctctv3Connect/Connect.php:187
 msgid "Other Address Street"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:153
+#: src/connections/Ctctv3Connect/Connect.php:188
 #: src/connections/InfusionsoftConnect/Connect.php:320
 msgid "Other Address City"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:154
+#: src/connections/Ctctv3Connect/Connect.php:189
 #: src/connections/InfusionsoftConnect/Connect.php:321
 msgid "Other Address State"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:155
+#: src/connections/Ctctv3Connect/Connect.php:190
 #: src/connections/InfusionsoftConnect/Connect.php:323
 msgid "Other Address Postal Code"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:156
+#: src/connections/Ctctv3Connect/Connect.php:191
 #: src/connections/InfusionsoftConnect/Connect.php:322
 msgid "Other Address Country"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:198
+#: src/connections/Ctctv3Connect/Connect.php:233
 msgid "Select Constant Contact (v3) tags that will be assigned to contacts."
 msgstr ""
 
-#: src/connections/Ctctv3Connect/ConnectSettingsPage.php:51
+#. translators: 1: open <a> tag, 2: close </a> tag
+#: src/connections/Ctctv3Connect/Connect.php:330
+msgid ""
+"On March 31, 2022, Constant Contact is ending support for their previous "
+"authorization management service. %1$sPlease re-authorize your Constant "
+"Contact (v3) integration%2$s urgently to get your MailOptin form working "
+"again."
+msgstr ""
+
+#: src/connections/Ctctv3Connect/ConnectSettingsPage.php:42
+msgid ""
+"An application must be created with Constant Contact to get your API Key and "
+"App Secret. The app should be dedicated to this website, please do not use "
+"the same app with multiple sites."
+msgstr ""
+
+#: src/connections/Ctctv3Connect/ConnectSettingsPage.php:44
+msgid ""
+"Login to the %1$sConstant Contact V3 Portal%2$s and create a \"New "
+"Application\"."
+msgstr ""
+
+#: src/connections/Ctctv3Connect/ConnectSettingsPage.php:45
+msgid "Enter \"MailOptin\" as the application name and click \"Save\"."
+msgstr ""
+
+#: src/connections/Ctctv3Connect/ConnectSettingsPage.php:46
+msgid ""
+"Copy your Constant Contact API Key and paste it into the API Key field below."
+msgstr ""
+
+#: src/connections/Ctctv3Connect/ConnectSettingsPage.php:47
+msgid ""
+"Click the \"Generate Secret\" button, go through the secret generation "
+"process and paste the resulted key in the \"App Secret\" field below."
+msgstr ""
+
+#: src/connections/Ctctv3Connect/ConnectSettingsPage.php:48
+msgid ""
+"Paste the URL %s into the Redirect URI field and click \"Save\" in the top "
+"right corner of the screen."
+msgstr ""
+
+#: src/connections/Ctctv3Connect/ConnectSettingsPage.php:49
+msgid ""
+"After saving, click the Authorize button that will appear to connect your "
+"account. %sLearn more%s"
+msgstr ""
+
+#: src/connections/Ctctv3Connect/ConnectSettingsPage.php:54
 msgid "Constant Contact (v3) Connection"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/ConnectSettingsPage.php:57
+#: src/connections/Ctctv3Connect/ConnectSettingsPage.php:58
 msgid ""
 "The major improvement in this new Constant Contact integration is the "
 "support for custom fields."
+msgstr ""
+
+#: src/connections/Ctctv3Connect/ConnectSettingsPage.php:80
+msgid "AUTHORIZE YOUR ACCOUNT"
 msgstr ""
 
 #: src/connections/DripConnect/AbstractDripConnect.php:125
@@ -4979,7 +5030,10 @@ msgid "Type"
 msgstr ""
 
 #: src/core/src/Admin/Customizer/CustomControls/WP_Customize_Fields_Repeater_Control.php:662
-msgid "Enter a comma-separated list of options"
+msgid ""
+"Enter a comma-separated list of options. To differentiate between label and "
+"value, separate them with a pipe char (\"|\"). For example: First Name|"
+"f_name, Last Name|l_name"
 msgstr ""
 
 #: src/core/src/Admin/Customizer/CustomControls/WP_Customize_Fields_Repeater_Control.php:663
@@ -8754,7 +8808,7 @@ msgstr ""
 msgid "Close optin form"
 msgstr ""
 
-#: src/core/src/OptinForms/AbstractOptinTheme.php:1315
+#: src/core/src/OptinForms/AbstractOptinTheme.php:1336
 msgid "Invalid email address"
 msgstr ""
 
@@ -8953,15 +9007,15 @@ msgstr ""
 msgid "Disable MailOptin new post notification for this post."
 msgstr ""
 
-#: src/core/src/Repositories/OptinThemesRepository.php:456
+#: src/core/src/Repositories/OptinThemesRepository.php:512
 msgid "Upgrade to %s for %s support."
 msgstr ""
 
-#: src/core/src/Repositories/OptinThemesRepository.php:486
+#: src/core/src/Repositories/OptinThemesRepository.php:542
 msgid "Select this theme"
 msgstr ""
 
-#: src/core/src/Repositories/OptinThemesRepository.php:487
+#: src/core/src/Repositories/OptinThemesRepository.php:543
 msgid "Select Theme"
 msgstr ""
 
@@ -8973,9 +9027,9 @@ msgstr ""
 msgid "MailOptin - Lite"
 msgstr ""
 
-#. #-#-#-#-#  mailoptin.pot (MailOptin - Lite 1.2.44.0)  #-#-#-#-#
+#. #-#-#-#-#  mailoptin.pot (MailOptin - Lite 1.2.45.1)  #-#-#-#-#
 #. Plugin URI of the plugin/theme
-#. #-#-#-#-#  mailoptin.pot (MailOptin - Lite 1.2.44.0)  #-#-#-#-#
+#. #-#-#-#-#  mailoptin.pot (MailOptin - Lite 1.2.45.1)  #-#-#-#-#
 #. Author URI of the plugin/theme
 msgid "https://mailoptin.io"
 msgstr ""

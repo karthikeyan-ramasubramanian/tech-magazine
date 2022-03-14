@@ -6,6 +6,10 @@ namespace Composer\Autoload;
 
 class ComposerStaticInitb1e77e6231d50e7663f84529b6a3dfda_jetpack_boostⓥ1_3_1
 {
+    public static $files = array (
+        '3773ef3f09c37da5478d578e32b03a4b' => __DIR__ . '/..' . '/automattic/jetpack-assets/actions.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
         'A' => 
         array (
@@ -34,14 +38,17 @@ class ComposerStaticInitb1e77e6231d50e7663f84529b6a3dfda_jetpack_boostⓥ1_3_1
         'Automattic\\Jetpack\\A8c_Mc_Stats' => __DIR__ . '/..' . '/automattic/jetpack-a8c-mc-stats/src/class-a8c-mc-stats.php',
         'Automattic\\Jetpack\\Admin_UI\\Admin_Menu' => __DIR__ . '/..' . '/automattic/jetpack-admin-ui/src/class-admin-menu.php',
         'Automattic\\Jetpack\\Assets' => __DIR__ . '/..' . '/automattic/jetpack-assets/src/class-assets.php',
+        'Automattic\\Jetpack\\Assets\\Semver' => __DIR__ . '/..' . '/automattic/jetpack-assets/src/class-semver.php',
         'Automattic\\Jetpack\\Autoloader\\AutoloadFileWriter' => __DIR__ . '/..' . '/automattic/jetpack-autoloader/src/AutoloadFileWriter.php',
         'Automattic\\Jetpack\\Autoloader\\AutoloadGenerator' => __DIR__ . '/..' . '/automattic/jetpack-autoloader/src/AutoloadGenerator.php',
         'Automattic\\Jetpack\\Autoloader\\AutoloadProcessor' => __DIR__ . '/..' . '/automattic/jetpack-autoloader/src/AutoloadProcessor.php',
         'Automattic\\Jetpack\\Autoloader\\CustomAutoloaderPlugin' => __DIR__ . '/..' . '/automattic/jetpack-autoloader/src/CustomAutoloaderPlugin.php',
         'Automattic\\Jetpack\\Autoloader\\ManifestGenerator' => __DIR__ . '/..' . '/automattic/jetpack-autoloader/src/ManifestGenerator.php',
+        'Automattic\\Jetpack\\Automatic_Install_Skin' => __DIR__ . '/..' . '/automattic/jetpack-plugins-installer/src/class-automatic-install-skin.php',
         'Automattic\\Jetpack\\Config' => __DIR__ . '/..' . '/automattic/jetpack-config/src/class-config.php',
         'Automattic\\Jetpack\\Connection\\Client' => __DIR__ . '/..' . '/automattic/jetpack-connection/src/class-client.php',
         'Automattic\\Jetpack\\Connection\\Error_Handler' => __DIR__ . '/..' . '/automattic/jetpack-connection/src/class-error-handler.php',
+        'Automattic\\Jetpack\\Connection\\Initial_State' => __DIR__ . '/..' . '/automattic/jetpack-connection/src/class-initial-state.php',
         'Automattic\\Jetpack\\Connection\\Manager' => __DIR__ . '/..' . '/automattic/jetpack-connection/src/class-manager.php',
         'Automattic\\Jetpack\\Connection\\Manager_Interface' => __DIR__ . '/..' . '/automattic/jetpack-connection/src/interface-manager.php',
         'Automattic\\Jetpack\\Connection\\Nonce_Handler' => __DIR__ . '/..' . '/automattic/jetpack-connection/src/class-nonce-handler.php',
@@ -64,10 +71,29 @@ class ComposerStaticInitb1e77e6231d50e7663f84529b6a3dfda_jetpack_boostⓥ1_3_1
         'Automattic\\Jetpack\\Device_Detection\\User_Agent_Info' => __DIR__ . '/..' . '/automattic/jetpack-device-detection/src/class-user-agent-info.php',
         'Automattic\\Jetpack\\Heartbeat' => __DIR__ . '/..' . '/automattic/jetpack-heartbeat/src/class-heartbeat.php',
         'Automattic\\Jetpack\\Jetpack_Lazy_Images' => __DIR__ . '/..' . '/automattic/jetpack-lazy-images/src/lazy-images.php',
+        'Automattic\\Jetpack\\My_Jetpack\\Hybrid_Product' => __DIR__ . '/..' . '/automattic/jetpack-my-jetpack/src/products/class-hybrid-product.php',
+        'Automattic\\Jetpack\\My_Jetpack\\Initializer' => __DIR__ . '/..' . '/automattic/jetpack-my-jetpack/src/class-initializer.php',
+        'Automattic\\Jetpack\\My_Jetpack\\Module_Product' => __DIR__ . '/..' . '/automattic/jetpack-my-jetpack/src/products/class-module-product.php',
+        'Automattic\\Jetpack\\My_Jetpack\\Product' => __DIR__ . '/..' . '/automattic/jetpack-my-jetpack/src/products/class-product.php',
+        'Automattic\\Jetpack\\My_Jetpack\\Products' => __DIR__ . '/..' . '/automattic/jetpack-my-jetpack/src/class-products.php',
+        'Automattic\\Jetpack\\My_Jetpack\\Products\\Anti_Spam' => __DIR__ . '/..' . '/automattic/jetpack-my-jetpack/src/products/class-anti-spam.php',
+        'Automattic\\Jetpack\\My_Jetpack\\Products\\Backup' => __DIR__ . '/..' . '/automattic/jetpack-my-jetpack/src/products/class-backup.php',
+        'Automattic\\Jetpack\\My_Jetpack\\Products\\Boost' => __DIR__ . '/..' . '/automattic/jetpack-my-jetpack/src/products/class-boost.php',
+        'Automattic\\Jetpack\\My_Jetpack\\Products\\Crm' => __DIR__ . '/..' . '/automattic/jetpack-my-jetpack/src/products/class-crm.php',
+        'Automattic\\Jetpack\\My_Jetpack\\Products\\Extras' => __DIR__ . '/..' . '/automattic/jetpack-my-jetpack/src/products/class-extras.php',
+        'Automattic\\Jetpack\\My_Jetpack\\Products\\Scan' => __DIR__ . '/..' . '/automattic/jetpack-my-jetpack/src/products/class-scan.php',
+        'Automattic\\Jetpack\\My_Jetpack\\Products\\Search' => __DIR__ . '/..' . '/automattic/jetpack-my-jetpack/src/products/class-search.php',
+        'Automattic\\Jetpack\\My_Jetpack\\Products\\Security' => __DIR__ . '/..' . '/automattic/jetpack-my-jetpack/src/products/class-security.php',
+        'Automattic\\Jetpack\\My_Jetpack\\Products\\Videopress' => __DIR__ . '/..' . '/automattic/jetpack-my-jetpack/src/products/class-videopress.php',
+        'Automattic\\Jetpack\\My_Jetpack\\REST_Products' => __DIR__ . '/..' . '/automattic/jetpack-my-jetpack/src/class-rest-products.php',
+        'Automattic\\Jetpack\\My_Jetpack\\REST_Purchases' => __DIR__ . '/..' . '/automattic/jetpack-my-jetpack/src/class-rest-purchases.php',
+        'Automattic\\Jetpack\\My_Jetpack\\Wpcom_Products' => __DIR__ . '/..' . '/automattic/jetpack-my-jetpack/src/class-wpcom-products.php',
+        'Automattic\\Jetpack\\Plugins_Installer' => __DIR__ . '/..' . '/automattic/jetpack-plugins-installer/src/class-plugins-installer.php',
         'Automattic\\Jetpack\\Redirect' => __DIR__ . '/..' . '/automattic/jetpack-redirect/src/class-redirect.php',
         'Automattic\\Jetpack\\Roles' => __DIR__ . '/..' . '/automattic/jetpack-roles/src/class-roles.php',
         'Automattic\\Jetpack\\Status' => __DIR__ . '/..' . '/automattic/jetpack-status/src/class-status.php',
         'Automattic\\Jetpack\\Status\\Host' => __DIR__ . '/..' . '/automattic/jetpack-status/src/class-host.php',
+        'Automattic\\Jetpack\\Status\\Visitor' => __DIR__ . '/..' . '/automattic/jetpack-status/src/class-visitor.php',
         'Automattic\\Jetpack\\Terms_Of_Service' => __DIR__ . '/..' . '/automattic/jetpack-terms-of-service/src/class-terms-of-service.php',
         'Automattic\\Jetpack\\Tracking' => __DIR__ . '/..' . '/automattic/jetpack-tracking/src/class-tracking.php',
         'Automattic\\Jetpack_Boost\\Admin\\Admin' => __DIR__ . '/../..' . '/app/admin/class-admin.php',

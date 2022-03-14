@@ -75,7 +75,7 @@ class Connect extends AbstractCtctConnect implements ConnectionInterface
                     }
                 }
 
-                set_transient('ctct_get_email_list', $lists_array, 10 * MINUTE_IN_SECONDS);
+                set_transient('ctct_get_email_list', $lists_array, HOUR_IN_SECONDS);
             }
 
             return $lists_array;
@@ -83,6 +83,7 @@ class Connect extends AbstractCtctConnect implements ConnectionInterface
 
         } catch (\Exception $e) {
             self::save_optin_error_log($e->getMessage(), 'constantcontact');
+            return [];
         }
     }
 

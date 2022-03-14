@@ -345,6 +345,10 @@ class Author
 		$avatar  = '';
 		$attr    = array();
         $options = \authorship_get_options();
+        $size    = apply_filters( 'authorship/get_avatar/size', $size, $options );
+        $context = apply_filters( 'authorship/get_avatar/context', $context, $options );
+        $source  = apply_filters( 'authorship/get_avatar/source', $source, $options );
+        $default = apply_filters( 'authorship/get_avatar/default', $default, $options );
         if ( \is_array( $size ) )
         {
             $width  = $size[0];
@@ -369,7 +373,7 @@ class Author
             $attr = array( 'class' => 'm-radius-'.$options['avatar_style'].' molongui-border-style-'.$options['avatar_border_style'].' molongui-border-width-'.$options['avatar_border_width'].'-px', 'style' => 'border-color:'.$options['avatar_border_color'].';' );
             if ( \authorship_is_feature_enabled( 'microdata' ) ) $attr = \array_merge( $attr, array( 'itemprop' => 'image' ) );
 		}
-        switch ( empty( $source ) ? $options['avatar_src'] : $source )
+        switch ( !empty( $source ) ? $source : ( !empty( $options['avatar_src'] ) ?  $options['avatar_src'] : '' ) )
         {
             case 'gravatar':
                 if ( $context != 'url' ) $avatar = $this->get_gravatar( $this->get_mail(), \array_merge( $attr, array( 'width' => $width, 'height' => $height ) ), $options );
@@ -478,32 +482,60 @@ class Author
         if ( empty( $this->author ) ) return $data;
         $networks = \authorship_get_social_networks( 'enabled' );
         if ( $this->type == 'guest' ) \do_action( 'authorship/author/guest/before_get_data', $this->id );
+        $fields = \apply_filters( 'authorship/get_author_data/fields', array
+        (
+            'id',
+            'type',
+            'name',
+            'first_name',
+            'last_name',
+            'slug',
+            'mail',
+            'phone',
+            'web',
+            'archive',
+            'img',
+            'job',
+            'company',
+            'company_link',
+            'bio',
+            'post_count',
+            'user_roles',
+            'user_login',
+            'box',
+            'show_meta_mail',
+            'show_meta_phone',
+            'show_social_mail',
+            'show_social_web',
+            'show_social_phone',
+            'social',
+        ));
         $data['id']                = $this->id;
         $data['type']              = $this->type;
         $data['name']              = $this->get_name();
-        $data['first_name']        = $this->get_meta( 'first_name' );
-        $data['last_name']         = $this->get_meta( 'last_name' );
-        $data['slug']              = $this->get_slug();
-        $data['mail']              = $this->get_mail();
-        $data['phone']             = $this->get_meta( 'phone' );
-        $data['web']               = $this->get_meta( 'web' );
-        $data['archive']           = $this->get_url();
-        $data['img']               = $this->get_avatar( 'thumbnail', 'box' );
-        $data['job']               = $this->get_meta( 'job' );
-        $data['company']           = $this->get_meta( 'company' );
-        $data['company_link']      = $this->get_meta( 'company_link' );
-        $data['bio']               = $this->get_bio();
-        $data['post_count']        = $this->get_post_count();
-        $data['user_roles']        = $this->get_user_roles();
-        $data['user_login']        = $this->get_user_login();
-        $data['box']               = $this->get_meta( 'box_display' );
-        $data['show_meta_mail']    = $this->get_meta( 'show_meta_mail' );
-        $data['show_meta_phone']   = $this->get_meta( 'show_meta_phone' );
-        $data['show_social_mail']  = $this->get_meta( 'show_icon_mail' );
-        $data['show_social_web']   = $this->get_meta( 'show_icon_web' );
-        $data['show_social_phone'] = $this->get_meta( 'show_icon_phone' );
+        if ( in_array( 'first_name', $fields ) )        $data['first_name']        = $this->get_meta( 'first_name' );
+        if ( in_array( 'last_name', $fields ) )         $data['last_name']         = $this->get_meta( 'last_name' );
+        if ( in_array( 'slug', $fields ) )              $data['slug']              = $this->get_slug();
+        if ( in_array( 'mail', $fields ) )              $data['mail']              = $this->get_mail();
+        if ( in_array( 'phone', $fields ) )             $data['phone']             = $this->get_meta( 'phone' );
+        if ( in_array( 'web', $fields ) )               $data['web']               = $this->get_meta( 'web' );
+        if ( in_array( 'archive', $fields ) )           $data['archive']           = $this->get_url();
+        if ( in_array( 'img', $fields ) )               $data['img']               = $this->get_avatar( 'thumbnail', 'box' );
+        if ( in_array( 'job', $fields ) )               $data['job']               = $this->get_meta( 'job' );
+        if ( in_array( 'company', $fields ) )           $data['company']           = $this->get_meta( 'company' );
+        if ( in_array( 'company_link', $fields ) )      $data['company_link']      = $this->get_meta( 'company_link' );
+        if ( in_array( 'bio', $fields ) )               $data['bio']               = $this->get_bio();
+        if ( in_array( 'post_count', $fields ) )        $data['post_count']        = $this->get_post_count();
+        if ( in_array( 'user_roles', $fields ) )        $data['user_roles']        = $this->get_user_roles();
+        if ( in_array( 'user_login', $fields ) )        $data['user_login']        = $this->get_user_login();
+        if ( in_array( 'box', $fields ) )               $data['box']               = $this->get_meta( 'box_display' );
+        if ( in_array( 'show_meta_mail', $fields ) )    $data['show_meta_mail']    = $this->get_meta( 'show_meta_mail' );
+        if ( in_array( 'show_meta_phone', $fields ) )   $data['show_meta_phone']   = $this->get_meta( 'show_meta_phone' );
+        if ( in_array( 'show_social_mail', $fields ) )  $data['show_social_mail']  = $this->get_meta( 'show_icon_mail' );
+        if ( in_array( 'show_social_web', $fields ) )   $data['show_social_web']   = $this->get_meta( 'show_icon_web' );
+        if ( in_array( 'show_social_phone', $fields ) ) $data['show_social_phone'] = $this->get_meta( 'show_icon_phone' );
 
-        foreach ( $networks as $id => $network ) $data[$id] = $this->get_meta( $id );
+        if ( in_array( 'social', $fields ) ) foreach ( $networks as $id => $network ) $data[$id] = $this->get_meta( $id );
         if ( $this->type == 'guest' ) \do_action( 'authorship/author/guest/after_get_data', $this->id );
         return \apply_filters( 'authorship/author/data', $data, $this->id, $this->type, $this->author );
     }

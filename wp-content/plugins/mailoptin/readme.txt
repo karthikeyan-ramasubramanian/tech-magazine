@@ -5,7 +5,7 @@ Tags: popup, popup maker, newsletter, mailchimp, contact form, aweber, popups, c
 Requires at least: 4.6
 Requires PHP: 7.0.10
 Tested up to: 5.9
-Stable tag: 1.2.44.0
+Stable tag: 1.2.45.1
 License: GPL-2.0+
 
 Create popup, optin forms to get email subscribers via an easy form builder and popup maker. Mailchimp, ConvertKit, Infusionsoft, ActiveCampaign, Campaign Monitor, Constant Contact & more.
@@ -179,6 +179,13 @@ Yes, MailOptin has full translation and localization support. All .mo and .po tr
 10. Elementor form integration with MailOptin
 
 == Changelog ==
+
+= 1.2.45.1 =
+* Move to a new authentication system for Constant Contact v3 integration. [Learn more](https://mailoptin.io/article/connect-mailoptin-with-constant-contact/#v3)
+
+= 1.2.45.0 =
+* Added support for new Constant Contact v3 integration endpoints - REAUTHORIZE URGENTLY.
+* Added new sidebar and inpost optin themes.
 
 = 1.2.44.0 =
 * Pro feature [Sync WooCommerce customers to ESP support after a purchase](https://mailoptin.io/?p=32886&ref=changelog).

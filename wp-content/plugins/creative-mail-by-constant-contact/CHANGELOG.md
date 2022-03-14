@@ -1,5 +1,9 @@
 Changelog
 =========
+#### 1.5.0 - March 1 2022
+- Fix WooCommerce product lists
+- WooCommerce order workflows improved.
+- Improved contact management
 
 #### 1.4.9 - January 3 2022
 - Add Flag Customer Orders

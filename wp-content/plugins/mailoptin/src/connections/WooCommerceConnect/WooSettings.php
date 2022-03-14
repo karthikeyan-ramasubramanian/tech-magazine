@@ -185,10 +185,10 @@ class WooSettings
             $html = '<div class="mo-woo-upsell-block">';
             $html .= sprintf('<p>%s</p>', $content);
             $html .= sprintf('<p><a href="%s" style="margin-right: 10px;" class="button-primary" target="_blank">', $upsell_url);
-            $html .= esc_html__('Upgrade to MailOptin Premium', 'wp-user-avatar');
+            $html .= esc_html__('Upgrade to MailOptin Premium', 'mailoptin');
             $html .= '</a>';
             $html .= sprintf('<a href="%s" target="_blank">', $doc_url);
-            $html .= esc_html__('Learn more', 'wp-user-avatar');
+            $html .= esc_html__('Learn more', 'mailoptin');
             $html .= '</a>';
             $html .= '</p>';
             $html .= '</div>';
@@ -207,7 +207,7 @@ class WooSettings
             $woocommerce_settings['mailoptin_woocommerce_description'] = [
                 'type' => 'arbitrary',
                 'data' => '<p>' . sprintf(
-                        esc_html__('The WooCommerce integration subscribes customers to your email marketing software and CRM upon order completion. You can also set this up on a per product, category and tag level. %sLearn more%s', 'wp-user-avatar'),
+                        esc_html__('The WooCommerce integration subscribes customers to your email marketing software and CRM upon order completion. You can also set this up on a per product, category and tag level. %sLearn more%s', 'mailoptin'),
                         '<a href="https://mailoptin.io/?p=32886" target="_blank">', '</a>'
                     ) . '</p>',
             ];
@@ -255,7 +255,7 @@ class WooSettings
 
                         $woocommerce_settings['mailoptin_woocommerce_field_mapping_section'] = [
                             'type' => 'arbitrary',
-                            'data' => sprintf('<h2 class="mo-line-header"><span>%s</span></h2>', esc_html__('Map Fields', 'wp-user-avatar')),
+                            'data' => sprintf('<h2 class="mo-line-header"><span>%s</span></h2>', esc_html__('Map Fields', 'mailoptin')),
                         ];
                     }
 
@@ -303,7 +303,7 @@ class WooSettings
 
             $woocommerce_settings['mailoptin_woocommerce_other_setting_section'] = [
                 'type' => 'arbitrary',
-                'data' => sprintf('<h2 class="mo-line-header"><span>%s</span></h2>', esc_html__('Other Settings', 'wp-user-avatar')),
+                'data' => sprintf('<h2 class="mo-line-header"><span>%s</span></h2>', esc_html__('Other Settings', 'mailoptin')),
             ];
 
             $woocommerce_settings['mailoptin_woocommerce_subscribe_customers'] = [

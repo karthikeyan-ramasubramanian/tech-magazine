@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitc04da1bc856a38c5394cc24da13244e9
+class ComposerStaticInitdc0bae375094986a27d69b932c63ddde
 {
     public static $files = array (
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
@@ -1022,6 +1022,7 @@ class ComposerStaticInitc04da1bc856a38c5394cc24da13244e9
         'Pelago\\Emogrifier\\HtmlProcessor\\HtmlPruner' => __DIR__ . '/..' . '/pelago/emogrifier/src/Emogrifier/HtmlProcessor/HtmlPruner.php',
         'Pelago\\Emogrifier\\Utilities\\ArrayIntersector' => __DIR__ . '/..' . '/pelago/emogrifier/src/Emogrifier/Utilities/ArrayIntersector.php',
         'Pelago\\Emogrifier\\Utilities\\CssConcatenator' => __DIR__ . '/..' . '/pelago/emogrifier/src/Emogrifier/Utilities/CssConcatenator.php',
+        'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
         'RequestException' => __DIR__ . '/../..' . '/src/connections/ActiveCampaignConnect/APIClass/includes/exceptions/RequestException.php',
         'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
         'Symfony\\Component\\CssSelector\\CssSelectorConverter' => __DIR__ . '/..' . '/symfony/css-selector/CssSelectorConverter.php',
@@ -1149,6 +1150,7 @@ class ComposerStaticInitc04da1bc856a38c5394cc24da13244e9
         'Symfony\\Contracts\\Translation\\TranslatorTrait' => __DIR__ . '/..' . '/symfony/translation-contracts/TranslatorTrait.php',
         'Symfony\\Polyfill\\Mbstring\\Mbstring' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/Mbstring.php',
         'Symfony\\Polyfill\\Php80\\Php80' => __DIR__ . '/..' . '/symfony/polyfill-php80/Php80.php',
+        'Symfony\\Polyfill\\Php80\\PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/PhpToken.php',
         'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
         'UpdateHelper\\ComposerPlugin' => __DIR__ . '/..' . '/kylekatarnls/update-helper/src/UpdateHelper/ComposerPlugin.php',
         'UpdateHelper\\NotUpdateInterfaceInstanceException' => __DIR__ . '/..' . '/kylekatarnls/update-helper/src/UpdateHelper/NotUpdateInterfaceInstanceException.php',
@@ -1162,11 +1164,11 @@ class ComposerStaticInitc04da1bc856a38c5394cc24da13244e9
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitc04da1bc856a38c5394cc24da13244e9::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitc04da1bc856a38c5394cc24da13244e9::$prefixDirsPsr4;
-            $loader->fallbackDirsPsr4 = ComposerStaticInitc04da1bc856a38c5394cc24da13244e9::$fallbackDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitc04da1bc856a38c5394cc24da13244e9::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInitc04da1bc856a38c5394cc24da13244e9::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitdc0bae375094986a27d69b932c63ddde::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitdc0bae375094986a27d69b932c63ddde::$prefixDirsPsr4;
+            $loader->fallbackDirsPsr4 = ComposerStaticInitdc0bae375094986a27d69b932c63ddde::$fallbackDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitdc0bae375094986a27d69b932c63ddde::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitdc0bae375094986a27d69b932c63ddde::$classMap;
 
         }, null, ClassLoader::class);
     }
