@@ -53,8 +53,16 @@ class __TwigTemplate_5b0daa9e221bf1b6c9234c4642b80882c0b5806e7aaf8bc0d2e4d1234c4
         // line 7
         echo json_encode(($context["plugin_partial_key"] ?? null));
         echo ";
-  ";
+    var mailpoet_email_volume_limit = ";
+        // line 8
+        echo json_encode(($context["email_volume_limit"] ?? null));
+        echo ";
+    var mailpoet_email_volume_limit_reached = ";
         // line 9
+        echo json_encode(($context["email_volume_limit_reached"] ?? null));
+        echo ";
+  ";
+        // line 11
         echo "</script>
 ";
     }
@@ -71,7 +79,7 @@ class __TwigTemplate_5b0daa9e221bf1b6c9234c4642b80882c0b5806e7aaf8bc0d2e4d1234c4
 
     public function getDebugInfo()
     {
-        return array (  58 => 9,  54 => 7,  50 => 6,  46 => 5,  41 => 4,  37 => 1,);
+        return array (  66 => 11,  62 => 9,  58 => 8,  54 => 7,  50 => 6,  46 => 5,  41 => 4,  37 => 1,);
     }
 
     public function getSourceContext()
