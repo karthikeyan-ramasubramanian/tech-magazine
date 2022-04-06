@@ -22,7 +22,7 @@ class ConnectSettingsPage extends AbstractZohoCRMConnect
      *
      * @param array $arg
      *
-     * @return array Because AWeber requires external authentication, you will need to register our application with AWeber before you can proceed.
+     * @return array
      */
     public function connection_settings($arg)
     {

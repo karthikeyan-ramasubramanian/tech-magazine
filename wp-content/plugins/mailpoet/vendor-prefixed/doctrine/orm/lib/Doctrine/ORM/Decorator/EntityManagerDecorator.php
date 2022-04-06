@@ -36,7 +36,7 @@ abstract class EntityManagerDecorator extends ObjectManagerDecorator implements 
  public function wrapInTransaction(callable $func)
  {
  if (!method_exists($this->wrapped, 'wrapInTransaction')) {
- trigger_error(sprintf('Calling `transactional()` instead of `wrapInTransaction()` which is not implemented on %s', get_class($this->wrapped)), \E_USER_NOTICE);
+ trigger_error(sprintf('Calling `transactional()` instead of `wrapInTransaction()` which is not implemented on %s', get_class($this->wrapped)), E_USER_NOTICE);
  return $this->wrapped->transactional($func);
  }
  return $this->wrapped->wrapInTransaction($func);

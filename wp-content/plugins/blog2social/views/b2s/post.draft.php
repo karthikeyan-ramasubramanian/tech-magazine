@@ -6,10 +6,19 @@ require_once (B2S_PLUGIN_DIR . 'includes/B2S/Post/Filter.php');
 <div class="b2s-container">
     <div class="b2s-inbox">
         <div class="col-md-12 del-padding-left">
+            <?php require_once (B2S_PLUGIN_DIR . 'views/b2s/html/sidebar.php'); ?>
             <div class="col-md-9 del-padding-left del-padding-right">
                 <!--Header|Start - Include-->
                 <?php require_once (B2S_PLUGIN_DIR . 'views/b2s/html/header.php'); ?>
                 <!--Header|End-->
+                <div class="clearfix"></div>
+                <!--Navbar|Start-->
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                         <?php require_once (B2S_PLUGIN_DIR . 'views/b2s/html/post.navbar.php'); ?>
+                    </div>
+                </div>
+                <!--Navbar|End-->
                 <div class="clearfix"></div>
                 <!--Content|Start-->
                 <div class="panel panel-default">
@@ -18,7 +27,6 @@ require_once (B2S_PLUGIN_DIR . 'includes/B2S/Post/Filter.php');
                         <!--Filter Start-->
                         <div class="b2s-post">
                             <div class="grid-body">
-                                <?php require_once (B2S_PLUGIN_DIR . 'views/b2s/html/post.navbar.php'); ?>
                                 <!-- Filter Post Start-->
                                 <form class="b2sSortForm form-inline pull-left" action="#">
                                     <input id="b2sType" type="hidden" value="draft-post" name="b2sType">
@@ -60,7 +68,6 @@ require_once (B2S_PLUGIN_DIR . 'includes/B2S/Post/Filter.php');
                     </div>
                 </div>
             </div>
-            <?php require_once (B2S_PLUGIN_DIR . 'views/b2s/html/sidebar.php'); ?>
         </div>
     </div>
 </div>

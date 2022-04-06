@@ -149,7 +149,7 @@ function twig_escape_filter(Environment $env, $string, $strategy = 'html', $char
  }
  $string = \preg_replace_callback('#[^a-zA-Z0-9,\\._]#Su', function ($matches) {
  $char = $matches[0];
- static $shortMap = ['\\' => '\\\\', '/' => '\\/', "\10" => '\\b', "\f" => '\\f', "\n" => '\\n', "\r" => '\\r', "\t" => '\\t'];
+ static $shortMap = ['\\' => '\\\\', '/' => '\\/', "\x08" => '\\b', "\f" => '\\f', "\n" => '\\n', "\r" => '\\r', "\t" => '\\t'];
  if (isset($shortMap[$char])) {
  return $shortMap[$char];
  }

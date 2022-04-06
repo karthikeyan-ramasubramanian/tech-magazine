@@ -150,7 +150,7 @@ class B2S_Util {
         $args = array(
             'timeout' => '20',
             'redirection' => '5',
-            'user-agent' => "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0"
+            'user-agent' => "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:97.0) Gecko/20100101 Firefox/97.0"
         );
         $response = wp_remote_get($url, $args);
         if (!is_wp_error($response)) {

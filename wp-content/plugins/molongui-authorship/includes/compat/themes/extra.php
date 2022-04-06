@@ -38,9 +38,14 @@ add_filter( '_authorship/filter/get_user_by', function( $data, $args )
     }
     return array( $filter, $user );
 }, 10, 2 );
-add_filter( 'authorship/box/render/bypass_check', function()
+add_filter( 'authorship/filter_author_link', function( $default, $args )
 {
-    $dbt = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 8 );
-    if ( isset( $dbt[7]['function'] ) and $dbt[7]['function'] == "et_theme_builder_frontend_render_post_content" ) return true;
-    return false;
-});
+    $fn    = 'widget';
+    $class = 'ET_Authors_Widget';
+    if ( $key = array_search( $fn, array_column( $args['dbt'], 'function' ) ) and
+         isset( $args['dbt'][$key]['class'] ) and ( $args['dbt'][$key]['class'] == $class ) )
+    {
+        return true;
+    }
+    return $default;
+}, 10, 2 );

@@ -10,11 +10,13 @@
         "a5hleyrich/wp-background-processing": "^1.0",
         "squizlabs/php_codesniffer": "*",
         "ext-zip": "*",
-        "mindscape/raygun4php": "1.*"
+        "mindscape/raygun4php": "1.*",
+        "phpcompatibility/php-compatibility": "^9.3"
     },
     "autoload": {
         "psr-4": {
             "CreativeMail\\Managers\\": "src/managers/",
+            "CreativeMail\\Models\\": "src/models/",
             "CreativeMail\\Helpers\\": "src/helpers/",
             "CreativeMail\\Modules\\": "src/modules/",
             "CreativeMail\\Constants\\": "src/constants/",
@@ -22,8 +24,5 @@
             "CreativeMail\\Blocks\\": "src/blocks/",
             "CreativeMail\\": "src/"
         }
-    },
-    "require-dev": {
-        "phpcompatibility/php-compatibility": "^9.3"
     }
 }

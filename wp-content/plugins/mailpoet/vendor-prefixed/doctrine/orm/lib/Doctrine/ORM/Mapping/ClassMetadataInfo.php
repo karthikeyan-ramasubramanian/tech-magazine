@@ -453,7 +453,7 @@ class ClassMetadataInfo implements ClassMetadata
  }
  private function isTypedProperty(string $name) : bool
  {
- return \PHP_VERSION_ID >= 70400 && isset($this->reflClass) && $this->reflClass->hasProperty($name) && $this->reflClass->getProperty($name)->hasType();
+ return PHP_VERSION_ID >= 70400 && isset($this->reflClass) && $this->reflClass->hasProperty($name) && $this->reflClass->getProperty($name)->hasType();
  }
  private function validateAndCompleteTypedFieldMapping(array $mapping) : array
  {

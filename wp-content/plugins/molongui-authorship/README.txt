@@ -246,6 +246,15 @@ If you have purchased a Pro plugin at [molongui.com](https://www.molongui.com/),
 
 > <strong>Important</strong>: if you use a caching plugin, please flush cache after any plugin update.
 
+= 4.5.4 (2022-03-30) =
+
+* Fixed author box added to post excerpt
+* Fixed acronym image displayed on authors list table
+* Fixed author box layout preview
+* Fixed missing option to customize author box tabs
+* Improved compatibility with the Extra theme
+* Improved compatibility with the Dynamic News theme
+
 = 4.5.3 (2022-03-10) =
 
 * Fixed missing plugin asset when being loaded locally

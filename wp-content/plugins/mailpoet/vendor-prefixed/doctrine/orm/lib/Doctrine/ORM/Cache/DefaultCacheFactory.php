@@ -113,7 +113,7 @@ class DefaultCacheFactory implements CacheFactory
  if ($this->fileLockRegionDirectory === '' || $this->fileLockRegionDirectory === null) {
  throw new LogicException('If you want to use a "READ_WRITE" cache an implementation of "MailPoetVendor\\Doctrine\\ORM\\Cache\\ConcurrentRegion" is required, ' . 'The default implementation provided by doctrine is "MailPoetVendor\\Doctrine\\ORM\\Cache\\Region\\FileLockRegion" if you want to use it please provide a valid directory, DefaultCacheFactory#setFileLockRegionDirectory(). ');
  }
- $directory = $this->fileLockRegionDirectory . \DIRECTORY_SEPARATOR . $cache['region'];
+ $directory = $this->fileLockRegionDirectory . DIRECTORY_SEPARATOR . $cache['region'];
  $region = new FileLockRegion($region, $directory, (string) $this->regionsConfig->getLockLifetime($cache['region']));
  }
  return $this->regions[$cache['region']] = $region;

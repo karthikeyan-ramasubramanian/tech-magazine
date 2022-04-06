@@ -5,7 +5,7 @@ namespace CreativeMail\Clients;
 use CreativeMail\Exceptions\CreativeMailException;
 use CreativeMail\Helpers\EnvironmentHelper;
 use CreativeMail\Helpers\OptionsHelper;
-use stdClass;
+use CreativeMail\Models\Campaign;
 
 class CreativeMailClient {
 
@@ -70,7 +70,7 @@ class CreativeMailClient {
         $most_recent_campaigns = [];
 
         foreach ( $campaigns_data as $campaign_data ) {
-            $campaign = new stdClass();
+            $campaign = new Campaign();
             $campaign->id = $campaign_data['external_id'];
             $campaign->name = $campaign_data['name'];
 

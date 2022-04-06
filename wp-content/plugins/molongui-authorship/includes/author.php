@@ -382,7 +382,7 @@ class Author
             break;
 
             case 'acronym':
-                if ( $context != 'url' ) $avatar = $this->get_acronym( $this->get_name(), $options );
+                if ( $context != 'url' ) $avatar = $this->get_acronym( $this->get_name(), \array_merge( $attr, array( 'width' => $width, 'height' => $height ) ), $options );
                 else $avatar = '';
 
             break;
@@ -423,7 +423,7 @@ class Author
                         break;
 
                         case 'acronym':
-                            $avatar = $this->get_acronym( $this->get_name(), $options );
+                            $avatar = $this->get_acronym( $this->get_name(), \array_merge( $attr, array( 'width' => $width, 'height' => $height ) ), $options );
 
                         break;
 
@@ -463,13 +463,22 @@ class Author
         \remove_filter( 'authorship/get_avatar_data/skip', '__return_true' );
 		return ( !$gravatar ? '' : $gravatar );
 	}
-	public function get_acronym ( $name, $options = array() )
+	public function get_acronym ( $name, $attr, $options = array() )
 	{
 		if ( empty( $name ) ) return '';
 		if ( empty( $options ) ) $options = \authorship_get_options();
+
+		$class  = empty( $attr['class'] ) ? '' : $attr['class'];
+        $style  = empty( $attr['style'] ) ? '' : $attr['style'];
+        $valign = '';
+        if ( is_admin() )
+        {
+            $style .= ' text-align: center; font-size: 2.2em; font-weight: 300;';
+            $valign = 'position: relative; top: 50%; -webkit-transform: perspective(1px) translateY(-50%); -ms-transform: perspective(1px) translateY(-50%); transform: perspective(1px) translateY(-50%);';
+        }
 		$html  = '';
-		$html .= '<div data-avatar-type="acronym" class="m-radius-' . $options['avatar_style'] . ' molongui-border-style-' . $options['avatar_border_style'] . ' molongui-border-width-' . $options['avatar_border_width'].'-px' . ' acronym-container" style="width:' . $options['avatar_width'].'px; height:' . $options['avatar_height'].'px; background:' . $options['avatar_bg_color'].'; color:' . $options['avatar_text_color'].';">';
-		$html .= '<div class="molongui-vertical-aligned">';
+        $html .= '<div data-avatar-type="acronym" class="' . $class . ' acronym-container" style="' . $style . ' width:' . $attr['width'].'px; height:' . $attr['height'].'px; background:' . $options['avatar_bg_color'].'; color:' . $options['avatar_text_color'].';">';
+		$html .= '<div class="molongui-vertical-aligned" style="' . $valign . '">';
 		$html .= \molongui_get_acronym( $name );
 		$html .= '</div>';
 		$html .= '</div>';

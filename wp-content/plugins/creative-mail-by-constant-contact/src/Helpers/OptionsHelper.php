@@ -2,7 +2,7 @@
 
 namespace CreativeMail\Helpers;
 
-use stdClass;
+use CreativeMail\Models\OptionsSchema;
 
 /**
  * Class CE4WP_OptionsHelper
@@ -268,9 +268,9 @@ class OptionsHelper
                 return self::convert_managed_email_notifications($row->option_value);
             }
 
-            $item = new stdClass();
+            $item = new OptionsSchema();
             $item->name = str_replace(CE4WP_MANAGED_EMAIL_NOTIFICATIONS . '_', '', $name);
-            $item->active =$row->option_value == 'true';
+            $item->active = $row->option_value == 'true';
             array_push($result, $item);
         }
 

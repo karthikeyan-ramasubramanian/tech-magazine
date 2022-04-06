@@ -154,7 +154,7 @@ class EmailLexer extends AbstractLexer
  }
  protected function isNullType($value)
  {
- if ($value === "\0") {
+ if ($value === "\x00") {
  return \true;
  }
  return \false;

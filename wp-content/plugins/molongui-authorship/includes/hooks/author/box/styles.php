@@ -6,7 +6,8 @@ function authorship_register_box_styles()
 
     authorship_register_style( $file, 'box' );
 }
-add_action( 'wp_enqueue_scripts', 'authorship_register_box_styles' );
+add_action( 'wp_enqueue_scripts'   , 'authorship_register_box_styles' );
+add_action( 'admin_enqueue_scripts', 'authorship_register_box_styles' );
 function authorship_enqueue_box_styles()
 {
     if ( !authorship_is_feature_enabled( 'box' ) or !authorship_is_feature_enabled( 'box_styles' ) ) return;

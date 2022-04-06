@@ -137,9 +137,9 @@ class B2S_Post_Item {
         if ($this->searchPostSharedById > 0 && $this->type != 'draft' && $this->type != 'draft-post') {
             if($this->type == 'all' || $this->type == 'favorites') {
                 $leftJoin3 = "LEFT JOIN `{$wpdb->prefix}b2s_posts` b2s on posts.ID = b2s.post_id";
-                $leftJoinWhere .= " AND b2s.blog_user_id = ".$this->searchPostSharedById;
+                $leftJoinWhere .= " AND b2s.hide = 0 AND b2s.blog_user_id = ".$this->searchPostSharedById;
             } else {
-                $leftJoinWhere .= " AND filter.blog_user_id = ".$this->searchPostSharedById;
+                $leftJoinWhere .= " AND filter.hide = 0 AND filter.blog_user_id = ".$this->searchPostSharedById;
             }
         }
 
@@ -218,7 +218,7 @@ class B2S_Post_Item {
                 $sqlPosts = "SELECT DISTINCT posts.`ID`, posts.`post_author`,posts.`post_type`,posts.`post_title`, " . $select . ", filter.`id` 
                             FROM `$wpdb->posts` posts $leftJoin $leftJoin2
                                 INNER JOIN(
-                                        SELECT a.`id`,$selectInnerJoin, a.`blog_user_id`, a.`post_id` $sharedToNetworkSelect
+                                        SELECT a.`id`,$selectInnerJoin, a.`blog_user_id`, a.`hide`, a.`post_id` $sharedToNetworkSelect
                                             FROM `{$wpdb->prefix}b2s_posts` a $addInnerJoinLeftJoin $addInnerJoinLeftJoinNetwork $sharedToNetworkJoin
                                                   WHERE $addInnnerJoinLeftJoinWhere $addInnnerJoinLeftJoinWhereNetwork $addSearchBlogPostId $addSearchShowByDate $where 
                                          ) filter
@@ -232,7 +232,7 @@ class B2S_Post_Item {
                     $sqlPostsTotal = "SELECT DISTINCT COUNT(posts.`ID`)
                             FROM `$wpdb->posts` posts $leftJoin $leftJoin2
                                 INNER JOIN(
-                                        SELECT a.`post_id`, a.`blog_user_id`
+                                        SELECT a.`post_id`, a.`blog_user_id`, a.`hide`
                                             FROM `{$wpdb->prefix}b2s_posts` a
                                                  WHERE $addSearchShowByDate $where
                                          ) filter
@@ -245,7 +245,7 @@ class B2S_Post_Item {
                     $sqlPostsTotal = "SELECT DISTINCT posts.`ID`, DATE_FORMAT(filter.`sched_date`,'%Y-%m-%d') AS sched
                             FROM `$wpdb->posts` posts $leftJoin $leftJoin2
                                 INNER JOIN(
-                                        SELECT a.`post_id`, a.`sched_date`, a.`blog_user_id`
+                                        SELECT a.`post_id`, a.`sched_date`, a.`blog_user_id`, a.`hide`
                                             FROM `{$wpdb->prefix}b2s_posts` a $addInnerJoinLeftJoin $addInnerJoinLeftJoinNetwork
                                                  WHERE $addInnnerJoinLeftJoinWhere $addInnnerJoinLeftJoinWhereNetwork $addSearchShowByDate $where 
                                          ) filter
@@ -309,10 +309,16 @@ class B2S_Post_Item {
                 
                 $sqlPosts = "SELECT {$wpdb->prefix}b2s_posts_drafts.`ID` AS draft_id, posts.`ID`, {$wpdb->prefix}b2s_posts_drafts.`post_id`, {$wpdb->prefix}b2s_posts_drafts.`last_save_date`, {$wpdb->prefix}b2s_posts_drafts.`data`, posts.post_author, posts.post_type, posts.post_title 
 		FROM `$wpdb->posts` posts LEFT JOIN {$wpdb->prefix}b2s_posts_drafts ON {$wpdb->prefix}b2s_posts_drafts.post_id = posts.ID $leftJoin $leftJoin2 $leftJoin3 $leftJoin4
-                WHERE {$wpdb->prefix}b2s_posts_drafts.`blog_user_id` = " . B2S_PLUGIN_BLOG_USER_ID . " 
-                AND {$wpdb->prefix}b2s_posts_drafts.`save_origin` = 0 
-                AND $postTypes 
-                AND $addSearchType 
+                WHERE {$wpdb->prefix}b2s_posts_drafts.`blog_user_id` = " . B2S_PLUGIN_BLOG_USER_ID;
+                if(!empty($this->searchPostType)) {
+                    if ($this->searchPostType == 'b2s_ex_post') {
+                        $sqlPosts .= " AND {$wpdb->prefix}b2s_posts_drafts.`save_origin` = 1 ";
+                    } else {
+                        $sqlPosts .= " AND {$wpdb->prefix}b2s_posts_drafts.`save_origin` = 0 "
+                        . " AND $addSearchType ";
+                    }
+                }
+                $sqlPosts .= " AND $postTypes 
                 $startDate $endDate 
                 $addSearchAuthorId $addSearchPostTitle $addNotAdmin $leftJoinWhere 
 		ORDER BY `last_save_date` " . $sortType . "
@@ -321,10 +327,16 @@ class B2S_Post_Item {
 
                 $sqlPostsTotal = "SELECT COUNT(*)
 		FROM `$wpdb->posts` posts LEFT JOIN {$wpdb->prefix}b2s_posts_drafts ON {$wpdb->prefix}b2s_posts_drafts.post_id = posts.ID $leftJoin $leftJoin2 $leftJoin3 $leftJoin4
-		WHERE {$wpdb->prefix}b2s_posts_drafts.`blog_user_id` = " . B2S_PLUGIN_BLOG_USER_ID . " 
-                AND {$wpdb->prefix}b2s_posts_drafts.`save_origin` = 0                 
-                AND $postTypes 
-                AND $addSearchType 
+		WHERE {$wpdb->prefix}b2s_posts_drafts.`blog_user_id` = " . B2S_PLUGIN_BLOG_USER_ID;
+                if(!empty($this->searchPostType)) {
+                    if (!empty($this->searchPostType) && $this->searchPostType == 'b2s_ex_post') {
+                        $sqlPosts .= " AND {$wpdb->prefix}b2s_posts_drafts.`save_origin` = 1 ";
+                    } else {
+                        $sqlPosts .= " AND {$wpdb->prefix}b2s_posts_drafts.`save_origin` = 0 "
+                        . " AND $addSearchType ";
+                    }
+                }
+                $sqlPosts .= " AND $postTypes 
                 $startDate $endDate 
                 $addSearchAuthorId $addSearchPostTitle $addNotAdmin $leftJoinWhere";
                 $this->postTotal = $wpdb->get_var($sqlPostsTotal);
@@ -649,7 +661,7 @@ class B2S_Post_Item {
     private function getLastPost($post_id = 0) {
         if ($post_id > 0) {
             global $wpdb;
-            $addNotAdmin = (B2S_PLUGIN_ADMIN == false) ? $wpdb->prepare(' AND `blog_user_id` = %d', B2S_PLUGIN_BLOG_USER_ID) : '';
+            $addNotAdmin = (B2S_PLUGIN_ADMIN == false) ? $wpdb->prepare(" AND `{$wpdb->prefix}b2s_posts`.`blog_user_id` = %d", B2S_PLUGIN_BLOG_USER_ID) : '';
             $order = ($this->type == 'publish' || $this->type == 'notice') ? " `publish_date` DESC" : " `sched_date` ASC ";
             $addWhere = ($this->type == 'notice') ? ' AND `publish_error_code` != "" ' : ' AND `publish_error_code` = "" ';
             $where = ($this->type == 'publish' || $this->type == 'notice') ? " `post_for_approve`= 0 AND (`sched_date`= '0000-00-00 00:00:00' OR (`sched_type` = 3 AND `publish_date` != '0000-00-00 00:00:00')) " . $addWhere : " (`sched_type` != 3 OR (`sched_type` = 3 AND `publish_date` = '0000-00-00 00:00:00')) AND ((`sched_date_utc` != '0000-00-00 00:00:00' AND `post_for_approve` = 0) OR (`sched_date_utc` >= '" . gmdate('Y-m-d H:i:s') . "' AND `post_for_approve` = 1)) AND `publish_date` = '0000-00-00 00:00:00'";
@@ -674,7 +686,7 @@ class B2S_Post_Item {
     private function getLastPublish($post_id = 0) {
         if ($post_id > 0) {
             global $wpdb;
-            $addNotAdmin = (B2S_PLUGIN_ADMIN == false) ? $wpdb->prepare(' AND `blog_user_id` = %d', B2S_PLUGIN_BLOG_USER_ID) : '';
+            $addNotAdmin = (B2S_PLUGIN_ADMIN == false) ? $wpdb->prepare(" AND `{$wpdb->prefix}b2s_posts`.`blog_user_id` = %d", B2S_PLUGIN_BLOG_USER_ID) : '';
             $order = "`publish_date` DESC";
             $where = "(`sched_date`= '0000-00-00 00:00:00' OR (`sched_type` = 3 AND `publish_date` != '0000-00-00 00:00:00')) ";
             $fields = "publish_date";
@@ -728,8 +740,8 @@ class B2S_Post_Item {
     public function getPublishPostDataHtml($post_id = 0, $type = 'publish', $showByDate = '', $sharedByUser = 0, $sharedOnNetwork = 0) {
         if ($post_id > 0) {
             global $wpdb;
-            $addNotAdminPosts = (!B2S_PLUGIN_ADMIN) ? (' AND blog_user_id =' . B2S_PLUGIN_BLOG_USER_ID) : '';
-            $addSharedByUser = ($sharedByUser > 0) ? (' AND blog_user_id =' . $sharedByUser) : '';
+            $addNotAdminPosts = (!B2S_PLUGIN_ADMIN) ? (" AND `{$wpdb->prefix}b2s_posts`.blog_user_id =" . B2S_PLUGIN_BLOG_USER_ID) : '';
+            $addSharedByUser = ($sharedByUser > 0) ? (" AND `{$wpdb->prefix}b2s_posts`.blog_user_id =" . $sharedByUser) : '';
             $addSharedOnNetwork = ($sharedOnNetwork > 0) ? (' AND network_id =' . $sharedOnNetwork) : '';
             $addSearchShowByDate = (!empty($showByDate)) ? " AND DATE_FORMAT(`{$wpdb->prefix}b2s_posts`.`publish_date`,'%%Y-%%m-%%d') = '" . $showByDate . "' " : '';
             $addWhere = ($type == 'notice') ? ' AND `' . $wpdb->prefix . 'b2s_posts`.`publish_error_code` != "" ' : ' AND `' . $wpdb->prefix . 'b2s_posts`.`publish_error_code` = "" ';
@@ -866,7 +878,7 @@ class B2S_Post_Item {
     public function getApprovePostDataHtml($post_id = 0, $showByDate = '') {
         if ($post_id > 0) {
             global $wpdb;
-            $addNotAdminPosts = (!B2S_PLUGIN_ADMIN) ? (' AND blog_user_id =' . B2S_PLUGIN_BLOG_USER_ID) : '';
+            $addNotAdminPosts = (!B2S_PLUGIN_ADMIN) ? (" AND `{$wpdb->prefix}b2s_posts`.blog_user_id =" . B2S_PLUGIN_BLOG_USER_ID) : '';
             $addSearchShowByDate = (!empty($showByDate)) ? " AND (DATE_FORMAT(`{$wpdb->prefix}b2s_posts`.`sched_date`,'%%Y-%%m-%%d') = '" . $showByDate . "' OR DATE_FORMAT(`{$wpdb->prefix}b2s_posts`.`publish_date`,'%%Y-%%m-%%d') = '" . $showByDate . "') " : '';
             $sqlData = $wpdb->prepare("SELECT `{$wpdb->prefix}b2s_posts`.`id`, `{$wpdb->prefix}b2s_posts`.`post_id`, `{$wpdb->prefix}b2s_posts`.`blog_user_id`, `{$wpdb->prefix}b2s_posts`.`sched_date`,`{$wpdb->prefix}b2s_posts`.`publish_date`,`{$wpdb->prefix}b2s_posts_network_details`.`network_id`,`{$wpdb->prefix}b2s_posts_network_details`.`network_type`, `{$wpdb->prefix}b2s_posts_network_details`.`network_auth_id`, `{$wpdb->prefix}b2s_posts_network_details`.`network_display_name`, `{$wpdb->prefix}b2s_posts_sched_details`.`sched_data` FROM `{$wpdb->prefix}b2s_posts` LEFT JOIN `{$wpdb->prefix}b2s_posts_network_details` ON `{$wpdb->prefix}b2s_posts`.`network_details_id` = `{$wpdb->prefix}b2s_posts_network_details`.`id` LEFT JOIN `{$wpdb->prefix}b2s_posts_sched_details` ON `{$wpdb->prefix}b2s_posts`.`sched_details_id` = `{$wpdb->prefix}b2s_posts_sched_details`.`id` WHERE `{$wpdb->prefix}b2s_posts`.`hide` = 0 AND `{$wpdb->prefix}b2s_posts`.`post_for_approve` = 1 AND (`{$wpdb->prefix}b2s_posts`.`publish_date` != '0000-00-00 00:00:00' OR `{$wpdb->prefix}b2s_posts`.`sched_date_utc` <= '" . gmdate('Y-m-d H:i:s') . "') $addNotAdminPosts $addSearchShowByDate AND `{$wpdb->prefix}b2s_posts`.`post_id` = %d ORDER BY `{$wpdb->prefix}b2s_posts`.`sched_date` DESC,`{$wpdb->prefix}b2s_posts`.`publish_date` DESC", $post_id);
             $result = $wpdb->get_results($sqlData);

@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) or exit;
 function authorship_register_admin_styles()
 {
-    $file = apply_filters( 'authorship/admin/styles', MOLONGUI_AUTHORSHIP_FOLDER . ( is_rtl() ? '/assets/css/admin-rtl.51f4.min.css' : '/assets/css/admin.a53f.min.css' ) );
+    $file = apply_filters( 'authorship/admin/styles', MOLONGUI_AUTHORSHIP_FOLDER . ( is_rtl() ? '/assets/css/admin-rtl.1c99.min.css' : '/assets/css/admin.0c8c.min.css' ) );
     $deps = array( 'wp-color-picker' );
 
     authorship_register_style( $file, 'admin', $deps );
@@ -25,7 +25,7 @@ function authorship_enqueue_admin_styles()
     );
     if ( !in_array( $screen->id, $screens ) ) return;
     wp_enqueue_style( 'wp-color-picker' );
-    $file = apply_filters( 'authorship/admin/styles', MOLONGUI_AUTHORSHIP_FOLDER . ( is_rtl() ? '/assets/css/admin-rtl.51f4.min.css' : '/assets/css/admin.a53f.min.css' ) );
+    $file = apply_filters( 'authorship/admin/styles', MOLONGUI_AUTHORSHIP_FOLDER . ( is_rtl() ? '/assets/css/admin-rtl.1c99.min.css' : '/assets/css/admin.0c8c.min.css' ) );
 
     authorship_enqueue_style( $file, 'admin', true );
 }

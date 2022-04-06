@@ -3,13 +3,14 @@ Contributors: Heateor, jatin8heateor, farhan8heateor
 Donate link: https://www.heateor.com/donate/?action=Sassy+Social+Share
 Tags: social share, social sharing, social media share, share facebook, facebook social share, wordpress social share, share buttons, social share buttons, facebook like, twitter tweet, whatsapp share, line share, gab share, gab, parler share, gettr, gettr share, mewe share, mewe
 Requires at least: 2.5.0
-Tested up to: 5.8.2
-Stable tag: 3.3.38
+Tested up to: 5.9.2
+Stable tag: 3.3.40
 License: GPLv2 or later
 
 Slickest, Simplest and Optimized Share buttons. Facebook, Twitter, Reddit, Pinterest, Whatsapp, Parler, Gab, Gettr and over 100 more.
 
 == Description ==
+**Try it out live => <a href="https://tastewp.com/new/?pre-installed-plugin-slug=sassy-social-share">Click here</a>**
 
 Sassy Social Share enables your website users to share the content over Facebook, Twitter, Google, Linkedin, Whatsapp, Tumblr, Pinterest, Reddit, Parler, Gab, Gettr and over 100 more social sharing and bookmarking services.
 
@@ -124,6 +125,16 @@ Yes, we can help you with it. Just drop an email at support[at]heateor[dot]com
 4. **Universal Sharing Popup**: Universal Sharing popup having all the supported sharing and bookmarking services
 
 == Changelog ==
+= 3.3.40 [24 March 2022] =
+* [Security] Fixed two XSS Vulnerability issues
+* [Bugfix] Right and Bottom counter positions in the Theme Selection section were not working
+* [Improvement] Updated the official Facebook SDK being used throughout the plugin to the latest version 13.0
+* [Improvement] Anchor HTML tag for the More share icon now has an HREF attribute
+* [Improvement] Performmance improvement
+
+= 3.3.39 [15 March 2022] =
+* [Bugfix] myCRED Points for Linkedin shares were not being rewarded when using <a href="https://www.heateor.com/social-share-mycred/">Social Share myCRED Integration</a> add-on
+
 = 3.3.38 [4 January 2022] =
 * [Improvement] Unnecessary CSS file was being loaded at the front-end
 
@@ -1163,3 +1174,13 @@ Yes, we can help you with it. Just drop an email at support[at]heateor[dot]com
 
 = 3.3.38 [4 January 2022] =
 * [Improvement] Unnecessary CSS file was being loaded at the front-end
+
+= 3.3.39 [15 March 2022] =
+* [Bugfix] myCRED Points for Linkedin shares were not being rewarded when using <a href="https://www.heateor.com/social-share-mycred/">Social Share myCRED Integration</a> add-on
+
+= 3.3.40 [24 March 2022] =
+* [Security] Fixed two XSS Vulnerability issues
+* [Bugfix] Right and Bottom counter positions in the Theme Selection section were not working
+* [Improvement] Updated the official Facebook SDK being used throughout the plugin to the latest version 13.0
+* [Improvement] Anchor HTML tag for the More share icon now has an HREF attribute
+* [Improvement] Performmance improvement

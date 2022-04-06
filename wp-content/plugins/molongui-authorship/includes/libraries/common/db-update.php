@@ -17,20 +17,25 @@ if ( !class_exists( 'Molongui\Authorship\Includes\Libraries\Common\DB_Update' ) 
 		}
 		public function db_update_needed()
 		{
+            $update = true;
 			$current_version = get_option( $this->plugin_db_key );
 			if ( empty( $current_version ) )
 			{
 				update_option( $this->plugin_db_key, $this->target_version );
-				return false;
+                $update = false;
 			}
-            if ( ( $current_version > $this->target_version ) and ( 19 == (int) $this->target_version ) )
+			else
             {
-                $current_version = 18;
-                update_option( $this->plugin_db_key, 18 );
+                if ( ( $current_version > $this->target_version ) and ( 19 == (int) $this->target_version ) )
+                {
+                    $current_version = 18;
+                    update_option( $this->plugin_db_key, 18 );
+                }
+
+                if ( $current_version >= $this->target_version ) $update = false;
             }
 
-            if ( $current_version >= $this->target_version ) return false;
-			return true;
+			return $update;
 		}
 		public function run_update()
 		{

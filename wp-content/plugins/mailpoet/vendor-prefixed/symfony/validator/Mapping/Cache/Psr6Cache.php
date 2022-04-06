@@ -33,7 +33,7 @@ class Psr6Cache implements CacheInterface
  {
  if (\str_contains($class, '@')) {
  // anonymous class: replace all PSR6-reserved characters
- return \str_replace(["\0", '\\', '/', '@', ':', '{', '}', '(', ')'], '.', $class);
+ return \str_replace(["\x00", '\\', '/', '@', ':', '{', '}', '(', ')'], '.', $class);
  }
  return \str_replace('\\', '.', $class);
  }

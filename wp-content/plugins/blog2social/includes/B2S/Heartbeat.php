@@ -225,6 +225,22 @@ class B2S_Heartbeat {
                                 'post_for_approve' => (int) $shareApprove,
                                 'hook_action' => 0);
                             $wpdb->update($wpdb->prefix.'b2s_posts', $updateData, array('id' => $v->id), array('%s', '%s', '%s', '%s', '%s', '%d', '%d'), array('%d'));
+                            
+                            if (isset($v->external_post_id) && !empty($v->external_post_id)) {
+                                $netowkDetailsData = $wpdb->get_results($wpdb->prepare("SELECT network_details_id, blog_user_id FROM {$wpdb->prefix}b2s_posts WHERE id= %d", $v->id), ARRAY_A);
+                                if (isset($netowkDetailsData[0]) && isset($netowkDetailsData[0]['network_details_id']) && (int) $netowkDetailsData[0]['network_details_id'] > 0 && isset($netowkDetailsData[0]['blog_user_id']) && (int) $netowkDetailsData[0]['blog_user_id'] > 0) {
+                                    $insightData = array(
+                                        'network_post_id' => $v->external_post_id,
+                                        'insight' => '',
+                                        'blog_user_id' => (int) $netowkDetailsData[0]['blog_user_id'],
+                                        'b2s_posts_id' => (int) $v->id,
+                                        'b2s_posts_network_details_id' => (int) $netowkDetailsData[0]['network_details_id'],
+                                        'last_update' => date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' -1 day')),
+                                        'active' => 1
+                                    );
+                                    $wpdb->insert($wpdb->prefix.'b2s_posts_insights', $insightData, array('%s', '%s', '%d', '%d', '%d', '%s', '%d'));
+                                }
+                            }
                         }
                     }
                 }

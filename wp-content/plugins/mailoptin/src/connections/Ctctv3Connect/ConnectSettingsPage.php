@@ -86,9 +86,7 @@ class ConnectSettingsPage extends AbstractCtctv3Connect
             )
         );
 
-        if ( ! self::is_connected()) {
-            unset($settingsArg['ctctv3_auth_disconnect']);
-        } else {
+        if (self::is_connected()) {
             unset($settingsArg['ctctv3_instruction']);
         }
 
@@ -100,6 +98,8 @@ class ConnectSettingsPage extends AbstractCtctv3Connect
             unset($settingsArg['ctctv3_api_key']);
             unset($settingsArg['ctctv3_api_secret']);
             $settingsArg['disable_submit_button'] = true;
+        } else {
+            unset($settingsArg['ctctv3_auth_disconnect']);
         }
 
         return array_merge($arg, [$settingsArg]);

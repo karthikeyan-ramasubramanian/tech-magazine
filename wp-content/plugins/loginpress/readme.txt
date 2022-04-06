@@ -4,7 +4,7 @@ Tested up to: 5.9
 Contributors: WPBrigade, hiddenpearls, AbdulWahab610
 Author URI: https://wpbrigade.com/?utm_source=loginpress-lite&utm_medium=author-url-link
 Tags: wp-login, login, login customizer, custom login, wordpress login,
-Stable tag: 1.5.13
+Stable tag: 1.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -220,6 +220,11 @@ Please visit <a target="_blank" rel="friend" href="https://loginpress.pro?utm_so
 23. Custom Login page (Company theme) Example #23 with Captcha [Pro feature](https://loginpress.pro?utm_source=loginpress-lite&utm_medium=screenshots&utm_campaign=pro-upgrade)
 
 == Changelog ==
+
+= 1.6.0 – 2022-03-16 =
+* New Feature: Created a new control for customizing the font size of the login form labels.
+* Enhancement: For multisite, excluded the LoginPress page from YOAST SEO sitemap.
+* Enhancement: Update log file info.
 
 = 1.5.13 – 2022-03-01 =
 * BugFix: Slider control layout in customizer.
@@ -646,5 +651,5 @@ Please visit <a target="_blank" rel="friend" href="https://loginpress.pro?utm_so
 
 == Upgrade Notice ==
 
-= 1.5.13 =
+= 1.6.0 =
 * Important Release, upgrade immediately. Compatible with 5.9

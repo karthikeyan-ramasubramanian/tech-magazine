@@ -5,6 +5,8 @@ namespace CreativeMail\Managers;
 
 use CreativeMail\CreativeMail;
 use CreativeMail\Helpers\OptionsHelper;
+use CreativeMail\Models\ApiSchema;
+use CreativeMail\Models\HashSchema;
 use CreativeMail\Modules\Api\Processes\ApiBackgroundProcess;
 use CreativeMail\Modules\Blog\Models\BlogAttachment;
 use CreativeMail\Modules\Blog\Models\BlogInformation;
@@ -477,7 +479,7 @@ class ApiManager
         $cs  = openssl_encrypt($wcKey->consumer_secret, 'aes-256-cbc', $key, OPENSSL_RAW_DATA, $iv);
         $ck  = openssl_encrypt($wcKey->consumer_key, 'aes-256-cbc', $key, OPENSSL_RAW_DATA, $iv);
 
-        $result          = new \stdClass();
+        $result          = new HashSchema();
         $result->salt    = bin2hex($salt);
         $result->secret  = base64_encode($cs);
         $result->key     = base64_encode($ck);
@@ -632,7 +634,7 @@ class ApiManager
             throw new Exception('The key could not be saved');
         }
 
-        $key = new \stdClass();
+        $key = new ApiSchema();
 
         $key->key_id          = $wpdb->insert_id;
         $key->user_id         = $user->ID;

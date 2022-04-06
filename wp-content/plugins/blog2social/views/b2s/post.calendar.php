@@ -22,17 +22,25 @@ $metaSettings = get_option('B2S_PLUGIN_GENERAL_OPTIONS');
 <div class="b2s-container">
     <div class="b2s-inbox">
         <div class="col-md-12 del-padding-left">
+            <?php require_once (B2S_PLUGIN_DIR . 'views/b2s/html/sidebar.php'); ?>
             <div class="col-md-9 del-padding-left del-padding-right">
                 <!--Header|Start - Include-->
                 <?php require_once (B2S_PLUGIN_DIR . 'views/b2s/html/header.php'); ?>
                 <!--Header|End-->
+                <div class="clearfix"></div>
+                <!--Navbar|Start-->
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                         <?php require_once (B2S_PLUGIN_DIR . 'views/b2s/html/post.navbar.php'); ?>
+                    </div>
+                </div>
+                <!--Navbar|End-->
                 <div class="clearfix"></div>
                 <!--Content|Start-->
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <div>
                             <div class="grid-body">
-                                <?php require_once (B2S_PLUGIN_DIR . 'views/b2s/html/post.navbar.php'); ?>
                                 <div class="clearfix"></div>
                                 <div class="col-md-12 b2s-calendar-filter form-inline del-padding-left del-padding-right">
                                     <div class="b2s-calendar-filter-network-legend-text">
@@ -83,7 +91,6 @@ $metaSettings = get_option('B2S_PLUGIN_GENERAL_OPTIONS');
                     </div>
                 </div>
             </div>
-            <?php require_once (B2S_PLUGIN_DIR . 'views/b2s/html/sidebar.php'); ?>
         </div>
     </div>
 </div>

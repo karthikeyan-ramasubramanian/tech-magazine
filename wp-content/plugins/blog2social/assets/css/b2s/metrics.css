@@ -41,3 +41,8 @@ body.modal-open .b2s-container {
 .padding-right-0 {
     padding-right: 0px !important; 
 }
+
+#b2s-metrics-date-picker {
+    width: 110%;
+    margin-left: -10%;
+}

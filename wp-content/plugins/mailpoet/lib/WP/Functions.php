@@ -437,6 +437,14 @@ class Functions {
     return get_transient($transient);
   }
 
+  public function setSiteTransient($transient, $value, $expiration = 0) {
+    return set_site_transient($transient, $value, $expiration);
+  }
+
+  public function getSiteTransient($transient) {
+    return get_site_transient($transient);
+  }
+
   public function deleteTransient($transient) {
     return delete_transient($transient);
   }
@@ -778,5 +786,13 @@ class Functions {
 
   public function restUrl(string $path = '', string $scheme = 'rest'): string {
     return rest_url($path, $scheme);
+  }
+
+  public function wpGetInstalledTranslations(string $type): array {
+    return wp_get_installed_translations($type);
+  }
+
+  public function getAvailableLanguages(?string $dir = null): array {
+    return get_available_languages($dir);
   }
 }

@@ -41,19 +41,25 @@ if('function' !== typeof lsrecaptcha) {
 				const action = el.getAttribute('data-action');
 				const form = el.form;
 				form.addEventListener('submit', function(e) {
+					e.preventDefault();
 					grecaptcha.execute('$grecaptcha_v3_site_key', {action: action}).then(function(token) {
 						el.setAttribute('value', token);
+						const button = form.querySelector('[type="submit"]');
+						if(button) {
+							const input = document.createElement('input');
+							input.type = 'hidden';
+							input.name = button.getAttribute('name');
+							input.value = button.value;
+							input.classList.add('lsr-submit-input');
+							var inputEls = document.querySelectorAll('.lsr-submit-input');
+							[].forEach.call(inputEls, function(inputEl) {
+								inputEl.remove();
+							});
+							form.appendChild(input);
+						}
+						HTMLFormElement.prototype.submit.call(form);
 					});
 				});
-				function lsSetToken(action) {
-					if(action) {
-						grecaptcha.execute('$grecaptcha_v3_site_key', {action: action}).then(function(token) {
-							document.getElementById('g-recaptcha-response-' + action).value = token;
-						});
-					}
-				}
-				lsSetToken(action);
-				setInterval(function() { lsSetToken(action); }, (2 * 60 * 1000));
 			});
 		});
 	}
@@ -105,7 +111,7 @@ EOT;
 					return $user;
 				}
 
-				if ( isset( $_POST['g-recaptcha-response'] ) ) {
+				if ( isset( $_POST['g-recaptcha-response'] ) && ! empty( $_POST['g-recaptcha-response'] ) ) {
 					$response = wp_remote_post(
 						'https://www.google.com/recaptcha/api/siteverify',
 						array(
@@ -148,7 +154,7 @@ EOT;
 					return $user;
 				}
 
-				if ( isset( $_POST['g-recaptcha-response'] ) ) {
+				if ( isset( $_POST['g-recaptcha-response'] ) && ! empty( $_POST['g-recaptcha-response'] ) ) {
 					$response = wp_remote_post(
 						'https://www.google.com/recaptcha/api/siteverify',
 						array(
@@ -228,7 +234,7 @@ EOT;
 					return $errors;
 				}
 
-				if ( isset( $_POST['g-recaptcha-response'] ) ) {
+				if ( isset( $_POST['g-recaptcha-response'] ) && ! empty( $_POST['g-recaptcha-response'] ) ) {
 					$response = wp_remote_post(
 						'https://www.google.com/recaptcha/api/siteverify',
 						array(
@@ -271,7 +277,7 @@ EOT;
 					return $errors;
 				}
 
-				if ( isset( $_POST['g-recaptcha-response'] ) ) {
+				if ( isset( $_POST['g-recaptcha-response'] ) && ! empty( $_POST['g-recaptcha-response'] ) ) {
 					$response = wp_remote_post(
 						'https://www.google.com/recaptcha/api/siteverify',
 						array(
@@ -347,7 +353,7 @@ EOT;
 					return $errors;
 				}
 
-				if ( isset( $_POST['g-recaptcha-response'] ) ) {
+				if ( isset( $_POST['g-recaptcha-response'] ) && ! empty( $_POST['g-recaptcha-response'] ) ) {
 					$response = wp_remote_post(
 						'https://www.google.com/recaptcha/api/siteverify',
 						array(
@@ -390,7 +396,7 @@ EOT;
 					return $errors;
 				}
 
-				if ( isset( $_POST['g-recaptcha-response'] ) ) {
+				if ( isset( $_POST['g-recaptcha-response'] ) && ! empty( $_POST['g-recaptcha-response'] ) ) {
 					$response = wp_remote_post(
 						'https://www.google.com/recaptcha/api/siteverify',
 						array(
@@ -479,7 +485,7 @@ EOT;
 					return $commentdata;
 				}
 
-				if ( isset( $_POST['g-recaptcha-response'] ) ) {
+				if ( isset( $_POST['g-recaptcha-response'] ) && ! empty( $_POST['g-recaptcha-response'] ) ) {
 					$response = wp_remote_post(
 						'https://www.google.com/recaptcha/api/siteverify',
 						array(
@@ -522,7 +528,7 @@ EOT;
 					return $commentdata;
 				}
 
-				if ( isset( $_POST['g-recaptcha-response'] ) ) {
+				if ( isset( $_POST['g-recaptcha-response'] ) && ! empty( $_POST['g-recaptcha-response'] ) ) {
 					$response = wp_remote_post(
 						'https://www.google.com/recaptcha/api/siteverify',
 						array(

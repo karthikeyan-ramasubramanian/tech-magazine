@@ -42,10 +42,10 @@ add_filter( 'molongui_authorship_filter_link_post_id', function( $post_id, $post
     }
     return $post_id;
 }, 10, 3 );
-add_filter( 'authorship/box/hide', function( $default )
+add_filter( 'authorship/render_box', function( $default )
 {
     $dbt = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 10 );
-    if ( in_the_loop() and isset( $dbt[7]['function'] ) and $dbt[7]['function'] == "render_footer" and isset( $dbt[7]['class'] ) and $dbt[7]['class'] == "JNews\Footer\FooterBuilder" ) return true;
+    if ( in_the_loop() and isset( $dbt[7]['function'] ) and $dbt[7]['function'] == "render_footer" and isset( $dbt[7]['class'] ) and $dbt[7]['class'] == "JNews\Footer\FooterBuilder" ) return false;
     return $default;
 });
 add_filter( 'jnews_default_query_args', function( $args )

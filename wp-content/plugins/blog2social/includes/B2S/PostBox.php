@@ -349,7 +349,7 @@ class B2S_PostBox {
                 <option value="0" ' . ((!$bestTimes) ? 'selected' : '') . '>' . esc_html__('immediately after publishing', 'blog2social') . '</option>
                 <option value="1" ' . (($bestTimes) ? 'selected' : '') . '>' . esc_html__('at best times', 'blog2social') . '</option>
                 </select></div>';
-            $content .= "<input id='b2s-post-meta-box-best-time-settings' class='post-format' name='b2s-post-meta-box-best-time-settings' value='" . serialize($bestTimeSettings) . "' type='hidden'> ";
+            $content .= "<input id='b2s-post-meta-box-best-time-settings' class='post-format' name='b2s-post-meta-box-best-time-settings' value='" . json_encode($bestTimeSettings) . "' type='hidden'> ";
         }
         if (!$show) {
             $content .= '</div>';

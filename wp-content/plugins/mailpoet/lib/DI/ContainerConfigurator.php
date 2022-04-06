@@ -104,15 +104,31 @@ class ContainerConfigurator implements IContainerConfigurator {
     $container->autowire(\MailPoet\AutomaticEmails\WooCommerce\Events\PurchasedInCategory::class)->setPublic(true);
     $container->autowire(\MailPoet\AutomaticEmails\WooCommerce\Events\PurchasedProduct::class)->setPublic(true);
     // Automation
-    $container->autowire(\MailPoet\Automation\API\API::class)->setPublic(true);
-    $container->autowire(\MailPoet\Automation\API\EndpointFactory::class)
+    $container->autowire(\MailPoet\Automation\Engine\API\API::class)->setPublic(true);
+    $container->autowire(\MailPoet\Automation\Engine\API\EndpointFactory::class)
       ->setPublic(true)
       ->setArgument('$container', new Reference(ContainerWrapper::class));
-    $container->autowire(\MailPoet\Automation\API\Endpoints\SystemDatabaseEndpoint::class)->setPublic(true);
-    $container->autowire(\MailPoet\Automation\API\Endpoints\WorkflowsEndpoint::class)->setPublic(true);
-    $container->autowire(\MailPoet\Automation\Automation::class)->setPublic(true);
-    $container->autowire(\MailPoet\Automation\Migrations\Migrator::class)->setPublic(true);
-    $container->autowire(\MailPoet\Automation\WordPress::class)->setPublic(true);
+    $container->autowire(\MailPoet\Automation\Engine\API\Endpoints\SystemDatabaseEndpoint::class)->setPublic(true);
+    $container->autowire(\MailPoet\Automation\Engine\API\Endpoints\WorkflowsEndpoint::class)->setPublic(true);
+    $container->autowire(\MailPoet\Automation\Engine\Builder\CreateWorkflowController::class)->setPublic(true);
+    $container->autowire(\MailPoet\Automation\Engine\Control\ActionScheduler::class)->setPublic(true);
+    $container->autowire(\MailPoet\Automation\Engine\Control\StepRunner::class)->setPublic(true);
+    $container->autowire(\MailPoet\Automation\Engine\Control\Steps\ActionStepRunner::class)->setPublic(true);
+    $container->autowire(\MailPoet\Automation\Engine\Control\TriggerHandler::class)->setPublic(true);
+    $container->autowire(\MailPoet\Automation\Engine\Engine::class)->setPublic(true);
+    $container->autowire(\MailPoet\Automation\Engine\Migrations\Migrator::class)->setPublic(true);
+    $container->autowire(\MailPoet\Automation\Engine\Registry::class)->setPublic(true);
+    $container->autowire(\MailPoet\Automation\Engine\Storage\WorkflowRunStorage::class)->setPublic(true);
+    $container->autowire(\MailPoet\Automation\Engine\Storage\WorkflowStorage::class)->setPublic(true);
+    $container->autowire(\MailPoet\Automation\Engine\WordPress::class)->setPublic(true);
+    // Automation - core integration
+    $container->autowire(\MailPoet\Automation\Integrations\Core\Actions\WaitAction::class)->setPublic(true);
+    $container->autowire(\MailPoet\Automation\Integrations\Core\CoreIntegration::class)->setPublic(true);
+    // Automation - MailPoet integration
+    $container->autowire(\MailPoet\Automation\Integrations\MailPoet\MailPoetIntegration::class)->setPublic(true);
+    $container->autowire(\MailPoet\Automation\Integrations\MailPoet\Subjects\SegmentSubject::class)->setPublic(true);
+    $container->autowire(\MailPoet\Automation\Integrations\MailPoet\Subjects\SubscriberSubject::class)->setPublic(true);
+     $container->autowire(\MailPoet\Automation\Integrations\MailPoet\Triggers\SegmentSubscribedTrigger::class)->setPublic(true);
     // Config
     $container->autowire(\MailPoet\Config\AccessControl::class)->setPublic(true);
     $container->autowire(\MailPoet\Config\Activator::class)->setPublic(true);

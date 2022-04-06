@@ -22,6 +22,7 @@ if(isset($_GET['metrics_banner']) && (int) $_GET['metrics_banner'] == 1) {
 <div class="b2s-container">
     <div class="b2s-inbox">
         <div class="col-md-12 del-padding-left">
+            <?php require_once (B2S_PLUGIN_DIR . 'views/b2s/html/sidebar.php'); ?>
             <div class="col-md-9 del-padding-left del-padding-right">
                 <!--Header|Start - Include-->
                 <?php require_once (B2S_PLUGIN_DIR . 'views/b2s/html/header.php'); ?>
@@ -68,7 +69,7 @@ if(isset($_GET['metrics_banner']) && (int) $_GET['metrics_banner'] == 1) {
                             <div class="b2s-sort-area">
                                 <span style="font-weight: bold; font-size: 24px;"><?php esc_html_e('Social Media Metrics Summary', 'blog2social') ?></span><a class="btn btn-link b2s-metrics-legend-info-modal-btn"><?php esc_html_e('Info', 'blog2social') ?></a>
                                 <div class="b2s-activity-search-content pull-right">
-                                    <input id="b2s-metrics-date-picker" value="<?php echo (substr(B2S_LANGUAGE, 0, 2) == 'de') ? date('d.m.Y', strtotime("-1 week")) : date('Y-m-d', strtotime("-1 week")); ?>" data-language='<?php echo (substr(B2S_LANGUAGE, 0, 2) == 'de' ? 'de' : 'en'); ?>' />
+                                    <input class="form-control" id="b2s-metrics-date-picker" value="<?php echo (substr(B2S_LANGUAGE, 0, 2) == 'de') ? date('d.m.Y', strtotime("-1 week")) : date('Y-m-d', strtotime("-1 week")); ?>" data-language='<?php echo (substr(B2S_LANGUAGE, 0, 2) == 'de' ? 'de' : 'en'); ?>' />
                                 </div>
                                 <br>
                                 <div class="b2s-metric-sub-area" style="background-color: #ddd; padding: 10px; margin-top: 10px;">
@@ -160,7 +161,6 @@ if(isset($_GET['metrics_banner']) && (int) $_GET['metrics_banner'] == 1) {
                     </div>
                 </div>
             </div>
-            <?php require_once (B2S_PLUGIN_DIR . 'views/b2s/html/sidebar.php'); ?>
         </div>
     </div>
 </div>

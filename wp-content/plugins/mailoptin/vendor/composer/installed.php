@@ -19,6 +19,17 @@
             'reference' => '39354270b2251dd98ed6e9e4596b3c02cde85e3a',
             'dev_requirement' => false,
         ),
+        'barryvdh/composer-cleanup-plugin' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'type' => 'composer-plugin',
+            'install_path' => __DIR__ . '/../barryvdh/composer-cleanup-plugin',
+            'aliases' => array(
+                0 => '0.1.x-dev',
+            ),
+            'reference' => '74d878666436c99f5b671b90312e85479afeedb0',
+            'dev_requirement' => false,
+        ),
         'collizo4sky/persist-admin-notices-dismissal' => array(
             'pretty_version' => '1.4.4',
             'version' => '1.4.4.0',
@@ -80,8 +91,8 @@
             'dev_requirement' => false,
         ),
         'mailoptin/authifly' => array(
-            'pretty_version' => '0.2.1646901609',
-            'version' => '0.2.1646901609.0',
+            'pretty_version' => '0.2.1647959398',
+            'version' => '0.2.1647959398.0',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../src/authifly',
             'aliases' => array(),
@@ -89,8 +100,8 @@
             'dev_requirement' => false,
         ),
         'mailoptin/connections' => array(
-            'pretty_version' => '0.2.1646907159',
-            'version' => '0.2.1646907159.0',
+            'pretty_version' => '0.2.1648034705',
+            'version' => '0.2.1648034705.0',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../src/connections',
             'aliases' => array(),
@@ -98,12 +109,12 @@
             'dev_requirement' => false,
         ),
         'mailoptin/core' => array(
-            'pretty_version' => '0.1.0-alpha.1646907154',
-            'version' => '0.1.0.0-alpha1646907154',
+            'pretty_version' => '0.1.0-alpha.1648034700',
+            'version' => '0.1.0.0-alpha1648034700',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../src/core',
             'aliases' => array(),
-            'reference' => '2dbfe991b08b54d08f1ffdd6de5497477ee2619c',
+            'reference' => '122ebcde19a39eff59108539711b2bf73c32b499',
             'dev_requirement' => false,
         ),
         'mailoptin/mailchimp-api-php' => array(

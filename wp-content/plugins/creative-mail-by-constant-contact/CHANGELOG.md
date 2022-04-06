@@ -1,5 +1,11 @@
 Changelog
 =========
+#### 1.5.2 - March 22 2022
+- Small bug fix for PHP versions previous to 7.1
+
+#### 1.5.1 - March 22 2022
+- Fix outdated PHP classes
+
 #### 1.5.0 - March 1 2022
 - Fix WooCommerce product lists
 - WooCommerce order workflows improved.

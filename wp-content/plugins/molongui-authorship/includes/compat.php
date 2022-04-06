@@ -77,6 +77,7 @@ if ( apply_filters( 'authorship/theme_compatibility', authorship_is_feature_enab
     elseif ( 'SmartMag' == $theme->name or 'SmartMag' == $theme->parent_theme )                     require_once $path . 'smart-mag.php';
     elseif ( 'Creativo Theme' == $theme->name or 'Creativo Theme' == $theme->parent_theme )         require_once $path . 'creativo.php';
     elseif ( 'AdoreChurch' == $theme->name or 'AdoreChurch' == $theme->parent_theme )               require_once $path . 'adorechurch.php';
+    elseif ( strpos( $theme->name, 'Dynamic News' ) !== false or strpos( $theme->parent_theme, 'Dynamic News' ) !== false ) require_once $path . 'dynamic-news.php';
     elseif ( 'Thrive Themes' == $theme->get( 'Author' ) or
            ( $theme->parent() and 'Thrive Themes' == $theme->parent()->get( 'Author' ) ) )          require_once $path . 'thrive-themes.php';
 }

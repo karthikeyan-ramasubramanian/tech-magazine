@@ -91,7 +91,7 @@ return array
 			(
 				array
 				(
-					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[layout]',
+					'id'      => MOLONGUI_AUTHORSHIP_PREFIX.'_options[box_layout]',
 					'display' => true,
 					'setting' => array
 					(

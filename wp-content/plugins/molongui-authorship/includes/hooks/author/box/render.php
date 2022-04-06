@@ -13,20 +13,3 @@ function authorship_autoadd_box()
     add_filter( 'the_content', 'authorship_render_box', $options['box_hook_priority'], 1 );
 }
 add_action( 'init', 'authorship_autoadd_box' );
-
-
-
-/*
-if ( authorship_is_feature_enabled( 'box' ) )
-{
-    $options = authorship_get_options();
-    if ( empty( $options['order'] ) ) $options['order'] = 11;
-
-
-    if ( $options['order'] <= 10 )
-    {
-        remove_filter( 'the_content', 'wpautop' );
-        add_filter( 'the_content', 'wpautop', $options['order'] - 1 );
-    }
-    add_filter( 'the_content', 'authorship_render_author_box', $options['order'], 1 );
-}*/

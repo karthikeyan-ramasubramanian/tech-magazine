@@ -22,10 +22,19 @@ $metaSettings = get_option('B2S_PLUGIN_GENERAL_OPTIONS');
 <div class="b2s-container">
     <div class="b2s-inbox">
         <div class="col-md-12 del-padding-left">
+            <?php require_once (B2S_PLUGIN_DIR . 'views/b2s/html/sidebar.php'); ?>
             <div class="col-md-9 del-padding-left del-padding-right">
                 <!--Header|Start - Include-->
                 <?php require_once (B2S_PLUGIN_DIR . 'views/b2s/html/header.php'); ?>
                 <!--Header|End-->
+                <div class="clearfix"></div>
+                <!--Navbar|Start-->
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                         <?php require_once (B2S_PLUGIN_DIR . 'views/b2s/html/post.navbar.php'); ?>
+                    </div>
+                </div>
+                <!--Navbar|End-->
                 <div class="clearfix"></div>
                 <!--Content|Start-->
                 <div class="panel panel-default">
@@ -35,7 +44,6 @@ $metaSettings = get_option('B2S_PLUGIN_GENERAL_OPTIONS');
                         <div class="b2s-post">
                             <div class="grid-body">
                                 <div class="pull-right"><code id="b2s-user-time"><?php echo B2S_Util::getLocalDate($userTimeZoneOffset, substr(B2S_LANGUAGE, 0, 2)); ?> <?php echo ((substr(B2S_LANGUAGE, 0, 2) == 'de') ? esc_html__('Clock', 'blog2social') : '') ?></code></div>
-                                <?php require_once (B2S_PLUGIN_DIR . 'views/b2s/html/post.navbar.php'); ?>
                                 <!-- Filter Post Start-->
                                 <form class="b2sSortForm form-inline pull-left" action="#">
                                     <input id="b2sType" type="hidden" value="sched" name="b2sType">
@@ -81,7 +89,6 @@ $metaSettings = get_option('B2S_PLUGIN_GENERAL_OPTIONS');
                     </div>
                 </div>
             </div>
-            <?php require_once (B2S_PLUGIN_DIR . 'views/b2s/html/sidebar.php'); ?>
         </div>
     </div>
 </div>

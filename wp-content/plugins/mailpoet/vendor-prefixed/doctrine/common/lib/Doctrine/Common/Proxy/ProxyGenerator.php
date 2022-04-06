@@ -5,7 +5,7 @@ use MailPoetVendor\Doctrine\Common\Proxy\Exception\InvalidArgumentException;
 use MailPoetVendor\Doctrine\Common\Proxy\Exception\UnexpectedValueException;
 use MailPoetVendor\Doctrine\Common\Util\ClassUtils;
 use MailPoetVendor\Doctrine\Persistence\Mapping\ClassMetadata;
-use MailPoetVendor\ReflectionIntersectionType;
+use ReflectionIntersectionType;
 use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionParameter;
@@ -404,7 +404,7 @@ EOT;
  if ($prop->isStatic()) {
  continue;
  }
- $allProperties[] = $prop->isPrivate() ? "\0" . $prop->getDeclaringClass()->getName() . "\0" . $prop->getName() : $prop->getName();
+ $allProperties[] = $prop->isPrivate() ? "\x00" . $prop->getDeclaringClass()->getName() . "\x00" . $prop->getName() : $prop->getName();
  }
  $lazyPublicProperties = $this->getLazyLoadedPublicPropertiesNames($class);
  $protectedProperties = array_diff($allProperties, $lazyPublicProperties);
@@ -510,7 +510,7 @@ EOT;
  public function getProxyFileName($className, $baseDirectory = null)
  {
  $baseDirectory = $baseDirectory ?: $this->proxyDirectory;
- return rtrim($baseDirectory, \DIRECTORY_SEPARATOR) . \DIRECTORY_SEPARATOR . Proxy::MARKER . str_replace('\\', '', $className) . '.php';
+ return rtrim($baseDirectory, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . Proxy::MARKER . str_replace('\\', '', $className) . '.php';
  }
  private function isShortIdentifierGetter($method, ClassMetadata $class)
  {

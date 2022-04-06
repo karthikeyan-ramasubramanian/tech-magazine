@@ -90,6 +90,7 @@ class Init
         \MailOptin\KlaviyoConnect\Connect::get_instance();
         \MailOptin\ZohoCampaignsConnect\Connect::get_instance();
         \MailOptin\ZohoCRMConnect\Connect::get_instance();
+        \MailOptin\NewsmanConnect\Connect::get_instance();
         \MailOptin\ConvertFoxConnect\Connect::get_instance();
         \MailOptin\ElementorConnect\Connect::get_instance();
         \MailOptin\WPFormsConnect\Connect::get_instance();

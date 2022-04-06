@@ -16,6 +16,9 @@ jQuery(window).on("load", function () {
     if (jQuery('.toggelbutton').is(':visible') && !jQuery("#b2s-wrapper").hasClass("toggled")) {
         jQuery('.btn-toggle-menu').trigger('click');
     }
+    if(jQuery('#b2sOpenDraftIncompleteModal').val() == '1') {
+        jQuery('#b2sDraftIncompleteModal').modal('show');
+    }
 });
 
 //Stop duplicate posts by page refreshing during the post process
@@ -3160,7 +3163,7 @@ function networkLimitAll(networkAuthId, networkId, limit) {
 }
 
 function networkCount(networkAuthId) {
-
+    var twitterLimit = 280;
     var networkCountId = -1; //default;
     if (jQuery(':focus').length > 0) {
         var attr = jQuery(':focus').attr('data-network-count');
@@ -3176,6 +3179,9 @@ function networkCount(networkAuthId) {
             url = "http://" + url;
             jQuery(".b2s-post-item-details-item-url-input[data-network-auth-id='" + networkAuthId + "']").val(url);
         }
+        if (jQuery(".b2s-post-item-details-item-message-input[data-network-auth-id='" + networkAuthId + "']").attr('data-network-id') == "2") { //twitter
+            twitterLimit = twitterLimit - 26;
+        }
     } else if (jQuery(".b2s-post-item-details-item-url-input[data-network-auth-id='" + networkAuthId + "']").hasClass("required_network_url")) {
         if (!((jQuery(".b2s-post-item-details-item-url-input[data-network-auth-id='" + networkAuthId + "']").attr('data-network-id') == 1 || jQuery(".b2s-post-item-details-item-url-input[data-network-auth-id='" + networkAuthId + "']").attr('data-network-id') == 3 || jQuery(".b2s-post-item-details-item-url-input[data-network-auth-id='" + networkAuthId + "']").attr('data-network-id') == 19) && jQuery('.b2s-post-item-details-post-format[data-network-auth-id=' + networkAuthId + ']').val() == 1)) { //Facebook & Linkedin Imagepost don't require Link
             url = jQuery("#b2sDefault_url").val();
@@ -3185,6 +3191,15 @@ function networkCount(networkAuthId) {
     if (typeof text !== 'undefined' && jQuery('.b2s-post-item-details-item-message-input-allow-html[data-network-auth-id="' + networkAuthId + '"]').length == 0) {
         var textLength = text.length;
         jQuery(".b2s-post-item-countChar[data-network-count='" + networkCountId + "'][data-network-auth-id='" + networkAuthId + "']").html(textLength);
+        if (jQuery(".b2s-post-item-details-item-message-input[data-network-auth-id='" + networkAuthId + "']").attr('data-network-id') == "2") {
+            var threadCount = Math.ceil(textLength / twitterLimit);
+            jQuery(".b2s-post-item-count-threads[data-network-count='" + networkCountId + "'][data-network-auth-id='" + networkAuthId + "']").html(threadCount);
+            if(threadCount >= 2) {
+                jQuery(".b2s-post-item-show-thread-count[data-network-count='" + networkCountId + "'][data-network-auth-id='" + networkAuthId + "']").show();
+            } else {
+                jQuery(".b2s-post-item-show-thread-count[data-network-count='" + networkCountId + "'][data-network-auth-id='" + networkAuthId + "']").hide();
+            }
+        }
     }
     if (jQuery(".b2s-post-item-details-item-message-input[data-network-auth-id='" + networkAuthId + "']").attr('data-network-id') == "12") { //instagram
         var matches = text.match(/(#[^# ]{1,})/g);
@@ -3195,7 +3210,7 @@ function networkCount(networkAuthId) {
             jQuery('.b2s-content-info[data-network-auth-id="' + networkAuthId + '"]').hide();
             jQuery(".b2s-post-item-details-item-message-input[data-network-count='" + networkCountId + "'][data-network-auth-id='" + networkAuthId + "']").removeClass("warning");
         }
-    }
+    }    
 }
 
 
@@ -4292,7 +4307,7 @@ function changePostFormat(networkId, networkType, postFormat, networkAuthId, pos
     checkGifAnimation(networkAuthId, networkId);
 
     //Multi Image
-    if (postFormat == 1 && ((networkId == 1 && (networkType == 1 || networkType == 2)) || (networkId == 2)) && jQuery('.b2s-post-item-details-release-input-date-select[data-network-auth-id="' + networkAuthId + '"]').val() != 1) {
+    if (postFormat == 1 && ((networkId == 1 && (networkType == 1 || networkType == 2)) || (networkId == 2) || (networkId == 3 && (networkType == 0 || networkType == 1))) && jQuery('.b2s-post-item-details-release-input-date-select[data-network-auth-id="' + networkAuthId + '"]').val() != 1) {
         jQuery('.b2s-multi-image-area[data-network-auth-id="' + networkAuthId + '"][data-network-count="-1"]').show();
     } else {
         jQuery('.b2s-multi-image-area[data-network-auth-id="' + networkAuthId + '"][data-network-count="-1"]').hide();

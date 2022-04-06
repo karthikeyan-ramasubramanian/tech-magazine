@@ -11,20 +11,33 @@ $selSchedDate = (isset($_GET['schedDate']) && !empty($_GET['schedDate'])) ? date
 <div class="b2s-container">
     <div class="b2s-inbox">
         <div class="col-md-12 del-padding-left">
+            <?php require_once (B2S_PLUGIN_DIR . 'views/b2s/html/sidebar.php'); ?>
             <div class="col-md-9 del-padding-left del-padding-right">
                 <!--Header|Start - Include-->
                 <?php require_once (B2S_PLUGIN_DIR . 'views/b2s/html/header.php'); ?>
                 <!--Header|End-->
+                <h1 id="b2s-curation-title-link" class="b2s-curation-title" style="display: none;"><?php esc_html_e('Share New Link Post', 'blog2social'); ?></h1>
+                <h1 id="b2s-curation-title-text" class="b2s-curation-title" style="display: none;"><?php esc_html_e('Share New Text Post', 'blog2social'); ?></h1>
+                <h1 id="b2s-curation-title-image" class="b2s-curation-title" style="display: none;"><?php esc_html_e('Share New Image Post', 'blog2social'); ?></h1>
+                <h1 id="b2s-curation-title-video" class="b2s-curation-title" style="display: none;"><?php esc_html_e('Share New Video Post', 'blog2social'); ?></h1>
+                <p id="b2s-curation-subtitle-link" class="b2s-bold b2s-color-grey b2s-curation-subtitle" style="display: none;"><?php esc_html_e('Add a link you’d like to share on your social networks. You can also share a video link, for example from YouTube or Vimeo (also see Video Post).', 'blog2social'); ?></p>
+                <p id="b2s-curation-subtitle-text" class="b2s-bold b2s-color-grey b2s-curation-subtitle" style="display: none;"><?php esc_html_e('Add a comment or text you like to share on your social media accounts.', 'blog2social'); ?></p>
+                <p id="b2s-curation-subtitle-image" class="b2s-bold b2s-color-grey b2s-curation-subtitle" style="display: none;"><?php esc_html_e('Upload an image or select an image from your media library and share the image with a short description (comment) on your social media accounts.', 'blog2social'); ?></p>
+                <p id="b2s-curation-subtitle-video" class="b2s-bold b2s-color-grey b2s-curation-subtitle" style="display: none;"><?php esc_html_e('Add a video link, for example from YouTube or Vimeo, you like to share on your social media accounts.', 'blog2social'); ?></p>
+                <br>
+                
+                <!--Navbar|Start-->
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                         <?php require_once (B2S_PLUGIN_DIR . 'views/b2s/html/post.navbar.php'); ?>
+                    </div>
+                </div>
+                <input type="hidden" id="b2s-curation-post-format" value="0">
+                <!--Navbar|End-->
                 <div class="clearfix"></div>
                 <!--Content|Start-->
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <div class="b2s-post">
-                            <div class="grid-body">
-                                <?php require_once (B2S_PLUGIN_DIR . 'views/b2s/html/post.navbar.php'); ?>
-                                <br>
-                            </div>       
-                        </div>
                         <div class="clearfix"></div>
                         <div id="b2s-curation-no-review-info" class="alert alert-danger">
                             <span class="glyphicon glyphicon-remove glyphicon-danger"></span> <?php esc_html_e('No link preview available. Please check your link.', 'blog2social'); ?>
@@ -40,20 +53,6 @@ $selSchedDate = (isset($_GET['schedDate']) && !empty($_GET['schedDate'])) ? date
                             <span class="glyphicon glyphicon-success glyphicon-ok"></span> <?php esc_html_e('Saved as draft.', 'blog2social'); ?>
                         </div>
                         <div class="b2s-curation-area">
-                            <div class="row b2s-curation-select">
-                                <div class="col-md-12">
-                                    <button class="btn btn-primary btn-sm b2s-curation-format-link pull-left"><?php esc_html_e('Link Post', 'blog2social') ?></button>
-                                    <button class="btn btn-light btn-sm b2s-curation-format-video pull-left"><?php esc_html_e('Video Post', 'blog2social') ?></button>
-                                    <?php if(B2S_PLUGIN_USER_VERSION > 1) { ?>
-                                        <button class="btn btn-light btn-sm b2s-curation-format-image pull-left"><?php esc_html_e('Image Post', 'blog2social') ?></button>
-                                        <button class="btn btn-light btn-sm b2s-curation-format-text pull-left"><?php esc_html_e('Text Post', 'blog2social') ?> <span class="label label-success"><?php esc_html_e("NEW", "blog2social") ?></span></button>
-                                    <?php } else { ?>
-                                        <button class="btn btn-light btn-sm b2s-curation-info-premium-btn pull-left" data-type="image"><?php esc_html_e('Image Post', 'blog2social') ?> <span class="label label-success"><?php esc_html_e("PRO", "blog2social") ?></span></button>
-                                        <button class="btn btn-light btn-sm b2s-curation-info-premium-btn pull-left" data-type="text"><?php esc_html_e('Text Post', 'blog2social') ?> <span class="label label-success"><?php esc_html_e("PRO", "blog2social") ?></span></button>
-                                    <?php } ?>
-                                    <input type="hidden" id="b2s-curation-post-format" value="0">
-                                </div>
-                            </div>
                             <form id="b2s-curation-post-form" method="post">
                                 <div class="b2s-loading-area" style="display:none">
                                     <br>
@@ -142,7 +141,6 @@ $selSchedDate = (isset($_GET['schedDate']) && !empty($_GET['schedDate'])) ? date
                     </div>
                 </div>
             </div>
-            <?php require_once (B2S_PLUGIN_DIR . 'views/b2s/html/sidebar.php'); ?>
         </div>
     </div>
 </div>

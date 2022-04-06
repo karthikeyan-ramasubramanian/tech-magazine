@@ -21,6 +21,8 @@ return array(
     'b9633de6476ae361f00d00fa732467f2' => $baseDir . '/src/authifly/Infusionsoft.php',
     '7deba475c7811369965cbd792856349d' => $baseDir . '/src/authifly/Jilt.php',
     '01a622b173c6313c4db38d191511be8d' => $baseDir . '/src/authifly/CleverReach.php',
+    '0c3d673a10e24a9deae0466c5bff821d' => $baseDir . '/src/authifly/Stripe.php',
+    '6c86670451b6932c93a21a5edd9610bf' => $baseDir . '/src/authifly/Newsman.php',
     '1d70241e5fa15180bf0b547b18160633' => $baseDir . '/src/core/src/Functions/custom-settings-api.php',
     '541054f7d83801e360f0f9cfeb6e7da9' => $baseDir . '/src/core/src/Functions/functions.php',
     '1064428a5c96d5b26937d911d5bd0e95' => $baseDir . '/src/core/src/Functions/php-html-css-js-minifier.php',

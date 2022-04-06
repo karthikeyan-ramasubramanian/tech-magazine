@@ -104,8 +104,9 @@ class B2S_Network_Item {
             if (!isset($convertAuthData[$mandant][$portal->id]) || empty($convertAuthData[$mandant][$portal->id])) {
                 $convertAuthData[$mandant][$portal->id] = array();
             }
+            $auth_count = (array) $auth_count;
             $maxNetworkAccount = ($auth_count !== false && is_array($auth_count)) ? ((isset($auth_count[$portal->id])) ? $auth_count[$portal->id] : $auth_count[0]) : false;
-
+            
             if (isset($this->addon_count) && is_object($this->addon_count) && isset($this->addon_count->{$portal->id}) && isset($this->addon_count->{$portal->id}->total) && (int) $this->addon_count->{$portal->id}->total > 0) {
                 $maxNetworkAccount = (int) $maxNetworkAccount + (int) $this->addon_count->{$portal->id}->total;
             }
@@ -897,13 +898,13 @@ class B2S_Network_Item {
             $content .= '</div>';
             $content .= '</div>';
         }
-        if ($networkId == 24) {
-            $content .= '<div class="row b2s-edit-template-enable-link-area" style="display:' . (($schema[$networkType]['format'] == 1) ? 'block' : 'none') . '" data-network-type="' . esc_attr($networkType) . '">';
-            $content .= '<div class="col-md-12">';
-            $content .= '<input class="b2s-edit-template-enable-link" data-network-type="' . esc_attr($networkType) . '" type="checkbox" ' . ((isset($schema[$networkType]['addLink']) && $schema[$networkType]['addLink'] == false) ? '' : 'checked="checked"') . ' id="b2s-edit-template-enable-link[' . esc_attr($networkType) . ']"><label for="b2s-edit-template-enable-link[' . esc_attr($networkType) . ']"> ' . esc_html__('Add a link-URL to the end of my post.', 'blog2social') . '</label>';
-            $content .= '</div>';
-            $content .= '</div>';
-        }
+//        if ($networkId == 24) {
+//            $content .= '<div class="row b2s-edit-template-enable-link-area" style="display:' . (($schema[$networkType]['format'] == 1) ? 'block' : 'none') . '" data-network-type="' . esc_attr($networkType) . '">';
+//            $content .= '<div class="col-md-12">';
+//            $content .= '<input class="b2s-edit-template-enable-link" data-network-type="' . esc_attr($networkType) . '" type="checkbox" ' . ((isset($schema[$networkType]['addLink']) && $schema[$networkType]['addLink'] == false) ? '' : 'checked="checked"') . ' id="b2s-edit-template-enable-link[' . esc_attr($networkType) . ']"><label for="b2s-edit-template-enable-link[' . esc_attr($networkType) . ']"> ' . esc_html__('Add a link-URL to the end of my post.', 'blog2social') . '</label>';
+//            $content .= '</div>';
+//            $content .= '</div>';
+//        }
         $content .= '<br>';
         $content .= '<div class="row">';
         $content .= '<div class="col-md-12 media-heading">';
@@ -1499,8 +1500,8 @@ class B2S_Network_Item {
                 $preview .= '<div class="col-sm-1">';
                 $preview .= '<img class="b2s-edit-template-preview-profile-img-24" src="' . plugins_url('/assets/images/b2s@64.png', B2S_PLUGIN_FILE) . '">';
                 $preview .= '</div>';
-                $preview .= '<div class="col-sm-10 col-sm-push-1 b2s-edit-template-preview-inner-border-24">';
-                $preview .= '<div class="b2s-edit-template-link-preview" data-network-type="' . esc_attr($networkType) . '" ' . (((int) $schema[$networkType]['format'] == 0) ? '' : 'style="display: none;"') . '>';
+                $preview .= '<div class="col-sm-10 col-sm-push-1">';
+                $preview .= '<div class="b2s-edit-template-link-preview b2s-edit-template-preview-inner-border-24" data-network-type="' . esc_attr($networkType) . '" ' . (((int) $schema[$networkType]['format'] == 0) ? '' : 'style="display: none;"') . '>';
                 $preview .= '<div class="row">';
                 $preview .= '<div class="col-sm-12 b2s-edit-template-preview-content-24">';
                 $preview .= '<span class="b2s-edit-template-preview-content" data-network-type="' . esc_attr($networkType) . '">' . preg_replace("/\n/", "<br>", esc_html($schema[$networkType]['content'])) . '</span>';
@@ -1522,7 +1523,9 @@ class B2S_Network_Item {
                 $preview .= '</div>';
                 $preview .= '<div class="row">';
                 $preview .= '<div class="col-sm-12 b2s-edit-template-preview-image-border-24">';
+                $preview .= '<div class="b2s-edit-template-preview-inner-border-24">';
                 $preview .= '<span class="b2s-edit-template-preview-content" data-network-type="' . esc_attr($networkType) . '">' . preg_replace("/\n/", "<br>", esc_html($schema[$networkType]['content'])) . '</span>';
+                $preview .= '</div>';
                 $preview .= '</div>';
                 $preview .= '</div>';
                 $preview .= '</div>';

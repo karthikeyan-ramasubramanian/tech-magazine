@@ -4,10 +4,15 @@
 namespace CreativeMail\Managers;
 
 use CreativeMail\CreativeMail;
+use CreativeMail\Models\CustomerNewAccount;
+use CreativeMail\Models\CustomerNote;
+use CreativeMail\Models\CustomerResetPassword;
+use CreativeMail\Models\EmailNotification;
+use CreativeMail\Models\TriggerExecution;
 use CreativeMail\Modules\WooCommerce\Emails\AbandonedCartEmail;
 use CreativeMail\Helpers\EnvironmentHelper;
 use CreativeMail\Helpers\OptionsHelper;
-use stdClass;
+use WC_Email;
 
 /**
  * Class EmailManager
@@ -190,12 +195,12 @@ class EmailManager
     /**
      * Renders the custom email status column.
      *
-     * @param \WC_Email $email the email
+     * @param WC_Email $email the email
      *
      * @internal
      * @since    1.1.0
      */
-    public function render_email_status_column( \WC_Email $email )
+    public function render_email_status_column( WC_Email $email )
     {
 
         echo '<td class="wc-email-settings-table-status">';
@@ -239,50 +244,50 @@ class EmailManager
 
     public function ce_email_notification_new_customer_note($array)
     {
-        $data = new stdClass();
-        $data->order_id = $array['order_id'];
-        $data->note = $array['customer_note'];
-        $data->order_url = $this->get_view_order_url($data->order_id, null);
+        $data = new CustomerNote();
+        $data->order_id = $array[ 'order_id' ];
+        $data->note = $array[ 'customer_note' ];
+        $data->order_url = $this->get_view_order_url( $data->order_id, null );
 
-        $this->execute_trigger("customer_note", $data, wc_get_order($data->order_id));
+        $this->execute_trigger( "customer_note", $data, wc_get_order( $data->order_id ) );
     }
 
-    public function ce_email_notification_customer_new_account($customer_id, $new_customer_data, $password_generated)
+    public function ce_email_notification_customer_new_account( $customer_id, $new_customer_data, $password_generated )
     {
-        $data = new stdClass();
+        $data = new CustomerNewAccount();
         $data->customer_id = $customer_id;
         $data->account_url = $this->get_my_account_url();
-        $data->customer = $this->get_customer_data($customer_id);
+        $data->customer = $this->get_customer_data( $customer_id );
 
-        if ($password_generated && key_exists("user_pass", $new_customer_data)) {
+        if ( $password_generated && key_exists( "user_pass", $new_customer_data ) ) {
             try {
-                $generated_password = $new_customer_data['user_pass'];
-                $key = sha1(OptionsHelper::get_instance_api_key() . OptionsHelper::get_instance_uuid());
-                $salt = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
+                $generated_password = $new_customer_data[ 'user_pass' ];
+                $key = sha1( OptionsHelper::get_instance_api_key() . OptionsHelper::get_instance_uuid() );
+                $salt = openssl_random_pseudo_bytes( openssl_cipher_iv_length( 'aes-256-cbc' ) );
                 $salted = '';
                 $dx = '';
-                while (strlen($salted) < 48) {
-                    $dx = md5($dx . $key . $salt, true);
+                while ( strlen( $salted ) < 48 ) {
+                    $dx = md5( $dx . $key . $salt, true );
                     $salted .= $dx;
                 }
-                $key = substr($salted, 0, 32);
-                $iv = substr($salted, 32, 16);
-                $gp = openssl_encrypt($generated_password, 'aes-256-cbc', $key, OPENSSL_RAW_DATA, $iv);
-                $data->salt = bin2hex($salt);
-                $data->generated_password = base64_encode($gp);
-            } catch (\Exception $ex) {
-                RaygunManager::get_instance()->exception_handler($ex);
+                $key = substr( $salted, 0, 32 );
+                $iv = substr( $salted, 32, 16 );
+                $gp = openssl_encrypt( $generated_password, 'aes-256-cbc', $key, OPENSSL_RAW_DATA, $iv );
+                $data->salt = bin2hex( $salt );
+                $data->generated_password = base64_encode( $gp );
+            } catch ( \Exception $ex ) {
+                RaygunManager::get_instance()->exception_handler( $ex );
             }
         }
 
-        $this->execute_trigger("customer_new_account", $data,null, true);
+        $this->execute_trigger( "customer_new_account", $data,null, true ) ;
     }
 
-    public function ce_email_notification_customer_reset_password($user_login = '', $reset_key = '')
+    public function ce_email_notification_customer_reset_password( $user_login = '', $reset_key = '' )
     {
-        if ($user_login && $reset_key ) {
-            $data              = new stdClass();
-            $user              = get_user_by('login', $user_login);
+        if ( $user_login && $reset_key ) {
+            $data              = new CustomerResetPassword();
+            $user              = get_user_by( 'login', $user_login );
             $data->customer_id = $user->ID;
             $data->customer = $this->get_customer_data($user->ID);
             $data->account_url = $this->get_my_account_url();
@@ -290,106 +295,106 @@ class EmailManager
                 array(
                 'key' => $reset_key,
                 'id'  => $data->customer_id
-                ), wc_get_endpoint_url('lost-password', '', $data->account_url)
+                ), wc_get_endpoint_url( 'lost-password', '', $data->account_url )
             );
 
-            $this->execute_trigger("customer_reset_password", $data, null, true);
+            $this->execute_trigger( "customer_reset_password", $data, null, true );
         }
     }
 
     public function ce_email_notification_payment_complete( $order_id )
     {
-        $data = new stdClass();
+        $data = new EmailNotification();
         $data->order_id = $order_id;
-        $data->order_url = $this->get_view_order_url($order_id, null);
+        $data->order_url = $this->get_view_order_url( $order_id, null );
 
-        $this->execute_trigger("payment_received", $data, wc_get_order($order_id));
+        $this->execute_trigger( "payment_received", $data, wc_get_order( $order_id ) );
     }
 
-    public function ce_email_notification_failed($order_id, $order)
+    public function ce_email_notification_failed( $order_id, $order )
     {
-        $data = new stdClass();
+        $data = new EmailNotification();
         $data->order_id = $order_id;
-        $data->order_url = $this->get_view_order_url($order_id, $order);
+        $data->order_url = $this->get_view_order_url( $order_id, $order );
 
-        $this->execute_trigger("failed_order", $data, $order);
+        $this->execute_trigger( "failed_order", $data, $order );
     }
-    public function ce_email_notification_hold($order_id, $order)
+    public function ce_email_notification_hold( $order_id, $order )
     {
-        $data = new stdClass();
+        $data = new EmailNotification();
         $data->order_id = $order_id;
-        $data->order_url = $this->get_view_order_url($order_id, $order);
+        $data->order_url = $this->get_view_order_url( $order_id, $order );
 
-        $this->execute_trigger("customer_on_hold_order", $data, $order);
+        $this->execute_trigger( "customer_on_hold_order", $data, $order );
     }
-    public function ce_email_notification_processing($order_id, $order)
+    public function ce_email_notification_processing( $order_id, $order )
     {
-        $data = new stdClass();
+        $data = new EmailNotification();
         $data->order_id = $order_id;
-        $data->order_url = $this->get_view_order_url($order_id, $order);
+        $data->order_url = $this->get_view_order_url( $order_id, $order );
 
-        $this->execute_trigger("customer_processing_order", $data, $order);
+        $this->execute_trigger( "customer_processing_order", $data, $order );
     }
-    public function ce_email_notification_completed($order_id, $order)
+    public function ce_email_notification_completed( $order_id, $order )
     {
-        $data = new stdClass();
+        $data = new EmailNotification();
         $data->order_id = $order_id;
-        $data->order_url = $this->get_view_order_url($order_id, $order);
+        $data->order_url = $this->get_view_order_url( $order_id, $order );
 
-        $this->execute_trigger("customer_completed_order", $data, $order);
-    }
-
-    public function ce_email_notification_refunded($order_id, $order)
-    {
-        $data = new stdClass();
-        $data->order_id = $order_id;
-        $data->order_url = $this->get_view_order_url($order_id, $order);
-
-        $this->execute_trigger("customer_refunded_order", $data, $order);
-    }
-    public function ce_email_notification_cancelled($order_id, $order)
-    {
-        $data = new stdClass();
-        $data->order_id = $order_id;
-        $data->order_url = $this->get_view_order_url($order_id, $order);
-
-        $this->execute_trigger("cancelled_order", $data, $order);
+        $this->execute_trigger( "customer_completed_order", $data, $order );
     }
 
-    public function ce_email_notification_new_order($order_id, $order)
+    public function ce_email_notification_refunded( $order_id, $order )
     {
-        $data = new stdClass();
+        $data = new EmailNotification();
         $data->order_id = $order_id;
-        $data->order_url = $this->get_view_order_url($order_id, $order);
+        $data->order_url = $this->get_view_order_url( $order_id, $order );
 
-        $this->execute_trigger("new_order", $data, $order);
+        $this->execute_trigger( "customer_refunded_order", $data, $order );
+    }
+    public function ce_email_notification_cancelled( $order_id, $order )
+    {
+        $data = new EmailNotification();
+        $data->order_id = $order_id;
+        $data->order_url = $this->get_view_order_url( $order_id, $order );
+
+        $this->execute_trigger( "cancelled_order", $data, $order );
     }
 
-    public function ce_email_notification_invoice($order, $type)
+    public function ce_email_notification_new_order( $order_id, $order )
     {
-        if ($type === 'new_order' ) {
-            $this->ce_email_notification_new_order($order->id, $order);
+        $data = new EmailNotification();
+        $data->order_id = $order_id;
+        $data->order_url = $this->get_view_order_url( $order_id, $order );
+
+        $this->execute_trigger( "new_order", $data, $order );
+    }
+
+    public function ce_email_notification_invoice( $order, $type )
+    {
+        if ( $type === 'new_order' ) {
+            $this->ce_email_notification_new_order( $order->id, $order );
             return;
         }
 
-        $data            = new stdClass();
+        $data            = new EmailNotification();
         $data->order_id  = $order->get_id();
-        $data->order_url = $this->get_view_order_url($order->get_id(), $order);
+        $data->order_url = $this->get_view_order_url( $order->get_id(), $order );
 
-        $this->execute_trigger("customer_invoice", $data, $order);
+        $this->execute_trigger( "customer_invoice", $data, $order );
     }
 
-    public function execute_trigger($type, $data, $order = null, $with_data = false)
+    public function execute_trigger( $type, $data, $order = null, $with_data = false )
     {
         // if not managed do not trigger
-        if (!$this->is_email_managed($type)) {
+        if ( !$this->is_email_managed( $type ) ) {
             return;
         }
 
-        $requestItem = new stdClass();
+        $requestItem = new TriggerExecution();
         $requestItem->type = $type;
 
-        if(!is_null($order)) {
+        if( !is_null( $order ) ) {
             try {
                 $dp = 2; // decimal point
                 $order_data = array(
@@ -400,15 +405,15 @@ class EmailManager
                     'date_completed' => $order->get_date_completed() ? $order->get_date_completed()->getTimestamp() : 0,
                     'status' => $order->get_status(),
                     'currency' => $order->get_currency(),
-                    'currency_symbol' => get_woocommerce_currency_symbol($order->get_currency()),
-                    'total' => wc_format_decimal($order->get_total(), $dp),
-                    'subtotal' => wc_format_decimal($order->get_subtotal(), $dp),
+                    'currency_symbol' => get_woocommerce_currency_symbol( $order->get_currency()),
+                    'total' => wc_format_decimal( $order->get_total(), $dp ),
+                    'subtotal' => wc_format_decimal( $order->get_subtotal(), $dp ),
                     'total_line_items_quantity' => $order->get_item_count(),
-                    'total_tax' => wc_format_decimal($order->get_total_tax(), $dp),
-                    'shipping_total' => wc_format_decimal($order->get_shipping_total(), $dp),
-                    'cart_tax' => wc_format_decimal($order->get_cart_tax(), $dp),
-                    'shipping_tax' => wc_format_decimal($order->get_shipping_tax(), $dp),
-                    'discount_total' => wc_format_decimal($order->get_total_discount(), $dp),
+                    'total_tax' => wc_format_decimal( $order->get_total_tax(), $dp ),
+                    'shipping_total' => wc_format_decimal( $order->get_shipping_total(), $dp ),
+                    'cart_tax' => wc_format_decimal( $order->get_cart_tax(), $dp ),
+                    'shipping_tax' => wc_format_decimal( $order->get_shipping_tax(), $dp ),
+                    'discount_total' => wc_format_decimal( $order->get_total_discount(), $dp ),
                     'shipping_methods' => $order->get_shipping_method(),
                     'payment_details' => array(
                         'method_id' => $order->get_payment_method(),
@@ -452,14 +457,14 @@ class EmailManager
                 );
 
                 // add line items
-                foreach ($order->get_items() as $item_id => $item) {
+                foreach ( $order->get_items() as $item_id => $item ) {
                     $product = $item->get_product();
                     $item_meta = $item->get_formatted_meta_data();
 
-                    foreach ($item_meta as $key => $values) {
-                        $item_meta[$key]->label = $values->display_key;
-                        unset($item_meta[$key]->display_key);
-                        unset($item_meta[$key]->display_value);
+                    foreach ( $item_meta as $key => $values ) {
+                        $item_meta[ $key ]->label = $values->display_key;
+                        unset( $item_meta[ $key ]->display_key );
+                        unset( $item_meta[ $key ]->display_value );
                     }
 
                     try {
@@ -469,118 +474,118 @@ class EmailManager
                             'downloads' => array()
                         );
                         $attachment_ids = $product->get_gallery_image_ids();
-                        foreach ($attachment_ids as $attachment_id) {
-                            $product_data['images'][] = wp_get_attachment_url($attachment_id);
+                        foreach ( $attachment_ids as $attachment_id ) {
+                            $product_data[ 'images' ][] = wp_get_attachment_url( $attachment_id );
                         }
 
-                        $product_data["on_sale"] = $product->is_on_sale();
-                        $product_data["sale_price"] = $product->get_sale_price();
-                        $product_data["regular_price"] = $product->get_regular_price();
+                        $product_data[ "on_sale" ] = $product->is_on_sale();
+                        $product_data[ "sale_price" ] = $product->get_sale_price();
+                        $product_data[ "regular_price" ] = $product->get_regular_price();
 
-                        if ($product->is_downloadable()) {
+                        if ( $product->is_downloadable() ) {
                             $item_downloads = $item->get_item_downloads();
-                            foreach ($item_downloads as $item_download)
+                            foreach ( $item_downloads as $item_download )
                             {
-                                $product_data["downloads"][] = array(
+                                $product_data[ "downloads" ][] = array(
                                     'line_item_id' => $item->get_id(),
                                     'product_id' => $item->get_product_id(),
-                                    'download_url' => $item_download["download_url"],
-                                    'download_file' => $item_download["file"],
-                                    'download_name' => $item_download["name"],
-                                    'download_id' => $item_download["id"],
-                                    'downloads_remaining' => $item_download["downloads_remaining"],
-                                    'download_access_expires' => wc_format_datetime($item_download["access_expires"], 'U'),
+                                    'download_url' => $item_download[ "download_url" ],
+                                    'download_file' => $item_download[ "file" ],
+                                    'download_name' => $item_download[ "name" ],
+                                    'download_id' => $item_download[ "id" ],
+                                    'downloads_remaining' => $item_download[ "downloads_remaining" ],
+                                    'download_access_expires' => wc_format_datetime($item_download[ "access_expires" ], 'U'),
                                     'download_limit' => $product->get_download_limit(),
                                     'download_expiry' => $product->get_download_expiry(),
                                 );
                             }
                         }
 
-                    } catch (\Exception $ex)
+                    } catch ( \Exception $ex )
                     {
-                        RaygunManager::get_instance()->exception_handler($ex);
+                        RaygunManager::get_instance()->exception_handler( $ex );
                     }
 
                     $src = wc_placeholder_img_src();
-                    if ($image_id = $product->get_image_id() ) {
-                        list( $src ) = wp_get_attachment_image_src($image_id, 'full');
+                    if ( $image_id = $product->get_image_id() ) {
+                        list( $src ) = wp_get_attachment_image_src( $image_id, 'full' );
                     }
 
-                    $order_data['line_items'][] = array(
+                    $order_data[ 'line_items' ][] = array(
                         'id' => $item_id,
-                        'subtotal' => wc_format_decimal($order->get_line_subtotal($item, false, false), $dp),
-                        'subtotal_tax' => wc_format_decimal($item->get_subtotal_tax(), $dp),
-                        'total' => wc_format_decimal($order->get_line_total($item, false, false), $dp),
-                        'total_tax' => wc_format_decimal($item->get_total_tax(), $dp),
-                        'price' => wc_format_decimal($order->get_item_total($item, false, false), $dp),
+                        'subtotal' => wc_format_decimal( $order->get_line_subtotal( $item, false, false ), $dp ),
+                        'subtotal_tax' => wc_format_decimal( $item->get_subtotal_tax(), $dp ),
+                        'total' => wc_format_decimal( $order->get_line_total( $item, false, false ), $dp ),
+                        'total_tax' => wc_format_decimal( $item->get_total_tax(), $dp ),
+                        'price' => wc_format_decimal( $order->get_item_total( $item, false, false ), $dp ),
                         'quantity' => $item->get_quantity(),
                         'tax_class' => $item->get_tax_class(),
                         'name' => $item->get_name(),
                         'product_id' => $item->get_product_id(),
                         'product_image' => $src,
                         'product_data' => $product_data,
-                        'sku' => is_object($product) ? $product->get_sku() : null,
-                        'meta' => array_values($item_meta),
-                        'product_url' => get_the_permalink($item->get_product_id()),
+                        'sku' => is_object( $product ) ? $product->get_sku() : null,
+                        'meta' => array_values( $item_meta ),
+                        'product_url' => get_the_permalink( $item->get_product_id() ),
                         'variation_id' => $item->get_variation_id()
                     );
                 }
 
                 // add shipping
-                foreach ($order->get_shipping_methods() as $shipping_item_id => $shipping_item) {
-                    $order_data['shipping_lines'][] = array(
+                foreach ( $order->get_shipping_methods() as $shipping_item_id => $shipping_item ) {
+                    $order_data[ 'shipping_lines' ][] = array(
                         'id' => $shipping_item_id,
                         'method_id' => $shipping_item->get_method_id(),
                         'method_title' => $shipping_item->get_name(),
-                        'total' => wc_format_decimal($shipping_item->get_total(), $dp),
+                        'total' => wc_format_decimal( $shipping_item->get_total(), $dp ),
                     );
                 }
 
                 // add taxes
-                foreach ($order->get_tax_totals() as $tax_code => $tax) {
-                    $order_data['tax_lines'][] = array(
+                foreach ( $order->get_tax_totals() as $tax_code => $tax ) {
+                    $order_data[ 'tax_lines' ][] = array(
                         'id' => $tax->id,
                         'rate_id' => $tax->rate_id,
                         'code' => $tax_code,
                         'title' => $tax->label,
                         'total' => wc_format_decimal($tax->amount, $dp),
-                        'compound' => (bool)$tax->is_compound,
+                        'compound' => ( bool )$tax->is_compound,
                     );
                 }
 
                 // add fees
-                foreach ($order->get_fees() as $fee_item_id => $fee_item) {
-                    $order_data['fee_lines'][] = array(
+                foreach ( $order->get_fees() as $fee_item_id => $fee_item ) {
+                    $order_data[ 'fee_lines' ][] = array(
                         'id' => $fee_item_id,
                         'title' => $fee_item->get_name(),
                         'tax_class' => $fee_item->get_tax_class(),
-                        'total' => wc_format_decimal($order->get_line_total($fee_item), $dp),
-                        'total_tax' => wc_format_decimal($order->get_line_tax($fee_item), $dp),
+                        'total' => wc_format_decimal( $order->get_line_total( $fee_item ), $dp ),
+                        'total_tax' => wc_format_decimal( $order->get_line_tax( $fee_item ), $dp ),
                     );
                 }
 
                 // add coupons
-                foreach ($order->get_items('coupon') as $coupon_item_id => $coupon_item) {
-                    $order_data['coupon_lines'][] = array(
+                foreach ( $order->get_items( 'coupon' ) as $coupon_item_id => $coupon_item ) {
+                    $order_data[ 'coupon_lines' ][] = array(
                         'id' => $coupon_item_id,
                         'code' => $coupon_item->get_code(),
-                        'amount' => wc_format_decimal($coupon_item->get_discount(), $dp),
+                        'amount' => wc_format_decimal( $coupon_item->get_discount(), $dp ),
                     );
                 }
                 $data->order = $order_data;
                 $with_data = true;
             }
-            catch (\Exception $ex) {
-                RaygunManager::get_instance()->exception_handler($ex);
+            catch ( \Exception $ex ) {
+                RaygunManager::get_instance()->exception_handler( $ex );
                 $with_data = false;
             }
         }
 
-        $requestItem->data = wp_json_encode($data);
-        $endpoint = EnvironmentHelper::get_app_gateway_url('wordpress').'/v1.0/wc/trigger';
-        if ($with_data)
+        $requestItem->data = wp_json_encode( $data );
+        $endpoint = EnvironmentHelper::get_app_gateway_url( 'wordpress' ).'/v1.0/wc/trigger';
+        if ( $with_data )
         {
-            $endpoint = EnvironmentHelper::get_app_gateway_url('wordpress') . '/v1.0/wc/trigger-with-data';
+            $endpoint = EnvironmentHelper::get_app_gateway_url( 'wordpress' ) . '/v1.0/wc/trigger-with-data';
         }
 
         wp_remote_post(
@@ -592,7 +597,7 @@ class EmailManager
                 'x-api-key' => OptionsHelper::get_instance_api_key(),
                 'content-type' => 'application/json'
             ),
-            'body' => wp_json_encode($requestItem)
+            'body' => wp_json_encode( $requestItem )
             )
         );
     }
@@ -606,20 +611,20 @@ class EmailManager
      */
     public function manage_emails()
     {
-        if (empty($this->managed_email_notifications) || ! is_array($this->managed_email_notifications) ) {
+        if ( empty( $this->managed_email_notifications ) || ! is_array( $this->managed_email_notifications) ) {
             return;
         }
 
         // disable managed emails
         foreach ( $this->managed_email_notifications as $notification )
         {
-            if ($this->is_email_managed($notification->name) ) {
-                add_filter("woocommerce_email_enabled_". $notification->name ."", '__return_false');
+            if ( $this->is_email_managed( $notification->name ) ) {
+                add_filter( "woocommerce_email_enabled_". $notification->name ."", '__return_false');
             }
         }
 
-        add_filter('woocommerce_email_title',       array( $this, 'override_managed_email_title' ), 10, 2);
-        add_filter('woocommerce_email_description', array( $this, 'override_managed_email_description' ), 10, 2);
+        add_filter( 'woocommerce_email_title',       array( $this, 'override_managed_email_title' ), 10, 2 );
+        add_filter( 'woocommerce_email_description', array( $this, 'override_managed_email_description' ), 10, 2 );
     }
 
 
@@ -627,7 +632,7 @@ class EmailManager
      * Overrides email titles for managed emails.
      *
      * @param string    $title the email title
-     * @param \WC_Email $email the email object
+     * @param WC_Email $email the email object
      *
      * @internal
      * @since    1.1.0
@@ -637,9 +642,9 @@ class EmailManager
     public function override_managed_email_title( $title, $email )
     {
 
-        if (isset($email->id) && $this->is_email_managed($email->id) ) {
+        if ( isset( $email->id ) && $this->is_email_managed( $email->id ) ) {
 
-            $title .= __(' (Managed by Creative Mail)', 'ce4wp');
+            $title .= __( ' (Managed by Creative Mail)', 'ce4wp' );
         }
 
         return $title;
@@ -650,7 +655,7 @@ class EmailManager
      * Overrides email description for managed emails.
      *
      * @param string    $description description text
-     * @param \WC_Email $email       the email object
+     * @param WC_Email $email       the email object
      *
      * @internal
      * @since    1.1.0
@@ -659,9 +664,9 @@ class EmailManager
     public function override_managed_email_description( $description, $email )
     {
 
-        if (isset($email->id) && $this->is_email_managed($email->id) ) {
+        if ( isset( $email->id ) && $this->is_email_managed( $email->id ) ) {
 
-            $description .= __(' This email is being managed and sent by Creative Mail.', 'ce4wp');
+            $description .= __( ' This email is being managed and sent by Creative Mail.', 'ce4wp' );
         }
 
         return $description;
@@ -670,25 +675,25 @@ class EmailManager
     /**
      * Redirects the settings page of a managed email to the CreativeMail transactional notification for that email.
      *
-     * @param \WC_Email $email the email object
+     * @param WC_Email $email the email object
      *
      * @since 1.1.0
      */
     public function redirect_managed_email_settings_to_creative_mail( $email )
     {
-        if ($this->is_email_managed($email->id)) {
-            $url = CreativeMail::get_instance()->get_admin_manager()->request_single_sign_on_url_internal("66eabdb1-5d55-4bc0-a435-0415c5ada60a", array(
+        if ( $this->is_email_managed( $email->id ) ) {
+            $url = CreativeMail::get_instance()->get_admin_manager()->request_single_sign_on_url_internal( "66eabdb1-5d55-4bc0-a435-0415c5ada60a", array(
                 "woocommerceTemplateSlug" => $email->id
-            ));
-            wp_redirect($url);
+            ) );
+            wp_redirect( $url );
             exit;
         }
 
-        if ($email->id === 'cart_abandoned_ce4wp') {
-            $url = CreativeMail::get_instance()->get_admin_manager()->request_single_sign_on_url_internal("1fabdbe2-95ed-4e1e-a2f3-ba0278f5096f", array (
+        if ( $email->id === 'cart_abandoned_ce4wp' ) {
+            $url = CreativeMail::get_instance()->get_admin_manager()->request_single_sign_on_url_internal( "1fabdbe2-95ed-4e1e-a2f3-ba0278f5096f", array (
                 "source" => "woocommerce_emails"
             ));
-            wp_redirect($url);
+            wp_redirect( $url );
             exit;
         }
     }
@@ -703,7 +708,7 @@ class EmailManager
      */
     public function is_email_managed( $email_id )
     {
-        return (bool) $this->get_managed_notification_param($email_id, 'active');
+        return ( bool ) $this->get_managed_notification_param( $email_id, 'active' );
     }
 
     /**
@@ -718,8 +723,8 @@ class EmailManager
      */
     public function get_managed_notification_param( $email_id, $param )
     {
-        foreach($this->managed_email_notifications as $managed_email_notification) {
-            if ($email_id == $managed_email_notification->name && property_exists($managed_email_notification, $param)) {
+        foreach( $this->managed_email_notifications as $managed_email_notification ) {
+            if ( $email_id == $managed_email_notification->name && property_exists( $managed_email_notification, $param ) ) {
                 return $managed_email_notification->$param;
             }
         }
@@ -738,8 +743,8 @@ class EmailManager
     public function get_managed_notification( $items, $email_id )
     {
 
-        foreach($items as $managed_email_notification) {
-            if ($email_id == $managed_email_notification->name) {
+        foreach( $items as $managed_email_notification ) {
+            if ( $email_id == $managed_email_notification->name ) {
                 return $managed_email_notification;
             }
         }
@@ -757,8 +762,7 @@ class EmailManager
      */
     public function get_transactional_notification_id( $email_id )
     {
-
-        return $this->get_managed_notification_param($email_id, 'transactional_notification_id');
+        return $this->get_managed_notification_param( $email_id, 'transactional_notification_id' );
     }
 
     /**
@@ -772,7 +776,7 @@ class EmailManager
     public function get_managed_notification_state( $email_id )
     {
 
-        return $this->get_managed_notification_param($email_id, 'state');
+        return $this->get_managed_notification_param( $email_id, 'state' );
     }
 
     public function get_valid_email_notification_names()
@@ -780,18 +784,18 @@ class EmailManager
         return $this->valid_email_notification_names;
     }
 
-    private function get_view_order_url($order_id, $order)
+    private function get_view_order_url( $order_id, $order )
     {
         try {
-            if (!isset($order)) {
-                $order = wc_get_order($order_id);
+            if (!isset( $order )) {
+                $order = wc_get_order( $order_id );
             }
 
-            if (isset($order) && method_exists($order, 'get_view_order_url') ) {
+            if (isset( $order ) && method_exists( $order, 'get_view_order_url' ) ) {
                 return $order->get_view_order_url();
             }
         } catch ( \Exception $exception ) {
-            RaygunManager::get_instance()->exception_handler($exception);
+            RaygunManager::get_instance()->exception_handler( $exception );
         }
 
         return null;
@@ -800,31 +804,31 @@ class EmailManager
     private function get_my_account_url()
     {
         try {
-            return wc_get_page_permalink('myaccount');
+            return wc_get_page_permalink( 'myaccount' );
         } catch ( \Exception $exception ) {
-            RaygunManager::get_instance()->exception_handler($exception);
+            RaygunManager::get_instance()->exception_handler( $exception );
         }
 
         return null;
     }
 
-    private function get_customer_data($customer_id)
+    private function get_customer_data( $customer_id )
     {
         try {
             $customer = new \WC_Customer( $customer_id );
 
             $data = $customer->get_data();
 
-            if ($data['date_created'] != null) {
-                $data['date_created'] = $customer->get_date_created()->getTimestamp();
+            if ($data[ 'date_created' ] != null) {
+                $data[ 'date_created' ] = $customer->get_date_created()->getTimestamp();
             }
-            if ($data['date_modified'] != null) {
-                $data['date_modified'] = $customer->get_date_modified()->getTimestamp();
+            if ($data[ 'date_modified' ] != null) {
+                $data[ 'date_modified' ] = $customer->get_date_modified()->getTimestamp();
             }
 
             return $data;
         } catch ( \Exception $exception ) {
-            RaygunManager::get_instance()->exception_handler($exception);
+            RaygunManager::get_instance()->exception_handler( $exception );
         }
         return null;
     }

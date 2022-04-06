@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) or exit;
  * Author URI:        https://www.molongui.com/
  * License:           GPL v3 or later
  * License URI:       http://www.gnu.org/licenses/gpl-3.0.txt
- * Version:           4.5.3
+ * Version:           4.5.4
  *
  * This plugin is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation, either version 3 of the License, or any later version.
@@ -36,7 +36,7 @@ elseif ( version_compare( get_bloginfo( 'version' ), '5.2', '<' ) )
 }
 else
 {
-    define( 'MOLONGUI_AUTHORSHIP_VERSION', '4.5.3' );
+    define( 'MOLONGUI_AUTHORSHIP_VERSION', '4.5.4' );
     define( 'MOLONGUI_AUTHORSHIP_FILE', __FILE__ );
     define( 'MOLONGUI_AUTHORSHIP_DIR', plugin_dir_path( MOLONGUI_AUTHORSHIP_FILE ) );
     require MOLONGUI_AUTHORSHIP_DIR . 'includes/plugin.php';

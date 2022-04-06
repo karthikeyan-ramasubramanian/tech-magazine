@@ -898,9 +898,9 @@ class LoginPress_Entities {
     $this->loginpress_color_setting( $wp_customize, $form_color_control, $form_color_label, 'section_form', 4, 100 );
 
     // customize_form_label.
-    // $this->loginpress_rangle_seting( $wp_customize, $form_range_control, $form_range_default, $form_range_label, $form_range_attrs, $form_range_unit, 'section_form', 9, 105 );
+    $this->loginpress_rangle_seting( $wp_customize, $form_range_control, $form_range_default, $form_range_label, $form_range_attrs, $form_range_unit, 'section_form', 9, 105 );
     // remember_me_font_size.
-    // $this->loginpress_rangle_seting( $wp_customize, $form_range_control, $form_range_default, $form_range_label, $form_range_attrs, $form_range_unit, 'section_form', 10, 110 );
+    $this->loginpress_rangle_seting( $wp_customize, $form_range_control, $form_range_default, $form_range_label, $form_range_attrs, $form_range_unit, 'section_form', 10, 110 );
     $this->loginpress_hr_setting( $wp_customize, $close_control, 'section_form', 5, 111 );
 
     //	=============================

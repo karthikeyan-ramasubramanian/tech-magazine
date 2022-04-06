@@ -27,7 +27,8 @@ class Connect extends AbstractZohoCampaignsConnect implements ConnectionInterfac
     {
         return [
             self::OPTIN_CAMPAIGN_SUPPORT,
-            self::OPTIN_CUSTOM_FIELD_SUPPORT
+            self::OPTIN_CUSTOM_FIELD_SUPPORT,
+            self::EMAIL_CAMPAIGN_SUPPORT
         ];
     }
 

@@ -39,6 +39,7 @@ if (isset($_GET['type']) && $_GET['type'] == 'draft' && isset($_GET['postId']) &
         }
     }
 }
+$draftIncompleteModal = false;
 ?>
 <div class="b2s-container">
     <div class="b2s-inbox">
@@ -137,7 +138,16 @@ if (isset($_GET['type']) && $_GET['type'] == 'draft' && isset($_GET['postId']) &
                                         //Relay HTML Data - since V4.8.0
                                         $relayAccountDataHtml = '';
                                         $relayAccountData = array();
+                                        $tempDraftData = array();
+                                        if($isDraft && isset($draftData) && isset($draftData['b2s'])) {
+                                            $tempDraftData = $draftData['b2s'];
+                                        }
                                         foreach ($mandantData['auth'] as $k => $channelData) {
+                                            
+                                            if($isDraft && isset($channelData->networkAuthId) && (int) $channelData->networkAuthId > 0 && isset($tempDraftData[$channelData->networkAuthId])) {
+                                                unset($tempDraftData[$channelData->networkAuthId]);
+                                            }
+                                            
                                             echo $navbar->getItemHtml($channelData, ($isDraft) ? $draftData : array());
                                             $orderArray[] = $channelData->networkAuthId;
                                             //Relay HTML Data - since V4.8.0
@@ -155,6 +165,9 @@ if (isset($_GET['type']) && $_GET['type'] == 'draft' && isset($_GET['postId']) &
                                                         'network_display_name' => $channelData->networkUserName), array('%d', '%d', '%d', '%s'));
                                                 }
                                             }
+                                        }
+                                        if(!empty($tempDraftData)) {
+                                            $draftIncompleteModal = true;
                                         }
                                         ?>
                                         <li>
@@ -767,6 +780,25 @@ if (isset($_GET['type']) && $_GET['type'] == 'draft' && isset($_GET['postId']) &
                                                 <div class="col-md-12">
                                                     <?php echo sprintf(__('Please make sure to log in with your account which manages your groups and <a href="%s" target="_blank">follow this guide to select all your groups</a>.', 'blog2social'), esc_url(B2S_Tools::getSupportLink('fb_group_auth'))); ?>
                                                     <button class="btn btn-primary pull-right b2s-add-network-continue-btn"><?php esc_html_e('Continue', 'blog2social'); ?></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <input id="b2sOpenDraftIncompleteModal" type="hidden" value="<?php echo (($draftIncompleteModal) ? '1' : '0'); ?>">
+                            <div class="modal fade" id="b2sDraftIncompleteModal" tabindex="-1" role="dialog" aria-labelledby="b2sDraftIncompleteModal" aria-hidden="true" data-backdrop="false"  style="display:none;">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="b2s-modal-close close" data-modal-name="#b2sDraftIncompleteModal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title"><?php esc_html_e('Please note:', 'blog2social') ?></h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <?php esc_html_e('The scheduling for your social media post has changed as a selected social media network is no longer connected to Blog2Social. Please check the network connections under "Networks" and make sure that the required networks are connected.', 'blog2social'); ?>
                                                 </div>
                                             </div>
                                         </div>

@@ -91,9 +91,9 @@ function molongui_active_ribbon_border_setting( $control )
 }
 function molongui_active_headline_setting( $control )
 {
-    if ( null !== $control->manager->get_setting('molongui_authorship_options[show_headline]') and null !== $control->manager->get_setting('molongui_authorship_options[layout]') )
+    if ( null !== $control->manager->get_setting('molongui_authorship_options[show_headline]') and null !== $control->manager->get_setting('molongui_authorship_options[box_layout]') )
     {
-        return ( ( $control->manager->get_setting('molongui_authorship_options[show_headline]')->value() != '1' or $control->manager->get_setting('molongui_authorship_options[layout]')->value() == 'template-3' ) ? false : true );
+        return ( ( $control->manager->get_setting('molongui_authorship_options[show_headline]')->value() != '1' or $control->manager->get_setting('molongui_authorship_options[box_layout]')->value() == 'template-3' ) ? false : true );
     }
     else return false;
 }

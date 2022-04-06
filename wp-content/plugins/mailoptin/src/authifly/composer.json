@@ -34,7 +34,14 @@
       "Zoho.php",
       "Infusionsoft.php",
       "Jilt.php",
-      "CleverReach.php"
+      "CleverReach.php",
+      "Stripe.php",
+      "Newsman.php"
     ]
+  },
+  "config": {
+    "allow-plugins": {
+      "composer/installers": true
+    }
   }
 }

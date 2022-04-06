@@ -125,6 +125,11 @@ function authorship_deprecated_do_filter_link( $value, $args )
 add_filter( 'authorship/filter_author_link', 'authorship_deprecated_do_filter_link', 0, 2 );
 function authorship_deprecated_filter_dont_render_box( $value, $post )
 {
-    return apply_filters_deprecated( 'molongui_authorship_dont_render_author_box', array( $value, $post ), '4.4.0', 'authorship/box/hide' );
+    return !apply_filters_deprecated( 'molongui_authorship_dont_render_author_box', array( $value, $post ), '4.4.0', 'authorship/render_box' );
 }
-add_filter( 'authorship/box/hide', 'authorship_deprecated_filter_dont_render_box', 0, 2 );
+add_filter( 'authorship/render_box', 'authorship_deprecated_filter_dont_render_box', 0, 2 );
+function authorship_deprecated_filter_box_hide( $value, $post )
+{
+    return !apply_filters_deprecated( 'authorship/box/hide', array( $value, $post ), '4.5.4', 'authorship/render_box' );
+}
+add_filter( 'authorship/render_box', 'authorship_deprecated_filter_box_hide', 0, 2 );

@@ -66,7 +66,7 @@ class Opens {
             $this->statisticsOpensRepository->flush();
           }
         }
-        $this->subscribersRepository->maybeUpdateLastEngagement($subscriber, $userAgent ?? null);
+        $this->subscribersRepository->maybeUpdateLastEngagement($subscriber);
         return $this->returnResponse($displayImage);
       }
       $statistics = new StatisticsOpenEntity($newsletter, $queue, $subscriber);
@@ -77,7 +77,7 @@ class Opens {
       }
       $this->statisticsOpensRepository->persist($statistics);
       $this->statisticsOpensRepository->flush();
-      $this->subscribersRepository->maybeUpdateLastEngagement($subscriber, $userAgent ?? null);
+      $this->subscribersRepository->maybeUpdateLastEngagement($subscriber);
       $this->statisticsOpensRepository->recalculateSubscriberScore($subscriber);
     }
     return $this->returnResponse($displayImage);

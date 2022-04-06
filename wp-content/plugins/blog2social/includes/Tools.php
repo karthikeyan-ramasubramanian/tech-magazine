@@ -408,7 +408,28 @@ class B2S_Tools {
             return ($lang == 'en') ? 'https://www.blog2social.com/en/faq/index.php?solution_id=1185' : 'https://www.blog2social.com/de/faq/index.php?solution_id=1182';
         }
         if($type == 'metrics_feedback'){
-            return ($lang == 'de') ? 'https://docs.google.com/forms/d/e/1FAIpQLSeif2AifR7lbSwYchCg08HysfgLuhMCtktf1qrE75UVxJlpUQ/viewform?usp=sf_link' : 'https://docs.google.com/forms/d/e/1FAIpQLSetoOeysUKSKK15ZgbvOVIfTovM67MNzPyncL7n6OvEwlZp0A/viewform?usp=sf_link  ';
+            return ($lang == 'de') ? 'https://docs.google.com/forms/d/e/1FAIpQLSeif2AifR7lbSwYchCg08HysfgLuhMCtktf1qrE75UVxJlpUQ/viewform?usp=sf_link' : 'https://docs.google.com/forms/d/e/1FAIpQLSetoOeysUKSKK15ZgbvOVIfTovM67MNzPyncL7n6OvEwlZp0A/viewform?usp=sf_link';
+        }
+        if($type == 'b2s_premium_upgrade'){
+            return ($lang == 'de') ? 'https://b2s.li/blog2social-premium-kaufen' : 'https://b2s.li/upgrade-to-blog2social-premium';
+        }
+        if($type == 'b2s_license_advice'){
+            return ($lang == 'de') ? 'https://service.blog2social.com/de/question?o=faq' : 'https://service.blog2social.com/en/question?o=faq';
+        }
+        if($type == 'b2s_reviews'){
+            return ($lang == 'de') ? 'https://www.blog2social.com/de/blog/testberichte/' : 'https://www.blog2social.com/en/blog/reviews/';
+        }
+        if($type == 'autopost_checklist_wp'){
+            return ($lang == 'de') ? 'https://www.blog2social.com/de/faq/index.php?action=artikel&cat=3&id=79' : 'https://www.blog2social.com/en/faq/index.php?solution_id=1071';
+        }
+        if($type == 'autopost_checklist_rss'){
+            return ($lang == 'de') ? 'https://www.blog2social.com/de/faq/index.php?action=artikel&cat=3&id=116' : 'https://www.blog2social.com/en/faq/index.php?solution_id=1115';
+        }
+        if($type == 'yoast_warning_og_guide'){
+            return ($lang == 'de') ? 'https://www.blog2social.com/de/faq/index.php?action=artikel&lang=de&cat=9&id=184&artlang=de' : 'https://www.blog2social.com/en/faq/index.php?action=artikel&cat=9&id=189&artlang=en';
+        }
+        if($type == 'twitter_card_guide'){
+            return ($lang == 'de') ? 'https://www.blog2social.com/de/faq/index.php?action=artikel&cat=4&id=109&artlang=de' : 'https://www.blog2social.com/en/faq/index.php?action=artikel&cat=4&id=109&artlang=en';
         }
         return false;
     }

@@ -5,15 +5,15 @@ Donate link: https://scriptstown.com/
 Requires at least: 5.0
 Tested up to: 5.9
 Requires PHP: 5.6
-Stable tag: 1.3.5
+Stable tag: 1.3.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Secure WordPress login, registration and comment form with Google reCAPTCHA. Monitor error logs. Prevent Brute-force attack and much more.
+Secure WordPress login, registration, and comment form with Google reCAPTCHA. Monitor error logs. Prevent Brute-force attacks and more.
 
 == Description ==
 
-**Login Security reCAPTCHA** is a security plugin for WordPress which can add Google reCAPTCHA to WordPress login, registration, lost password and comment form. This can prevent spam comments and attacks like Brute-force. This plugin supports Google reCAPTCHA Version 2 and Version 3. Also, you can monitor failed login attempts and error logs.
+**Login Security reCAPTCHA** is a security plugin for WordPress which can add Google reCAPTCHA to WordPress login, registration, lost password, and comment form. This is a very lightweight plugin to prevent spam comments and attacks like Brute-force. This plugin supports Google reCAPTCHA Version 2 as well as Version 3. Also, you can monitor failed login attempts and error logs.
 
 ### Login Security reCAPTCHA Features
 
@@ -79,6 +79,12 @@ Secure WordPress login, registration and comment form with Google reCAPTCHA. Mon
 8. Monitor reCAPTCHA Error Logs
 
 == Changelog ==
+
+= 1.3.7 =
+* Improvement: Check for empty token before making a remote call.
+
+= 1.3.6 =
+* Improvement: Generate v3 token on form submission only.
 
 = 1.3.5 =
 * Improvement: Load plugin translations using the init action.

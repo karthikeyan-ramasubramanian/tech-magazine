@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the MailOptin - Lite package.
 msgid ""
 msgstr ""
-"Project-Id-Version: MailOptin - Lite 1.2.45.1\n"
+"Project-Id-Version: MailOptin - Lite 1.2.46.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mailoptin\n"
-"POT-Creation-Date: 2022-03-10 10:26:08+00:00\n"
+"POT-Creation-Date: 2022-03-23 11:32:56+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -61,7 +61,7 @@ msgid "ActiveCampaign"
 msgstr ""
 
 #: src/connections/ActiveCampaignConnect/Connect.php:203
-#: src/connections/Ctctv3Connect/Connect.php:170
+#: src/connections/Ctctv3Connect/Connect.php:172
 #: src/connections/GEMConnect/Connect.php:97
 #: src/connections/JiltConnect/Connect.php:213
 #: src/connections/KlaviyoConnect/Connect.php:113
@@ -138,6 +138,7 @@ msgstr ""
 #: src/connections/MailerliteConnect/ConnectSettingsPage.php:20
 #: src/connections/MailjetConnect/ConnectSettingsPage.php:19
 #: src/connections/MoosendConnect/ConnectSettingsPage.php:69
+#: src/connections/NewsmanConnect/ConnectSettingsPage.php:31
 #: src/connections/OntraportConnect/ConnectSettingsPage.php:19
 #: src/connections/SendFoxConnect/ConnectSettingsPage.php:45
 #: src/connections/SendGridConnect/ConnectSettingsPage.php:96
@@ -175,6 +176,7 @@ msgstr ""
 #: src/connections/MailerliteConnect/ConnectSettingsPage.php:26
 #: src/connections/MailjetConnect/ConnectSettingsPage.php:25
 #: src/connections/MoosendConnect/ConnectSettingsPage.php:75
+#: src/connections/NewsmanConnect/ConnectSettingsPage.php:45
 #: src/connections/OntraportConnect/ConnectSettingsPage.php:25
 #: src/connections/SendFoxConnect/ConnectSettingsPage.php:51
 #: src/connections/SendGridConnect/ConnectSettingsPage.php:102
@@ -237,12 +239,13 @@ msgstr ""
 #: src/connections/MailerliteConnect/SendCampaign.php:89
 #: src/connections/MailjetConnect/SendCampaign.php:52
 #: src/connections/MoosendConnect/SendCampaign.php:93
+#: src/connections/NewsmanConnect/SendCampaign.php:83
 #: src/connections/SendGridConnect/SendCampaign.php:128
 #: src/connections/SendinblueConnect/SendCampaign.php:112
 #: src/connections/SendyConnect/SendCampaign.php:92
 #: src/connections/SendyConnect/SendCampaign.php:95
 #: src/connections/VerticalResponseConnect/SendCampaign.php:81
-#: src/connections/ZohoCampaignsConnect/SendCampaign.php:98
+#: src/connections/ZohoCampaignsConnect/SendCampaign.php:97
 msgid "Unexpected error. Please try again"
 msgstr ""
 
@@ -292,6 +295,8 @@ msgstr ""
 #: src/connections/MailjetConnect/Subscription.php:132
 #: src/connections/MailsterConnect/Subscription.php:100
 #: src/connections/MoosendConnect/Subscription.php:63
+#: src/connections/NewsmanConnect/Subscription.php:82
+#: src/connections/NewsmanConnect/Subscription.php:87
 #: src/connections/OntraportConnect/Subscription.php:101
 #: src/connections/OntraportConnect/Subscription.php:107
 #: src/connections/SendFoxConnect/Subscription.php:47
@@ -338,6 +343,7 @@ msgstr ""
 #: src/connections/HubspotConnect/ConnectSettingsPage.php:36
 #: src/connections/InfusionsoftConnect/ConnectSettingsPage.php:32
 #: src/connections/JiltConnect/ConnectSettingsPage.php:30
+#: src/connections/NewsmanConnect/ConnectSettingsPage.php:32
 #: src/connections/VerticalResponseConnect/ConnectSettingsPage.php:32
 #: src/connections/ZohoCRMConnect/ConnectSettingsPage.php:32
 #: src/connections/ZohoCampaignsConnect/ConnectSettingsPage.php:32
@@ -356,6 +362,7 @@ msgstr ""
 #: src/connections/HubspotConnect/ConnectSettingsPage.php:41
 #: src/connections/InfusionsoftConnect/ConnectSettingsPage.php:37
 #: src/connections/JiltConnect/ConnectSettingsPage.php:35
+#: src/connections/NewsmanConnect/ConnectSettingsPage.php:37
 #: src/connections/VerticalResponseConnect/ConnectSettingsPage.php:37
 #: src/connections/ZohoCRMConnect/ConnectSettingsPage.php:37
 #: src/connections/ZohoCampaignsConnect/ConnectSettingsPage.php:37
@@ -370,6 +377,7 @@ msgstr ""
 #: src/connections/HubspotConnect/ConnectSettingsPage.php:46
 #: src/connections/InfusionsoftConnect/ConnectSettingsPage.php:42
 #: src/connections/JiltConnect/ConnectSettingsPage.php:40
+#: src/connections/NewsmanConnect/ConnectSettingsPage.php:42
 #: src/connections/VerticalResponseConnect/ConnectSettingsPage.php:42
 #: src/connections/ZohoCRMConnect/ConnectSettingsPage.php:42
 #: src/connections/ZohoCampaignsConnect/ConnectSettingsPage.php:42
@@ -383,6 +391,7 @@ msgstr ""
 #: src/connections/HubspotConnect/ConnectSettingsPage.php:50
 #: src/connections/InfusionsoftConnect/ConnectSettingsPage.php:46
 #: src/connections/JiltConnect/ConnectSettingsPage.php:44
+#: src/connections/NewsmanConnect/ConnectSettingsPage.php:46
 #: src/connections/VerticalResponseConnect/ConnectSettingsPage.php:46
 #: src/connections/ZohoCRMConnect/ConnectSettingsPage.php:46
 #: src/connections/ZohoCampaignsConnect/ConnectSettingsPage.php:46
@@ -1096,7 +1105,7 @@ msgid "Select ConvertKit sequences subscribers will be added to."
 msgstr ""
 
 #: src/connections/ConvertKitConnect/Connect.php:179
-#: src/connections/Ctctv3Connect/Connect.php:232
+#: src/connections/Ctctv3Connect/Connect.php:234
 #: src/connections/GetResponseConnect/Connect.php:112
 #: src/connections/OntraportConnect/Connect.php:135
 msgid "Subscriber Tags"
@@ -1185,105 +1194,105 @@ msgstr ""
 msgid "Constant Contact (v3) refresh token not found."
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:54
+#: src/connections/Ctctv3Connect/Connect.php:55
 #: src/connections/Ctctv3Connect/ConnectSettingsPage.php:53
 msgid "Constant Contact (v3)"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:165
+#: src/connections/Ctctv3Connect/Connect.php:167
 #: src/connections/InfusionsoftConnect/Connect.php:270
 #: src/connections/KlaviyoConnect/Connect.php:114
 msgid "Job Title"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:166
+#: src/connections/Ctctv3Connect/Connect.php:168
 #: src/core/src/Admin/Customizer/EmailCampaign/CustomizerControls.php:778
 msgid "Company Name"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:167
+#: src/connections/Ctctv3Connect/Connect.php:169
 msgid "Birthday Month"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:168
+#: src/connections/Ctctv3Connect/Connect.php:170
 msgid "Birthday Day"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:169
+#: src/connections/Ctctv3Connect/Connect.php:171
 #: src/connections/InfusionsoftConnect/Connect.php:281
 msgid "Anniversary"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:173
+#: src/connections/Ctctv3Connect/Connect.php:175
 msgid "Home Address Street"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:174
+#: src/connections/Ctctv3Connect/Connect.php:176
 msgid "Home Address City"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:175
+#: src/connections/Ctctv3Connect/Connect.php:177
 msgid "Home Address State"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:176
+#: src/connections/Ctctv3Connect/Connect.php:178
 msgid "Home Address Postal Code"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:177
+#: src/connections/Ctctv3Connect/Connect.php:179
 msgid "Home Address Country"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:180
+#: src/connections/Ctctv3Connect/Connect.php:182
 msgid "Work Address Street"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:181
+#: src/connections/Ctctv3Connect/Connect.php:183
 msgid "Work Address City"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:182
+#: src/connections/Ctctv3Connect/Connect.php:184
 msgid "Work Address State"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:183
+#: src/connections/Ctctv3Connect/Connect.php:185
 msgid "Work Address Postal Code"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:184
+#: src/connections/Ctctv3Connect/Connect.php:186
 msgid "Work Address Country"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:187
+#: src/connections/Ctctv3Connect/Connect.php:189
 msgid "Other Address Street"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:188
+#: src/connections/Ctctv3Connect/Connect.php:190
 #: src/connections/InfusionsoftConnect/Connect.php:320
 msgid "Other Address City"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:189
+#: src/connections/Ctctv3Connect/Connect.php:191
 #: src/connections/InfusionsoftConnect/Connect.php:321
 msgid "Other Address State"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:190
+#: src/connections/Ctctv3Connect/Connect.php:192
 #: src/connections/InfusionsoftConnect/Connect.php:323
 msgid "Other Address Postal Code"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:191
+#: src/connections/Ctctv3Connect/Connect.php:193
 #: src/connections/InfusionsoftConnect/Connect.php:322
 msgid "Other Address Country"
 msgstr ""
 
-#: src/connections/Ctctv3Connect/Connect.php:233
+#: src/connections/Ctctv3Connect/Connect.php:235
 msgid "Select Constant Contact (v3) tags that will be assigned to contacts."
 msgstr ""
 
 #. translators: 1: open <a> tag, 2: close </a> tag
-#: src/connections/Ctctv3Connect/Connect.php:330
+#: src/connections/Ctctv3Connect/Connect.php:332
 msgid ""
 "On March 31, 2022, Constant Contact is ending support for their previous "
 "authorization management service. %1$sPlease re-authorize your Constant "
@@ -2971,6 +2980,33 @@ msgstr ""
 msgid "%sHere's how to find your api key%s"
 msgstr ""
 
+#: src/connections/NewsmanConnect/AbstractNewsmanConnect.php:40
+msgid "Newsman access token not found."
+msgstr ""
+
+#: src/connections/NewsmanConnect/AbstractNewsmanConnect.php:44
+msgid "Newsman user ID not found."
+msgstr ""
+
+#: src/connections/NewsmanConnect/Connect.php:41
+#: src/connections/NewsmanConnect/ConnectSettingsPage.php:52
+msgid "Newsman"
+msgstr ""
+
+#: src/connections/NewsmanConnect/ConnectSettingsPage.php:34
+msgid "Only re-authorize if you want to connect another Newsman account."
+msgstr ""
+
+#: src/connections/NewsmanConnect/ConnectSettingsPage.php:48
+msgid ""
+"Authorization is required to grant <strong>%s</strong> access to interact "
+"with your Newsman account."
+msgstr ""
+
+#: src/connections/NewsmanConnect/ConnectSettingsPage.php:53
+msgid "Newsman Connection"
+msgstr ""
+
 #: src/connections/NinjaFormsConnect/Integrations/ActiveCampaignConnect.php:57
 #: src/connections/NinjaFormsConnect/Integrations/AweberConnect.php:57
 #: src/connections/NinjaFormsConnect/Integrations/CampaignMonitorConnect.php:57
@@ -4068,7 +4104,7 @@ msgstr ""
 msgid "Zoho Campaigns access token not found."
 msgstr ""
 
-#: src/connections/ZohoCampaignsConnect/Connect.php:43
+#: src/connections/ZohoCampaignsConnect/Connect.php:44
 #: src/connections/ZohoCampaignsConnect/ConnectSettingsPage.php:52
 msgid "Zoho Campaigns"
 msgstr ""
@@ -7374,7 +7410,7 @@ msgstr ""
 
 #: src/core/src/AjaxHandler.php:280 src/core/src/AjaxHandler.php:480
 #: src/core/src/AjaxHandler.php:518
-#: src/core/src/OptinForms/AbstractOptinForm.php:1259
+#: src/core/src/OptinForms/AbstractOptinForm.php:1263
 msgid "Unexpected error. Please try again."
 msgstr ""
 
@@ -7419,7 +7455,7 @@ msgid "No email provider or list has been set for this optin. %sSee fix here%s"
 msgstr ""
 
 #: src/core/src/AjaxHandler.php:760 src/core/src/AjaxHandler.php:782
-#: src/core/src/OptinForms/AbstractOptinForm.php:1264
+#: src/core/src/OptinForms/AbstractOptinForm.php:1268
 msgid "Your submission has been flagged as potential spam."
 msgstr ""
 
@@ -8788,15 +8824,15 @@ msgstr ""
 msgid "Referrer URL"
 msgstr ""
 
-#: src/core/src/OptinForms/AbstractOptinForm.php:1260
+#: src/core/src/OptinForms/AbstractOptinForm.php:1264
 msgid "Please enter a valid email."
 msgstr ""
 
-#: src/core/src/OptinForms/AbstractOptinForm.php:1261
+#: src/core/src/OptinForms/AbstractOptinForm.php:1265
 msgid "Please enter a name."
 msgstr ""
 
-#: src/core/src/OptinForms/AbstractOptinForm.php:1262
+#: src/core/src/OptinForms/AbstractOptinForm.php:1266
 msgid "A required field is empty."
 msgstr ""
 
@@ -9027,9 +9063,9 @@ msgstr ""
 msgid "MailOptin - Lite"
 msgstr ""
 
-#. #-#-#-#-#  mailoptin.pot (MailOptin - Lite 1.2.45.1)  #-#-#-#-#
+#. #-#-#-#-#  mailoptin.pot (MailOptin - Lite 1.2.46.0)  #-#-#-#-#
 #. Plugin URI of the plugin/theme
-#. #-#-#-#-#  mailoptin.pot (MailOptin - Lite 1.2.45.1)  #-#-#-#-#
+#. #-#-#-#-#  mailoptin.pot (MailOptin - Lite 1.2.46.0)  #-#-#-#-#
 #. Author URI of the plugin/theme
 msgid "https://mailoptin.io"
 msgstr ""

@@ -5,8 +5,9 @@ namespace Authifly\Provider;
 use Authifly\Adapter\OAuth2;
 use Authifly\Data\Collection;
 use Authifly\Data;
+use Authifly\Exception\InvalidAccessTokenException;
 use Authifly\Exception\InvalidArgumentException;
-use MailOptin\Core\Connections\AbstractConnect;
+use Authifly\HttpClient\Util;
 
 /**
  * ConstantContactV3 OAuth2 provider adapter.
@@ -76,6 +77,39 @@ class ConstantContactV3 extends OAuth2
                 'Authorization' => 'Bearer ' . $access_token
             ];
         }
+    }
+
+
+
+    /**
+     * Finalize the authorization process
+     *
+     * Necessary because we are removing state validation cos OAuthCredentialStorage is stateless and CC requires state
+     * to be sent during authorization.
+     *
+     * @throws InvalidAccessTokenException
+     * @throws \Authifly\Exception\HttpClientFailureException
+     * @throws \Authifly\Exception\HttpRequestFailedException
+     */
+    protected function authenticateFinish()
+    {
+        $this->logger->debug(sprintf('%s::authenticateFinish(), callback url:', get_class($this)), [Util::getCurrentUrl(true)]);
+
+        $code = filter_input(INPUT_GET, 'code');
+
+        /**
+         * Authorization Request Code
+         *
+         * RFC6749: If the resource owner grants the access request, the authorization
+         * server issues an authorization code and delivers it to the client:
+         *
+         * http://tools.ietf.org/html/rfc6749#section-4.1.2
+         */
+        $response = $this->exchangeCodeForAccessToken($code);
+
+        $this->validateAccessTokenExchange($response);
+
+        $this->initialize();
     }
 
     /**

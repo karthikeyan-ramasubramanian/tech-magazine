@@ -166,11 +166,6 @@ function getWidgetContent() {
 
 /* Aktivity-Chart*/
 function drawBasic() {
-    jQuery('#chart_div').html("<div class=\"b2s-loading-area\">\n" +
-            "        <br>\n" +
-            "        <div class=\"b2s-loader-impulse b2s-loader-impulse-md\"></div>\n" +
-            "        <div class=\"clearfix\"></div>\n" +
-            "    </div>");
     var legacyMode = jQuery('#isLegacyMode').val();
     if (legacyMode == "1") {
         legacyMode = false; // loading is sync (stack)
@@ -193,12 +188,8 @@ function drawBasic() {
             if (content.error == 'nonce') {
                 jQuery('.b2s-nonce-check-fail').show();
             } else {
-                jQuery('#chart_div').html("<canvas id=\"b2s_activity_chart\" style=\"max-width:690px !important; max-height:320px !important;\"></canvas>");
-                var ctx = document.getElementById("b2s_activity_chart").getContext('2d');
                 var published = [];
-                var published_colors = [];
                 var scheduled = [];
-                var scheduled_colors = [];
                 function dateToYMD(date) {
                     var d = date.getUTCDate();
                     var m = date.getUTCMonth() + 1;
@@ -220,69 +211,99 @@ function drawBasic() {
                             var date = new Date(published[published.length - 1].x.toString());
                             var newDate = new Date(date.setTime(date.getTime() + 86400000));
                             published.push({x: dateToYMD(newDate), y: 0});
-                            published_colors.push('rgba(121,178,50,0.8)');
-                            scheduled_colors.push('rgba(192,192,192,0.8)');
                             scheduled.push({x: dateToYMD(newDate), y: 0});
                             diff = parseInt((new Date(published[published.length - 1].x).getTime() - new Date(this).getTime()) / (24 * 3600 * 1000));
                         }
                     }
 
                     published.push({x: this.toString(), y: content[this][0]});
-                    published_colors.push('rgba(121,178,50,0.8)');
-                    scheduled_colors.push('rgba(192,192,192,0.8)');
                     scheduled.push({x: this.toString(), y: content[this][1]});
                 });
-                var unit = "day";
-                if (published.length > 100)
-                {
-                    unit = "month";
-                }
-
-                var myChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        datasets: [{
-                                label: jQuery("#chart_div").data('text-published'),
-                                data: published,
-                                backgroundColor: published_colors
-                            }, {
-                                label: jQuery("#chart_div").data('text-scheduled'),
-                                data: scheduled,
-                                backgroundColor: scheduled_colors
-                            }]
-                    },
-                    options: {
-                        tooltips: {
-                            callbacks: {
-                                title: function (tooltipItem) {
-                                    if (jQuery("#chart_div").data('language') == "de") {
-                                        var date = new Date(tooltipItem[0].xLabel);
-                                        return dateToDMY(date);
-                                    } else {
-                                        return tooltipItem[0].xLabel
-                                    }
-                                }
+                var options = {
+                    series: [],
+                    chart: {
+                        redrawOnParentResize: true,
+                        type: 'bar',
+                        height: 450,
+                        animations: {
+                            enabled: true,
+                            easing: 'easeout',
+                            speed: 500,
+                            dynamicAnimation: {
+                                enabled: true,
+                                speed: 300
                             }
                         },
-                        scales: {
-                            xAxes: [{
-                                    type: "time",
-                                    time: {
-                                        unit: unit
-                                    }
-                                }
-                            ],
-                            yAxes: [{
-                                    ticks: {
-                                        beginAtZero: true
-                                    }
-                                }]
+                        toolbar: {
+                            show: true,
+                            tools: {
+                                download: true,
+                                zoom: true,
+                                zoomin: true,
+                                zoomout: true,
+                                pan: false,
+                                reset: true
+                            }
                         }
+                    },
+                    plotOptions: {
+                        bar: {
+                            horizontal: false,
+                            columnWidth: '90%'
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    colors: ['#79b232CC', '#c0c0c0CC'],
+                    
+                    legend: {
+                        position: 'top',
+                        horizontalAlign: 'left'
+                    },
+                    
+                    xaxis: {
+                        type: 'datetime',
+                        labels: {
+                            tickAmount: 2,
+                            range: 5,
+                            datetimeFormatter: {
+                                year: 'yyyy',
+                                month: 'MMM yy',
+                                day: 'dd MMM',
+                                hour: 'dd MMM'
+                            }
+                        },
+                        axisTicks: {
+                            show: false
+                        }
+                    },
+                    yaxis: {
+                        forceNiceScale: false,
+                        labels: {
+                            formatter: function (val) {
+                                return val.toFixed(0);
+                            }
+                        }
+                    },
+                    noData: {
+                        text: 'keine Daten vorhanden...'
                     }
-                });
+                };
+                var chart = new ApexCharts(document.querySelector("#chart_div"),options);
+                chart.render();
+                
+                chart.updateSeries([{
+                    name: 'Ver�ffentlicht',
+                    data: published
+                },{
+                    name: 'Geplant',
+                    data: scheduled
+                }]);
             }
         }
     });
+    document.getElementById('chart_div').style.marginTop = '15px';
 }
 
 

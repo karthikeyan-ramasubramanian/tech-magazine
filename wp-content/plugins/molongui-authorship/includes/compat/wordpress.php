@@ -117,6 +117,17 @@ add_filter( 'authorship/author_link', function( $url, $args )
 
     return $url;
 }, 10, 2 );
+add_filter( 'authorship/render_box', function( $default, $post )
+{
+    $dbt = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 10 );
+    if ( empty( $dbt ) ) return $default;
+    $wp_fns = array
+    (
+        'wp_trim_excerpt', // wp-includes/formatting.php
+    );
+    if ( array_intersect( $wp_fns, array_column( $dbt, 'function' ) ) ) return false;
+    return $default;
+}, 10, 2 );
 if ( version_compare( get_bloginfo( 'version' ),'4.7.0', '<' ) )
 {
     if ( !function_exists( 'wp_get_additional_image_sizes()' ) )

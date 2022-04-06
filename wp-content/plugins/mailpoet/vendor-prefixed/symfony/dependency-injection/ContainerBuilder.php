@@ -436,7 +436,7 @@ class ContainerBuilder extends Container implements TaggedContainerInterface
  public function setAlias($alias, $id)
  {
  $alias = (string) $alias;
- if ('' === $alias || '\\' === $alias[-1] || \strlen($alias) !== \strcspn($alias, "\0\r\n'")) {
+ if ('' === $alias || '\\' === $alias[-1] || \strlen($alias) !== \strcspn($alias, "\x00\r\n'")) {
  throw new InvalidArgumentException(\sprintf('Invalid alias id: "%s".', $alias));
  }
  if (\is_string($id)) {
@@ -502,7 +502,7 @@ class ContainerBuilder extends Container implements TaggedContainerInterface
  throw new BadMethodCallException('Adding definition to a compiled container is not allowed.');
  }
  $id = (string) $id;
- if ('' === $id || '\\' === $id[-1] || \strlen($id) !== \strcspn($id, "\0\r\n'")) {
+ if ('' === $id || '\\' === $id[-1] || \strlen($id) !== \strcspn($id, "\x00\r\n'")) {
  throw new InvalidArgumentException(\sprintf('Invalid service id: "%s".', $id));
  }
  unset($this->aliasDefinitions[$id], $this->removedIds[$id]);

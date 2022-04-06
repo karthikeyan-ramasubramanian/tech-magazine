@@ -9,6 +9,7 @@ return array(
     'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
     'Defuse\\Crypto\\' => array($vendorDir . '/defuse/php-encryption/src'),
     'CreativeMail\\Modules\\' => array($baseDir . '/src/modules'),
+    'CreativeMail\\Models\\' => array($baseDir . '/src/models'),
     'CreativeMail\\Managers\\' => array($baseDir . '/src/managers'),
     'CreativeMail\\Integrations\\' => array($baseDir . '/src/integrations'),
     'CreativeMail\\Helpers\\' => array($baseDir . '/src/helpers'),

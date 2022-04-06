@@ -142,7 +142,7 @@ class Lexer
  } elseif ($this->options['whitespace_line_trim'] === $this->positions[2][$this->position][0]) {
  // whitespace_line_trim detected ({%~, {{~ or {#~)
  // don't trim \r and \n
- $text = \rtrim($text, " \t\0\v");
+ $text = \rtrim($text, " \t\x00\v");
  }
  }
  $this->pushToken(
@@ -288,7 +288,7 @@ class Lexer
  } else {
  // whitespace_line_trim detected ({%~, {{~ or {#~)
  // don't trim \r and \n
- $text = \rtrim($text, " \t\0\v");
+ $text = \rtrim($text, " \t\x00\v");
  }
  }
  $this->pushToken(

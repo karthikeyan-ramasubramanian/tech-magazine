@@ -31,9 +31,9 @@ add_filter( 'molongui_authorship_filter_link_post_id', function( $post_id, $post
     if ( isset( $dbt[$i]['function'] ) and $dbt[$i]['function'] == 'get_author' and isset( $dbt[$i]['class'] ) and $dbt[$i]['class'] == 'td_module' and isset( $dbt[$i]['object'] ) and isset( $dbt[$i]['object']->post ) and isset( $dbt[$i]['object']->post->ID ) ) return $dbt[$i]['object']->post->ID;
     return $post_id;
 }, 10, 3 );
-add_filter( 'authorship/box/hide', function( $default )
+add_filter( 'authorship/render_box', function( $default )
 {
-    if ( doing_action( 'tdc_footer' ) ) return true;
+    if ( doing_action( 'tdc_footer' ) ) return false;
     return $default;
 });
 /*

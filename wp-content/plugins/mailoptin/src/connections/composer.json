@@ -53,6 +53,7 @@
       "MailOptin\\WebHookConnect\\": "WebHookConnect/",
       "MailOptin\\WooCommerceConnect\\": "WooCommerceConnect/",
       "MailOptin\\FacebookCustomAudienceConnect\\": "FacebookCustomAudienceConnect/",
+      "MailOptin\\NewsmanConnect\\": "NewsmanConnect/",
       "MailOptin\\Connections\\": "./"
     },
     "classmap": [

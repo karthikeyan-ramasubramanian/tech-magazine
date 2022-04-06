@@ -68,13 +68,13 @@ class SendCampaign extends AbstractZohoCampaignsConnect
             $campaign_title = $this->get_email_campaign_campaign_title($this->email_campaign_id);
 
             $preview_uuid = $this->campaignlog_id_to_uuid($this->campaign_log_id, 'zohocampaigns_email_fetcher');
-            $home_url     = defined('W3GUY_LOCAL') ? 'http://e0944dde.ngrok.io/' : home_url();
+            $content_url  = defined('W3GUY_LOCAL') ? 'https://623af41324de8.htmlsave.net/' : add_query_arg(['zohocampaigns_preview_type' => 'html', 'uuid' => $preview_uuid], home_url());
 
             $payload = apply_filters('mailoptin_zohocampaigns_campaign_settings', [
                 'campaignname' => $campaign_title,
                 'from_email'   => Settings::instance()->from_email(),
                 'subject'      => $this->campaign_subject,
-                'content_url'  => add_query_arg(['zohocampaigns_preview_type' => 'html', 'uuid' => $preview_uuid], $home_url),
+                'content_url'  => $content_url,
                 'list_details' => json_encode([
                     $list_id => []
                 ]),
@@ -84,10 +84,9 @@ class SendCampaign extends AbstractZohoCampaignsConnect
 
             $response = $this->zcInstance()->apiRequest('createCampaign?resfmt=json', 'POST', $payload);
 
-
             if (isset($response->campaignKey)) {
                 // add a check here to see if the campaign was sent
-                $response2 = $this->zcInstance()->apiRequest('sendcampaign?resfmt=JSON', 'POST', ['campaignkey' => $response->campaignKey]);
+                $this->zcInstance()->apiRequest('sendcampaign?resfmt=JSON', 'POST', ['campaignkey' => $response->campaignKey]);
 
                 AbstractCampaignLogMeta::add_campaignlog_meta($this->campaign_log_id, 'zohocampaigns_campaign_id', $response->campaignKey);
 

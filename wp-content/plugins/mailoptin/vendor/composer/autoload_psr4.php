@@ -32,6 +32,7 @@ return array(
     'MailOptin\\PolylangConnect\\' => array($baseDir . '/src/connections/PolylangConnect'),
     'MailOptin\\OntraportConnect\\' => array($baseDir . '/src/connections/OntraportConnect'),
     'MailOptin\\NinjaFormsConnect\\' => array($baseDir . '/src/connections/NinjaFormsConnect'),
+    'MailOptin\\NewsmanConnect\\' => array($baseDir . '/src/connections/NewsmanConnect'),
     'MailOptin\\MoosendConnect\\' => array($baseDir . '/src/connections/MoosendConnect'),
     'MailOptin\\MailsterConnect\\' => array($baseDir . '/src/connections/MailsterConnect'),
     'MailOptin\\MailjetConnect\\' => array($baseDir . '/src/connections/MailjetConnect'),
@@ -69,6 +70,7 @@ return array(
     'Html2Text\\' => array($vendorDir . '/soundasleep/html2text/src'),
     'DrewM\\Drip\\' => array($vendorDir . '/drewm/drip/src'),
     'Composer\\Installers\\' => array($vendorDir . '/composer/installers/src/Composer/Installers'),
+    'Barryvdh\\Composer\\' => array($vendorDir . '/barryvdh/composer-cleanup-plugin/src'),
     'Authifly\\' => array($baseDir . '/src/authifly/src'),
     '' => array($vendorDir . '/nesbot/carbon/src'),
 );

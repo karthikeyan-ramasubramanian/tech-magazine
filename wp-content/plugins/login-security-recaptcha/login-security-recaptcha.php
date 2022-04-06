@@ -2,8 +2,8 @@
 /**
  * Plugin Name: Login Security reCAPTCHA
  * Plugin URI: https://scriptstown.com/wordpress-plugins/login-security-recaptcha/
- * Description: Secure WordPress login, registration and comment form with Google reCAPTCHA. Monitor error logs. Prevent Brute-force attack and much more.
- * Version: 1.3.5
+ * Description: Secure WordPress login, registration, and comment form with Google reCAPTCHA. Monitor error logs. Prevent Brute-force attacks and more.
+ * Version: 1.3.7
  * Author: ScriptsTown
  * Author URI: https://scriptstown.com/
  * Text Domain: login-security-recaptcha
@@ -13,7 +13,7 @@
 
 defined( 'ABSPATH' ) || die();
 
-define( 'STLSR_PLUGIN_VERSION', '1.3.5' );
+define( 'STLSR_PLUGIN_VERSION', '1.3.7' );
 define( 'STLSR_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'STLSR_PLUGIN_DIR_PATH', plugin_dir_path( __FILE__ ) );
 define( 'STLSR_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );

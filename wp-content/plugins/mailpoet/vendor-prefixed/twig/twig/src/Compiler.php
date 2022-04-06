@@ -59,7 +59,7 @@ class Compiler
  }
  public function string($value)
  {
- $this->source .= \sprintf('"%s"', \addcslashes($value, "\0\t\"\$\\"));
+ $this->source .= \sprintf('"%s"', \addcslashes($value, "\x00\t\"\$\\"));
  return $this;
  }
  public function repr($value)

@@ -9,7 +9,7 @@ function authorship_render_box( $content )
         if ( ( !is_single() and !is_page() ) or is_guest_author() or !is_main_query() or !in_the_loop() ) return $content;
     }
     global $post;
-    if ( apply_filters( 'authorship/box/hide', false, $post ) ) return $content;
+    if ( !apply_filters( 'authorship/render_box', true, $post ) ) return $content;
     $post_authors = get_post_authors( $post->ID );
     if ( empty( $post_authors ) or $post_authors[0]->id == 0 ) return $content;
     $options = authorship_get_options();

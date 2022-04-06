@@ -1,11 +1,11 @@
-﻿=== Popup, Optin Form & Email Newsletters for Mailchimp, HubSpot, AWeber - MailOptin ===
+=== Popup, Optin Form & Email Newsletters for Mailchimp, HubSpot, AWeber - MailOptin ===
 Contributors: properfraction, collizo4sky
 Donate link: https://mailoptin.io/pricing/
 Tags: popup, popup maker, newsletter, mailchimp, contact form, aweber, popups, constant contact, campaignmonitor, campaign monitor, convertkit, forms, infusionsoft, contact form, wpforms, wpform, cf7, contact form 7, ninja forms, formidable forms, gravity forms, forminator, activecampaign, drip, sendy, hubspot, mailerlite, sendinblue, klaviyo, mailjet, ontraport, constantcontact, jilt, vertical response, cleverreach, zoho, sendgrid, zoho crm, zoho campaigns, moosend, godaddy, getgist, sendlane, myemma, fluentcrm, mailster, getresponse, sendfox, wemail, autoresponder, wpml, woocommerce, lightbox, modal, emailoctopus, pop up, email, exit intent, user registration, ninja form
 Requires at least: 4.6
-Requires PHP: 7.0.10
+Requires PHP: 7.2.5
 Tested up to: 5.9
-Stable tag: 1.2.45.1
+Stable tag: 1.2.46.0
 License: GPL-2.0+
 
 Create popup, optin forms to get email subscribers via an easy form builder and popup maker. Mailchimp, ConvertKit, Infusionsoft, ActiveCampaign, Campaign Monitor, Constant Contact & more.
@@ -179,6 +179,13 @@ Yes, MailOptin has full translation and localization support. All .mo and .po tr
 10. Elementor form integration with MailOptin
 
 == Changelog ==
+
+= 1.2.46.0 =
+* Added newsman integration.
+* Added email automation support to zoho campaigns.
+
+= 1.2.45.2 =
+* Improved the reliability of the new Constant Contact authentication.
 
 = 1.2.45.1 =
 * Move to a new authentication system for Constant Contact v3 integration. [Learn more](https://mailoptin.io/article/connect-mailoptin-with-constant-contact/#v3)

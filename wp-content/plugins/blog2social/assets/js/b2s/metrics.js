@@ -18,28 +18,31 @@ jQuery(window).on("load", function () {
     var today = new Date();
     var startDate = new Date();
     startDate.setTime(startDate.getTime() - ((24*60*60*1000) * 30));//today -30 days
-    var metricsDatePicker = jQuery('#b2s-metrics-date-picker').b2sdatepicker({
-        'autoClose': true,
-        'range': true,
-        'multipleDatesSeparator': ' - ',
-        'toggleSelected': false,
-        'maxDate': today,
-        'startDate': today,
-        'dateFormat': 'dd.mm.yyyy',
-        onSelect: function onSelect(formattedDate, date, inst) {
-            filterDates = [];
-            date.forEach(function(item){
-                filterDates.push(item.getFullYear() + '-' + (String(item.getMonth()+1).padStart(2, "0")) + '-' + (String(item.getDate()).padStart(2, "0")));
-            });
+    
+    var dateFormat = 'DD.MM.YYYY';
+    if(jQuery('#b2sUserLang').val() == 'en') {
+        dateFormat = 'YYYY-MM-DD';
+    }
+    
+    jQuery('#b2s-metrics-date-picker').daterangepicker({
+        ranges: {
+            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            'Last 30 Days': [moment().subtract(29, 'days'), moment()]
         },
-        onHide: function onHide() {
-            loadInsights();
+        "showCustomRangeLabel": false,
+        "alwaysShowCalendars": true,
+        "startDate": startDate,
+        "endDate": today,
+        "maxDate": today,
+        "opens": "left",
+        "locale": {
+            format: dateFormat
         }
+    }, function(start, end, label) {
+        filterDates = [start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD')];
+        loadInsights();
     });
     
-    metricsDatePicker.b2sdatepicker().data('b2sdatepicker').selectedDates = [startDate, today];
-    metricsDatePicker.b2sdatepicker().data('b2sdatepicker').update();
-
     loadInsights();
 });
 

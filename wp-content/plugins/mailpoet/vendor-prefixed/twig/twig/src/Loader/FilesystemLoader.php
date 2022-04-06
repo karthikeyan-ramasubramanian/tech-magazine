@@ -160,7 +160,7 @@ class FilesystemLoader implements LoaderInterface, ExistsLoaderInterface, Source
  }
  private function validateName($name)
  {
- if (\false !== \strpos($name, "\0")) {
+ if (\false !== \strpos($name, "\x00")) {
  throw new LoaderError('A template name cannot contain NUL bytes.');
  }
  $name = \ltrim($name, '/');

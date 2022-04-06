@@ -17,6 +17,7 @@ $networkData = $networkItem->getData();
 
 <div class="b2s-container">
     <div class=" b2s-inbox col-md-12 del-padding-left">
+        <?php require_once (B2S_PLUGIN_DIR . 'views/b2s/html/sidebar.php'); ?>
         <div class="col-md-9 del-padding-left del-padding-right">
             <!--Header|Start - Include-->
             <?php require_once (B2S_PLUGIN_DIR . 'views/b2s/html/header.php'); ?>
@@ -74,7 +75,6 @@ $networkData = $networkItem->getData();
                 </div>
             </div>
         </div>
-        <?php require_once (B2S_PLUGIN_DIR . 'views/b2s/html/sidebar.php'); ?>
     </div>
 </div>
 <input type="hidden" id="lang" value="<?php echo substr(B2S_LANGUAGE, 0, 2); ?>">

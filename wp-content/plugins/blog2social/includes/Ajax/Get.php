@@ -329,7 +329,7 @@ class Ajax_Get {
                             $assignCount += $authCount;
                         }
                     }
-                    echo json_encode(array('result' => true, 'count' => ($count !== false) ? $count : 0, 'assignCount' => $assignCount, 'assignListCount' => count($networkAuthAssignment['assignList']), 'assignList' => serialize($assignList)));
+                    echo json_encode(array('result' => true, 'count' => ($count !== false) ? $count : 0, 'assignCount' => $assignCount, 'assignListCount' => count($networkAuthAssignment['assignList']), 'assignList' => json_encode($assignList)));
                     wp_die();
                 } else {
                     if ($count !== false) {

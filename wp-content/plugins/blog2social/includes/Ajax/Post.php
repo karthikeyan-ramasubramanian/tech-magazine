@@ -66,6 +66,8 @@ class Ajax_Post {
         add_action('wp_ajax_b2s_network_check_user_data', array($this, 'networkCheckUserData'));
         add_action('wp_ajax_b2s_metrics_starting_confirm', array($this, 'metricsStartingConfirm'));
         add_action('wp_ajax_b2s_metrics_banner_close', array($this, 'metricsBannerClose'));
+        add_action('wp_ajax_b2s_continue_trial_option', array($this, 'continueTrialOption'));
+        add_action('wp_ajax_b2s_final_trial_option', array($this, 'hideFinalTrialOption'));
     }
 
     public function curationDraft() {
@@ -873,6 +875,13 @@ class Ajax_Post {
             if (isset($_POST['legacy_mode'])) {
                 $options = new B2S_Options(0, 'B2S_PLUGIN_GENERAL_OPTIONS');
                 $options->_setOption('legacy_mode', (int) $_POST['legacy_mode']);
+                
+                if((int) $_POST['legacy_mode'] >= 1) {
+                    $options->_setOption('og_active', 0);
+                    $options->_setOption('card_active', 0);
+                    $options->_setOption('oembed_active', 0);
+                }
+                
                 echo json_encode(array('result' => true, 'content' => (((int) $_POST['legacy_mode'] == 1) ? 0 : 1)));
                 wp_die();
             }
@@ -1134,7 +1143,7 @@ class Ajax_Post {
                     }
                     //V5.5.0 Approve User > Business Version 
                     if (isset($_POST['assignList']) && !empty($_POST['assignList'])) {
-                        $assignList = unserialize($_POST['assignList']);
+                        $assignList = json_decode($_POST['assignList'], true);
                         if (is_array($assignList) && !empty($assignList)) {
                             foreach ($assignList as $i => $assignAuthId) {
                                 $res = $wpdb->get_results($wpdb->prepare("SELECT b.id, b.post_id, b.post_for_approve, b.post_for_relay FROM {$wpdb->prefix}b2s_posts b LEFT JOIN {$wpdb->prefix}b2s_posts_network_details d ON (d.id = b.network_details_id) WHERE d.network_auth_id= %d AND b.hide = %d AND b.publish_date =%s", $assignAuthId, 0, '0000-00-00 00:00:00'));
@@ -2349,7 +2358,7 @@ class Ajax_Post {
                         }
                         //only posted x times - Posts (1 post to 1 auth) within 5 minutes counts as posted one time
                         if (isset($_POST['b2s-re-post-already-planed-active']) && (int) $_POST['b2s-re-post-already-planed-active'] == 1 && isset($_POST['b2s-re-post-already-planed-count']) && (int) $_POST['b2s-re-post-already-planed-count'] >= 0) {
-                            $where .= " AND posts.ID NOT IN (SELECT post_id FROM (SELECT post_id FROM wp_b2s_posts WHERE blog_user_id = " . (int) B2S_PLUGIN_BLOG_USER_ID . " AND publish_date != '0000-00-00 00:00:00' AND publish_error_code = '' AND hide = 0 GROUP BY UNIX_TIMESTAMP(publish_date) DIV 300 ORDER BY `wp_b2s_posts`.`post_id` ASC) AS b2s_post_results GROUP BY post_id HAVING count(*) > " . (int) $_POST['b2s-re-post-already-planed-count'] . ") ";
+                            $where .= " AND posts.ID NOT IN (SELECT post_id FROM (SELECT post_id FROM {$wpdb->prefix}b2s_posts WHERE blog_user_id = " . (int) B2S_PLUGIN_BLOG_USER_ID . " AND publish_date != '0000-00-00 00:00:00' AND publish_error_code = '' AND hide = 0 GROUP BY UNIX_TIMESTAMP(publish_date) DIV 300 ORDER BY `{$wpdb->prefix}b2s_posts`.`post_id` ASC) AS b2s_post_results GROUP BY post_id HAVING count(*) > " . (int) $_POST['b2s-re-post-already-planed-count'] . ") ";
                         }
                         //categories
                         if (isset($_POST['b2s-re-post-categories-active']) && (int) $_POST['b2s-re-post-categories-active'] == 1 && isset($_POST['b2s-re-post-categories-data']) && !empty($_POST['b2s-re-post-categories-data']) && is_array($_POST['b2s-re-post-categories-data'])) {
@@ -2540,7 +2549,19 @@ class Ajax_Post {
     public function communityRegister() {
         if (isset($_POST['b2s_security_nonce']) && (int) wp_verify_nonce($_POST['b2s_security_nonce'], 'b2s_security_nonce') > 0) {
             if (isset($_POST['username']) && !empty($_POST['username']) && isset($_POST['password']) && !empty($_POST['password']) && isset($_POST['email']) && !empty($_POST['email'])) {
-                $postData = array('action' => 'registerCommunity', 'token' => B2S_PLUGIN_TOKEN, 'username' => $_POST['username'], 'email' => $_POST['email'], 'password' => $_POST['password']);
+                $username = '';
+                $password = '';
+                $encrypted = false;
+                $publicKey = B2S_PLUGIN_DIR . '/includes/B2S/Support/community_public_key.pem';
+                if (function_exists('openssl_public_encrypt') && file_exists($publicKey)) {
+                    $getPublicKey = file_get_contents($publicKey);
+                    openssl_public_encrypt(sanitize_text_field($_POST['username']), $username, $getPublicKey);
+                    openssl_public_encrypt(sanitize_text_field($_POST['password']), $password, $getPublicKey);
+                    $encrypted = true;
+                    $username = base64_encode($username);
+                    $password = base64_encode($password);
+                }
+                $postData = array('action' => 'registerCommunity', 'token' => B2S_PLUGIN_TOKEN, 'username' => $username, 'email' => $_POST['email'], 'password' => $password, 'encrypted' => $encrypted);
                 $repsonse = json_decode(B2S_Api_Post::post(B2S_PLUGIN_API_ENDPOINT, $postData, 15), true);
                 if (is_array($repsonse) && !empty($repsonse) && isset($repsonse['result'])) {
                     if ($repsonse['result'] == true) {
@@ -2574,8 +2595,8 @@ class Ajax_Post {
             }
             require_once(B2S_PLUGIN_DIR . 'includes/B2S/Api/Network/Pinterest.php');
             $pt = new B2S_Api_Network_Pinterest();
-            $pt->cookie = $wpCookie;
-            $getBoards = $pt->getPinBoards();
+                $pt->cookie = $wpCookie;
+                $getBoards = $pt->getPinBoards();
             if (isset($getBoards['error']) && (int) $getBoards['error'] == 0 && isset($getBoards['data']) && !empty($getBoards['data'])) {
                 $html = '';
                 foreach ($getBoards['data'] as $k => $v) {
@@ -2611,6 +2632,32 @@ class Ajax_Post {
             require_once (B2S_PLUGIN_DIR . '/includes/Options.php');
             $option = new B2S_Options(B2S_PLUGIN_BLOG_USER_ID);
             $option->_setOption('metrics_banner', true);
+            echo json_encode(array('result' => true));
+            wp_die();
+        } else {
+            echo json_encode(array('result' => false, 'error_reason' => 'nonce'));
+            wp_die();
+        }
+    }
+    
+    public function continueTrialOption() {
+        if (isset($_POST['b2s_security_nonce']) && (int) wp_verify_nonce($_POST['b2s_security_nonce'], 'b2s_security_nonce') > 0) {
+            require_once (B2S_PLUGIN_DIR . '/includes/Options.php');
+            $option = new B2S_Options(B2S_PLUGIN_BLOG_USER_ID);
+            $option->_setOption('hide_7_day_trail', true);
+            echo json_encode(array('result' => true));
+            wp_die();
+        } else {
+            echo json_encode(array('result' => false, 'error_reason' => 'nonce'));
+            wp_die();
+        }
+    }
+    
+    public function hideFinalTrialOption() {
+        if (isset($_POST['b2s_security_nonce']) && (int) wp_verify_nonce($_POST['b2s_security_nonce'], 'b2s_security_nonce') > 0) {
+            require_once (B2S_PLUGIN_DIR . '/includes/Options.php');
+            $option = new B2S_Options(B2S_PLUGIN_BLOG_USER_ID);
+            $option->_setOption('hide_final_trail', true);
             echo json_encode(array('result' => true));
             wp_die();
         } else {

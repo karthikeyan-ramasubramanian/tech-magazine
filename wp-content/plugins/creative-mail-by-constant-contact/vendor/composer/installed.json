@@ -114,17 +114,17 @@
     },
     {
         "name": "firebase/php-jwt",
-        "version": "v5.3.0",
-        "version_normalized": "5.3.0.0",
+        "version": "v5.5.1",
+        "version_normalized": "5.5.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/firebase/php-jwt.git",
-            "reference": "3c2d70f2e64e2922345e89f2ceae47d2463faae1"
+            "reference": "83b609028194aa042ea33b5af2d41a7427de80e6"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/firebase/php-jwt/zipball/3c2d70f2e64e2922345e89f2ceae47d2463faae1",
-            "reference": "3c2d70f2e64e2922345e89f2ceae47d2463faae1",
+            "url": "https://api.github.com/repos/firebase/php-jwt/zipball/83b609028194aa042ea33b5af2d41a7427de80e6",
+            "reference": "83b609028194aa042ea33b5af2d41a7427de80e6",
             "shasum": ""
         },
         "require": {
@@ -133,7 +133,10 @@
         "require-dev": {
             "phpunit/phpunit": ">=4.8 <=9"
         },
-        "time": "2021-05-20T17:37:02+00:00",
+        "suggest": {
+            "paragonie/sodium_compat": "Support EdDSA (Ed25519) signatures when libsodium is not present"
+        },
+        "time": "2021-11-08T20:18:51+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -165,7 +168,7 @@
         ],
         "support": {
             "issues": "https://github.com/firebase/php-jwt/issues",
-            "source": "https://github.com/firebase/php-jwt/tree/v5.3.0"
+            "source": "https://github.com/firebase/php-jwt/tree/v5.5.1"
         }
     },
     {
@@ -342,17 +345,17 @@
     },
     {
         "name": "squizlabs/php_codesniffer",
-        "version": "3.6.0",
-        "version_normalized": "3.6.0.0",
+        "version": "3.6.2",
+        "version_normalized": "3.6.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-            "reference": "ffced0d2c8fa8e6cdc4d695a743271fab6c38625"
+            "reference": "5e4e71592f69da17871dba6e80dd51bce74a351a"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/ffced0d2c8fa8e6cdc4d695a743271fab6c38625",
-            "reference": "ffced0d2c8fa8e6cdc4d695a743271fab6c38625",
+            "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/5e4e71592f69da17871dba6e80dd51bce74a351a",
+            "reference": "5e4e71592f69da17871dba6e80dd51bce74a351a",
             "shasum": ""
         },
         "require": {
@@ -364,7 +367,7 @@
         "require-dev": {
             "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0"
         },
-        "time": "2021-04-09T00:54:41+00:00",
+        "time": "2021-12-12T21:44:58+00:00",
         "bin": [
             "bin/phpcs",
             "bin/phpcbf"

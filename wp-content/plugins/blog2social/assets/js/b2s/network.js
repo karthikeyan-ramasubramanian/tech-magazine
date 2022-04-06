@@ -1231,6 +1231,7 @@ jQuery(document).on('click', '.b2s-edit-template-save-btn', function () {
                 setTimeout(function () {
                     jQuery('.b2s-edit-template-save-success').fadeOut();
                 }, 3000);
+                jQuery('#b2s-edit-template').modal('hide');
             } else {
                 if (data.error == 'nonce') {
                     jQuery('.b2s-nonce-check-fail').show();

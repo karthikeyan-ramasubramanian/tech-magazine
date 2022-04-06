@@ -1,6 +1,54 @@
 {
     "packages": [
         {
+            "name": "barryvdh/composer-cleanup-plugin",
+            "version": "dev-master",
+            "version_normalized": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mailoptin/composer-cleanup-plugin.git",
+                "reference": "74d878666436c99f5b671b90312e85479afeedb0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mailoptin/composer-cleanup-plugin/zipball/74d878666436c99f5b671b90312e85479afeedb0",
+                "reference": "74d878666436c99f5b671b90312e85479afeedb0",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^2.0"
+            },
+            "time": "2022-03-15T13:35:33+00:00",
+            "default-branch": true,
+            "type": "composer-plugin",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1-dev"
+                },
+                "class": "Barryvdh\\Composer\\CleanupPlugin"
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Barryvdh\\Composer\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Barry vd. Heuvel",
+                    "email": "barryvdh@gmail.com"
+                }
+            ],
+            "description": "A composer cleanup plugin, to remove tests and documentation to save space",
+            "support": {
+                "source": "https://github.com/mailoptin/composer-cleanup-plugin/tree/master"
+            },
+            "install-path": "../barryvdh/composer-cleanup-plugin"
+        },
+        {
             "name": "collizo4sky/persist-admin-notices-dismissal",
             "version": "1.4.4",
             "version_normalized": "1.4.4.0",
@@ -442,11 +490,11 @@
         },
         {
             "name": "mailoptin/authifly",
-            "version": "0.2.1646901609",
-            "version_normalized": "0.2.1646901609.0",
+            "version": "0.2.1647959398",
+            "version_normalized": "0.2.1647959398.0",
             "dist": {
                 "type": "zip",
-                "url": "https://php.fury.io/uDXRvLf8b2ywvgcokC7z/mailoptin/~/up/ver_E1wR0/mailoptinauthifly-0-2-1646901609.zip"
+                "url": "https://php.fury.io/uDXRvLf8b2ywvgcokC7z/mailoptin/~/up/ver_1sPyRD/mailoptinauthifly-0-2-1647959398.zip"
             },
             "require": {
                 "composer/installers": "~1.0",
@@ -473,7 +521,9 @@
                     "Zoho.php",
                     "Infusionsoft.php",
                     "Jilt.php",
-                    "CleverReach.php"
+                    "CleverReach.php",
+                    "Stripe.php",
+                    "Newsman.php"
                 ]
             },
             "license": [
@@ -492,11 +542,11 @@
         },
         {
             "name": "mailoptin/connections",
-            "version": "0.2.1646907159",
-            "version_normalized": "0.2.1646907159.0",
+            "version": "0.2.1648034705",
+            "version_normalized": "0.2.1648034705.0",
             "dist": {
                 "type": "zip",
-                "url": "https://php.fury.io/uDXRvLf8b2ywvgcokC7z/mailoptin/~/up/ver_q4aj7/mailoptinconnections-0-2-1646907159.zip"
+                "url": "https://php.fury.io/uDXRvLf8b2ywvgcokC7z/mailoptin/~/up/ver_1R3ViN/mailoptinconnections-0-2-1648034705.zip"
             },
             "require": {
                 "composer/installers": "~1.0",
@@ -560,6 +610,7 @@
                     "MailOptin\\WebHookConnect\\": "WebHookConnect/",
                     "MailOptin\\WooCommerceConnect\\": "WooCommerceConnect/",
                     "MailOptin\\FacebookCustomAudienceConnect\\": "FacebookCustomAudienceConnect/",
+                    "MailOptin\\NewsmanConnect\\": "NewsmanConnect/",
                     "MailOptin\\Connections\\": "./"
                 },
                 "classmap": [
@@ -571,17 +622,17 @@
         },
         {
             "name": "mailoptin/core",
-            "version": "0.1.0-alpha.1646907154",
-            "version_normalized": "0.1.0.0-alpha1646907154",
+            "version": "0.1.0-alpha.1648034700",
+            "version_normalized": "0.1.0.0-alpha1648034700",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mailoptin/core.git",
-                "reference": "2dbfe991b08b54d08f1ffdd6de5497477ee2619c"
+                "reference": "122ebcde19a39eff59108539711b2bf73c32b499"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mailoptin/core/zipball/2dbfe991b08b54d08f1ffdd6de5497477ee2619c",
-                "reference": "2dbfe991b08b54d08f1ffdd6de5497477ee2619c",
+                "url": "https://api.github.com/repos/mailoptin/core/zipball/122ebcde19a39eff59108539711b2bf73c32b499",
+                "reference": "122ebcde19a39eff59108539711b2bf73c32b499",
                 "shasum": ""
             },
             "require": {
@@ -593,7 +644,7 @@
                 "soundasleep/html2text": "~0.5",
                 "symfony/polyfill-mbstring": "1.19.0"
             },
-            "time": "2022-03-02T21:09:15+00:00",
+            "time": "2022-03-15T12:09:54+00:00",
             "type": "wordpress-plugin",
             "installation-source": "dist",
             "autoload": {
@@ -611,7 +662,7 @@
             "description": "Core lib for MailOptin",
             "support": {
                 "issues": "https://github.com/mailoptin/core/issues",
-                "source": "https://github.com/mailoptin/core/tree/0.1.0-alpha.1646907154"
+                "source": "https://github.com/mailoptin/core/tree/0.1.0-alpha.1648034700"
             },
             "install-path": "../../src/core"
         },

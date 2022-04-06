@@ -3,6 +3,7 @@
 namespace MailOptin\Ctctv3Connect;
 
 use Authifly\Provider\ConstantContactV3;
+use Authifly\Storage\OAuthCredentialStorage;
 use MailOptin\Core\Connections\ConnectionInterface;
 use MailOptin\Core\PluginSettings\Connections;
 use function MailOptin\Core\current_user_has_privilege;
@@ -73,7 +74,8 @@ class Connect extends AbstractCtctv3Connect implements ConnectionInterface
             'keys'     => ['id' => $ctctv3_api_key, 'secret' => $ctctv3_api_secret]
         ];
 
-        $instance = new ConstantContactV3($config);
+
+        $instance = new ConstantContactV3($config, null, new OAuthCredentialStorage());
 
         try {
 

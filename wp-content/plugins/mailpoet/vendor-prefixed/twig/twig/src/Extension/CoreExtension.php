@@ -519,7 +519,7 @@ function twig_in_filter($value, $compare)
 function twig_trim_filter($string, $characterMask = null, $side = 'both')
 {
  if (null === $characterMask) {
- $characterMask = " \t\n\r\0\v";
+ $characterMask = " \t\n\r\x00\v";
  }
  switch ($side) {
  case 'both':

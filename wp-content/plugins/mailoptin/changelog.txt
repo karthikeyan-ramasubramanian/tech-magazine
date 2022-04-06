@@ -1,5 +1,12 @@
 ﻿== Changelog ==
 
+= 1.2.46.0 =
+* Added newsman integration.
+* Added email automation support to zoho campaigns.
+
+= 1.2.45.2 =
+* Improved the reliability of the new Constant Contact authentication.
+
 = 1.2.45.1 =
 * Move to a new authentication system for Constant Contact v3 integration. [Learn more](https://mailoptin.io/article/connect-mailoptin-with-constant-contact/#v3)
 

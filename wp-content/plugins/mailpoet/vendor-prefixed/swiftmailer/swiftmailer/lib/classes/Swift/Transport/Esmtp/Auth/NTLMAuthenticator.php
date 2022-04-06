@@ -3,7 +3,7 @@ namespace MailPoetVendor;
 if (!defined('ABSPATH')) exit;
 class Swift_Transport_Esmtp_Auth_NTLMAuthenticator implements Swift_Transport_Esmtp_Authenticator
 {
- const NTLMSIG = "NTLMSSP\0";
+ const NTLMSIG = "NTLMSSP\x00";
  const DESCONST = 'KGS!@#$%';
  public function getAuthKeyword()
  {
@@ -265,7 +265,7 @@ class Swift_Transport_Esmtp_Auth_NTLMAuthenticator implements Swift_Transport_Es
  if ($isHex) {
  $byte = \hex2bin(\str_pad($input, $bytes * 2, '00'));
  } else {
- $byte = \str_pad($input, $bytes, "\0");
+ $byte = \str_pad($input, $bytes, "\x00");
  }
  return $byte;
  }
@@ -279,7 +279,7 @@ class Swift_Transport_Esmtp_Auth_NTLMAuthenticator implements Swift_Transport_Es
  if (\strlen($key) > $blocksize) {
  $key = \pack('H*', \md5($key));
  }
- $key = \str_pad($key, $blocksize, "\0");
+ $key = \str_pad($key, $blocksize, "\x00");
  $ipadk = $key ^ \str_repeat("6", $blocksize);
  $opadk = $key ^ \str_repeat("\\", $blocksize);
  return \pack('H*', \md5($opadk . \pack('H*', \md5($ipadk . $msg))));

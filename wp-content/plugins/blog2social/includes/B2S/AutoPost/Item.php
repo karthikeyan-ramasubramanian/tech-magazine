@@ -229,7 +229,7 @@ class B2S_AutoPost_Item {
     private function getNetworkAutoPostData($data = array()) {
         $html = '';
         if (!empty($this->networkAutoPostData)) {
-            $selected = (is_array($data['network_auth_id']) && isset($data['network_auth_id'])) ? $data['network_auth_id'] : array();
+            $selected = (isset($data['network_auth_id']) && is_array($data['network_auth_id'])) ? $data['network_auth_id'] : array();
             $networkName = unserialize(B2S_PLUGIN_NETWORK);
             $html .= '<ul class="list-group b2s-network-details-container-list">';
             foreach ($this->networkAutoPostData as $k => $v) {

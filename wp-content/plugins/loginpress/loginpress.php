@@ -3,7 +3,7 @@
 * Plugin Name: LoginPress - Customizing the WordPress Login Screen.
 * Plugin URI: https://loginpress.pro/?utm_source=loginpress-lite&utm_medium=plugin-inside&utm_campaign=pro-upgrade&utm_content=plugin_uri
 * Description: LoginPress is the best <code>wp-login</code> Login Page Customizer plugin by <a href="https://wpbrigade.com/?utm_source=loginpress-lite">WPBrigade</a> which allows you to completely change the layout of login, register and forgot password forms.
-* Version: 1.5.13
+* Version: 1.6.0
 * Author: WPBrigade
 * Author URI: https://WPBrigade.com/?utm_source=loginpress-lite
 * Text Domain: loginpress
@@ -22,7 +22,7 @@ if ( ! class_exists( 'LoginPress' ) ) :
     /**
     * @var string
     */
-    public $version = '1.5.13';
+    public $version = '1.6.0';
 
     /**
     * @var The single instance of the class
@@ -124,13 +124,42 @@ if ( ! class_exists( 'LoginPress' ) ) :
       add_action( 'plugin_action_links', 	  array( $this, 'loginpress_action_links' ), 10, 2 );
       add_action( 'admin_init',             array( $this, 'redirect_optin' ) );
       add_filter( 'auth_cookie_expiration', array( $this, '_change_auth_cookie_expiration' ), 10, 3 );
-      //add_filter( 'plugins_api',            array( $this, 'get_addon_info_' ) , 100, 3 );
-      if ( is_multisite() ) {
-  			add_action( 'admin_init',             array( $this, 'redirect_loginpress_edit_page' ) );
-  			add_action( 'admin_init',             array( $this, 'check_loginpress_page' ) );
-      }
+		//add_filter( 'plugins_api',            array( $this, 'get_addon_info_' ) , 100, 3 );
+		if ( is_multisite() ) {
+			add_action( 'admin_init', array( $this, 'redirect_loginpress_edit_page' ) );
+			add_action( 'admin_init', array( $this, 'check_loginpress_page' ) );
+				// Makes sure the plugin is defined before trying to use it
+			if ( ! function_exists( 'is_plugin_active_for_network' ) || ! function_exists( 'is_plugin_active' ) ) {
+				require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+				if ( is_plugin_active_for_network( 'wordpress-seo/wp-seo.php' ) ) {
+					/**
+					 * This filters the ID of the page/post which you want to remove from the sitemap XML.
+					 * @since 1.5.14
+					 *
+					 * @documentation https://developer.yoast.com/features/xml-sitemaps/api/
+					 */
+					add_filter( 'wpseo_exclude_from_sitemap_by_post_ids', array( $this, 'loginpress_exclude_from_sitemap' ) );
+				}
+			}
+
 
 		}
+
+	}
+
+	/**
+	 * Callback function to exclude LoginPress page from sitemap.
+	 *
+	 * @return bool Exclude page/s or post/s.
+	 * @since 1.5.14
+	 */
+	public function loginpress_exclude_from_sitemap() {
+
+		$page = get_page_by_path( 'loginpress' );
+		if ( is_object( $page ) ) {
+			return array( $page->ID );
+		}
+	}
 
     /**
     * Redirect to Optin page.
