@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - Blog2Social: Social Media Auto Post &amp; Scheduler - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-04-04 10:17+0000\n"
+"PO-Revision-Date: 2022-04-19 08:54+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -67,7 +67,7 @@ msgstr "(SMART)"
 msgid "+ add Parameter"
 msgstr "+ Parameter hinzufügen"
 
-#: includes/B2S/Ship/Save.php:439
+#: includes/B2S/Ship/Save.php:457
 msgid ""
 "-For scheduled posts, Blog2Social will save your post and move it to the "
 "\"Scheduled Posts\" tab on your \"Posts & Sharing\" navigation bar. On your "
@@ -80,7 +80,7 @@ msgstr ""
 "Sharing” Tab. Klicke dann auf \"Teilen\", um Deinen Post dann an Dein "
 "Facebook-Profil zu senden!"
 
-#: includes/B2S/Ship/Save.php:447
+#: includes/B2S/Ship/Save.php:465
 msgid ""
 "-For scheduled posts, Blog2Social will save your post and move it to the "
 "\"Scheduled Posts\" tab on your \"Site & Blog Content\" navigation bar. On "
@@ -93,7 +93,7 @@ msgstr ""
 "Sharing” Tab. Klicke dann auf \"Teilen\", um Deinen Post dann an Dein "
 "Facebook-Profil zu senden!"
 
-#: includes/B2S/Ship/Save.php:438
+#: includes/B2S/Ship/Save.php:456
 msgid ""
 "-To share your post immediately, click the \"Share\" button next to your "
 "selected Facebook profile below."
@@ -101,7 +101,7 @@ msgstr ""
 "-Um den Beitrag sofort zu teilen,  klicke einfach auf den “Teilen” Button "
 "neben Deinem unten aufgeführten Profil."
 
-#: includes/B2S/Ship/Save.php:446
+#: includes/B2S/Ship/Save.php:464
 msgid ""
 "-To share your post immediately, click the \"Share\" button next to your "
 "selected Google+ account below."
@@ -192,7 +192,7 @@ msgstr ""
 "<a href=\"%s\" target=\"_blank\">So richtest Du den Auto-Poster für Deine "
 "WordPress-Inhalte ein</a>"
 
-#: includes/Loader.php:1692 includes/System.php:32 includes/System.php:38
+#: includes/Loader.php:1690 includes/System.php:32 includes/System.php:38
 #, php-format
 msgid ""
 "<a href=\"%s\" target=\"_blank\">Please find more Information and help in "
@@ -300,7 +300,7 @@ msgstr ""
 "überprüfen Sie Ihre Webserver-Konfiguration auf Caching."
 
 #: includes/B2S/Settings/Item.php:54 includes/B2S/Settings/Item.php:89
-#: includes/B2S/Ship/Item.php:1287
+#: includes/B2S/Ship/Item.php:1348
 msgid "Account"
 msgstr "Konto"
 
@@ -379,7 +379,7 @@ msgstr ""
 "Setze und bearbeite Social-Media-Tags für Open Graph (z.B. Facebook und "
 "LinkedIn) und Twitter Cards, um das Aussehen Deiner Link-Posts festzulegen."
 
-#: includes/B2S/Ship/Item.php:1456
+#: includes/B2S/Ship/Item.php:1517
 msgid "add another post"
 msgstr "einen weiteren Post anlegen"
 
@@ -429,7 +429,7 @@ msgstr "Open Graph Objekttyp hinzufügen."
 msgid "Add Page"
 msgstr "Seite hinzufügen"
 
-#: views/b2s/post.calendar.php:100 views/b2s/post.sched.php:184
+#: views/b2s/post.calendar.php:100 views/b2s/post.sched.php:195
 #: views/b2s/repost.php:78 views/b2s/widgets/calendar.php:21
 msgid "add post"
 msgstr "Beitrag hinzufügen"
@@ -438,11 +438,11 @@ msgstr "Beitrag hinzufügen"
 msgid "Add Profile"
 msgstr "Profil hinzufügen"
 
-#: includes/B2S/Ship/Item.php:1306
+#: includes/B2S/Ship/Item.php:1367
 msgid "Add Retweet"
 msgstr "Retweet hinzufügen"
 
-#: views/b2s/ship.php:822
+#: views/b2s/ship.php:833
 msgid "add Schedule"
 msgstr "Zeitplan hinzufügen"
 
@@ -538,6 +538,10 @@ msgstr "alle Kategorien & Schlagwörter"
 #: includes/B2S/Post/Filter.php:141 includes/PRG/Post/Filter.php:49
 msgid "all post types"
 msgstr "alle Typen"
+
+#: views/b2s/html/sidebar.php:71
+msgid "All Posts"
+msgstr "Alle Beiträge"
 
 #: views/b2s/metrics.php:126
 msgid "All posts"
@@ -674,7 +678,7 @@ msgstr "Bild für diesen Post übernehmen"
 msgid "Apply post template settings"
 msgstr "Beitragsvorlagen verwenden"
 
-#: includes/B2S/Ship/Item.php:1486
+#: includes/B2S/Ship/Item.php:1547
 msgid "Apply Settings To All Networks"
 msgstr "Planung für alle Netzwerke übernehmen"
 
@@ -784,7 +788,7 @@ msgstr ""
 "XING, LinkedIn, Instagram, ... crosspost to pages & groups"
 
 #: includes/Loader.php:917 views/b2s/settings.php:41
-#: views/b2s/html/sidebar.php:89
+#: views/b2s/html/sidebar.php:92
 msgid "Auto-Post"
 msgstr "Beiträge automatisch teilen"
 
@@ -842,7 +846,7 @@ msgstr "Verfügbare Netzwerke im Autoposter"
 msgid "Available networks to select your auto-post connecitons:"
 msgstr "Verfügbare Netwerkverbindungen:"
 
-#: includes/Loader.php:1692 includes/Loader.php:1713 includes/Loader.php:2011
+#: includes/Loader.php:1690 includes/Loader.php:1711 includes/Loader.php:2009
 msgid "back to install plugins"
 msgstr "zurück zur Pluginübersicht"
 
@@ -895,7 +899,7 @@ msgid "Best Times Manager"
 msgstr "Beste Zeiten Manager"
 
 #: views/b2s/metrics.php:233 views/b2s/html/header.php:536
-#: views/b2s/html/sidebar.php:102
+#: views/b2s/html/sidebar.php:105
 msgid "BETA"
 msgstr "BETA"
 
@@ -967,7 +971,7 @@ msgstr ""
 "Blog2Social schreibt diese Informationen automatisch in die Twitter Card "
 "Meta Tags als Bild, Titel und Beschreibung Deines WordPress-Beitrags."
 
-#: views/b2s/html/sidebar.php:152
+#: views/b2s/html/sidebar.php:155
 msgid "Blog2Social Blog News"
 msgstr "Blog2Social Blog News"
 
@@ -1012,7 +1016,7 @@ msgstr ""
 msgid "Blog2Social is a service of Adenion GmbH"
 msgstr "Blog2Social ist ein Service der Adenion GmbH"
 
-#: includes/Loader.php:1692
+#: includes/Loader.php:1690
 msgid "Blog2Social needs Wordpress Version 4.7.0 or higher."
 msgstr "Blog2Social benötigt WordPress Version 4.7.0 oder höher."
 
@@ -1185,7 +1189,7 @@ msgstr ""
 "Beitrag aktualisiert wird."
 
 #: includes/Loader.php:1031 includes/Loader.php:1102 views/b2s/dashboard.php:31
-#: includes/B2S/RePost/Item.php:141 views/b2s/html/sidebar.php:92
+#: includes/B2S/RePost/Item.php:141 views/b2s/html/sidebar.php:95
 msgid "Calendar"
 msgstr "Kalender"
 
@@ -1230,15 +1234,17 @@ msgstr "Änderungen übernehmen"
 #: includes/B2S/Ship/Item.php:660 includes/B2S/Ship/Item.php:683
 #: includes/B2S/Ship/Item.php:704 includes/B2S/Ship/Item.php:733
 #: includes/B2S/Ship/Item.php:761 includes/B2S/Ship/Item.php:789
-#: includes/B2S/Ship/Item.php:832 includes/B2S/Ship/Item.php:853
-#: includes/B2S/Ship/Item.php:860 includes/B2S/Ship/Item.php:867
-#: includes/B2S/Ship/Item.php:887 includes/B2S/Ship/Item.php:907
-#: includes/B2S/Ship/Item.php:914 includes/B2S/Ship/Item.php:921
-#: includes/B2S/Ship/Item.php:938 includes/B2S/Ship/Item.php:959
-#: includes/B2S/Ship/Item.php:966 includes/B2S/Ship/Item.php:973
-#: includes/B2S/Ship/Item.php:991 includes/B2S/Ship/Item.php:1012
-#: includes/B2S/Ship/Item.php:1033 includes/B2S/Ship/Item.php:1053
-#: includes/B2S/Ship/Item.php:1074 includes/B2S/Ship/Item.php:1118
+#: includes/B2S/Ship/Item.php:831 includes/B2S/Ship/Item.php:844
+#: includes/B2S/Ship/Item.php:870 includes/B2S/Ship/Item.php:891
+#: includes/B2S/Ship/Item.php:898 includes/B2S/Ship/Item.php:905
+#: includes/B2S/Ship/Item.php:925 includes/B2S/Ship/Item.php:945
+#: includes/B2S/Ship/Item.php:952 includes/B2S/Ship/Item.php:959
+#: includes/B2S/Ship/Item.php:976 includes/B2S/Ship/Item.php:997
+#: includes/B2S/Ship/Item.php:1004 includes/B2S/Ship/Item.php:1011
+#: includes/B2S/Ship/Item.php:1029 includes/B2S/Ship/Item.php:1050
+#: includes/B2S/Ship/Item.php:1071 includes/B2S/Ship/Item.php:1091
+#: includes/B2S/Ship/Item.php:1112 includes/B2S/Ship/Item.php:1146
+#: includes/B2S/Ship/Item.php:1179
 msgid "Change image"
 msgstr "Bild ändern"
 
@@ -1277,8 +1283,8 @@ msgstr "Zeichenbegrenzung"
 #: includes/B2S/Network/Item.php:971 includes/B2S/Ship/Item.php:228
 #: includes/B2S/Ship/Item.php:232 includes/B2S/Ship/Item.php:286
 #: includes/B2S/Ship/Item.php:290 includes/B2S/Ship/Item.php:332
-#: includes/B2S/Ship/Item.php:336 includes/B2S/Ship/Item.php:1464
-#: includes/B2S/Ship/Item.php:1466
+#: includes/B2S/Ship/Item.php:336 includes/B2S/Ship/Item.php:1525
+#: includes/B2S/Ship/Item.php:1527
 msgid "characters"
 msgstr "Zeichen"
 
@@ -1331,7 +1337,7 @@ msgstr "Wähle Dein Postformat "
 msgid "City"
 msgstr "Stadt"
 
-#: includes/B2S/Ship/Item.php:1209
+#: includes/B2S/Ship/Item.php:1270
 msgid "Classified Ads"
 msgstr "Kleinanzeigen"
 
@@ -1511,7 +1517,7 @@ msgstr "Deaktivierung fortsetzen"
 msgid "Contracting and Licensing"
 msgstr "Blog2Social Vertrag / Blog2Social Lizenz"
 
-#: includes/B2S/Ship/Item.php:1470
+#: includes/B2S/Ship/Item.php:1531
 msgid "Copy from original"
 msgstr "Originaltext kopieren"
 
@@ -1663,18 +1669,18 @@ msgid "Dashboard"
 msgstr "Dashboard"
 
 #: includes/B2S/Curation/View.php:69 includes/B2S/Curation/View.php:70
-#: includes/B2S/RePost/Item.php:210 includes/B2S/Ship/Item.php:1437
+#: includes/B2S/RePost/Item.php:210 includes/B2S/Ship/Item.php:1498
 #: views/b2s/partials/post-edit-modal.php:67
 #: views/b2s/partials/post-edit-modal.php:70
 msgid "Date"
 msgstr "Startdatum"
 
-#: includes/B2S/Ship/Item.php:1380
+#: includes/B2S/Ship/Item.php:1441
 msgid "Day of month"
 msgstr "Tag im Monat"
 
 #: includes/B2S/Network/Item.php:323 includes/B2S/Network/Item.php:402
-#: includes/B2S/Network/Item.php:477 includes/B2S/Ship/Item.php:1385
+#: includes/B2S/Network/Item.php:477 includes/B2S/Ship/Item.php:1446
 msgid "Days"
 msgstr "Tage"
 
@@ -1776,7 +1782,7 @@ msgstr "Twitter Beitragsinhalt definieren"
 msgid "Define your post templates for each social media network"
 msgstr "Definiere Deine Beitragsvorlagen für jedes Social-Media-Netzwerk. "
 
-#: includes/B2S/Ship/Item.php:1288 views/b2s/partials/post-edit-modal.php:78
+#: includes/B2S/Ship/Item.php:1349 views/b2s/partials/post-edit-modal.php:78
 msgid "Delay"
 msgstr "Verzögerung"
 
@@ -1784,11 +1790,11 @@ msgstr "Verzögerung"
 msgid "Delete"
 msgstr "Löschen"
 
-#: includes/Ajax/Post.php:1960 includes/B2S/Network/Item.php:572
+#: includes/Ajax/Post.php:2009 includes/B2S/Network/Item.php:572
 #: includes/B2S/Post/Item.php:553 includes/B2S/Post/Item.php:573
 #: includes/B2S/Post/Item.php:932 includes/B2S/Post/Item.php:990
-#: includes/B2S/Settings/Item.php:103 includes/B2S/Ship/Item.php:1305
-#: includes/B2S/Ship/Item.php:1455
+#: includes/B2S/Settings/Item.php:103 includes/B2S/Ship/Item.php:1366
+#: includes/B2S/Ship/Item.php:1516
 msgid "delete"
 msgstr "löschen"
 
@@ -1847,7 +1853,7 @@ msgstr "Entwurf löschen"
 msgid "Delete Social Media Posts"
 msgstr "Social Media Posts löschen"
 
-#: includes/B2S/Ship/Item.php:399 includes/B2S/Ship/Item.php:1474
+#: includes/B2S/Ship/Item.php:399 includes/B2S/Ship/Item.php:1535
 msgid "Delete text"
 msgstr "Text löschen"
 
@@ -1892,12 +1898,6 @@ msgstr ""
 msgid "Disconnect"
 msgstr "Verbindung aufheben"
 
-#: includes/B2S/Ship/Item.php:543 includes/B2S/Ship/Item.php:604
-#: includes/B2S/Ship/Item.php:663 includes/B2S/Ship/Item.php:870
-#: includes/B2S/Ship/Item.php:924 includes/B2S/Ship/Item.php:976
-msgid "Do u want to post multiple images?"
-msgstr "Du möchtest mehrere Bilder posten?"
-
 #: views/b2s/network.php:158
 msgid "Do you really want to delete this authorization"
 msgstr "Soll die Autorisierung wirklich gelöscht werden?"
@@ -1924,6 +1924,14 @@ msgstr "Möchtest Du Deine geplanten Beiträge löschen?"
 msgid "Do you want to mark this post as published ?"
 msgstr "Möchtest Du diesen Beitrag als veröffentlicht markieren?"
 
+#: includes/B2S/Ship/Item.php:543 includes/B2S/Ship/Item.php:604
+#: includes/B2S/Ship/Item.php:663 includes/B2S/Ship/Item.php:851
+#: includes/B2S/Ship/Item.php:908 includes/B2S/Ship/Item.php:962
+#: includes/B2S/Ship/Item.php:1014 includes/B2S/Ship/Item.php:1152
+#| msgid "Do u want to post multiple images?"
+msgid "Do you want to post multiple images?"
+msgstr "Du möchtest mehrere Bilder posten?"
+
 #: views/b2s/network.php:350
 msgid "Download and activate the Blog2Social extension"
 msgstr "Lade und aktiviere die Blog2Social Extension"
@@ -1933,11 +1941,11 @@ msgstr "Lade und aktiviere die Blog2Social Extension"
 msgid "draft"
 msgstr "Entwurf"
 
-#: includes/Loader.php:917 views/b2s/html/sidebar.php:74
+#: includes/Loader.php:917 views/b2s/html/sidebar.php:77
 msgid "Drafts"
 msgstr "Entwürfe"
 
-#: includes/B2S/Ship/Item.php:1375 includes/B2S/Ship/Item.php:1378
+#: includes/B2S/Ship/Item.php:1436 includes/B2S/Ship/Item.php:1439
 msgid "Duration"
 msgstr "Dauer"
 
@@ -2012,11 +2020,11 @@ msgstr "Unternehmensseite"
 msgid "enable Auto-Posting"
 msgstr "Auto-Posting aktivieren"
 
-#: includes/B2S/Ship/Item.php:1269
+#: includes/B2S/Ship/Item.php:1330
 msgid "Enable Retweets for all Tweets with the selected profile"
 msgstr "Retweets für alle Tweets mit dem gewählten Profil aktivieren"
 
-#: includes/B2S/Ship/Item.php:1430
+#: includes/B2S/Ship/Item.php:1491
 msgid "End Of Month"
 msgstr "Monatsende"
 
@@ -2076,7 +2084,7 @@ msgstr "Gib einen Suchbegriff ein oder stelle eine Frage"
 msgid "Event"
 msgstr "Event"
 
-#: includes/B2S/Ship/Item.php:1208
+#: includes/B2S/Ship/Item.php:1269
 msgid "Events"
 msgstr "Events"
 
@@ -2142,12 +2150,12 @@ msgstr "Fehler beim Laden der Standardeinstellungen"
 msgid "Failed to save"
 msgstr "Speichern fehlgeschlagen"
 
-#: includes/B2S/Post/Item.php:781 includes/B2S/Ship/Save.php:482
+#: includes/B2S/Post/Item.php:781 includes/B2S/Ship/Save.php:500
 msgid "FAQ"
 msgstr "FAQ"
 
 #: includes/Loader.php:917 views/b2s/metrics.php:130
-#: views/b2s/html/sidebar.php:71
+#: views/b2s/html/sidebar.php:74
 msgid "Favorites"
 msgstr "Favoriten"
 
@@ -2249,14 +2257,14 @@ msgstr ""
 "Für mehr Informationen, wie Du die Meta Tags korrekt verwenden kannst, folge "
 "dem <a target=\"_blank\" href=\"%s\">Guide für Twitter Cards</a>."
 
-#: includes/B2S/Ship/Save.php:443
+#: includes/B2S/Ship/Save.php:461
 msgid ""
 "For sharing your posts on Google+ you can now use Google+ Instant Sharing"
 msgstr ""
 "Um Beiträge auf Google+ zu teilen, steht ab sofort Google+ Instant Sharing "
 "zur Verfügung"
 
-#: includes/B2S/Ship/Save.php:435
+#: includes/B2S/Ship/Save.php:453
 msgid ""
 "For sharing your posts on personal Facebook Profiles you can use Facebook "
 "Instant Sharing"
@@ -2293,7 +2301,7 @@ msgstr "Frankreich"
 msgid "Frequently asked questions"
 msgstr "Oft gestellte Fragen (FAQ)"
 
-#: includes/B2S/RePost/Item.php:79 includes/B2S/Ship/Item.php:1447
+#: includes/B2S/RePost/Item.php:79 includes/B2S/Ship/Item.php:1508
 msgid "Fri"
 msgstr "Fr"
 
@@ -2349,7 +2357,7 @@ msgstr "Jetzt loslegen"
 msgid "Get the Blog2Social Browser Extension"
 msgstr "Blog2Social Browser Erweiterung"
 
-#: views/b2s/ship.php:838
+#: views/b2s/ship.php:849
 msgid "Give me more information"
 msgstr "Erhalte mehr Infomationen"
 
@@ -2433,7 +2441,7 @@ msgstr "Serververbindungs-Guide"
 msgid "Hashtag shuffle (Hashtags have to be defined in the text field above)"
 msgstr "Hashtags mischen (Hashtags müssen im obigen Textfeld definiert sein)"
 
-#: includes/B2S/Ship/Item.php:1233
+#: includes/B2S/Ship/Item.php:1294
 msgid "Hashtags"
 msgstr "Hashtags"
 
@@ -2442,7 +2450,7 @@ msgid "Help & Community"
 msgstr "Hilfe & Community"
 
 #: includes/Loader.php:1036 includes/Loader.php:1125
-#: views/b2s/html/header.php:52 views/b2s/html/sidebar.php:112
+#: views/b2s/html/header.php:52 views/b2s/html/sidebar.php:115
 #: views/b2s/html/sidebar.ship.php:66
 msgid "Help & Support"
 msgstr "Hilfe & Support"
@@ -2600,7 +2608,7 @@ msgstr ""
 "Wenn Dir Blog2Social gefällt, gib uns bitte eine 5 Sterne Bewertung. Wenn es "
 "etwas gibt, das für Dich nicht funktioniert, kontaktiere uns bitte!"
 
-#: views/b2s/html/sidebar.php:138
+#: views/b2s/html/sidebar.php:141
 msgid ""
 "If you like Blog2Social, we would be greatly delighted, if you could leave "
 "us a 5-star rating. If there's something you need assistance with, you can "
@@ -2680,19 +2688,19 @@ msgstr "Ignorieren & teilen"
 msgid "Image"
 msgstr "Bild"
 
-#: views/b2s/post.calendar.php:82 views/b2s/post.sched.php:201
+#: views/b2s/post.calendar.php:82 views/b2s/post.sched.php:212
 #: views/b2s/repost.php:59 views/b2s/repost.php:95
 #: includes/B2S/Network/Item.php:797 includes/B2S/Network/Item.php:800
 #: includes/B2S/Settings/Item.php:294 views/b2s/html/footer.php:182
-#: views/b2s/widgets/calendar.php:72
+#: views/b2s/widgets/calendar.php:70
 msgid "Image cut out"
 msgstr "Bild zuschneiden"
 
-#: views/b2s/post.calendar.php:82 views/b2s/post.sched.php:201
+#: views/b2s/post.calendar.php:82 views/b2s/post.sched.php:212
 #: views/b2s/repost.php:59 views/b2s/repost.php:95
 #: includes/B2S/Post/Item.php:819 includes/B2S/Settings/Item.php:294
 #: includes/B2S/Settings/Item.php:317 includes/B2S/Ship/Item.php:386
-#: views/b2s/widgets/calendar.php:72
+#: views/b2s/widgets/calendar.php:70
 msgid "Image Post"
 msgstr "Bild-Beitrag"
 
@@ -2705,11 +2713,11 @@ msgstr "Bild hochladen / Mediathek"
 msgid "Image URL"
 msgstr "Bild Url"
 
-#: views/b2s/post.calendar.php:82 views/b2s/post.sched.php:201
+#: views/b2s/post.calendar.php:82 views/b2s/post.sched.php:212
 #: views/b2s/repost.php:59 views/b2s/repost.php:95
 #: includes/B2S/Network/Item.php:796 includes/B2S/Network/Item.php:799
 #: includes/B2S/Settings/Item.php:280 views/b2s/html/footer.php:177
-#: views/b2s/widgets/calendar.php:72
+#: views/b2s/widgets/calendar.php:70
 msgid "Image with frame"
 msgstr "Bild mit Rahmen"
 
@@ -2818,7 +2826,7 @@ msgstr "Indonesien"
 #: includes/B2S/AutoPost/Item.php:113 includes/B2S/AutoPost/Item.php:210
 #: includes/B2S/Curation/View.php:73 includes/B2S/Network/Item.php:227
 #: includes/B2S/RePost/Item.php:159 includes/B2S/RePost/Item.php:180
-#: includes/B2S/Ship/Item.php:1269
+#: includes/B2S/Ship/Item.php:1330
 msgid "Info"
 msgstr "Info"
 
@@ -2835,7 +2843,7 @@ msgid ""
 "network"
 msgstr "Info: Ändere die Open Graph Parameter für diese Netzwerk"
 
-#: includes/B2S/Ship/Item.php:397 includes/B2S/Ship/Item.php:1472
+#: includes/B2S/Ship/Item.php:397 includes/B2S/Ship/Item.php:1533
 msgid "Insert full-text"
 msgstr "ganzen Text einfügen"
 
@@ -2872,7 +2880,7 @@ msgstr "Instant Caching für Facebook Link-Beiträge"
 msgid "Instant Caching for Link Posts"
 msgstr "Instant Caching für Link-Beiträge"
 
-#: includes/Loader.php:917 views/b2s/html/sidebar.php:77
+#: includes/Loader.php:917 views/b2s/html/sidebar.php:80
 msgid "Instant Sharing"
 msgstr "Instant Sharing"
 
@@ -2930,7 +2938,7 @@ msgstr "stephanv auf wordpress.org"
 msgid "Job"
 msgstr "Job"
 
-#: includes/B2S/Ship/Item.php:1207
+#: includes/B2S/Ship/Item.php:1268
 msgid "Jobs & Projects"
 msgstr "Stellenangebote & Projekte"
 
@@ -3008,7 +3016,7 @@ msgstr "letzte Beiträge"
 msgid "latest share by %s"
 msgstr "zuletzt von %s geteilt"
 
-#: includes/B2S/Ship/Save.php:435
+#: includes/B2S/Ship/Save.php:453
 msgid "Learn how it works"
 msgstr "mehr erfahren"
 
@@ -3028,7 +3036,7 @@ msgstr ""
 "Erfahre, wie Du individuelle Beste Zeiten für Deine Social Media Planung und "
 "Deinen Auto-Poster einrichten und anwenden kannst."
 
-#: views/b2s/network.php:136 includes/B2S/Ship/Item.php:1367
+#: views/b2s/network.php:136 includes/B2S/Ship/Item.php:1428
 #: views/b2s/partials/post-edit-modal.php:53
 msgid "Learn more"
 msgstr "Mehr erfahren"
@@ -3047,8 +3055,8 @@ msgstr ""
 msgid "Learn more about the Xing guidelines."
 msgstr "Erfahre mehr über die Xing-Richtlinien."
 
-#: includes/B2S/Ship/Item.php:406 includes/B2S/Ship/Item.php:881
-#: includes/B2S/Ship/Item.php:1338
+#: includes/B2S/Ship/Item.php:406 includes/B2S/Ship/Item.php:919
+#: includes/B2S/Ship/Item.php:1399
 msgid "Learn more about this"
 msgstr "Erfahre mehr darüber"
 
@@ -3071,7 +3079,7 @@ msgstr ""
 "Likes: Eine Aufzählung, wie viele “Gefällt mir”-Angaben ein Beitrag hat."
 
 #: includes/B2S/Network/Item.php:796 includes/B2S/Network/Item.php:799
-#: includes/B2S/Ship/Item.php:1134 includes/B2S/Ship/Item.php:1136
+#: includes/B2S/Ship/Item.php:1195 includes/B2S/Ship/Item.php:1197
 msgid "Link"
 msgstr "Link"
 
@@ -3083,11 +3091,11 @@ msgstr ""
 "Link-Aufrufe: Eine Aufzählung der Link-Klicks, zu weiterführendem Content. "
 "(Für Twitter verfügbar)"
 
-#: views/b2s/post.calendar.php:82 views/b2s/post.sched.php:201
+#: views/b2s/post.calendar.php:82 views/b2s/post.sched.php:212
 #: views/b2s/repost.php:59 views/b2s/repost.php:95
 #: includes/B2S/Post/Item.php:817 includes/B2S/Settings/Item.php:280
 #: includes/B2S/Settings/Item.php:317 includes/B2S/Ship/Item.php:387
-#: views/b2s/html/footer.php:160 views/b2s/widgets/calendar.php:72
+#: views/b2s/html/footer.php:160 views/b2s/widgets/calendar.php:70
 msgid "Link Post"
 msgstr "Link-Beitrag"
 
@@ -3133,7 +3141,7 @@ msgstr "Meine Zeit-Einstellungen laden"
 #: views/b2s/post.notice.php:56 views/b2s/post.php:58
 #: views/b2s/post.publish.php:53 views/b2s/post.sched.php:71
 #: views/b2s/repost.php:41 views/b2s/ship.php:205 views/b2s/ship.php:637
-#: views/b2s/ship.php:834 views/b2s/support.php:87 views/b2s/support.php:140
+#: views/b2s/ship.php:845 views/b2s/support.php:87 views/b2s/support.php:140
 #: views/prg/html/header.php:86
 msgid "Loading..."
 msgstr "Wird geladen..."
@@ -3180,7 +3188,7 @@ msgstr ""
 msgid "Logout"
 msgstr "Ausloggen"
 
-#: includes/B2S/Ship/Item.php:1231
+#: includes/B2S/Ship/Item.php:1292
 #, php-format
 msgid "max. %s Tags"
 msgstr "max. %s Tags"
@@ -3197,8 +3205,8 @@ msgstr "Meta Tag Einstellungen für Beiträge und Seiten"
 msgid "Mexico"
 msgstr "Mexiko"
 
-#: includes/B2S/Ship/Item.php:1298 includes/B2S/Ship/Item.php:1299
-#: includes/B2S/Ship/Item.php:1300 includes/B2S/Ship/Item.php:1301
+#: includes/B2S/Ship/Item.php:1359 includes/B2S/Ship/Item.php:1360
+#: includes/B2S/Ship/Item.php:1361 includes/B2S/Ship/Item.php:1362
 #: views/b2s/partials/post-edit-modal.php:82
 #: views/b2s/partials/post-edit-modal.php:83
 #: views/b2s/partials/post-edit-modal.php:84
@@ -3235,7 +3243,7 @@ msgstr "Pin-Board bearbeiten"
 msgid "Modify subreddit"
 msgstr "Modify subreddit"
 
-#: includes/B2S/RePost/Item.php:75 includes/B2S/Ship/Item.php:1443
+#: includes/B2S/RePost/Item.php:75 includes/B2S/Ship/Item.php:1504
 msgid "Mon"
 msgstr "Mo"
 
@@ -3243,15 +3251,15 @@ msgstr "Mo"
 msgid "Monday"
 msgstr "Montag"
 
-#: includes/B2S/Ship/Item.php:1410
+#: includes/B2S/Ship/Item.php:1471
 msgid "Month"
 msgstr "Monat"
 
-#: includes/B2S/Ship/Item.php:1394
+#: includes/B2S/Ship/Item.php:1455
 msgid "monthly"
 msgstr "monatlich"
 
-#: includes/B2S/Ship/Item.php:1410
+#: includes/B2S/Ship/Item.php:1471
 msgid "Months"
 msgstr "Monate"
 
@@ -3495,7 +3503,7 @@ msgstr ""
 msgid "Notification"
 msgstr "Benachrichtigung"
 
-#: includes/Loader.php:917 views/b2s/html/sidebar.php:95
+#: includes/Loader.php:917 views/b2s/html/sidebar.php:98
 msgid "Notifications"
 msgstr "Benachrichtigungen"
 
@@ -3515,7 +3523,7 @@ msgstr "Anzahl der Einträge"
 msgid "Number of posts"
 msgstr "Anzahl der Beiträge"
 
-#: includes/B2S/Ship/Item.php:1379
+#: includes/B2S/Ship/Item.php:1440
 msgid "Number of repeats"
 msgstr "Anzahl der Wiederholungen"
 
@@ -3523,7 +3531,7 @@ msgstr "Anzahl der Wiederholungen"
 msgid "Objects"
 msgstr "Objekte"
 
-#: includes/B2S/Ship/Item.php:1211
+#: includes/B2S/Ship/Item.php:1272
 msgid "Offer"
 msgstr "Angebot"
 
@@ -3581,7 +3589,7 @@ msgstr "nur Beiträge die maximal %s mal geteilt wurden"
 msgid "Open Graph and Twitter Card Tags"
 msgstr "Open Graph und Twitter Card Tags"
 
-#: includes/Loader.php:1692 includes/Loader.php:1713 includes/Loader.php:2011
+#: includes/Loader.php:1690 includes/Loader.php:1711 includes/Loader.php:2009
 msgid "or"
 msgstr "oder"
 
@@ -3612,7 +3620,7 @@ msgstr "oder höher"
 msgid "Overwrite Draft"
 msgstr "Entwurf überschreiben"
 
-#: includes/B2S/Ship/Item.php:1395
+#: includes/B2S/Ship/Item.php:1456
 msgid "own period"
 msgstr "Eigener Zeitraum"
 
@@ -3660,7 +3668,7 @@ msgstr "Pinterest hat die Verbindung zu Deinem Blog abgelehnt"
 msgid "Pinterest Rich Pins Validator"
 msgstr "Pinterest Rich Pins Validator"
 
-#: views/b2s/html/sidebar.php:121
+#: views/b2s/html/sidebar.php:124
 msgid "Plans & Prices"
 msgstr "Tarife & Preise"
 
@@ -3708,8 +3716,8 @@ msgstr ""
 msgid "Please enter a valid link"
 msgstr "Bitte gib einen gültigen Link ein"
 
-#: includes/B2S/Ship/Item.php:406 includes/B2S/Ship/Item.php:881
-#: includes/B2S/Ship/Item.php:1338
+#: includes/B2S/Ship/Item.php:406 includes/B2S/Ship/Item.php:919
+#: includes/B2S/Ship/Item.php:1399
 msgid ""
 "Please keep in mind that according to Twitter’s new TOS, users are no longer "
 "allowed to post identical or substantially similar content to multiple "
@@ -3819,7 +3827,7 @@ msgstr ""
 "Bitte beachte: Facebook unterstützt Bilder mit einer Mindestgröße von "
 "200x200 Pixel and einem Bildgrößenverhältnis von 1:1."
 
-#: includes/B2S/Ship/Item.php:1371 views/b2s/partials/post-edit-modal.php:56
+#: includes/B2S/Ship/Item.php:1432 views/b2s/partials/post-edit-modal.php:56
 msgid ""
 "Please note: Google will shut down Google+ for all private accounts "
 "(profiles, pages, groups) on 2nd April 2019. You can find further "
@@ -3899,14 +3907,14 @@ msgstr ""
 "Hinweis: Du kannst auch Deine eigenen “besten Zeiten” einstellen. Wie das "
 "geht, lernst Du in diesem <a href=\"%s\" target=\"_blank\">Guide</a>."
 
-#: includes/B2S/Ship/Save.php:448
+#: includes/B2S/Ship/Save.php:466
 msgid ""
 "Please note: You post has to be marked as public to be posted in a group."
 msgstr ""
 "Um in eine Gruppe zu teilen, muss Dein Beitrag auf Öffentlich gestellt "
 "werden."
 
-#: includes/B2S/Ship/Item.php:1367 views/b2s/partials/post-edit-modal.php:52
+#: includes/B2S/Ship/Item.php:1428 views/b2s/partials/post-edit-modal.php:52
 msgid ""
 "Please note: Your account is connected via an old XING API that is no longer "
 "supported by XING after March 31. Please connect your XING profile, as well "
@@ -3926,7 +3934,7 @@ msgid "Please re-authorize your account with Blog2Social and try again"
 msgstr ""
 "Bitte autorisieren Sie Ihr Konto bei Blog2Social und versuchen Sie es erneut."
 
-#: includes/B2S/Post/Item.php:781 includes/B2S/Ship/Save.php:482
+#: includes/B2S/Post/Item.php:781 includes/B2S/Ship/Save.php:500
 msgid "Please see"
 msgstr "siehe"
 
@@ -3947,7 +3955,7 @@ msgid "Please select your correct server location and connect again."
 msgstr ""
 "Bitte wähle Deinen richtigen Serverstandort aus und verbinde Dich erneut."
 
-#: includes/B2S/Ship/Save.php:453
+#: includes/B2S/Ship/Save.php:471
 msgid "Please share your post now"
 msgstr "Bitte teile Deinen Beitrag jetzt."
 
@@ -4149,8 +4157,9 @@ msgstr "Datenschutzerklärung"
 #: includes/B2S/Network/Item.php:203 includes/B2S/Network/Item.php:211
 #: includes/B2S/Ship/Image.php:96 includes/B2S/Ship/Item.php:543
 #: includes/B2S/Ship/Item.php:604 includes/B2S/Ship/Item.php:663
-#: includes/B2S/Ship/Item.php:870 includes/B2S/Ship/Item.php:924
-#: includes/B2S/Ship/Item.php:976 includes/B2S/Ship/Portale.php:37
+#: includes/B2S/Ship/Item.php:851 includes/B2S/Ship/Item.php:908
+#: includes/B2S/Ship/Item.php:962 includes/B2S/Ship/Item.php:1014
+#: includes/B2S/Ship/Item.php:1152 includes/B2S/Ship/Portale.php:37
 #: includes/B2S/Ship/Portale.php:48 includes/B2S/Ship/Portale.php:65
 msgid "PRO"
 msgstr "PRO"
@@ -4189,8 +4198,8 @@ msgid "publish with a delay of"
 msgstr "Veröffentliche mit einer Verzögerung von"
 
 #: views/b2s/curation.php:137 views/b2s/post.calendar.php:50
-#: views/b2s/ship.php:18 views/b2s/ship.php:835 includes/B2S/Post/Filter.php:59
-#: includes/B2S/Post/Item.php:393 includes/B2S/Ship/Save.php:461
+#: views/b2s/ship.php:18 views/b2s/ship.php:846 includes/B2S/Post/Filter.php:59
+#: includes/B2S/Post/Item.php:393 includes/B2S/Ship/Save.php:479
 #: includes/PRG/Post/Filter.php:37 includes/PRG/Post/Item.php:86
 #: views/b2s/widgets/calendar.php:44
 msgid "published"
@@ -4212,7 +4221,7 @@ msgstr "veröffentlichte Beiträge"
 msgid "Queue"
 msgstr "Warteschlange"
 
-#: includes/Notice.php:19 views/b2s/html/sidebar.php:139
+#: includes/Notice.php:19 views/b2s/html/sidebar.php:142
 msgid "RATE BLOG2SOCIAL"
 msgstr "Blog2Social jetzt bewerten"
 
@@ -4220,7 +4229,7 @@ msgstr "Blog2Social jetzt bewerten"
 msgid "RATE IT!"
 msgstr "BEWERTE ES!"
 
-#: includes/Notice.php:17 views/b2s/html/sidebar.php:136
+#: includes/Notice.php:17 views/b2s/html/sidebar.php:139
 msgid "Rate it!"
 msgstr "Bewerte uns!"
 
@@ -4233,7 +4242,7 @@ msgid "re-share"
 msgstr "erneut teilen"
 
 #: includes/Loader.php:917 views/b2s/settings.php:47
-#: views/b2s/html/sidebar.php:86
+#: views/b2s/html/sidebar.php:89
 msgid "Re-Share Posts"
 msgstr "Beiträge wiederholt teilen"
 
@@ -4292,11 +4301,11 @@ msgstr "Regelmäßige Updates und bevorzugter Support per E-Mail und Telefon."
 msgid "reload"
 msgstr "neu laden"
 
-#: includes/B2S/Ship/Item.php:1374
+#: includes/B2S/Ship/Item.php:1435
 msgid "Repeats"
 msgstr "Wiederholen"
 
-#: includes/B2S/Ship/Item.php:1381
+#: includes/B2S/Ship/Item.php:1442
 msgid "Repeats every (days)"
 msgstr "Wiederholt sich alle X Tage"
 
@@ -4335,11 +4344,11 @@ msgstr "Reporting mit Link zu allen veröffentlichten Social Media Posts"
 msgid "Reporting with links to already published posts"
 msgstr "Reporting mit Links zu bereits veröffentlichten Beiträgen"
 
-#: includes/B2S/Ship/Item.php:1212
+#: includes/B2S/Ship/Item.php:1273
 msgid "Request"
 msgstr "Anfrage"
 
-#: includes/B2S/Ship/Item.php:1105
+#: includes/B2S/Ship/Item.php:1166
 msgid "required"
 msgstr "erforderlich"
 
@@ -4365,7 +4374,7 @@ msgid "resolve conflict"
 msgstr "Konflikt beheben"
 
 #: includes/B2S/Post/Item.php:750 includes/B2S/Post/Item.php:955
-#: includes/B2S/Ship/Save.php:471
+#: includes/B2S/Ship/Save.php:489
 msgid "Retweet"
 msgstr "Retweet"
 
@@ -4397,7 +4406,7 @@ msgstr "Russland"
 msgid "Sales Support"
 msgstr "Kontaktiere unser Vertriebsteam"
 
-#: includes/B2S/RePost/Item.php:80 includes/B2S/Ship/Item.php:1448
+#: includes/B2S/RePost/Item.php:80 includes/B2S/Ship/Item.php:1509
 msgid "Sat"
 msgstr "Sa"
 
@@ -4419,7 +4428,7 @@ msgid "Save a lot of time for your social media tasks!"
 msgstr ""
 "Gib Deinen Social-Media-Aufgaben eine Routine und spare so eine Menge Zeit!"
 
-#: includes/B2S/Ship/Item.php:1487
+#: includes/B2S/Ship/Item.php:1548
 msgid "Save as best time for this network"
 msgstr "Diese Zeit als \"Beste Zeit\" für dieses Netzwerk speichern"
 
@@ -4492,7 +4501,7 @@ msgstr "Kuratierte Inhalte planen"
 
 #: views/b2s/curation.php:177 views/b2s/dashboard.php:253
 #: views/b2s/post.calendar.php:283 views/b2s/ship.php:427
-#: includes/B2S/Ship/Item.php:1329
+#: includes/B2S/Ship/Item.php:1390
 msgid "Schedule for specific dates"
 msgstr "Für bestimmte Termine planen"
 
@@ -4501,7 +4510,7 @@ msgstr "Für bestimmte Termine planen"
 msgid "Schedule post recurrently"
 msgstr "Beitrag mehrfach planen"
 
-#: includes/B2S/Ship/Item.php:1331
+#: includes/B2S/Ship/Item.php:1392
 msgid "Schedule Recurrent Post"
 msgstr "regelmäßig Planen"
 
@@ -4555,7 +4564,7 @@ msgstr "Scheduled Auto-Posting"
 msgid "scheduled by %s"
 msgstr "von %s vorgeplant "
 
-#: includes/B2S/Ship/Save.php:472
+#: includes/B2S/Ship/Save.php:490
 msgid "scheduled on"
 msgstr "geplant für"
 
@@ -4563,7 +4572,7 @@ msgstr "geplant für"
 msgid "scheduled post(s)"
 msgstr "geplante Beiträge"
 
-#: includes/Loader.php:917 views/b2s/html/sidebar.php:80
+#: includes/Loader.php:917 views/b2s/html/sidebar.php:83
 #: views/b2s/widgets/posts.php:18
 msgid "Scheduled Posts"
 msgstr "geplante Beiträge"
@@ -4794,7 +4803,7 @@ msgstr ""
 
 #: includes/Loader.php:867 includes/Loader.php:1032 includes/Loader.php:1032
 #: includes/Loader.php:1109 includes/B2S/RePost/Item.php:25
-#: views/b2s/html/sidebar.php:109
+#: views/b2s/html/sidebar.php:112
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -4803,7 +4812,7 @@ msgstr "Einstellungen"
 msgid "Share"
 msgstr "Teilen"
 
-#: includes/B2S/Post/Item.php:923 includes/B2S/Ship/Save.php:452
+#: includes/B2S/Post/Item.php:923 includes/B2S/Ship/Save.php:470
 msgid "share"
 msgstr "teilen"
 
@@ -4857,7 +4866,7 @@ msgstr "Neuen Text-Post teilen"
 msgid "Share New Video Post"
 msgstr "Neuen Video-Post teilen"
 
-#: includes/B2S/Ship/Item.php:1326
+#: includes/B2S/Ship/Item.php:1387
 msgid "Share Now"
 msgstr "Sofort teilen"
 
@@ -4955,7 +4964,7 @@ msgstr "von %s geteilt"
 msgid "shared by user"
 msgstr "geteilt von Nutzer"
 
-#: includes/Loader.php:917 views/b2s/html/sidebar.php:83
+#: includes/Loader.php:917 views/b2s/html/sidebar.php:86
 msgid "Shared Posts"
 msgstr "geteilte Beiträge"
 
@@ -4980,14 +4989,14 @@ msgstr "wird gerade von %s geteilt"
 msgid ""
 "Sharing more than one image improves the visibility of your content. You can "
 "create image series, show sequences, and level up your storytelling. With "
-"Blog2Social you can share up to 4 images in one post on Facebook (page and "
-"group) and on Twitter."
+"Blog2Social you can share up to 10 images per post on Instagram, up to 4 "
+"images in one post on Facebook (page and group) and Twitter."
 msgstr ""
 "Das Teilen von mehr als einem Bild verbessert die Sichtbarkeit Deines "
 "Beitrags. So kannst Du Bildserien erstellen, Sequenzen zeigen und Dein "
 "Storytelling auf ein höheres Level bringen. Mit Blog2Social kannst Du bis zu "
-"4 Bilder in einem Post auf Facebook (Seite und Gruppe) sowie auf Twitter "
-"teilen."
+"10 Bilder in einem Instagram-Post und bis zu 4 Bilder in einem Post auf "
+"Facebook (Seite und Gruppe) sowie auf Twitter teilen."
 
 #: views/b2s/html/footer.php:87 views/b2s/html/footer.php:105
 #: views/b2s/html/footer.php:134
@@ -5061,7 +5070,7 @@ msgstr "Slowakei"
 #: includes/B2S/Network/Item.php:214 includes/B2S/Network/Item.php:325
 #: includes/B2S/Network/Item.php:404 includes/B2S/Network/Item.php:479
 #: includes/B2S/RePost/Item.php:23 includes/B2S/Settings/Item.php:172
-#: includes/B2S/Ship/Image.php:89 includes/B2S/Ship/Item.php:1328
+#: includes/B2S/Ship/Image.php:89 includes/B2S/Ship/Item.php:1389
 #: includes/B2S/Ship/Portale.php:46 includes/B2S/Ship/Portale.php:63
 #: views/b2s/partials/post-edit-modal.php:9 views/b2s/widgets/posts.php:18
 msgid "SMART"
@@ -5098,7 +5107,7 @@ msgstr "Social Media Kalender"
 
 #: includes/Loader.php:917 includes/Loader.php:1029 includes/Loader.php:1094
 #: views/b2s/metrics.php:233 views/b2s/html/header.php:536
-#: views/b2s/html/sidebar.php:102
+#: views/b2s/html/sidebar.php:105
 msgid "Social Media Metrics"
 msgstr "Social-Media-Kennzahlen"
 
@@ -5106,7 +5115,7 @@ msgstr "Social-Media-Kennzahlen"
 msgid "Social Media Metrics Summary"
 msgstr "Übersicht Social-Media-Kennzahlen"
 
-#: views/b2s/settings.php:50 views/b2s/html/sidebar.php:106
+#: views/b2s/settings.php:50 views/b2s/html/sidebar.php:109
 msgid "Social Media Networks"
 msgstr "Social-Media-Netzwerke"
 
@@ -5197,7 +5206,7 @@ msgstr "Südafrika"
 msgid "Spain"
 msgstr "Spanien"
 
-#: includes/B2S/Ship/Item.php:1383
+#: includes/B2S/Ship/Item.php:1444
 msgid "Start date"
 msgstr "Startdatum"
 
@@ -5259,7 +5268,7 @@ msgstr "Link-Darstellung"
 msgid "Summary with large image"
 msgstr "Link-Darstellung mit großem Bild"
 
-#: includes/B2S/RePost/Item.php:81 includes/B2S/Ship/Item.php:1449
+#: includes/B2S/RePost/Item.php:81 includes/B2S/Ship/Item.php:1510
 msgid "Sun"
 msgstr "So"
 
@@ -5357,16 +5366,6 @@ msgstr ""
 msgid "The Autoposter is"
 msgstr "Der Auto-Poster ist"
 
-#: includes/B2S/Ship/Image.php:39
-msgid ""
-"The best size for images in social media posts are between: 667-1000px x 523-"
-"1000px. Blog2Social will automatically resize your image according to "
-"network requirements."
-msgstr ""
-"Die optimalen Bildgrößen für Deine Social Media Posts liegen zwischen: 667-"
-"1000px x 523-1000px <br> Blog2Social passt Dein Bild automatisch die Größe "
-"des jeweiligen Netzwerks an."
-
 #: includes/B2S/Ship/Image.php:40
 msgid ""
 "The best size for images in social media posts are between: 667-1000px x 523-"
@@ -5378,6 +5377,20 @@ msgstr ""
 "1000px x 523-1000px. Blog2Social passt Dein Bild automatisch an die "
 "Bildgröße des jeweiligen Netzwerkes an. Du kannst bis zu 4 Bilder in einem "
 "Beitrag auf Facebook (Seite und Gruppe) sowie auf Twitter teilen."
+
+#: includes/B2S/Ship/Image.php:39
+#| msgid ""
+#| "The best size for images in social media posts are between: 667-1000px x "
+#| "523-1000px. Blog2Social will automatically resize your image according to "
+#| "network requirements."
+msgid ""
+"The best size for images in social media posts are between: 667-1000px X 523-"
+"1000px. Blog2Social will automatically resize your image according to the "
+"requirements of each network."
+msgstr ""
+"Die optimalen Bildgrößen für Deine Social Media Posts liegen zwischen: 667-"
+"1000px X 523-1000px. Blog2Social passt Dein Bild automatisch die Größe des "
+"jeweiligen Netzwerks an."
 
 #: views/b2s/html/header.php:594 views/b2s/html/header.php:654
 msgid ""
@@ -5411,7 +5424,7 @@ msgstr ""
 "Die Verbindung zum Server ist fehlgeschlagen. Bitte versuche es erneut. Mehr "
 "Informationen und Lösungsvorschläge findest Du in dem"
 
-#: views/b2s/ship.php:836
+#: views/b2s/ship.php:847
 msgid ""
 "The connection to the server failed. Please try again! You can find more "
 "information and solutions in the guide for server connection"
@@ -5484,7 +5497,7 @@ msgstr ""
 "Die kostenlose Testversion kann nicht gestartet werden. Dieser Blog wurde "
 "bereits für die kostenlose Testversion registriert."
 
-#: includes/B2S/Ship/Item.php:1223
+#: includes/B2S/Ship/Item.php:1284
 msgid "The Headline..."
 msgstr "Die Überschrift..."
 
@@ -5847,7 +5860,7 @@ msgstr ""
 "Dies ist eine globale Einstellung für Deinen Website/ Deinen Blog, die nur "
 "von Nutzern mit Admin-Rechten bearbeitet werden kann. "
 
-#: includes/B2S/Ship/Save.php:437 includes/B2S/Ship/Save.php:445
+#: includes/B2S/Ship/Save.php:455 includes/B2S/Ship/Save.php:463
 msgid "This is how it works:"
 msgstr "Und so funktioniert es:"
 
@@ -5902,7 +5915,7 @@ msgstr ""
 msgid "Threads"
 msgstr "Threads"
 
-#: includes/B2S/RePost/Item.php:78 includes/B2S/Ship/Item.php:1446
+#: includes/B2S/RePost/Item.php:78 includes/B2S/Ship/Item.php:1507
 msgid "Thu"
 msgstr "Do"
 
@@ -5910,12 +5923,12 @@ msgstr "Do"
 msgid "Thursday"
 msgstr "Donnerstag"
 
-#: includes/B2S/Ship/Item.php:1438 views/b2s/partials/post-edit-modal.php:68
+#: includes/B2S/Ship/Item.php:1499 views/b2s/partials/post-edit-modal.php:68
 #: views/b2s/partials/post-edit-modal.php:71
 msgid "Time"
 msgstr "Uhrzeit"
 
-#: includes/B2S/Ship/Item.php:1384
+#: includes/B2S/Ship/Item.php:1445
 msgid "Time to publish"
 msgstr "Veröffentlichungszeitpunkt"
 
@@ -5927,7 +5940,7 @@ msgstr "Zeitzone"
 msgid "times"
 msgstr "Mal"
 
-#: includes/B2S/Ship/Item.php:1435
+#: includes/B2S/Ship/Item.php:1496
 msgid "Timespan"
 msgstr "Zeitspanne"
 
@@ -6054,7 +6067,7 @@ msgstr "Fehlermeldungen und Lösungen"
 msgid "Troubleshooting-Tool"
 msgstr "Problemanalyse-Tool"
 
-#: includes/B2S/RePost/Item.php:76 includes/B2S/Ship/Item.php:1444
+#: includes/B2S/RePost/Item.php:76 includes/B2S/Ship/Item.php:1505
 msgid "Tue"
 msgstr "Di"
 
@@ -6135,9 +6148,9 @@ msgstr "Unbekannter Fehler"
 msgid "Unknown error has occurred. Please try again."
 msgstr "Ein unbekannter Fehler ist aufgetreten. Bitte versuche es erneut."
 
-#: includes/Ajax/Post.php:1959 views/b2s/network.php:13
-#: includes/B2S/Network/Item.php:278 includes/B2S/Network/Item.php:357
-#: includes/B2S/Network/Item.php:437 includes/B2S/Network/Item.php:571
+#: includes/Ajax/Post.php:2008 views/b2s/network.php:13
+#: includes/B2S/Network/Item.php:357 includes/B2S/Network/Item.php:437
+#: includes/B2S/Network/Item.php:571
 msgid "Unknown username"
 msgstr "unbekannter Blog-Nutzer"
 
@@ -6170,7 +6183,7 @@ msgstr "Aktualisierte Beiträge"
 msgid "Upgrade"
 msgstr "Upgrade"
 
-#: views/b2s/html/sidebar.php:116
+#: views/b2s/html/sidebar.php:119
 msgid "Upgrade License"
 msgstr "Lizenz upgraden"
 
@@ -6373,7 +6386,7 @@ msgstr "via Browser-Extension"
 msgid "View schedule posts"
 msgstr "Geplante Beiträge anzeigen"
 
-#: includes/B2S/Ship/Save.php:462
+#: includes/B2S/Ship/Save.php:480
 msgid "view social media post"
 msgstr "Zeige Social Media Beitrag an"
 
@@ -6387,8 +6400,8 @@ msgstr ""
 "Variieren Sie Ihre Inhalte immer mit unterschiedlichen Bildern, Kommentaren, "
 "Hashtags oder Handles, um doppelte Beiträge zu vermeiden."
 
-#: includes/B2S/Ship/Item.php:406 includes/B2S/Ship/Item.php:881
-#: includes/B2S/Ship/Item.php:1338
+#: includes/B2S/Ship/Item.php:406 includes/B2S/Ship/Item.php:919
+#: includes/B2S/Ship/Item.php:1399
 msgid ""
 "Violating these rules can result in Twitter suspending your account. Always "
 "vary your Tweets with different comments, hashtags or handles to prevent "
@@ -6427,7 +6440,7 @@ msgstr "Wir haben unsere Datenschutzerklärung aktualisiert"
 msgid "Website"
 msgstr "Website"
 
-#: includes/B2S/RePost/Item.php:77 includes/B2S/Ship/Item.php:1445
+#: includes/B2S/RePost/Item.php:77 includes/B2S/Ship/Item.php:1506
 msgid "Wed"
 msgstr "Mi"
 
@@ -6435,15 +6448,15 @@ msgstr "Mi"
 msgid "Wednesday"
 msgstr "Mittwoch"
 
-#: includes/B2S/Ship/Item.php:1401
+#: includes/B2S/Ship/Item.php:1462
 msgid "Week"
 msgstr "Woche"
 
-#: includes/B2S/Ship/Item.php:1393
+#: includes/B2S/Ship/Item.php:1454
 msgid "weekly"
 msgstr "wöchentlich"
 
-#: includes/B2S/Ship/Item.php:1401
+#: includes/B2S/Ship/Item.php:1462
 msgid "Weeks"
 msgstr "Wochen"
 
@@ -6772,11 +6785,11 @@ msgstr "Möchtest Du Retweeten?"
 #: includes/B2S/Ship/Item.php:613 includes/B2S/Ship/Item.php:672
 #: includes/B2S/Ship/Item.php:693 includes/B2S/Ship/Item.php:722
 #: includes/B2S/Ship/Item.php:750 includes/B2S/Ship/Item.php:778
-#: includes/B2S/Ship/Item.php:806 includes/B2S/Ship/Item.php:837
-#: includes/B2S/Ship/Item.php:892 includes/B2S/Ship/Item.php:943
-#: includes/B2S/Ship/Item.php:996 includes/B2S/Ship/Item.php:1017
-#: includes/B2S/Ship/Item.php:1038 includes/B2S/Ship/Item.php:1058
-#: includes/B2S/Ship/Item.php:1079 includes/B2S/Ship/Item.php:1089
+#: includes/B2S/Ship/Item.php:806 includes/B2S/Ship/Item.php:875
+#: includes/B2S/Ship/Item.php:930 includes/B2S/Ship/Item.php:981
+#: includes/B2S/Ship/Item.php:1034 includes/B2S/Ship/Item.php:1055
+#: includes/B2S/Ship/Item.php:1076 includes/B2S/Ship/Item.php:1096
+#: includes/B2S/Ship/Item.php:1117 includes/B2S/Ship/Item.php:1127
 msgid "Write something about your post..."
 msgstr "Schreibe etwas..."
 
@@ -7481,7 +7494,7 @@ msgstr ""
 "ist oder die Bildquelle es nicht erlaubt zu veröffentlichen"
 
 #: includes/B2S/Calendar/Item.php:536 includes/B2S/Post/Item.php:787
-#: includes/B2S/Ship/Save.php:486
+#: includes/B2S/Ship/Save.php:504
 #, php-format
 msgid ""
 "Your post could not be posted. More information in this <a href=\"%s\" "

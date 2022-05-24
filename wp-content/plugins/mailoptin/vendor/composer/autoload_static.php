@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit7f403dd4715b7714c33d809efbcd9997
+class ComposerStaticInit4c48858b398ed8810651adbe80572abc
 {
     public static $files = array (
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
@@ -72,6 +72,7 @@ class ComposerStaticInit7f403dd4715b7714c33d809efbcd9997
             'MailOptin\\MailerliteConnect\\' => 28,
             'MailOptin\\MailPoetConnect\\' => 26,
             'MailOptin\\MailChimpConnect\\' => 27,
+            'MailOptin\\LearnDashConnect\\' => 27,
             'MailOptin\\LeadBankConnect\\' => 26,
             'MailOptin\\KlaviyoConnect\\' => 25,
             'MailOptin\\JiltConnect\\' => 22,
@@ -258,6 +259,10 @@ class ComposerStaticInit7f403dd4715b7714c33d809efbcd9997
         'MailOptin\\MailChimpConnect\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/connections/MailChimpConnect',
+        ),
+        'MailOptin\\LearnDashConnect\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/connections/LearnDashConnect',
         ),
         'MailOptin\\LeadBankConnect\\' => 
         array (
@@ -875,6 +880,11 @@ class ComposerStaticInit7f403dd4715b7714c33d809efbcd9997
         'MailOptin\\KlaviyoConnect\\Subscription' => __DIR__ . '/../..' . '/src/connections/KlaviyoConnect/Subscription.php',
         'MailOptin\\LeadBankConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/LeadBankConnect/Connect.php',
         'MailOptin\\LeadBankConnect\\WP_Leadbank_Mail_BG_Process' => __DIR__ . '/../..' . '/src/connections/LeadBankConnect/WP_Leadbank_Mail_BG_Process.php',
+        'MailOptin\\LearnDashConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/LearnDashConnect/Connect.php',
+        'MailOptin\\LearnDashConnect\\Course' => __DIR__ . '/../..' . '/src/connections/LearnDashConnect/Course.php',
+        'MailOptin\\LearnDashConnect\\Group' => __DIR__ . '/../..' . '/src/connections/LearnDashConnect/Group.php',
+        'MailOptin\\LearnDashConnect\\LearnDashInit' => __DIR__ . '/../..' . '/src/connections/LearnDashConnect/LearnDashInit.php',
+        'MailOptin\\LearnDashConnect\\LearnDashSettings' => __DIR__ . '/../..' . '/src/connections/LearnDashConnect/LearnDashSettings.php',
         'MailOptin\\MailChimpConnect\\AbstractMailChimpConnect' => __DIR__ . '/../..' . '/src/connections/MailChimpConnect/AbstractMailChimpConnect.php',
         'MailOptin\\MailChimpConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/MailChimpConnect/Connect.php',
         'MailOptin\\MailChimpConnect\\ConnectSettingsPage' => __DIR__ . '/../..' . '/src/connections/MailChimpConnect/ConnectSettingsPage.php',
@@ -1186,11 +1196,11 @@ class ComposerStaticInit7f403dd4715b7714c33d809efbcd9997
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit7f403dd4715b7714c33d809efbcd9997::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit7f403dd4715b7714c33d809efbcd9997::$prefixDirsPsr4;
-            $loader->fallbackDirsPsr4 = ComposerStaticInit7f403dd4715b7714c33d809efbcd9997::$fallbackDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit7f403dd4715b7714c33d809efbcd9997::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit7f403dd4715b7714c33d809efbcd9997::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit4c48858b398ed8810651adbe80572abc::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit4c48858b398ed8810651adbe80572abc::$prefixDirsPsr4;
+            $loader->fallbackDirsPsr4 = ComposerStaticInit4c48858b398ed8810651adbe80572abc::$fallbackDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit4c48858b398ed8810651adbe80572abc::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit4c48858b398ed8810651adbe80572abc::$classMap;
 
         }, null, ClassLoader::class);
     }

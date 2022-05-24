@@ -291,7 +291,10 @@ class Tags
     {
         $field_map = [];
 
-        $connection_service    = get_term_meta($product_tag_id, 'mailoptinWooCommerceSelectIntegration', true);
+        $connection_service = get_term_meta($product_tag_id, 'mailoptinWooCommerceSelectIntegration', true);
+
+        if (empty($connection_service)) return;
+
         $connection_email_list = get_term_meta($product_tag_id, $connection_service . '[mailoptinWooCommerceSelectList]', true);
 
         foreach ($this->merge_vars_field_map($connection_service, $connection_email_list) as $key => $value) {

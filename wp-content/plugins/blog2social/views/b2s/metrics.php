@@ -48,8 +48,8 @@ if(isset($_GET['metrics_banner']) && (int) $_GET['metrics_banner'] == 1) {
                                         <div class="col-md-10 b2s-calendar-filter form-inline del-padding-left del-padding-right">
                                             <div class="b2s-calendar-filter-network-list" style="display: block ruby;">
                                                 <label><input type="radio" class="b2s-calendar-filter-network-btn" checked="" name="b2s-calendar-filter-network-btn" value="all"><span><?php esc_html_e('all', 'blog2social') ?></span></label>
-                                                <label><input type="radio" class="b2s-calendar-filter-network-btn" name="b2s-calendar-filter-network-btn" value="1"><span><img class="b2s-calendar-filter-img" alt="Facebook" src="<?php echo plugins_url('/assets/images/portale/1_flat.png', B2S_PLUGIN_FILE); ?>"></span></label>
-                                                <label><input type="radio" class="b2s-calendar-filter-network-btn" name="b2s-calendar-filter-network-btn" value="2"><span><img class="b2s-calendar-filter-img" alt="Twitter" src="<?php echo plugins_url('/assets/images/portale/2_flat.png', B2S_PLUGIN_FILE); ?>"></span></label>
+                                                <label><input type="radio" class="b2s-calendar-filter-network-btn" name="b2s-calendar-filter-network-btn" value="1"><span><img class="b2s-calendar-filter-img" alt="Facebook" src="<?php echo esc_url(plugins_url('/assets/images/portale/1_flat.png', B2S_PLUGIN_FILE)); ?>"></span></label>
+                                                <label><input type="radio" class="b2s-calendar-filter-network-btn" name="b2s-calendar-filter-network-btn" value="2"><span><img class="b2s-calendar-filter-img" alt="Twitter" src="<?php echo esc_url(plugins_url('/assets/images/portale/2_flat.png', B2S_PLUGIN_FILE)); ?>"></span></label>
                                             </div>
                                         </div>
                                         <div class="col-md-2 padding-right-0">
@@ -76,10 +76,10 @@ if(isset($_GET['metrics_banner']) && (int) $_GET['metrics_banner'] == 1) {
                                     <?php
                                     foreach($networkCount as $networkId => $networkCount) {
                                         echo '<div style="display: inline-flex; margin-right: 30px;">
-                                                <img style="margin-right: 10px;" alt="'.unserialize(B2S_PLUGIN_NETWORK)[$networkId].'" src="'.plugins_url('/assets/images/portale/'.$networkId.'_flat.png', B2S_PLUGIN_FILE).'">
+                                                <img style="margin-right: 10px;" alt="'.esc_attr(unserialize(B2S_PLUGIN_NETWORK)[$networkId]).'" src="'.esc_url(plugins_url('/assets/images/portale/'.esc_attr($networkId).'_flat.png', B2S_PLUGIN_FILE)).'">
                                                 <div style="text-align: center;">
-                                                    <b>'.unserialize(B2S_PLUGIN_NETWORK)[$networkId].'</b><br>
-                                                    '.$networkCount.'<br>
+                                                    <b>'.esc_html(unserialize(B2S_PLUGIN_NETWORK)[$networkId]).'</b><br>
+                                                    '.esc_html($networkCount).'<br>
                                                     Accounts
                                                 </div>
                                             </div>';
@@ -191,7 +191,7 @@ if(isset($_GET['metrics_banner']) && (int) $_GET['metrics_banner'] == 1) {
         <div class="modal-content">
             <div class="modal-body">
                 <span class="b2s-bold text-success" style="font-size: 24px;"><?php esc_html_e('Welcome to the trial of the beta version "Social Media Metrics"!', 'blog2social') ?></span>
-                <img src="<?php echo plugins_url('/assets/images/metrics/social-symbols.png', B2S_PLUGIN_FILE); ?>" style="width: 80px; float: right;" alt="blog2social">
+                <img src="<?php echo esc_url(plugins_url('/assets/images/metrics/social-symbols.png', B2S_PLUGIN_FILE)); ?>" style="width: 80px; float: right;" alt="blog2social">
                 <br>
                 <br>
                 <?php esc_html_e('You can now track the performance of your posts directly in Blog2Social, starting with Facebook and Twitter, as well as other networks to follow. And you can test it exclusively and for free!', 'blog2social') ?>
@@ -284,7 +284,7 @@ if(isset($_GET['metrics_banner']) && (int) $_GET['metrics_banner'] == 1) {
                 <h4 class="modal-title"><?php esc_html_e('Feedback', 'blog2social'); ?></h4>
             </div>
             <div class="modal-body">
-                <iframe src="<?php echo B2S_Tools::getSupportLink('metrics_feedback'); ?>" width="100%" height="500px"></iframe>
+                <iframe src="<?php echo esc_url(B2S_Tools::getSupportLink('metrics_feedback')); ?>" width="100%" height="500px"></iframe>
             </div>
         </div>
     </div>
@@ -292,5 +292,5 @@ if(isset($_GET['metrics_banner']) && (int) $_GET['metrics_banner'] == 1) {
 
 <input type="hidden" id="b2sOptionMetricsStarted" value="<?php echo (($optionMetricsStarted == true) ? '1' : '0') ?>">
 
-<input type="hidden" id="b2sLang" value="<?php echo substr(B2S_LANGUAGE, 0, 2); ?>">
-<input type="hidden" id="b2sUserLang" value="<?php echo strtolower(substr(get_locale(), 0, 2)); ?>">
+<input type="hidden" id="b2sLang" value="<?php echo esc_attr(substr(B2S_LANGUAGE, 0, 2)); ?>">
+<input type="hidden" id="b2sUserLang" value="<?php echo esc_attr(strtolower(substr(get_locale(), 0, 2))); ?>">

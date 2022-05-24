@@ -77,7 +77,13 @@ if ( !class_exists("WD_ASL_Filters") ) {
                 "handler" => array("EtcFixes", "fixOxygenEditorJS"),
                 "priority"    => 999,
                 "args"  => 1
-            )
+            ),
+			array(
+				"filter" => "asl_save_search_instance_options",
+				"handler" => array("EtcFixes", "switchToNewScriptsOnLiveLoader"),
+				"priority"    => 999,
+				"args"  => 1
+			)
         );
 
         /**

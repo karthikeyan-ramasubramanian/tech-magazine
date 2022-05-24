@@ -2,7 +2,7 @@
 $b2sLastVersion = get_option('b2s_plugin_version');
 $customizeArea = B2S_System::customizeArea();
 
-$getPage = (isset($_GET['page']) && !empty($_GET['page'])) ? $_GET['page'] : '';
+$getPage = (isset($_GET['page']) && !empty($_GET['page'])) ? sanitize_text_field(wp_unslash($_GET['page'])) : '';
 ?>
 <!-- Sidebar|Start -Include-->
 <div class="col-md-3 col-xs-12 del-padding-left del-padding-right b2s-sidebar hidden-xs hidden-sm b2s-margin-right-20">
@@ -13,12 +13,12 @@ $getPage = (isset($_GET['page']) && !empty($_GET['page'])) ? $_GET['page'] : '';
                     <div class="media"> 
                         <?php if (is_array($customizeArea) && isset($customizeArea['image_path']) && !empty($customizeArea['image_path'])) { ?>
                             <div class="col-md-12 del-padding-left">
-                                <img class="img-responsive" src="<?php echo $customizeArea['image_path']; ?>" alt="logo">    
+                                <img class="img-responsive" src="<?php echo esc_url($customizeArea['image_path']); ?>" alt="logo">    
                             </div> 
                         <?php } else { ?>
                             <div class="col-md-2 del-padding-left">
                                 <a class="" href="https://www.blog2social.com" target="_blank">
-                                    <img class="img-responsive b2s-img-logo" src="<?php echo plugins_url('/assets/images/b2s@64.png', B2S_PLUGIN_FILE); ?>" alt="logo">
+                                    <img class="img-responsive b2s-img-logo" src="<?php echo esc_url(plugins_url('/assets/images/b2s@64.png', B2S_PLUGIN_FILE)); ?>" alt="logo">
                                 </a>
                             </div> 
                             <div class="col-md-10 del-padding-left">
@@ -34,9 +34,9 @@ $getPage = (isset($_GET['page']) && !empty($_GET['page'])) ? $_GET['page'] : '';
                                                 <?php
                                                 $versionType = unserialize(B2S_PLUGIN_VERSION_TYPE);
                                                 if (defined("B2S_PLUGIN_TRAIL_END") && strtotime(B2S_PLUGIN_TRAIL_END) > time()) {
-                                                    echo 'FREE-TRIAL (' . $versionType[B2S_PLUGIN_USER_VERSION] . ')';
+                                                    echo 'FREE-TRIAL (' . esc_html($versionType[B2S_PLUGIN_USER_VERSION]) . ')';
                                                 } else {
-                                                    echo $versionType[B2S_PLUGIN_USER_VERSION];
+                                                    echo esc_html($versionType[B2S_PLUGIN_USER_VERSION]);
                                                 }
                                                 ?><i class="b2s-sidebar-licence-btn-edit glyphicon glyphicon-pencil"></i>
                                             </a>
@@ -44,9 +44,9 @@ $getPage = (isset($_GET['page']) && !empty($_GET['page'])) ? $_GET['page'] : '';
                                             if (B2S_PLUGIN_USER_VERSION == 0) {
                                                 echo "<br>";
                                                 if ((defined("B2S_PLUGIN_TRAIL_END") && strtotime(B2S_PLUGIN_TRAIL_END) < time()) || get_option('B2S_PLUGIN_DISABLE_TRAIL') == true) {
-                                                    echo '<a class="btn-link b2s-free-link" target="_blank" href="' . B2S_Tools::getSupportLink('affiliate') . '">' . esc_html__('Upgrade to Premium', 'blog2social') . '</a>';
+                                                    echo '<a class="btn-link b2s-free-link" target="_blank" href="' . esc_url(B2S_Tools::getSupportLink('affiliate')) . '">' . esc_html__('Upgrade to Premium', 'blog2social') . '</a>';
                                                 } else {
-                                                    echo '<a class="btn-link b2s-free-link" target="_blank" href="' . B2S_Tools::getSupportLink('feature') . '">' . esc_html__('Start your 30-day free Premium trial', 'blog2social') . '</a>';
+                                                    echo '<a class="btn-link b2s-free-link" target="_blank" href="' . esc_url(B2S_Tools::getSupportLink('feature')) . '">' . esc_html__('Start your 30-day free Premium trial', 'blog2social') . '</a>';
                                                 }
                                             }
                                             ?>
@@ -67,6 +67,9 @@ $getPage = (isset($_GET['page']) && !empty($_GET['page'])) ? $_GET['page'] : '';
                             <?php esc_html_e("Post Management", "blog2social") ?>
                         </div>
                         <ul>
+                            <li class="b2s-list-margin-left-10">
+                                <i class="glyphicon glyphicon-th-list glyphicon-success"></i> <a href="admin.php?page=blog2social-post" class="b2s-sidebar-menu-item <?php echo (($getPage == 'blog2social-post') ? ' b2s-text-bold' : '') ?>"><?php esc_html_e("All Posts", "blog2social") ?></a> 
+                            </li>
                             <li class="b2s-list-margin-left-10">
                                 <i class="glyphicon glyphicon-star glyphicon-success"></i> <a href="admin.php?page=blog2social-favorites" class="b2s-sidebar-menu-item <?php echo (($getPage == 'blog2social-favorites') ? ' b2s-text-bold' : '') ?>"><?php esc_html_e("Favorites", "blog2social") ?></a> 
                             </li>
@@ -118,7 +121,7 @@ $getPage = (isset($_GET['page']) && !empty($_GET['page'])) ? $_GET['page'] : '';
                             <?php } ?>
                             <?php if (!B2S_System::isblockedArea('B2S_MENU_ITEM_PLANS', B2S_PLUGIN_ADMIN)) { ?> 
                                 <li class="b2s-list-margin-left-10">
-                                    <i class="glyphicon glyphicon-signal glyphicon-success"></i> <a href="<?php echo B2S_Tools::getSupportLink('affiliate'); ?>" target="_blank" class="b2s-sidebar-menu-item"><?php esc_html_e("Plans & Prices", "blog2social") ?></a> 
+                                    <i class="glyphicon glyphicon-signal glyphicon-success"></i> <a href="<?php echo esc_url(B2S_Tools::getSupportLink('affiliate')); ?>" target="_blank" class="b2s-sidebar-menu-item"><?php esc_html_e("Plans & Prices", "blog2social") ?></a> 
                                 </li>
                             <?php } ?>
                         </ul>
@@ -151,7 +154,25 @@ $getPage = (isset($_GET['page']) && !empty($_GET['page'])) ? $_GET['page'] : '';
                             <div class="b2s-sidebar-head-text">
                                 <span class="glyphicon glyphicon-bullhorn glyphicon-success"></span> <?php esc_html_e("Blog2Social Blog News", "blog2social"); ?> 
                             </div>
-                            <p> <ul><?php echo B2S_Notice::getBlogEntries(substr(B2S_LANGUAGE, 0, 2)); ?></ul></p>
+                            <p> <ul><?php echo wp_kses(B2S_Notice::getBlogEntries(substr(B2S_LANGUAGE, 0, 2)), array(
+                                'li' => array(),
+                                'div' => array(
+                                    'class' => array() 
+                                ),
+                                'a' => array(
+                                    'target' => array(),
+                                    'href' => array(),
+                                    'class' => array()
+                                ),
+                                'img' => array(
+                                    'src' => array(),
+                                    'alt' => array(),
+                                    'class' => array()
+                                ),
+                                'span' => array(
+                                    'class' => array()
+                                )
+                            )); ?></ul></p>
                         </div>
                     </div>
                 </div>

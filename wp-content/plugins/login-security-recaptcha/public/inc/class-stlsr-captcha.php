@@ -32,6 +32,7 @@ class STLSR_Captcha {
 
 			$google_recaptcha_v3    = get_option( 'stlsr_google_recaptcha_v3' );
 			$grecaptcha_v3_site_key = isset( $google_recaptcha_v3['site_key'] ) ? esc_attr( $google_recaptcha_v3['site_key'] ) : '';
+			$grecaptcha_v3_badge    = isset( $google_recaptcha_v3['badge'] ) ? esc_attr( $google_recaptcha_v3['badge'] ) : 'bottomright';
 
 			$script = <<<EOT
 if('function' !== typeof lsrecaptcha) {
@@ -65,7 +66,7 @@ if('function' !== typeof lsrecaptcha) {
 	}
 }
 EOT;
-			wp_enqueue_script( 'recaptcha-api-v3', ( 'https://www.google.com/recaptcha/api.js?onload=lsrecaptcha&render=' . $grecaptcha_v3_site_key ), array(), null );
+			wp_enqueue_script( 'recaptcha-api-v3', ( 'https://www.google.com/recaptcha/api.js?onload=lsrecaptcha&render=' . $grecaptcha_v3_site_key . '&badge=' . $grecaptcha_v3_badge ), array(), null );
 			wp_add_inline_script( 'recaptcha-api-v3', $script );
 		?>
 		<input type="hidden" name="g-recaptcha-response" id="<?php echo esc_attr( 'g-recaptcha-response-' . $action ); ?>" class="ls-g-recaptcha" data-action="<?php echo esc_attr( $action ); ?>">

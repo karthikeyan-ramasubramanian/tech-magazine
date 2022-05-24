@@ -9,7 +9,7 @@ if (!class_exists("WD_ASL_Maintenance_Handler")) {
      *
      * @class         WD_ASL_Maintenance_Handler
      * @version       1.0
-     * @package       AjaxSearchPro/Classes/Ajax
+     * @package       AjaxSearchLite/Classes/Ajax
      * @category      Class
      * @author        Ernest Marcinko
      */

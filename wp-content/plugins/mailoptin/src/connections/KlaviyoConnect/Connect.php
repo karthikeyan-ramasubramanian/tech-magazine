@@ -109,6 +109,7 @@ class Connect extends AbstractKlaviyoConnect implements ConnectionInterface
     {
         try {
 
+            // https://developers.klaviyo.com/en/docs/track-api-reference#customer_properties
             $merge_fields_array = [
                 '$phone_number' => __('Phone Number', 'mailoptin'),
                 '$title'        => __('Job Title', 'mailoptin'),

@@ -3,7 +3,7 @@ wp_nonce_field('b2s_security_nonce', 'b2s_security_nonce');
 /* Data */
 require_once (B2S_PLUGIN_DIR . 'includes/B2S/Post/Filter.php');
 require_once (B2S_PLUGIN_DIR . 'includes/Util.php');
-$b2sShowByDate = isset($_GET['b2sShowByDate']) ? (preg_match("#^[0-9\-.\]]+$#", trim($_GET['b2sShowByDate'])) ? trim($_GET['b2sShowByDate']) : "") : ""; //YYYY-mm-dd
+$b2sShowByDate = isset($_GET['b2sShowByDate']) ? (preg_match("#^[0-9\-.\]]+$#", trim(sanitize_text_field($_GET['b2sShowByDate']))) ? trim(sanitize_text_field(wp_unslash($_GET['b2sShowByDate']))) : "") : ""; //YYYY-mm-dd
 ?>
 
 <div class="b2s-container">
@@ -32,11 +32,40 @@ $b2sShowByDate = isset($_GET['b2sShowByDate']) ? (preg_match("#^[0-9\-.\]]+$#", 
                                 <!-- Filter Post Start-->
                                 <form class="b2sSortForm form-inline pull-left" action="#">
                                     <input id="b2sType" type="hidden" value="publish" name="b2sType">
-                                    <input id="b2sShowByDate" type="hidden" value="<?php echo $b2sShowByDate; ?>" name="b2sShowByDate">
+                                    <input id="b2sShowByDate" type="hidden" value="<?php echo esc_attr($b2sShowByDate); ?>" name="b2sShowByDate">
                                     <input id="b2sPagination" type="hidden" value="1" name="b2sPagination">
                                     <?php
                                     $postFilter = new B2S_Post_Filter('publish');
-                                    echo $postFilter->getItemHtml('blog2social-publish');
+                                    echo wp_kses($postFilter->getItemHtml('blog2social-publish'), array(
+                                        'div' => array(
+                                            'class' => array()
+                                        ),
+                                        'input' => array(
+                                            'id' => array(),
+                                            'name' => array(),
+                                            'class' => array(),
+                                            'value' => array(),
+                                            'type' => array(),
+                                            'placeholder' => array(),
+                                        ),
+                                        'a' => array(
+                                            'href' => array(),
+                                            'id' => array(),
+                                            'class' => array()
+                                        ),
+                                        'span' => array(
+                                            'class' => array()
+                                        ),
+                                        'small' => array(),
+                                        'select' => array(
+                                            'id' => array(),
+                                            'name' => array(),
+                                            'class' => array()
+                                        ),
+                                        'option' => array(
+                                            'value' => array()
+                                        )
+                                    ));
                                     ?>
                                 </form>
                                 <!-- Filter Post Ende-->
@@ -96,5 +125,5 @@ $b2sShowByDate = isset($_GET['b2sShowByDate']) ? (preg_match("#^[0-9\-.\]]+$#", 
     </div>
 </div>
 
-<input type="hidden" id="b2sLang" value="<?php echo substr(B2S_LANGUAGE, 0, 2); ?>">
-<input type="hidden" id="b2sUserLang" value="<?php echo strtolower(substr(get_locale(), 0, 2)); ?>">
+<input type="hidden" id="b2sLang" value="<?php echo esc_attr(substr(B2S_LANGUAGE, 0, 2)); ?>">
+<input type="hidden" id="b2sUserLang" value="<?php echo esc_attr(strtolower(substr(get_locale(), 0, 2))); ?>">

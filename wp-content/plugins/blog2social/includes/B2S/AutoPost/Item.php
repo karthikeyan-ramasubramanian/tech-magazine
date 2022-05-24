@@ -41,10 +41,10 @@ class B2S_AutoPost_Item {
         $content .='<input type="hidden" class="b2s-autopost-m-show-modal" value="' . ((isset($optionAutoPost['active'])) ? '0' : '1') . '">';
         $content .='<input type="hidden" class="b2s-autopost-a-show-modal" value="' . ((isset($optionAutoPostImport['active'])) ? '0' : '1') . '">';
         $content .='<div class="panel panel-group b2s-auto-post-own-general-warning"><div class="panel-body">';
-        $content .='<span class="glyphicon glyphicon-exclamation-sign glyphicon-warning"></span> ' . sprintf(__('Posts for Facebook Profiles will be shown on your "Site & Blog Content" navigation bar in the "Instant Sharing" tab. To share the post on your Facebook Profile just click on the "Share" button next to your post. More information in the <a href="%s" target="_blank">Instant Sharing guide</a>.', 'blog2social'), B2S_Tools::getSupportLink('facebook_instant_sharing'));
+        $content .='<span class="glyphicon glyphicon-exclamation-sign glyphicon-warning"></span> ' . sprintf(__('Posts for Facebook Profiles will be shown on your "Site & Blog Content" navigation bar in the "Instant Sharing" tab. To share the post on your Facebook Profile just click on the "Share" button next to your post. More information in the <a href="%s" target="_blank">Instant Sharing guide</a>.', 'blog2social'), esc_url(B2S_Tools::getSupportLink('facebook_instant_sharing')));
         $content .='</div>';
         $content .='</div>';
-        $content .='<h4 class="b2s-auto-post-header">' . esc_html__('Autoposter', 'blog2social') . '</h4><a target="_blank" href="'.B2S_Tools::getSupportLink('auto_post_manuell').'">Info</a>';
+        $content .='<h4 class="b2s-auto-post-header">' . esc_html__('Autoposter', 'blog2social') . '</h4><a target="_blank" href="'.esc_url(B2S_Tools::getSupportLink('auto_post_manuell')).'">Info</a>';
         
         if(isset($optionAutoPost['assignBy']) && (int) $optionAutoPost['assignBy'] > 0) {
             $content .='<div class="panel panel-group b2s-auto-post-own-general-warning"><div class="panel-body">';
@@ -140,15 +140,15 @@ class B2S_AutoPost_Item {
         
         $content .='<br>';
         $content .='<hr>';
-        $content .='<h4 class="b2s-auto-post-header">' . esc_html__('Autoposter for Imported Posts', 'blog2social') . '</h4><a target="_blank" href="'.B2S_Tools::getSupportLink('auto_post_import').'">Info</a>';
+        $content .='<h4 class="b2s-auto-post-header">' . esc_html__('Autoposter for Imported Posts', 'blog2social') . '</h4><a target="_blank" href="'.esc_url(B2S_Tools::getSupportLink('auto_post_import')).'">Info</a>';
         $content .='<p class="b2s-bold">' . esc_html__('Set up your autoposter to automatically share your imported posts, pages and custom post types on your social media channels.', 'blog2social') . '</p>';
-        $content .='<p>' . esc_html__('Your current license:', 'blog2social') . '<span class="b2s-key-name"> ' . $versionType[B2S_PLUGIN_USER_VERSION] . '</span> ';
+        $content .='<p>' . esc_html__('Your current license:', 'blog2social') . '<span class="b2s-key-name"> ' . esc_html($versionType[B2S_PLUGIN_USER_VERSION]) . '</span> ';
         if (B2S_PLUGIN_USER_VERSION == 0) {
             $content .='<br>' . esc_html__('Immediate Cross-Posting across all networks: Share an unlimited number of posts', 'blog2social') . '<br>';
             $content .=esc_html__('Scheduled Auto-Posting', 'blog2social') . ': <a class="b2s-info-btn" href="' . esc_url(B2S_Tools::getSupportLink('affiliate')) . '" target="_blank">' . esc_html__('Upgrade', 'blog2social') . '</a>';
         } else {
             $content .='(' . esc_html__('share up to', 'blog2social') . ' ' . esc_html($limit[B2S_PLUGIN_USER_VERSION]) . ((B2S_PLUGIN_USER_VERSION >= 2) ? ' ' . esc_html__('posts per day', 'blog2social') : '') . ') ';
-            $content .='<a class="b2s-info-btn" href="' . esc_html(B2S_Tools::getSupportLink('affiliate')) . '" target="_blank">' . esc_html__('Upgrade', 'blog2social') . '</a>';
+            $content .='<a class="b2s-info-btn" href="' . esc_url(B2S_Tools::getSupportLink('affiliate')) . '" target="_blank">' . esc_html__('Upgrade', 'blog2social') . '</a>';
         }
         $content .='</p>';
         $content .='<br>';
@@ -198,16 +198,22 @@ class B2S_AutoPost_Item {
             
             //TOS Twitter 032018 - none multiple Accounts - User select once
             $content .='<div class="col-md-3 b2s-auto-post-twitter-profile"><label for="b2s-auto-post-profil-dropdown-twitter">' . esc_html__('Select Twitter profile:', 'blog2social') . '</label> <select class="b2s-w-100" id="b2s-auto-post-profil-dropdown-twitter" name="b2s-auto-post-profil-dropdown-twitter">';
+            $selectedTwitterAuthId = 0;
             foreach ($mandant as $k => $m) {
                 if ((isset($auth->{$m->id}) && isset($auth->{$m->id}[0]) && !empty($auth->{$m->id}[0]))) {
                     foreach ($auth->{$m->id} as $key => $value) {
                         if ($value->networkId == 2) {
                             $content .= '<option data-mandant-id="' . esc_attr($m->id) . '" value="' . esc_attr($value->networkAuthId) . '" '.(((int) $value->networkAuthId == (int) $twitterId) ? 'selected' : '').'>' . esc_html($value->networkUserName) . '</option>';
+                            if((int) $value->networkAuthId == (int) $twitterId) {
+                                $selectedTwitterAuthId = (int) $value->networkAuthId;
+                            }
                         }
                     }
                 }
             }
-            $content .= '</select><div class="pull-right"><a href="#" class="b2sTwitterInfoModalBtn">'.esc_html__('Info', 'blog2social').'</a></div></div></div>';
+            $content .= '</select><div class="pull-right"><a href="#" class="b2sTwitterInfoModalBtn">'.esc_html__('Info', 'blog2social').'</a></div>'
+//                    . $this->getRelayBtnHtml($selectedTwitterAuthId, 2)
+                    . '</div></div>';
             return $content;
         }
     }
@@ -219,7 +225,7 @@ class B2S_AutoPost_Item {
             foreach ($this->postTypesData as $k => $v) {
                 if ($v != 'attachment' && $v != 'nav_menu_item' && $v != 'revision') {
                     $selItem = (in_array($v, $selected)) ? 'checked' : '';
-                    $content .= ' <div class="b2s-post-type-list"><input id="b2s-post-type-item-' . esc_attr($type) . '-' . esc_attr($v) . '" class="b2s-post-type-item-' . $type . '" value="' . esc_attr($v) . '" name="b2s-settings-auto-post-' . $type . '[]" type="checkbox" ' . $selItem . '><label for="b2s-post-type-item-' . $type . '-' . $v . '"> ' . esc_html($v) . '</label></div>';
+                    $content .= ' <div class="b2s-post-type-list"><input id="b2s-post-type-item-' . esc_attr($type) . '-' . esc_attr($v) . '" class="b2s-post-type-item-' . esc_attr($type) . '" value="' . esc_attr($v) . '" name="b2s-settings-auto-post-' . esc_attr($type) . '[]" type="checkbox" ' . $selItem . '><label for="b2s-post-type-item-' . esc_attr($type) . '-' . esc_attr($v) . '"> ' . esc_html($v) . '</label></div>';
                 }
             }
         }
@@ -239,7 +245,7 @@ class B2S_AutoPost_Item {
                 $maxNetworkAccount = ($this->networkAuthCount !== false && is_array($this->networkAuthCount)) ? ((isset($this->networkAuthCount[$v])) ? $this->networkAuthCount[$v] : $this->networkAuthCount[0]) : false;
                 $html .='<li class="list-group-item">';
                 $html .='<div class="media">';
-                $html .='<img class="pull-left hidden-xs b2s-img-network" alt="' . esc_attr($networkName[$v]) . '" src="' . plugins_url('/assets/images/portale/' . $v . '_flat.png', B2S_PLUGIN_FILE) . '">';
+                $html .='<img class="pull-left hidden-xs b2s-img-network" alt="' . esc_attr($networkName[$v]) . '" src="' . esc_url(plugins_url('/assets/images/portale/' . $v . '_flat.png', B2S_PLUGIN_FILE)) . '">';
                 $html .='<div class="media-body network">';
                 $html .='<h4>' . esc_html(ucfirst($networkName[$v]));
                 if ($maxNetworkAccount !== false) {
@@ -257,7 +263,7 @@ class B2S_AutoPost_Item {
                                 $html .='<span class="glyphicon glyphicon-remove-circle glyphicon-danger"></span> <span class="not-allow">' . esc_html($networkType) . ': ' . esc_html(stripslashes($t->networkUserName)) . '</span> ';
                             } else {
                                 $selItem = (in_array($t->networkAuthId, $selected)) ? 'checked' : '';
-                                $html .= '<input id="b2s-import-auto-post-network-auth-id-' . $t->networkAuthId . '" class="b2s-network-tos-check" data-network-id="' . esc_attr($t->networkId) . '" ' . $selItem . ' value="' . esc_attr($t->networkAuthId) . '" name="b2s-import-auto-post-network-auth-id[]" type="checkbox"> <label for="b2s-import-auto-post-network-auth-id-' . $t->networkAuthId . '">' . esc_html($networkType) . ': ' . esc_html(stripslashes($t->networkUserName)) . '</label>';
+                                $html .= '<input id="b2s-import-auto-post-network-auth-id-' . esc_attr($t->networkAuthId) . '" class="b2s-network-tos-check" data-network-id="' . esc_attr($t->networkId) . '" ' . $selItem . ' value="' . esc_attr($t->networkAuthId) . '" name="b2s-import-auto-post-network-auth-id[]" type="checkbox"> <label for="b2s-import-auto-post-network-auth-id-' . esc_attr($t->networkAuthId) . '">' . esc_html($networkType) . ': ' . esc_html(stripslashes($t->networkUserName)) . '</label>';
                             }
                             $html .= '</li>';
                         }
@@ -350,6 +356,15 @@ class B2S_AutoPost_Item {
             $html .='</select>';
         }
         return $html;
+    }
+    
+    private function getRelayBtnHtml($networkAuthId, $networkId) {
+        $relay = '<div class="form-group b2s-post-relay-area-select pull-left"><div class="checkbox checbox-switch switch-success"><label>';
+        $relay .= '<input type="checkbox" class="b2s-post-item-details-relay form-control" data-user-version="' . esc_attr(B2S_PLUGIN_USER_VERSION) . '" data-network-id="' . esc_attr($networkId) . '" data-network-auth-id="' . esc_attr($networkAuthId) . '" name="b2s[' . esc_attr($networkAuthId) . '][post_relay]" value="1"/>';
+        $relay .= '<span></span>';
+        $relay .= esc_html__('Enable Retweets for all Tweets with the selected profile', 'blog2social') . ' <a href="#" class="btn-xs hidden-sm b2sInfoPostRelayModalBtn">' . esc_html__('Info', 'blog2social') . '</a>';
+        $relay .= ' </label></div></div>';
+        return $relay;
     }
     
 }

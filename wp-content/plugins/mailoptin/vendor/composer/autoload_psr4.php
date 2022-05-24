@@ -39,6 +39,7 @@ return array(
     'MailOptin\\MailerliteConnect\\' => array($baseDir . '/src/connections/MailerliteConnect'),
     'MailOptin\\MailPoetConnect\\' => array($baseDir . '/src/connections/MailPoetConnect'),
     'MailOptin\\MailChimpConnect\\' => array($baseDir . '/src/connections/MailChimpConnect'),
+    'MailOptin\\LearnDashConnect\\' => array($baseDir . '/src/connections/LearnDashConnect'),
     'MailOptin\\LeadBankConnect\\' => array($baseDir . '/src/connections/LeadBankConnect'),
     'MailOptin\\KlaviyoConnect\\' => array($baseDir . '/src/connections/KlaviyoConnect'),
     'MailOptin\\JiltConnect\\' => array($baseDir . '/src/connections/JiltConnect'),

@@ -69,14 +69,21 @@ function asl_do_init_options() {
     /* Compatibility defaults */
     $options['asl_compatibility_def'] = array(
         // CSS JS
-        'js_source' => "min",
-        'js_init' => "dynamic",
+		'js_source' => "jqueryless-min",
+		'js_source_def' => array(
+			array('option' => 'Non minified', 'value' => 'jqueryless-nomin'),
+			array('option' => 'Minified (default)', 'value' => 'jqueryless-min'),
+			array('option' => 'Legacy Non minified', 'value' => 'nomin'),
+			array('option' => 'Legacy Minified', 'value' => 'min'),
+			array('option' => 'Legacy Non-minified scoped', 'value' => 'nomin-scoped'),
+			array('option' => 'Legacy Minified scoped', 'value' => 'min-scoped')
+		),
+		'script_loading_method' => 'optimized',
         'load_scroll_js' => 'yes',
         'js_fix_duplicates' => 1,
         "detect_ajax" => 0,
         "js_retain_popstate" => 0,
         'load_google_fonts' => 1,
-        'old_browser_compatibility' => 0,
         // DB
         'query_soft_check' => 0,
         'use_acf_getfield' => 0,
@@ -96,8 +103,8 @@ function asl_do_init_options() {
         'keyword_logic' => "and",
 		'mob_auto_focus_menu_selector' => '#menu-toggle',
         'trigger_on_facet_change' => 1,
-        'redirect_click_to' => 'results_page',
-        'redirect_enter_to' => 'results_page',
+        'click_action' => 'results_page',
+        'return_action' => 'results_page',
         'click_action_location' => 'same',
         'return_action_location' => 'same',
         'custom_redirect_url' => '?s={phrase}',
@@ -113,8 +120,14 @@ function asl_do_init_options() {
         'search_all_cf' => 0,
         'customfields' => "",
         'post_status' => 'publish',
-        'override_default_results' => 0,
+        'override_default_results' => 1,
         'override_method' => 'get',
+		'res_live_search' => 0,
+		'res_live_selector' => '#main',
+		'res_live_trigger_type' => 1,
+		'res_live_trigger_facet' => 1,
+		'res_live_trigger_click' => 0,
+		'res_live_trigger_return' => 0,
 
         'exactonly' => 0,
         'exact_match_location' => 'anywhere',
@@ -126,7 +139,7 @@ function asl_do_init_options() {
         'resultitemheight' => "70px",
 
         'orderby_primary' => 'relevance DESC',
-        'orderby_secondary' => 'date DESC',
+        'orderby_secondary' => 'post_date DESC',
 		'orderby_primary_cf' => '',
 		'orderby_secondary_cf' => '',
 		'orderby_primary_cf_type' => 'numeric',
@@ -234,6 +247,10 @@ function asl_do_init_options() {
         'resultsposition' => 'hover',
         'resultsmargintop' => '12px',
 
+		'results_width' => 'auto',
+		'results_width_phone' => 'auto',
+		'results_width_tablet' => 'auto',
+
         'v_res_max_height' => 'none',
 
         'v_res_column_count' => 1,
@@ -251,6 +268,8 @@ function asl_do_init_options() {
         'show_close_icon' => 1,
         'showauthor' => 0,
         'showdate' => 0,
+        'custom_date' => 0,
+        'custom_date_format' => 'Y-m-d H:i:s',
         'showdescription' => 1,
         'descriptionlength' => 100,
 		'description_context' => 0,

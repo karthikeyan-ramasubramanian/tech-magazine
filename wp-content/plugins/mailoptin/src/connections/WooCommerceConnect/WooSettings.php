@@ -224,7 +224,7 @@ class WooSettings
                 $lists                                                           = WooInit::get_instance()->woo_select_list_options($saved_connections);
                 $woocommerce_settings['mailoptin_woocommerce_integration_lists'] = [
                     'type'        => 'select',
-                    'label'       => __('Select Lists', 'mailoptin'),
+                    'label'       => __('Select List', 'mailoptin'),
                     'description' => __('Select the email list, audience or contact list to add customers to.', 'mailoptin'),
                     'options'     => $lists
                 ];

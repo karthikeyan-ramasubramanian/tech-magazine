@@ -1,6 +1,6 @@
 <?php
-$getPage = $_GET['page'];
-$getType = (isset($_GET['type']) && !empty($_GET['type'])) ? $_GET['type'] : 'link';
+$getPage = sanitize_text_field(wp_unslash($_GET['page']));
+$getType = (isset($_GET['type']) && !empty($_GET['type'])) ? sanitize_text_field(wp_unslash($_GET['type'])) : 'link';
 $isPremiumInfo = (B2S_PLUGIN_USER_VERSION == 0) ? 'b2s-btn-disabled' : '';
 require_once(B2S_PLUGIN_DIR . 'includes/B2S/Post/Tools.php');
 $noticeCount = B2S_Post_Tools::countNewNotifications(B2S_PLUGIN_BLOG_USER_ID);

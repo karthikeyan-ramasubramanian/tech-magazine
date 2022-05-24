@@ -16,7 +16,9 @@
 			'value' => $sd['orderby_primary']
 		));
 	$params[$o->getName()] = $o->getData();
-
+	?>
+	<div class='item-flex-nogrow item-flex-wrap'  wd-show-on="orderby_primary:customfp DESC,customfp ASC">
+	<?php
 	$o = new wpdreamsText("orderby_primary_cf", __('custom field', 'ajax-search-lite'), $sd['orderby_primary_cf']);
 	$params[$o->getName()] = $o->getData();
 
@@ -30,6 +32,7 @@
 		));
 	$params[$o->getName()] = $o->getData();
 	?>
+	</div>
 </div>
 <div class="item wd-secondary-order item-flex-nogrow item-flex-wrap"><?php
 	$o = new wpdreamsCustomSelect("orderby_secondary", __('Secondary ordering', 'ajax-search-lite'),
@@ -47,7 +50,9 @@
 			'value' => $sd['orderby_secondary']
 		));
 	$params[$o->getName()] = $o->getData();
-
+	?>
+	<div class='item-flex-nogrow item-flex-wrap' wd-show-on="orderby_secondary:customfs DESC,customfs ASC">
+	<?php
 	$o = new wpdreamsText("orderby_secondary_cf", __('custom field', 'ajax-search-lite'), $sd['orderby_secondary_cf']);
 	$params[$o->getName()] = $o->getData();
 
@@ -61,6 +66,7 @@
 		));
 	$params[$o->getName()] = $o->getData();
 	?>
+	</div>
 	<div class="descMsg item-flex-grow item-flex-100">
 		<?php echo __('If two elements match the primary ordering criteria, the <b>Secondary ordering</b> is used.', 'ajax-search-lite'); ?>
 	</div>

@@ -136,6 +136,7 @@ if (!class_exists("WD_ASL_Manager")) {
                 $this->context = "frontend";
             }
 
+			return $this->context;
         }
 
         /**

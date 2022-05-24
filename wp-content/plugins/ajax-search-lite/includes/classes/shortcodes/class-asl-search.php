@@ -50,13 +50,6 @@ if (!class_exists("WD_ASL_Search_Shortcode")) {
                 'id' => 'something'
             ), $atts));
 
-            if(isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/(?i)msie [6-8]/',$_SERVER['HTTP_USER_AGENT']) ) {
-                $com_opt = wd_asl()->o['asl_compatibility'];
-                if ( $com_opt['old_browser_compatibility'] == 1 ) {
-                    get_search_form(true);
-                    return;
-                }
-            }
 
             $inst = wd_asl()->instances->get(0);
             $style = $inst['data'];

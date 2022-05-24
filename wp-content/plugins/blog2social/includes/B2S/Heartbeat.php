@@ -402,7 +402,7 @@ class B2S_Heartbeat {
                                                         $entryData = json_decode($entry['insight'], true);
                                                         if($entryData !== false && is_array($entryData) && !empty($entryData) && isset($entryData['insights']['data']['likes']) && is_array($entryData['insights']['data']['likes']) && !empty($entryData['insights']['data']['likes'])) {
                                                             end($entryData['insights']['data']['likes']);
-                                                            $entryKey = key(['insights']['data']['likes']);
+                                                            $entryKey = key($entryData['insights']['data']['likes']);
                                                             $totalData['likes'] += $entryData['insights']['data']['likes'][$entryKey];
                                                             $totalData['comments'] += $entryData['insights']['data']['comments'][$entryKey];
                                                             $totalData['reshares'] += $entryData['insights']['data']['reshares'][$entryKey];
@@ -457,7 +457,7 @@ class B2S_Heartbeat {
                                                 $entryData = json_decode($entry['insight'], true);
                                                 if($entryData !== false && is_array($entryData) && !empty($entryData)) {
                                                     end($entryData['insights']['data']['likes']);
-                                                    $entryKey = key(['insights']['data']['likes']);
+                                                    $entryKey = key($entryData['insights']['data']['likes']);
                                                     $totalData['likes'] += $entryData['insights']['data']['likes'][$entryKey];
                                                     $totalData['comments'] += $entryData['insights']['data']['comments'][$entryKey];
                                                     $totalData['reshares'] += $entryData['insights']['data']['reshares'][$entryKey];

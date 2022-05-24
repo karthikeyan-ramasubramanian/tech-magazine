@@ -15,13 +15,12 @@ isset($_POST, $_POST['asl_compatibility'], $_POST['asl_compatibility_nonce'])
 		$values = array(
 			// CSS and JS
 			"js_source" => $_POST['js_source'],
-			"js_init" => $_POST['js_init'],
+			"script_loading_method" => $_POST['script_loading_method'],
 			"load_scroll_js" => $_POST['load_scroll_js'],
 			"detect_ajax" => $_POST['detect_ajax'],
 			"js_retain_popstate" => $_POST['js_retain_popstate'],
 			'js_fix_duplicates' => $_POST['js_fix_duplicates'],
 			'load_google_fonts' => $_POST['load_google_fonts'],
-			'old_browser_compatibility' => $_POST['old_browser_compatibility'],
 			// Query options
 			'query_soft_check' => $_POST['query_soft_check'],
 			'use_acf_getfield' => $_POST['use_acf_getfield'],
@@ -83,6 +82,7 @@ isset($_POST, $_POST['asl_compatibility'], $_POST['asl_compatibility_nonce'])
     <div class="clear"></div>
 </div>
 <?php
+wp_enqueue_script('wd_asl_helpers_jquery_conditionals', plugin_dir_url(__FILE__) . 'settings/assets/js/jquery.conditionals.js', array('jquery'), ASL_CURR_VER_STRING, true);
 wp_enqueue_script('wpd-backend-compatibility', plugin_dir_url(__FILE__) . 'settings/assets/compatibility_settings.js', array(
 	'jquery'
 ), ASL_CURR_VER_STRING, true);

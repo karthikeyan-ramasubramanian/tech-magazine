@@ -52,6 +52,7 @@
       "MailOptin\\ForminatorFormConnect\\": "ForminatorFormConnect/",
       "MailOptin\\WebHookConnect\\": "WebHookConnect/",
       "MailOptin\\WooCommerceConnect\\": "WooCommerceConnect/",
+      "MailOptin\\LearnDashConnect\\": "LearnDashConnect/",
       "MailOptin\\FacebookCustomAudienceConnect\\": "FacebookCustomAudienceConnect/",
       "MailOptin\\NewsmanConnect\\": "NewsmanConnect/",
       "MailOptin\\Connections\\": "./"

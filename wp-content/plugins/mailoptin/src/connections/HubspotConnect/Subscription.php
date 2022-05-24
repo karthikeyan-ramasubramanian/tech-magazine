@@ -103,13 +103,15 @@ class Subscription extends AbstractHubspotConnect
                         }
 
                         if (is_array($value)) {
-                            $value = implode(', ', $value);
+                            $value = implode(';', $value);
                         }
 
                         $properties[$HSKey] = $value;
                     }
                 }
             }
+
+            $properties = apply_filters('mo_connections_hubspot_optin_properties', $properties, $this);
 
             //Create the contact
             $contact_data = [

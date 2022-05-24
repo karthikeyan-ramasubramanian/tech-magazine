@@ -12,7 +12,7 @@
 			<legend>
 				<?php echo __('Exclude/Include results', 'ajax-search-lite'); ?>
 				<span class="asl_legend_docs">
-                    <a target="_blank" href="https://documentation.ajaxsearchpro.com/advanced-options/excluding-and-including-results"><span class="fa fa-book"></span>
+                    <a target="_blank" href="https://documentation.ajaxsearchlite.com/advanced-options/excluding-and-including-results"><span class="fa fa-book"></span>
                         <?php echo __('Documentation', 'ajax-search-lite'); ?>
                     </a>
                 </span>

@@ -291,12 +291,15 @@ class Category
 
         return $return_data;
     }
-    
+
     public function process_submission($product_cat_id, $order)
     {
         $field_map = [];
 
-        $connection_service    = get_term_meta($product_cat_id, 'mailoptinWooCommerceSelectIntegration', true);
+        $connection_service = get_term_meta($product_cat_id, 'mailoptinWooCommerceSelectIntegration', true);
+
+        if (empty($connection_service)) return;
+
         $connection_email_list = get_term_meta($product_cat_id, $connection_service . '[mailoptinWooCommerceSelectList]', true);
 
         foreach ($this->merge_vars_field_map($connection_service, $connection_email_list) as $key => $value) {

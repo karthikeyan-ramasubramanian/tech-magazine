@@ -10,6 +10,8 @@ $google_recaptcha_v2_themes = STLSR_Helper::google_recaptcha_v2_themes();
 
 $google_recaptcha_v3_scores = STLSR_Helper::google_recaptcha_v3_scores();
 
+$google_recaptcha_v3_badges = STLSR_Helper::google_recaptcha_v3_badges();
+
 $google_recaptcha_v2 = get_option( 'stlsr_google_recaptcha_v2' );
 
 $google_recaptcha_v2      = get_option( 'stlsr_google_recaptcha_v2' );
@@ -21,6 +23,7 @@ $google_recaptcha_v3      = get_option( 'stlsr_google_recaptcha_v3' );
 $grecaptcha_v3_site_key   = isset( $google_recaptcha_v3['site_key'] ) ? esc_attr( $google_recaptcha_v3['site_key'] ) : '';
 $grecaptcha_v3_secret_key = isset( $google_recaptcha_v3['secret_key'] ) ? esc_attr( $google_recaptcha_v3['secret_key'] ) : '';
 $grecaptcha_v3_score      = isset( $google_recaptcha_v3['score'] ) ? esc_attr( $google_recaptcha_v3['score'] ) : '0.3';
+$grecaptcha_v3_badge      = isset( $google_recaptcha_v3['badge'] ) ? esc_attr( $google_recaptcha_v3['badge'] ) : 'bottomright';
 
 $login_captcha        = get_option( 'stlsr_login_captcha' );
 $login_captcha_enable = isset( $login_captcha['enable'] ) ? (bool) $login_captcha['enable'] : false;
@@ -338,6 +341,33 @@ if ( $google_recaptcha_v3_enable ) {
 							?>
 						</fieldset>
 						<p class="description"><?php esc_html_e( 'reCAPTCHA v3 returns a score (0.0 is very likely a bot). Select Google reCAPTCHA Version 3 Score.', 'login-security-recaptcha' ); ?></p>
+					</td>
+				</tr>
+
+				<tr class="stlsr_captcha stlsr_google_recaptcha_v3">
+					<th scope="row">
+						<label for="stlsr_google_recaptcha_v3_badge"><?php esc_html_e( 'Badge Position', 'login-security-recaptcha' ); ?></label>
+					</th>
+					<td>
+						<fieldset>
+							<legend class="screen-reader-text">
+								<span><?php esc_html_e( 'Select Badge Position for reCAPTCHA Version 3.', 'login-security-recaptcha' ); ?></span>
+							</legend>
+							<?php
+							foreach ( $google_recaptcha_v3_badges as $key => $value ) {
+								?>
+							<label>
+								<input <?php checked( $grecaptcha_v3_badge, $key, true ); ?> type="radio" name="google_recaptcha_v3_badge" value="<?php echo esc_attr( $key ); ?>">
+								<span><?php echo esc_html( $value ); ?></span>
+							</label>
+								<?php
+								end( $google_recaptcha_v3_badges );
+								if ( key( $google_recaptcha_v3_badges ) !== $key ) {
+									echo '&nbsp;&nbsp;';
+								}
+							}
+							?>
+						</fieldset>
 					</td>
 				</tr>
 

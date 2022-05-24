@@ -205,7 +205,7 @@ class B2S_Util {
                     $list['description'] = (function_exists('mb_convert_encoding') ? htmlspecialchars($desc) : $desc);
                 }
                 if (($meta->getAttribute('property') == $type . ':image' || $meta->getAttribute('name') == $type . ':image') && !isset($list['image'])) {
-                    $list['image'] = (function_exists('mb_convert_encoding') ? htmlspecialchars($meta->getAttribute('content')) : $meta->getAttribute('content'));
+                    $list['image'] = $meta->getAttribute('content');
                 }
             } else {
                 if ($meta->getAttribute('name') == 'description' && !isset($list['default_description'])) {
@@ -219,7 +219,7 @@ class B2S_Util {
                     $list['og_description'] = (function_exists('mb_convert_encoding') ? htmlspecialchars($desc) : $desc);
                 }
                 if ($meta->getAttribute($search) == 'og:image' && !isset($list['og_image'])) {
-                    $list['og_image'] = (function_exists('mb_convert_encoding') ? htmlspecialchars($meta->getAttribute('content')) : $meta->getAttribute('content'));
+                    $list['og_image'] = $meta->getAttribute('content');
                 }
                 //Further
                 /* if ($meta->getAttribute($search) == 'twitter:title' && !isset($list['twitter_title'])) {
@@ -587,7 +587,7 @@ class B2S_Util {
             $utcStr = '(UTC ' . self::humanReadableOffset($timezoneData[$timezone]) . ')';
             $timeZoneEntry = trim($utcStr) . ' ' . trim(preg_replace("/\_/", ' ', $timezone));
             $isSelected = ($timezone == $selected) ? 'selected' : '';
-            $optionHtmlList .= '<option value="' . $timezone . '" data-offset="' . $timezoneData[$timezone] . '" ' . $isSelected . '>' . $timeZoneEntry . '</option>';
+            $optionHtmlList .= '<option value="' . esc_attr($timezone) . '" data-offset="' . esc_attr($timezoneData[$timezone]) . '" ' . $isSelected . '>' . esc_html($timeZoneEntry) . '</option>';
         }
         return $optionHtmlList;
     }

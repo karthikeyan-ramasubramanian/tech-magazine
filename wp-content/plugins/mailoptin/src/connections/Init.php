@@ -102,6 +102,7 @@ class Init
         \MailOptin\FormidableFormConnect\Connect::get_instance();
         \MailOptin\ForminatorFormConnect\Connect::get_instance();
         \MailOptin\WooCommerceConnect\Connect::get_instance();
+        \MailOptin\LearnDashConnect\Connect::get_instance();
         GoogleAnalytics::get_instance();
     }
 }

@@ -61,6 +61,7 @@ class STLSR_Setting {
 		$google_recaptcha_v3_site_key   = isset( $_POST['google_recaptcha_v3_site_key'] ) ? sanitize_text_field( $_POST['google_recaptcha_v3_site_key'] ) : '';
 		$google_recaptcha_v3_secret_key = isset( $_POST['google_recaptcha_v3_secret_key'] ) ? sanitize_text_field( $_POST['google_recaptcha_v3_secret_key'] ) : '';
 		$google_recaptcha_v3_score      = isset( $_POST['google_recaptcha_v3_score'] ) ? sanitize_text_field( $_POST['google_recaptcha_v3_score'] ) : '0.3';
+		$google_recaptcha_v3_badge      = isset( $_POST['google_recaptcha_v3_badge'] ) ? sanitize_text_field( $_POST['google_recaptcha_v3_badge'] ) : 'bottomright';
 
 		$login_captcha_enable = isset( $_POST['login_captcha_enable'] ) ? (bool) $_POST['login_captcha_enable'] : false;
 		$login_captcha        = isset( $_POST['login_captcha'] ) ? sanitize_text_field( $_POST['login_captcha'] ) : '';
@@ -85,6 +86,10 @@ class STLSR_Setting {
 			$google_recaptcha_v3_score = '0.3';
 		}
 
+		if ( ! in_array( $google_recaptcha_v3_badge, array_keys( STLSR_Helper::google_recaptcha_v3_badges() ) ) ) {
+			$google_recaptcha_v3_badge = 'bottomright';
+		}
+
 		$captcha = array_keys( STLSR_Helper::captcha_list() );
 
 		update_option(
@@ -102,6 +107,7 @@ class STLSR_Setting {
 				'site_key'   => $google_recaptcha_v3_site_key,
 				'secret_key' => $google_recaptcha_v3_secret_key,
 				'score'      => $google_recaptcha_v3_score,
+				'badge'      => $google_recaptcha_v3_badge,
 			),
 			true
 		);

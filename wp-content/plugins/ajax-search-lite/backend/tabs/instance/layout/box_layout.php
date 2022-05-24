@@ -87,18 +87,23 @@ $themes = array(
 		$o = new wpdreamsYesNo("override_bg", __("Override background color?", "ajax-search-lite"),
 			$sd['override_bg']);
 		$params[$o->getName()] = $o->getData();
-
+		?>
+		<div wd-enable-on="override_bg:1">
+		<?php
 		$o = new wpdreamsColorPicker("override_bg_color", __("color:", "ajax-search-lite"),
 			$sd['override_bg_color']);
 		$params[$o->getName()] = $o->getData();
 		?>
+		</div>
 	</div>
 	<div class="item item-flex-nogrow" style="flex-wrap: wrap;">
 		<?php
 		$o = new wpdreamsYesNo("override_icon", __("Override magnifier & icon colors?", "ajax-search-lite"),
 			$sd['override_icon']);
 		$params[$o->getName()] = $o->getData();
-
+		?>
+		<div class="item-flex-nogrow" wd-enable-on="override_icon:1">
+		<?php
 		$o = new wpdreamsColorPicker("override_icon_bg_color", __("icon background colors", "ajax-search-lite"),
 			$sd['override_icon_bg_color']);
 		$params[$o->getName()] = $o->getData();
@@ -107,6 +112,7 @@ $themes = array(
 			$sd['override_icon_color']);
 		$params[$o->getName()] = $o->getData();
 		?>
+		</div>
 	</div>
 	<div class="item">
 		<div style="margin: 8px 17px 16px 0;">
@@ -114,11 +120,15 @@ $themes = array(
 		$o = new wpdreamsYesNo("override_border", __("Override search box border?", "ajax-search-lite"),
 			$sd['override_border']);
 		$params[$o->getName()] = $o->getData();
-		?></div><?php
+		?>
+		</div>
+		<div wd-enable-on="override_border:1">
+		<?php
 		$o = new wpdreamsBorder("override_border_style", __("Border style", "ajax-search-lite"),
 			$sd['override_border_style']);
 		$params[$o->getName()] = $o->getData();
 		?>
+		</div>
 	</div>
 </fieldset>
 <fieldset>
@@ -128,22 +138,28 @@ $themes = array(
 		$o = new wpdreamsYesNo("results_bg_override", __("Override results container background color?", "ajax-search-lite"),
 			$sd['results_bg_override']);
 		$params[$o->getName()] = $o->getData();
-
+		?>
+		<div wd-enable-on="results_bg_override:1">
+		<?php
 		$o = new wpdreamsColorPicker("results_bg_override_color", __("color:", "ajax-search-lite"),
 			$sd['results_bg_override_color']);
 		$params[$o->getName()] = $o->getData();
 		?>
+		</div>
 	</div>
 	<div class="item item-flex-nogrow" style="flex-wrap: wrap;">
 		<?php
 		$o = new wpdreamsYesNo("results_item_bg_override", __("Override results background color?", "ajax-search-lite"),
 			$sd['results_item_bg_override']);
 		$params[$o->getName()] = $o->getData();
-
+		?>
+		<div wd-enable-on="results_item_bg_override:1">
+		<?php
 		$o = new wpdreamsColorPicker("results_item_bg_override_color", __("color:", "ajax-search-lite"),
 			$sd['results_item_bg_override_color']);
 		$params[$o->getName()] = $o->getData();
 		?>
+		</div>
 	</div>
 	<div class="item">
 		<div style="margin: 8px 17px 16px 0;">
@@ -151,11 +167,15 @@ $themes = array(
 		$o = new wpdreamsYesNo("results_override_border", __("Override results box border?", "ajax-search-lite"),
 			$sd['results_override_border']);
 		$params[$o->getName()] = $o->getData();
-		?></div><?php
+		?>
+		</div>
+		<div wd-enable-on="results_override_border:1">
+		<?php
 		$o = new wpdreamsBorder("results_override_border_style", __("Border style", "ajax-search-lite"),
 			$sd['results_override_border_style']);
 		$params[$o->getName()] = $o->getData();
 		?>
+		</div>
 	</div>
 </fieldset>
 <fieldset>
@@ -165,11 +185,14 @@ $themes = array(
 		$o = new wpdreamsYesNo("settings_bg_override", __("Override settings container background color?", "ajax-search-lite"),
 			$sd['settings_bg_override']);
 		$params[$o->getName()] = $o->getData();
-
+		?>
+		<div wd-enable-on="settings_bg_override:1">
+		<?php
 		$o = new wpdreamsColorPicker("settings_bg_override_color", __("color:", "ajax-search-lite"),
 			$sd['settings_bg_override_color']);
 		$params[$o->getName()] = $o->getData();
 		?>
+		</div>
 	</div>
 	<div class="item">
 		<div style="margin: 8px 17px 16px 0;">
@@ -177,10 +200,14 @@ $themes = array(
 		$o = new wpdreamsYesNo("settings_override_border", __("Override settings box border?", "ajax-search-lite"),
 			$sd['settings_override_border']);
 		$params[$o->getName()] = $o->getData();
-		?></div><?php
+		?>
+		</div>
+		<div wd-enable-on="settings_override_border:1">
+		<?php
 		$o = new wpdreamsBorder("settings_override_border_style", __("Border style", "ajax-search-lite"),
 			$sd['settings_override_border_style']);
 		$params[$o->getName()] = $o->getData();
 		?>
+		</div>
 	</div>
 </fieldset>

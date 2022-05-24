@@ -1,10 +1,10 @@
 === Login Logout Menu ===
 Requires at least: 4.0
-Tested up to: 5.8
+Tested up to: 6.0
 Contributors: hiddenpearls, WPBrigade, AbdulWahab610
 Author URI: https://wpbrigade.com
 Tags: menu, login menu, logout menu, register menu, profile menu, login menu items
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -29,7 +29,7 @@ Check out our documentation to implement the [shortcodes](https://loginpress.pro
 `If you find our plugin useful, please leave a good rating/review and check out our other plugins below.`
 
 * [Analytify - Google Analytics Plugin](https://analytify.io/ref/73/?utm_source=login-logout-menu&amp;utm_medium=readme&amp;utm_campaign=pro-upgrade)
-* [LoginPress](https://loginpress.pro/) - For Custom login page and login page security
+* [LoginPress](https://loginpress.pro/?utm_source=login-logout-menu) - For Custom login page and login page security
 * [Simple Social Buttons](https://simplesocialbuttons.com?utm_source=login-logout-menu&amp;utm_medium=readme&amp;utm_campaign=pro-upgrade) - Plugin for Social share buttons and social icons
 * [Related Posts Thumbnails Plugin](https://wordpress.org/plugins/related-posts-thumbnails/) - For related posts/products
 * [Under Construction, Coming Soon & Maintenance Mode](http://wpbrigade.com/recommend/maintenance-mode?utm_source=login-logout-menu&amp;utm_medium=readme&amp;utm_campaign=pro-upgrade) - Plugin for Under construction & Coming soon page
@@ -50,6 +50,10 @@ Check out our documentation to implement the [shortcodes](https://loginpress.pro
 1. Logout and Profile Menu Item
 
 == Changelog ==
+
+= 1.3.2. - 2022-05-19 =
+* Enhancement: Added a filter `before_login_logout_menu_items` to change the menu item behavior.
+* Compatibility: Compatible with WordPress 6.0
 
 = 1.3.1 - 2021-07-22 =
 * Bugfix: Shortcode Parameters for Login/Logout redirects.
@@ -83,5 +87,5 @@ Check out our documentation to implement the [shortcodes](https://loginpress.pro
 
 == Upgrade Notice ==
 
-= 1.3.1 =
+= 1.3.2 =
 Upgrade immediately - 

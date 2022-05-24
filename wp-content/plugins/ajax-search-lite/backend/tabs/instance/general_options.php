@@ -1,8 +1,9 @@
 <ul id="subtabs"  class='tabs'>
-    <li><a tabid="101" class='subtheme current'>Sources & Basics</a></li>
-    <li><a tabid="102" class='subtheme'>Behavior</a></li>
-    <li><a tabid="104" class='subtheme'>Ordering</a></li>
-    <li><a tabid="103" class='subtheme'>Autocomplete & Suggestions</a></li>
+    <li><a tabid="101" class='subtheme current'><?php _e("Sources & Basics", "ajax-search-lite"); ?></a></li>
+    <li><a tabid="102" class='subtheme'><?php _e("Behavior", "ajax-search-lite"); ?></a></li>
+    <li><a tabid="104" class='subtheme'><?php _e("Ordering", "ajax-search-lite"); ?></a></li>
+    <li><a tabid="103" class='subtheme'><?php _e("Autocomplete & Suggestions", "ajax-search-lite"); ?></a></li>
+    <li><a tabid="105" class='subtheme'><?php _e("Results Page Live Loader", "ajax-search-lite"); ?></a></li>
 </ul>
 <div class='tabscontent'>
     <div tabid="101">
@@ -44,6 +45,9 @@
             <?php include(ASL_PATH."backend/tabs/instance/general/autocomplete.php"); ?>
         </fieldset>
     </div>
+	<div tabid="105">
+		<?php include(ASL_PATH."backend/tabs/instance/general/results_page_live_loader.php"); ?>
+	</div>
 </div>
 <div class="item">
     <input type="hidden" name='asl_submit' value=1 />

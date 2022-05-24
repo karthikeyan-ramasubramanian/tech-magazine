@@ -10,7 +10,7 @@ if (!class_exists('ASL_Search')) {
 	 *
 	 * @class       ASL_Search
 	 * @version     2.0
-	 * @package     AjaxSearchPro/Abstracts
+	 * @package     AjaxSearchLite/Abstracts
 	 * @category    Class
 	 * @author      Ernest Marcinko
 	 */

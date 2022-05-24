@@ -26,6 +26,14 @@ class STLSR_Helper {
 		);
 	}
 
+	public static function google_recaptcha_v3_badges() {
+		return array(
+			'inline'      => esc_html__( 'Inline', 'login-security-recaptcha' ),
+			'bottomleft'  => esc_html__( 'Bottom - Left', 'login-security-recaptcha' ),
+			'bottomright' => esc_html__( 'Bottom - Right', 'login-security-recaptcha' ),
+		);
+	}
+
 	public static function get_steps_url() {
 		return 'https://scriptstown.com/how-to-get-site-and-secret-key-for-google-recaptcha/';
 	}

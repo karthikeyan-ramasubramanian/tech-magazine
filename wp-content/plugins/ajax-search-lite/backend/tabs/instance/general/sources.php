@@ -63,7 +63,7 @@
     $params[$o->getName()] = $o->getData();
     ?>
 </div>
-<div class="item">
+<div class="item" wd-disable-on="search_all_cf:1">
     <?php
     $o = new wpdreamsCustomFields("customfields", __("..or search in selected custom fields?", "ajax-search-lite"),
         $sd['customfields']);

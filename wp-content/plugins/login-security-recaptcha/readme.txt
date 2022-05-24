@@ -3,9 +3,9 @@ Contributors: scriptstown
 Tags: login, security, recaptcha, google, spam, anti spam, monitor, log
 Donate link: https://scriptstown.com/
 Requires at least: 5.0
-Tested up to: 5.9
+Tested up to: 6.0
 Requires PHP: 5.6
-Stable tag: 1.3.7
+Stable tag: 1.3.9
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,6 +19,7 @@ Secure WordPress login, registration, and comment form with Google reCAPTCHA. Mo
 
 * Google reCAPTCHA v2
 * Google reCAPTCHA v3
+* Set reCAPTCHA v3 Position
 * Secure Login Form
 * Secure Registration Form
 * Secure Lost Password Form
@@ -79,6 +80,12 @@ Secure WordPress login, registration, and comment form with Google reCAPTCHA. Mo
 8. Monitor reCAPTCHA Error Logs
 
 == Changelog ==
+
+= 1.3.9 =
+* Tested up to 6.0.
+
+= 1.3.8 =
+* Added: Badge position for reCAPTCHA version 3.
 
 = 1.3.7 =
 * Improvement: Check for empty token before making a remote call.

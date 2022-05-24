@@ -220,30 +220,30 @@ class B2S_Metrics_Item {
                                 <div class="media-body">
                                     <div style="width: 8%;display: inline-block;">'.esc_html(B2S_Util::getCustomDateFormat($wpPostData->post_date, substr(B2S_LANGUAGE, 0, 2))).'</div>
                                     <div style="width: 4%;display: inline-block;">' . (($insightsData['favorite'] == true) ?
-                                        '<i class="glyphicon glyphicon-star pull-left b2sFavoriteStar" data-post-id="' . $wpPostId . '" data-is-favorite="1"></i>' :
-                                        '<i class="glyphicon glyphicon-star-empty pull-left b2sFavoriteStar" data-post-id="' . $wpPostId . '" data-is-favorite="0"></i>'
+                                        '<i class="glyphicon glyphicon-star pull-left b2sFavoriteStar" data-post-id="' . esc_attr($wpPostId) . '" data-is-favorite="1"></i>' :
+                                        '<i class="glyphicon glyphicon-star-empty pull-left b2sFavoriteStar" data-post-id="' . esc_attr($wpPostId) . '" data-is-favorite="0"></i>'
                                         ) . '</div>
                                     <div style="width: 44%;display: inline-block;">
-                                        <strong><a target="_blank" href="'.esc_url(get_permalink($wpPostId)).'">'.$wpPostData->post_title.'</a></strong>
-                                        <p class="info hidden-xs"><a class="b2sGetB2SPostsByWpPost" data-post-id="'.esc_attr($wpPostId).'"><span class="b2s-publish-count" data-post-id="' . esc_attr($wpPostId) . '">'.$insightsData['count'].'</span> '.esc_html__('shared social media posts', 'blog2social').'</a> | ' . sprintf(esc_html__('latest share by %s', 'blog2social'), '<a href="' . esc_url(get_author_posts_url($lastPublish['user'])) . '">' . esc_html((!empty($userInfoName) ? $userInfoName : '-')) . '</a>') . '</p>
+                                        <strong><a target="_blank" href="'.esc_url(get_permalink($wpPostId)).'">'.esc_html($wpPostData->post_title).'</a></strong>
+                                        <p class="info hidden-xs"><a class="b2sGetB2SPostsByWpPost" data-post-id="'.esc_attr($wpPostId).'"><span class="b2s-publish-count" data-post-id="' . esc_attr($wpPostId) . '">'.esc_html($insightsData['count']).'</span> '.esc_html__('shared social media posts', 'blog2social').'</a> | ' . sprintf(esc_html__('latest share by %s', 'blog2social'), '<a href="' . esc_url(get_author_posts_url($lastPublish['user'])) . '">' . esc_html((!empty($userInfoName) ? $userInfoName : '-')) . '</a>') . '</p>
                                     </div>
                                     <div style="width: 6%;display: inline-block;">
-                                        <i class="glyphicon glyphicon-eye-open"></i> '.$insightsData['impressions'].'
+                                        <i class="glyphicon glyphicon-eye-open"></i> '.esc_html($insightsData['impressions']).'
                                     </div>
                                     <div style="width: 6%;display: inline-block;">
-                                        <i class="glyphicon glyphicon-thumbs-up"></i> '.$insightsData['likes'].'
+                                        <i class="glyphicon glyphicon-thumbs-up"></i> '.esc_html($insightsData['likes']).'
                                     </div>
                                     <div style="width: 6%;display: inline-block;">
-                                        <i class="glyphicon glyphicon-refresh"></i> '.$insightsData['reshares'].'
+                                        <i class="glyphicon glyphicon-refresh"></i> '.esc_html($insightsData['reshares']).'
                                     </div>
                                     <div style="width: 6%;display: inline-block;">
-                                        <i class="glyphicon glyphicon-comment"></i> '.$insightsData['comments'].'
+                                        <i class="glyphicon glyphicon-comment"></i> '.esc_html($insightsData['comments']).'
                                     </div>
                                     <div style="width: 17%;display: inline-block;">
                                         <span class="b2s-publish-btn" style="float: right; margin-top: 8px;">
-                                            <a class="btn btn-success btn-sm publishPostBtn" href="admin.php?page=blog2social-ship&amp;postId='.$wpPostId.'">'.esc_html__('Re-share this post', 'blog2social').'</a>
+                                            <a class="btn btn-success btn-sm publishPostBtn" href="admin.php?page=blog2social-ship&amp;postId='.esc_attr($wpPostId).'">'.esc_html__('Re-share this post', 'blog2social').'</a>
                                         </span>
-                                        '.(((int) $insightsData['active'] == 0) ? '<br><span style="float: right;">last updated on ' . $insightsData['last_update'] . '</span>' : '').'
+                                        '.(((int) $insightsData['active'] == 0) ? '<br><span style="float: right;">last updated on ' . esc_html($insightsData['last_update']) . '</span>' : '').'
                                     </div>
                                     <div class="b2s-post-publish-area" data-post-id="'.esc_attr($wpPostId).'"></div>
                                 </div>

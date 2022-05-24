@@ -398,7 +398,7 @@ class B2S_AutoPost {
                     'network_details_id' => $networkDetailsId,
                     'post_for_approve' => (int) $shareApprove,
                     'hook_action' => (((int) $shareApprove == 0) ? 1 : 0),
-                    'post_format' => (($shareData['post_format'] !== '') ? (((int) $shareData['post_format'] > 0) ? 1 : 0) : null)
+                    'post_format' => ((isset($shareData['post_format']) && $shareData['post_format'] !== '') ? (((int) $shareData['post_format'] > 0) ? 1 : 0) : null)
                         ), array('%d', '%d', '%s', '%s', '%d', '%d', '%s', '%s', '%d', '%d', '%d'));
                 $insertId = $wpdb->insert_id;
                 B2S_Rating::trigger();

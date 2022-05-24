@@ -1,9 +1,29 @@
 <?php
 $params = array();
-$messages = "";
+$action_msg = "";
 
 $inst = wd_asl()->instances->get(0);
 $sd = &$inst['data'];
+
+if (isset($_POST['submit_asl'])) {
+
+	if ( wp_verify_nonce( $_POST['asl_sett_nonce'], 'asl_sett_nonce' ) ) {
+		$params = wpdreams_parse_params($_POST);
+		$_asl_options = array_merge($sd, $params);
+
+		wd_asl()->instances->update(0, $_asl_options);
+		// Force instance data to the debug storage
+		wd_asl()->debug->pushData(
+			$_asl_options,
+			'asl_options', true
+		);
+
+		$action_msg = "<div class='infoMsg'><strong>" . __('Search settings saved!', 'ajax-search-lite') . '</strong> (' . date("Y-m-d H:i:s") . ")</div>";
+	} else {
+		$action_msg = "<div class='errorMsg'><strong>".  __('<strong>ERROR Saving:</strong> Invalid NONCE, please try again!', 'ajax-search-lite') . '</strong> (' . date("Y-m-d H:i:s") . ")</div>";
+		$_POST = array();
+	}
+}
 ?>
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css'>
 <div id="fb-root"></div>
@@ -40,8 +60,6 @@ $sd = &$inst['data'];
         </div>
     </div>
 
-
-    <?php ob_start(); ?>
     <div class="wpdreams-box">
 
             <label class="shortcode"><?php _e("Search shortcode:", "ajax-search-lite"); ?></label>
@@ -53,10 +71,9 @@ $sd = &$inst['data'];
                    readonly="readonly"/>
     </div>
     <div class="wpdreams-box" style="float:left;">
+		<?php echo $action_msg; ?>
 
-        {--messages--}
-
-        <form action='' method='POST' name='asl_data'>
+		<form action='' method='POST' name='asl_data'>
             <ul id="tabs" class='tabs'>
                 <li><a tabid="1" class='current general'><?php _e("General Options", "ajax-search-lite"); ?></a></li>
                 <li><a tabid="2" class='multisite'><?php _e("Image Options", "ajax-search-lite"); ?></a></li>
@@ -119,29 +136,13 @@ $sd = &$inst['data'];
                 </div>
             </div>
             <input type="hidden" name="sett_tabid" id="sett_tabid" value="1" />
+			<input type="hidden" name="asl_sett_nonce" id="asl_sett_nonce" value="<?php echo wp_create_nonce( "asl_sett_nonce" ); ?>">
         </form>
     </div>
     <div id="asl-side-container">
         <a class="wd-accessible-switch" href="#"><?php echo isset($_COOKIE['asl-accessibility']) ? 'DISABLE ACCESSIBILITY' : 'ENABLE ACCESSIBILITY'; ?></a>
     </div>
     <div class="clear"></div>
-    <?php $output = ob_get_clean(); ?>
-    <?php
-    if (isset($_POST['submit_asl'])) {
-
-        $params = wpdreams_parse_params($_POST);
-        $_asl_options = array_merge($sd, $params);
-
-        wd_asl()->instances->update(0, $_asl_options);
-        // Force instance data to the debug storage
-        wd_asl()->debug->pushData(
-            $_asl_options,
-            'asl_options', true
-        );
-
-        $messages .= "<div class='infoMsg'>" . __("Ajax Search Lite settings saved!", "ajax-search-lite") . "</div>";
-    }
-    echo str_replace("{--messages--}", $messages, $output);
-    ?>
 </div>
+<?php wp_enqueue_script('wd_asl_helpers_jquery_conditionals', plugin_dir_url(__FILE__) . 'settings/assets/js/jquery.conditionals.js', array('jquery'), ASL_CURR_VER_STRING, true); ?>
 <?php wp_enqueue_script('wd_asl_search_instance', plugin_dir_url(__FILE__) . 'settings/assets/search_instance.js', array('jquery'), ASL_CURR_VER_STRING, true); ?>

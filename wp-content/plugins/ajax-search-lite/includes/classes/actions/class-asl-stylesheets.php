@@ -43,19 +43,23 @@ if (!class_exists("WD_ASL_StyleSheets_Action")) {
                 wp_register_style('wpdreams-asl-basic', ASL_URL.'css/style.basic.css', array(), ASL_CURR_VER_STRING);
                 wp_enqueue_style('wpdreams-asl-basic');
                 wp_enqueue_style('wpdreams-ajaxsearchlite', ASL_URL.'css/style-'.$asl_options['theme'].'.css', array(), ASL_CURR_VER_STRING);
-
-				self::$inline_css = "
-					@font-face {
-						font-family: 'aslsicons2';
-						src: url('".str_replace('http:',"",plugins_url())."/ajax-search-lite/css/fonts/icons2.eot');
-						src: url('".str_replace('http:',"",plugins_url())."/ajax-search-lite/css/fonts/icons2.eot?#iefix') format('embedded-opentype'),
-							 url('".str_replace('http:',"",plugins_url())."/ajax-search-lite/css/fonts/icons2.woff2') format('woff2'),
-							 url('".str_replace('http:',"",plugins_url())."/ajax-search-lite/css/fonts/icons2.woff') format('woff'),
-							 url('".str_replace('http:',"",plugins_url())."/ajax-search-lite/css/fonts/icons2.ttf') format('truetype'),
-							 url('".str_replace('http:',"",plugins_url())."/ajax-search-lite/css/fonts/icons2.svg#icons') format('svg');
-						font-weight: normal;
-						font-style: normal;
-					}
+				self::$inline_css = "";
+				if ( asl_is_asset_required('aslsicons2') ) {
+					self::$inline_css .= "
+						@font-face {
+							font-family: 'aslsicons2';
+							src: url('".str_replace('http:',"",plugins_url())."/ajax-search-lite/css/fonts/icons2.eot');
+							src: url('".str_replace('http:',"",plugins_url())."/ajax-search-lite/css/fonts/icons2.eot?#iefix') format('embedded-opentype'),
+								 url('".str_replace('http:',"",plugins_url())."/ajax-search-lite/css/fonts/icons2.woff2') format('woff2'),
+								 url('".str_replace('http:',"",plugins_url())."/ajax-search-lite/css/fonts/icons2.woff') format('woff'),
+								 url('".str_replace('http:',"",plugins_url())."/ajax-search-lite/css/fonts/icons2.ttf') format('truetype'),
+								 url('".str_replace('http:',"",plugins_url())."/ajax-search-lite/css/fonts/icons2.svg#icons') format('svg');
+							font-weight: normal;
+							font-style: normal;
+						}
+					";
+				}
+				self::$inline_css .= "
 					div[id*='ajaxsearchlitesettings'].searchsettings .asl_option_inner label {
 						font-size: 0px !important;
 						color: rgba(0, 0, 0, 0);
@@ -67,9 +71,12 @@ if (!class_exists("WD_ASL_StyleSheets_Action")) {
 						left: 0;
 						z-index: 1;
 					}
-					div[id*='ajaxsearchlite'].wpdreams_asl_container {
+					.asl_w_container {
 						width: ".$asl_options['box_width'].";
 						margin: ".wpdreams_four_to_string($asl_options['box_margin']).";
+					}
+					div[id*='ajaxsearchlite'].asl_m {
+						width: ".$asl_options['box_width'].";
 					}
 					div[id*='ajaxsearchliteres'].wpdreams_asl_results div.resdrg span.highlighted {
 						font-weight: bold;
@@ -126,6 +133,14 @@ if (!class_exists("WD_ASL_StyleSheets_Action")) {
 							box-shadow: none !important;
 						}
 						div.asl_m.asl_w .probox {border: none !important;}
+					";
+				}
+
+				if ( $asl_options['results_width'] != 'auto' ) {
+					self::$inline_css .= "
+						.asl_r.asl_w {
+							width: ". esc_attr($asl_options['results_width']).";
+						}
 					";
 				}
 
@@ -223,18 +238,39 @@ if (!class_exists("WD_ASL_StyleSheets_Action")) {
 				if ( !empty($asl_options['box_width_tablet']) && $asl_options['box_width'] != $asl_options['box_width_tablet'] ) {
 					self::$inline_css .= "
 						@media only screen and (min-width: 641px) and (max-width: 1024px) {
-							div.asl_w.asl_m {
+							.asl_w_container, div.asl_w.asl_m {
 								width: ".$asl_options['box_width_tablet']." !important;
 							}
 						}
 					";
 				}
 
-				if ( !empty($asl_options['box_width_tablet']) && $asl_options['box_width'] != $asl_options['box_width_phone'] ) {
+
+				if ( !empty($asl_options['results_width_tablet']) && $asl_options['results_width'] != $asl_options['results_width_tablet'] ) {
+					self::$inline_css .= "
+						@media only screen and (min-width: 641px) and (max-width: 1024px) {
+							.asl_r.asl_w {
+								width: ". esc_attr($asl_options['results_width_tablet']).";
+							}
+						}
+					";
+				}
+
+				if ( !empty($asl_options['box_width_phone']) && $asl_options['box_width'] != $asl_options['box_width_phone'] ) {
 					self::$inline_css .= "
 						@media only screen and (max-width: 640px) {
-							div.asl_w.asl_m {
+							.asl_w_container, div.asl_w.asl_m {
 								width: ".$asl_options['box_width_phone']." !important;
+							}
+						}
+					";
+				}
+
+				if ( !empty($asl_options['results_width_phone']) && $asl_options['results_width'] != $asl_options['results_width_phone'] ) {
+					self::$inline_css .= "
+						@media only screen and (max-width: 640px) {
+							.asl_r.asl_w {
+								width: ". esc_attr($asl_options['results_width_phone']).";
 							}
 						}
 					";
@@ -267,23 +303,6 @@ if (!class_exists("WD_ASL_StyleSheets_Action")) {
                 </style>
                 <?php
             }
-
-            /**
-             * Compatibility resolution to ajax page loaders:
-             *
-             * If the _ASL variable is defined at this point, it means that the page was already loaded before,
-             * and this header script is executed once again. However that also means that the ASL variable is
-             * resetted (due to the localization script) and that the page content is changed, so ajax search pro
-             * is not initialized.
-			 *
-             */
-            ?>
-			<script type="text/javascript">
-                if ( typeof _ASL !== "undefined" && _ASL !== null && typeof _ASL.initialize !== "undefined" ) {
-					_ASL.initialize();
-				}
-            </script>
-            <?php
         }
 
         // ------------------------------------------------------------

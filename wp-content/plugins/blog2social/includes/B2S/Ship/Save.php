@@ -271,6 +271,24 @@ class B2S_Ship_Save {
                     if (isset($schedData['sched_multi_image_3'][$key]) && !empty($schedData['sched_multi_image_3'][$key])) {
                         array_push($multi_images, $schedData['sched_multi_image_3'][$key]);
                     }
+                    if (isset($schedData['sched_multi_image_4'][$key]) && !empty($schedData['sched_multi_image_4'][$key])) {
+                        array_push($multi_images, $schedData['sched_multi_image_4'][$key]);
+                    }
+                    if (isset($schedData['sched_multi_image_5'][$key]) && !empty($schedData['sched_multi_image_5'][$key])) {
+                        array_push($multi_images, $schedData['sched_multi_image_5'][$key]);
+                    }
+                    if (isset($schedData['sched_multi_image_6'][$key]) && !empty($schedData['sched_multi_image_6'][$key])) {
+                        array_push($multi_images, $schedData['sched_multi_image_6'][$key]);
+                    }
+                    if (isset($schedData['sched_multi_image_7'][$key]) && !empty($schedData['sched_multi_image_7'][$key])) {
+                        array_push($multi_images, $schedData['sched_multi_image_7'][$key]);
+                    }
+                    if (isset($schedData['sched_multi_image_8'][$key]) && !empty($schedData['sched_multi_image_8'][$key])) {
+                        array_push($multi_images, $schedData['sched_multi_image_8'][$key]);
+                    }
+                    if (isset($schedData['sched_multi_image_9'][$key]) && !empty($schedData['sched_multi_image_9'][$key])) {
+                        array_push($multi_images, $schedData['sched_multi_image_9'][$key]);
+                    }
                     if(!empty($multi_images)) {
                         $serializeData['multi_images'] = json_encode($multi_images);
                         $data['multi_images'] = json_encode($multi_images);
@@ -483,7 +501,7 @@ class B2S_Ship_Save {
             }
 
             if($network_id == 12 && $error == 'DEFAULT') {
-                $networkError12 = sprintf(__('Your post could not be posted. More information in this <a href="%s" target="_blank">Instagram troubleshoot checklist</a>.', 'blog2social'), B2S_Tools::getSupportLink('instagram_error_business'));
+                $networkError12 = sprintf(__('Your post could not be posted. More information in this <a href="%s" target="_blank">Instagram troubleshoot checklist</a>.', 'blog2social'), esc_url(B2S_Tools::getSupportLink('instagram_error_business')));
                 $html .= '<br><span class="text-danger"><i class="glyphicon glyphicon-remove-circle glyphicon-danger"></i> ' . $networkError12 . $add . '</span>';
             } else {
                 $html .= '<br><span class="text-danger"><i class="glyphicon glyphicon-remove-circle glyphicon-danger"></i> ' . $errorText[$error] . $add . '</span>';

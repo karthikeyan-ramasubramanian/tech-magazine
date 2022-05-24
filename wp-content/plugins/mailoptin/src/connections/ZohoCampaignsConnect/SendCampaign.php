@@ -68,9 +68,11 @@ class SendCampaign extends AbstractZohoCampaignsConnect
             $campaign_title = $this->get_email_campaign_campaign_title($this->email_campaign_id);
 
             $preview_uuid = $this->campaignlog_id_to_uuid($this->campaign_log_id, 'zohocampaigns_email_fetcher');
-            $content_url  = defined('W3GUY_LOCAL') ? 'https://623af41324de8.htmlsave.net/' : add_query_arg(['zohocampaigns_preview_type' => 'html', 'uuid' => $preview_uuid], home_url());
+            $content_url  = defined('W3GUY_LOCAL') ? 'https://cdpn.io/collizo4sky/fullpage/OJzbgBo' : add_query_arg(['zohocampaigns_preview_type' => 'html', 'uuid' => $preview_uuid], home_url('/'));
 
-            $payload = apply_filters('mailoptin_zohocampaigns_campaign_settings', [
+            $topicId = EmailCampaignRepository::get_customizer_value($this->email_campaign_id, 'ZohoCampaignsConnect_topic');
+
+            $payload = [
                 'campaignname' => $campaign_title,
                 'from_email'   => Settings::instance()->from_email(),
                 'subject'      => $this->campaign_subject,
@@ -78,9 +80,13 @@ class SendCampaign extends AbstractZohoCampaignsConnect
                 'list_details' => json_encode([
                     $list_id => []
                 ]),
-            ],
-                $this->email_campaign_id
-            );
+            ];
+
+            if ( ! empty($topicId)) {
+                $payload['topicId'] = $topicId;
+            }
+
+            $payload = apply_filters('mailoptin_zohocampaigns_campaign_settings', $payload, $this->email_campaign_id);
 
             $response = $this->zcInstance()->apiRequest('createCampaign?resfmt=json', 'POST', $payload);
 

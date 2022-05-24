@@ -18,6 +18,10 @@ class Connect extends AbstractZohoCampaignsConnect implements ConnectionInterfac
 
         add_filter('mailoptin_registered_connections', array($this, 'register_connection'));
 
+
+        add_filter('mailoptin_email_campaign_customizer_page_settings', array($this, 'campaign_customizer_settings'));
+        add_filter('mailoptin_email_campaign_customizer_settings_controls', array($this, 'campaign_customizer_controls'), 10, 4);
+
         add_action('init', [$this, 'campaign_log_public_preview']);
 
         parent::__construct();
@@ -46,6 +50,32 @@ class Connect extends AbstractZohoCampaignsConnect implements ConnectionInterfac
         return $connections;
     }
 
+    public function campaign_customizer_settings($settings)
+    {
+        $settings['ZohoCampaignsConnect_topic'] = array(
+            'default'   => '',
+            'type'      => 'option',
+            'transport' => 'postMessage',
+        );
+
+        return $settings;
+    }
+
+    public function campaign_customizer_controls($controls, $wp_customize, $option_prefix, $customizerClassInstance)
+    {
+        $controls['ZohoCampaignsConnect_topic'] = array(
+            'type'        => 'select',
+            'label'       => __('Select a Topic', 'mailoptin'),
+            'choices'     => $this->get_topics(),
+            'section'     => $customizerClassInstance->campaign_settings_section_id,
+            'settings'    => $option_prefix . '[ZohoCampaignsConnect_topic]',
+            'description' => __("Topics in Zoho Campaigns categorize your mailing lists so your contacts can choose the topics they want to hear from you.", 'mailoptin'),
+            'priority'    => 199
+        );
+
+        return $controls;
+    }
+
     /**
      * Fulfill interface contract.
      *
@@ -71,6 +101,7 @@ class Connect extends AbstractZohoCampaignsConnect implements ConnectionInterfac
     public function campaign_log_public_preview()
     {
         if (isset($_GET['zohocampaigns_preview_type'], $_GET['uuid'])) {
+
             $preview_type = sanitize_text_field($_GET['zohocampaigns_preview_type']);
 
             if ( ! in_array($preview_type, ['text', 'html'])) return;
@@ -140,6 +171,36 @@ class Connect extends AbstractZohoCampaignsConnect implements ConnectionInterfac
 
         } catch (\Exception $e) {
             self::save_optin_error_log($e->getMessage(), 'zohocampaigns');
+
+            return [];
+        }
+    }
+
+    public function get_topics()
+    {
+        $topics = ['' => '&mdash;&mdash;&mdash;&mdash;&mdash;'];
+
+        try {
+
+            $response = $this->zcInstance()->apiRequest('topics?details={from_index:0,range:1000}');
+
+            if (isset($response->topicDetails)) {
+
+                foreach ($response->topicDetails as $topic_detail) {
+                    $topics[$topic_detail->topicId] = $topic_detail->topicName;
+                }
+
+                return $topics;
+            }
+
+            self::save_optin_error_log(json_encode($response), 'zohocampaigns');
+
+            return $topics;
+
+        } catch (\Exception $e) {
+            self::save_optin_error_log($e->getMessage(), 'zohocampaigns');
+
+            return $topics;
         }
     }
 

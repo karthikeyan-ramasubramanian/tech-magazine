@@ -69,7 +69,7 @@ class SendCampaign extends AbstractSendGridConnect
 
             $campaign_title = $this->get_email_campaign_campaign_title($this->email_campaign_id);
 
-            $suppression_group = $query_string = EmailCampaignRepository::get_customizer_value(
+            $suppression_group = EmailCampaignRepository::get_customizer_value(
                 $this->email_campaign_id,
                 'SendGridConnect_suppression_group'
             );

@@ -1,38 +1,45 @@
 <?php
 /**
-* Plugin Name:    Login Logout Menu
-* Plugin URI:     http://WPBrigade.com/wordpress/plugins/login-logout-menu/
-* Description:    Login Logout Menu is a handy plugin which allows you to add login, logout, register and profile menu items in your selected menu.
-* Version:        1.3.1
-* Author:         WPBrigade
-* Author URI:     https://WPBrigade.com/
-* Text Domain:    login-logout-menu
-* Domain Path:    /languages
-*
-* @package loginpress
-* @category Core
-* @author WPBrigade
-**/
+ * Plugin Name:    Login Logout Menu
+ * Plugin URI:     http://WPBrigade.com/wordpress/plugins/login-logout-menu/
+ * Description:    Login Logout Menu is a handy plugin which allows you to add login, logout, register and profile menu items in your selected menu.
+ * Version:        1.3.2
+ * Author:         WPBrigade
+ * Author URI:     https://WPBrigade.com/
+ * Text Domain:    login-logout-menu
+ * Domain Path:    /languages
+ *
+ * @package loginpress
+ * @category Core
+ * @author WPBrigade
+ **/
 
-if ( !class_exists( 'Login_Logout_Menu' ) ) :
+if ( ! class_exists( 'Login_Logout_Menu' ) ) :
 	class Login_Logout_Menu {
 
 		/**
-		* @var string
-		* @since 1.0.0
-		*/
-		public $version = '1.3.1';
+		 * Version variable.
+		 *
+		 * @var string
+		 *
+		 * @since 1.0.0
+		 */
+		public $version = '1.3.2';
 
 		/**
-		* @var The single instance of the class
-		* @since 1.0.0
-		*/
+		 * Instance variable.
+		 *
+		 * @var The single instance of the class
+		 *
+		 * @since 1.0.0
+		 */
 		protected static $_instance = null;
 
 		/** * * * * * * * *
-		* Class constructor
-		* @since 1.0.0
-		* * * * * * * * * */
+		 * Class constructor
+		 *
+		 * @since 1.0.0
+		 * * * * * * * * * */
 		public function __construct() {
 
 			$this->define_constants();
@@ -41,24 +48,25 @@ if ( !class_exists( 'Login_Logout_Menu' ) ) :
 		}
 
 		/**
-		* Define Login Logout Menu Constants
-		* @since 1.0.0
-		*/
+		 * Define Login Logout Menu Constants.
+		 *
+		 * @since 1.0.0
+		 */
 		private function define_constants() {
 
 			$this->define( 'LOGIN_LOGOUT_MENU_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
-			$this->define( 'LOGIN_LOGOUT_MENU_DIR_PATH',        plugin_dir_path( __FILE__ ) );
-			$this->define( 'LOGIN_LOGOUT_MENU_DIR_URL',         plugin_dir_url( __FILE__ ) );
-			$this->define( 'LOGIN_LOGOUT_MENU_ROOT_PATH',       dirname( __FILE__ ) . '/' );
-			$this->define( 'LOGIN_LOGOUT_MENU_VERSION',         $this->version );
+			$this->define( 'LOGIN_LOGOUT_MENU_DIR_PATH', plugin_dir_path( __FILE__ ) );
+			$this->define( 'LOGIN_LOGOUT_MENU_DIR_URL', plugin_dir_url( __FILE__ ) );
+			$this->define( 'LOGIN_LOGOUT_MENU_ROOT_PATH', dirname( __FILE__ ) . '/' );
+			$this->define( 'LOGIN_LOGOUT_MENU_VERSION', $this->version );
 			$this->define( 'LOGIN_LOGOUT_MENU_FEEDBACK_SERVER', 'https://wpbrigade.com/' );
 		}
 
 		/**
-		* Include required core files used in admin and on the frontend.
-		* @since 1.3.0
-		*/
-
+		 * Include required core files used in admin and on the frontend.
+		 *
+		 * @since 1.3.0
+		 */
 		public function includes() {
 
 			/**
@@ -72,10 +80,11 @@ if ( !class_exists( 'Login_Logout_Menu' ) ) :
 		}
 
 		/**
-		* Hook into actions and filters
-		* @since  1.0.0
-		* @version 1.3.0
-		*/
+		 * Hook into actions and filters
+		 *
+		 * @since  1.0.0
+		 * @version 1.3.0
+		 */
 		private function _hooks() {
 
 			add_action( 'plugins_loaded', array( $this, 'textdomain' ) );
@@ -86,13 +95,13 @@ if ( !class_exists( 'Login_Logout_Menu' ) ) :
 		}
 
 		/**
-		* Main Instance
-		*
-		* @since 1.0.0
-		* @static
-		* @see login_logout_menu_loader()
-		* @return Main instance
-		*/
+		 * Main Instance
+		 *
+		 * @since 1.0.0
+		 * @static
+		 * @see login_logout_menu_loader()
+		 * @return Main instance
+		 */
 		public static function instance() {
 			if ( is_null( self::$_instance ) ) {
 				self::$_instance = new self();
@@ -102,38 +111,37 @@ if ( !class_exists( 'Login_Logout_Menu' ) ) :
 
 
 		/**
-		* Load Languages
-		* @since 1.0.0
-		*/
+		 * Load Languages
+		 *
+		 * @since 1.0.0
+		 */
 		public function textdomain() {
-
 			$plugin_dir = dirname( plugin_basename( __FILE__ ) ) ;
 			load_plugin_textdomain( 'login-logout-menu', false, $plugin_dir . '/languages/' );
 		}
 
-    /* Registers Login/Logout/Register Links Metabox */
-		function admin_nav_menu( ) {
+		/**
+		 * Registers Login/Logout/Register Links Metabox.
+		 */
+		public function admin_nav_menu( ) {
 			add_meta_box( 'login_logout_menu', __( 'Login Logout Menu', 'login-logout-menu' ), array( $this, 'admin_nav_menu_callback' ), 'nav-menus', 'side', 'default' );
 		}
 
 		/**
 		 * Displays settings option on Plugins page.
-		 * 
+		 *
 		 * @since 1.3.0
 		 * @return void
 		 */
-
 		public function login_logout_action_links( $links, $file ) {
 
 			static $this_plugin;
-	
+
 			if ( empty( $this_plugin ) ) {
-	
 				$this_plugin = 'login-logout-menu/login-logout-menu.php';
 			}
-	
+
 			if ( $file == $this_plugin ) {
-	
 				$settings_link = sprintf( esc_html__( '%1$s Settings %2$s', 'login-logout-menu' ), '<a href="' . admin_url( 'nav-menus.php' ) . '">', '</a>' );
 				array_unshift( $links, $settings_link );
 
@@ -142,39 +150,42 @@ if ( !class_exists( 'Login_Logout_Menu' ) ) :
 			return $links;
 
 		}
-		/* Displays Login/Logout/Register Links Metabox */
-		function admin_nav_menu_callback() {
+		/**
+		 * Displays Login/Logout/Register Links Metabox.
+		 */
+		public function admin_nav_menu_callback() {
 
 			global $nav_menu_selected_id;
 
 			$elems = array(
-				'#loginpress-login#'		=> __( 'Log In', 'login-logout-menu' ),
-				'#loginpress-logout#'		=> __( 'Log Out', 'login-logout-menu' ),
-				'#loginpress-loginlogout#'	=> __( 'Log In', 'login-logout-menu' ) . ' | ' . __( 'Log Out', 'login-logout-menu' ),
-				'#loginpress-register#'		=> __( 'Register', 'login-logout-menu' ),
-				'#loginpress-profile#'		=> __( 'Profile', 'login-logout-menu' ),
-				'#loginpress-username#'		=> __( 'User', 'login-logout-menu' )
+				'#loginpress-login#'       => __( 'Log In', 'login-logout-menu' ),
+				'#loginpress-logout#'      => __( 'Log Out', 'login-logout-menu' ),
+				'#loginpress-loginlogout#' => __( 'Log In', 'login-logout-menu' ) . ' | ' . __( 'Log Out', 'login-logout-menu' ),
+				'#loginpress-register#'    => __( 'Register', 'login-logout-menu' ),
+				'#loginpress-profile#'     => __( 'Profile', 'login-logout-menu' ),
+				'#loginpress-username#'    => __( 'User', 'login-logout-menu' ),
 			);
+
 			$logitems = array(
-				'db_id' 			=> 0,
-				'object' 			=> 'bawlog',
+				'db_id'            => 0,
+				'object'           => 'bawlog',
 				'object_id',
-				'menu_item_parent' 	=> 0,
-				'type' 				=> 'custom',
+				'menu_item_parent' => 0,
+				'type'             => 'custom',
 				'title',
 				'url',
-				'target' 			=> '',
-				'attr_title' 		=> '',
-				'classes' 			=> array(),
-				'xfn' 				=> '',
+				'target'           => '',
+				'attr_title'       => '',
+				'classes'          => array(),
+				'xfn'              => '',
 			);
 
 			$elems_obj = array();
 			foreach ( $elems as $value => $title ) {
-				$elems_obj[ $title ] 			= (object) $logitems;
-				$elems_obj[ $title ]->object_id	= esc_attr( $value );
-				$elems_obj[ $title ]->title		= esc_attr( $title );
-				$elems_obj[ $title ]->url		= esc_attr( $value );
+				$elems_obj[ $title ]            = (object) $logitems;
+				$elems_obj[ $title ]->object_id = esc_attr( $value );
+				$elems_obj[ $title ]->title     = esc_attr( $title );
+				$elems_obj[ $title ]->url       = esc_attr( $value );
 			}
 
 			$walker = new Walker_Nav_Menu_Checklist( array() );
@@ -207,16 +218,15 @@ if ( !class_exists( 'Login_Logout_Menu' ) ) :
 
 			</div>
 			<?php
-
-      	}
+		}
 
 		/**
 		 * Show Login || Logout Menu item for front end.
 		 *
 		 * @since 1.0.0
-		 * @param object $menu_item The menu item object.
+		 * @param object $title The menu item object.
 		 */
-		function login_logout_setup_title( $title ) {
+		public function login_logout_setup_title( $title ) {
 
 			$titles = explode( '|', $title );
 
@@ -230,18 +240,30 @@ if ( !class_exists( 'Login_Logout_Menu' ) ) :
 		/**
 		 * Filters a navigation menu item object. Decorates a menu item object with the shared navigation menu item properties on front end.
 		 *
-		 * @param object $menu_item The menu item object.
+		 * @param object $item The menu item object.
 		 * @since 1.0.0
-		 * @version 1.2.0
+		 * @version 1.3.2
 		 */
-		function login_logout_setup_menu( $item ) {
+		public function login_logout_setup_menu( $item ) {
 			global $pagenow;
+
+			/**
+			 * Filter to manipulate the menu item object.
+			 * Possible outcomes 'log-in', 'log-out', 'log-in-log-out', 'register', 'profile', 'user' for 1st parameter.
+			 *
+			 * This filter works only based on bool outcome.
+			 *
+			 * @since 1.3.2
+			 */
+			if ( ! (bool) apply_filters( 'before_login_logout_menu_items', $item->post_name ) ) {
+				return $item;
+			}
 
 			if ( $pagenow !== 'nav-menus.php' && ! defined( 'DOING_AJAX' ) ) {
 				if ( 'Username' == $item->title ) {
-					$current_user 	= wp_get_current_user();
-					$user_name 		= $current_user->data->display_name;
-					$item->title 	= $user_name;
+					$current_user = wp_get_current_user();
+					$user_name    = $current_user->data->display_name;
+					$item->title  = $user_name;
 				}
 			}
 
@@ -251,13 +273,11 @@ if ( !class_exists( 'Login_Logout_Menu' ) ) :
 				$item_redirect = str_replace( $item_url, '', $item->url );
 
 				if ( $item_redirect == '%current-page%' ) {
-					
 					$item_redirect = $_SERVER['REQUEST_URI'];
-				} 
+				}
 
 				switch ( $item_url ) {
-					case '#loginpress-loginlogout#' :
-
+					case '#loginpress-loginlogout#':
 						$item_redirect = explode( '|', $item_redirect );
 
 						if ( count( $item_redirect ) != 2 ) {
@@ -265,68 +285,57 @@ if ( !class_exists( 'Login_Logout_Menu' ) ) :
 						}
 
 						if ( is_user_logged_in() ) {
-
 							$url       = apply_filters( 'login_logout_menu_logout', wp_logout_url( $item_redirect[1] ) );
 							$item->url = esc_url( $url );
 						} else {
-
 							$url       = apply_filters( 'login_logout_menu_login', wp_login_url( $item_redirect[0] ) );
 							$item->url = esc_url( $url );
 						}
+						$item->title = $this->login_logout_setup_title( $item->title );
+						break;
 
-						$item->title = $this->login_logout_setup_title( $item->title ) ;
-					break;
-
-					case '#loginpress-login#' :
-
+					case '#loginpress-login#':
 						if ( is_user_logged_in() ) {
 							return $item;
 						}
-
 						$url       = apply_filters( 'login_logout_menu_login', wp_login_url( $item_redirect ) );
 						$item->url = esc_url( $url );
-					break;
+						break;
 
-					case '#loginpress-logout#' :
+					case '#loginpress-logout#':
 						if ( ! is_user_logged_in() ) {
 							return $item;
 						}
-
 						$url       = apply_filters( 'login_logout_menu_logout', wp_logout_url( $item_redirect ) );
 						$item->url = esc_url( $url );
-					break;
+						break;
 
-					case '#loginpress-register#' :
-
+					case '#loginpress-register#':
 						if ( is_user_logged_in() ) {
 							return $item;
 						}
-
 						$url       = apply_filters( 'login_logout_menu_register', wp_registration_url() );
 						$item->url = esc_url( $url );
-					break;
+						break;
 
-					case '#loginpress-profile#' :
+					case '#loginpress-profile#':
 						if ( ! is_user_logged_in() ) {
 							return $item;
 						}
-
 						$url       = apply_filters( 'login_logout_menu_profile', $this->login_logout_menu_profile_link() );
 						$item->url = esc_url( $url );
-					break;
+						break;
 
-					case '#loginpress-username#' :
+					case '#loginpress-username#':
 						if ( ! is_user_logged_in() ) {
 							return $item;
 						}
-
 						$current_user = wp_get_current_user();
 						$username     = apply_filters( 'login_logout_menu_username', $current_user->display_name );
 						$url          = apply_filters( 'login_logout_menu_username_url', $this->login_logout_menu_profile_link() );
 						$item->title  = esc_html( $username );
 						$item->url    = esc_url( $url );
-
-					break;
+						break;
 
 				}
 
@@ -337,15 +346,14 @@ if ( !class_exists( 'Login_Logout_Menu' ) ) :
 		}
 
 		/**
-		 * check for abnormalities in login logout menu item
-		 * 
+		 * Check for abnormalities in login logout menu item
+		 *
 		 * @since 1.0.0
-		 * @param [array] $sorted_menu_items
-		 * 
+		 * @param array $sorted_menu_items menu items.
+		 *
 		 * @return $sorted_menu_items
-		 * 
 		 */
-		function login_logout_menu_objects( $sorted_menu_items ) {
+		public function login_logout_menu_objects( $sorted_menu_items ) {
 
 			foreach ( $sorted_menu_items as $menu => $item ) {
 				if ( strstr( $item->url, '#loginpress' ) != '' ) {
@@ -357,15 +365,16 @@ if ( !class_exists( 'Login_Logout_Menu' ) ) :
 
 		/**
 		 * Return the user's profile link.
+		 *
 		 * @since 1.2.0
 		 */
-		function login_logout_menu_profile_link(){
+		public function login_logout_menu_profile_link() {
 
 			if ( function_exists( 'bp_core_get_user_domain' ) ) {
 				$url = bp_core_get_user_domain( get_current_user_id() );
-			} else if ( function_exists( 'bbp_get_user_profile_url' ) ) {
+			} elseif ( function_exists( 'bbp_get_user_profile_url' ) ) {
 				$url = bbp_get_user_profile_url( get_current_user_id() );
-			} else if ( class_exists( 'WooCommerce' ) ) {
+			} elseif ( class_exists( 'WooCommerce' ) ) {
 				$url = get_permalink( get_option( 'woocommerce_myaccount_page_id' ) );
 			} else {
 				$url = get_edit_user_link();
@@ -377,30 +386,30 @@ if ( !class_exists( 'Login_Logout_Menu' ) ) :
 
 		/**
 		 * Define constant if not already set
-		* @param  string $name
-		* @param  string|bool $value
-		*/
+		 *
+		 * @param string      $name name.
+		 * @param string|bool $value value.
+		 */
 		private function define( $name, $value ) {
 			if ( ! defined( $name ) ) {
 				define( $name, $value );
 			}
 		}
-
-    }
+	}
 
   endif;
 
 
 
 /**
-* Returns the main instance of WP to prevent the need to use globals.
-*
-* @since  1.0.0
-* @return Login_Logout_Menu
-*/
+ * Returns the main instance of WP to prevent the need to use globals.
+ *
+ * @since  1.0.0
+ * @return Login_Logout_Menu
+ */
 function login_logout_menu_loader() {
 	return Login_Logout_Menu::instance();
 }
 
-// Call the function
+// Call the function.
 login_logout_menu_loader();

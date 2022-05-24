@@ -376,6 +376,90 @@ if (!function_exists("wpdreams_four_to_array")) {
     }
 }
 
+if (!function_exists("asl_gen_rnd_str")) {
+	function asl_gen_rnd_str($length = 6) {
+		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$charactersLength = strlen($characters);
+		$randomString = '';
+		for ($i = 0; $i < $length; $i++) {
+			$randomString .= $characters[rand(0, $charactersLength - 1)];
+		}
+		return $randomString;
+	}
+}
+
+if ( !function_exists("asl_is_asset_required") ) {
+	function asl_is_asset_required($asset) {
+		if ( wd_asl()->manager->getContext() == 'backend' ) {
+			return true;
+		} else {
+			$assets = asl_get_unused_assets();
+			return !wd_in_array_r($asset, $assets);
+		}
+	}
+}
+
+if ( !function_exists("asl_get_unused_assets") ) {
+	function asl_get_unused_assets() {
+		$dependencies = array(
+			'vertical', 'autocomplete',
+			'settings', 'ga', 'aslsicons2'
+		);
+		$external_dependencies = array(
+			'simplebar'
+		);
+		$filters_may_require_simplebar = false;
+		$filters_may_require_aslpsicons2 = false;
+
+		// --- Auto populate
+		if ( wd_asl()->o['asl_analytics']['analytics'] != 0 ) {
+			$dependencies = array_diff($dependencies, array('ga'));
+		}
+
+		$search = wd_asl()->instances->get();
+		if (is_array($search) && count($search)>0) {
+			foreach ($search as $s) {
+				// Calculate flags for the generated basic CSS
+				// --- Results type - in lite only vertical is present
+				$dependencies = array_diff($dependencies, array('vertical'));
+
+
+				// --- Autocomplete
+				if ( $s['data']['autocomplete'] ) {
+					$dependencies = array_diff($dependencies, array('autocomplete'));
+				}
+
+				// --- Settings visibility - we can check the option only, as settings shortcode is not present
+				// ..in the lite version
+				if ( $s['data']['show_frontend_search_settings'] ) {
+					$dependencies = array_diff($dependencies, array('settings'));
+					$filters_may_require_simplebar = true;
+					$filters_may_require_aslpsicons2 = true;
+				}
+
+				// --- Autocomplete (not used yet)
+			}
+		}
+
+		if ( $filters_may_require_aslpsicons2 ) {
+			$dependencies = array_diff($dependencies, array('aslsicons2'));
+		}
+
+		// No vertical or horizontal results results, and no filters that may trigger the scroll script
+		if (
+			$filters_may_require_simplebar ||
+			!in_array('vertical', $dependencies)
+		) {
+			$external_dependencies = array_diff($external_dependencies, array('simplebar'));
+		}
+
+		return array(
+			'internal' => $dependencies,
+			'external' => $external_dependencies
+		);
+	}
+}
+
 if (!function_exists("asl_generate_html_results")) {
     /**
      * Converts the results array to HTML code

@@ -1,5 +1,5 @@
 <?php
-
+    
 namespace MailOptin\WebHookConnect;
 
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Integration_Repeater_Control;
@@ -22,14 +22,14 @@ class Connect extends AbstractConnect implements ConnectionInterface
      * @var string key of connection service. its important all connection name ends with "Connect"
      */
     public static $connectionName = 'WebHookConnect';
-
+    
     public function __construct()
     {
         add_filter('mailoptin_registered_connections', array($this, 'register_connection'));
-
+        
         add_filter('mo_optin_form_integrations_default', array($this, 'integration_customizer_settings'));
         add_filter('mo_optin_integrations_controls_after', array($this, 'integration_customizer_controls'), 10, 4);
-
+        
         add_action('mo_optin_integration_control_enqueue', function () {
             wp_enqueue_script(
                 'mailoptin-webhook-optin',
@@ -37,7 +37,7 @@ class Connect extends AbstractConnect implements ConnectionInterface
                 array('jquery', 'underscore', 'customize-controls', 'wp-util'),
                 MAILOPTIN_VERSION_NUMBER
             );
-
+            
             wp_localize_script('mailoptin-webhook-optin', 'moWebhookGlobals',
                 [
                     'name_label'      => esc_html__('Full Name', 'mailoptin'),
@@ -48,17 +48,17 @@ class Connect extends AbstractConnect implements ConnectionInterface
                 ]
             );
         });
-
+        
         add_action('mo_optin_integration_control_template', [$this, 'script_templates']);
-
+        
         parent::__construct();
     }
-
+    
     public static function features_support()
     {
         return [self::OPTIN_CAMPAIGN_SUPPORT];
     }
-
+    
     /**
      * @param array $settings
      *
@@ -68,10 +68,10 @@ class Connect extends AbstractConnect implements ConnectionInterface
     {
         $settings['WebHookConnect_request_url']    = apply_filters('mailoptin_customizer_optin_campaign_WebHookConnect_request_url', '');
         $settings['WebHookConnect_request_format'] = apply_filters('mailoptin_customizer_optin_campaign_WebHookConnect_request_format', '');
-
+        
         return $settings;
     }
-
+    
     /**
      * @param array $controls
      *
@@ -85,29 +85,29 @@ class Connect extends AbstractConnect implements ConnectionInterface
             'placeholder' => __('Enter Request URL', 'mailoptin'),
             'label'       => __('Request URL (Required)', 'mailoptin')
         ];
-
+        
         $controls[] = [
             'field'   => 'select',
             'name'    => 'WebHookConnect_request_format',
             'choices' => $this->request_format(),
             'label'   => __('Request Format (Required)', 'mailoptin')
         ];
-
+        
         $controls[] = [
             'name'    => 'WebHookConnect_request_header_fields',
             'field'   => 'custom_content',
             'content' => $this->render_header_fields_content($saved_values, $index),
         ];
-
+        
         $controls[] = [
             'name'    => 'WebHookConnect_request_body_fields',
             'field'   => 'custom_content',
             'content' => $this->render_body_fields_content($saved_values, $index),
         ];
-
+        
         return $controls;
     }
-
+    
     public function script_templates($classInstance)
     {
         ?>
@@ -119,7 +119,7 @@ class Connect extends AbstractConnect implements ConnectionInterface
         </script>
         <?php
     }
-
+    
     /**
      * @param WP_Customize_Integration_Repeater_Control $classInstance
      */
@@ -169,7 +169,7 @@ class Connect extends AbstractConnect implements ConnectionInterface
         </div>
         <?php
     }
-
+    
     /**
      * @param WP_Customize_Integration_Repeater_Control $classInstance
      */
@@ -185,7 +185,7 @@ class Connect extends AbstractConnect implements ConnectionInterface
         </div>
         <?php
     }
-
+    
     /**
      * @return string[]
      */
@@ -196,45 +196,45 @@ class Connect extends AbstractConnect implements ConnectionInterface
             'form' => 'FORM'
         ];
     }
-
+    
     public function render_header_fields_content($saved_values, $index)
     {
         $field_content = '<label class="customize-control-title mo-field-header">' . __('Request Headers', 'mailoptin') . '</label>';
         $field_content .= '<div class="mo-integration-header-group-fields mo-webhook-integration-widget mo-webhook-integration-header">';
-
+        
         $saved_value = "[]";
         if (isset($saved_values[$index])) {
             $saved_value = moVar($saved_values[$index], 'WebHookConnect_request_header_fields', "[]");
         }
-
+        
         $field_content .= '</div>';
         $field_content .= '<div class="mo-webhook-add-btn-wrap mo-integration-webhook__add_header_new">';
         $field_content .= '<button type="button" class="button button-primary"><span class="dashicons dashicons-plus-alt2"></span></button>';
         $field_content .= '</div>';
         $field_content .= '<input class="WebHookConnect_request_header_fields" type="hidden" name="WebHookConnect_request_header_fields" value="' . esc_attr($saved_value) . '">';
-
+        
         return $field_content;
     }
-
+    
     public function render_body_fields_content($saved_values, $index)
     {
         $field_content = '<label class="customize-control-title mo-field-header">' . __('Request Body', 'mailoptin') . '</label>';
         $field_content .= '<div class="mo-integration-header-group-fields mo-webhook-integration-widget mo-webhook-integration-body">';
-
+        
         $saved_value = "[]";
         if (isset($saved_values[$index])) {
             $saved_value = moVar($saved_values[$index], 'WebHookConnect_request_body_fields', "[]");
         }
-
+        
         $field_content .= '</div>';
         $field_content .= '<div class="mo-webhook-add-btn-wrap mo-integration-webhook__add_body_new">';
         $field_content .= '<button type="button" class="button button-primary"><span class="dashicons dashicons-plus-alt2"></button>';
         $field_content .= '</div>';
         $field_content .= '<input class="WebHookConnect_request_body_fields" type="hidden" name="WebHookConnect_request_body_fields" value="' . esc_attr($saved_value) . '">';
-
+        
         return $field_content;
     }
-
+    
     /**
      * Replace placeholder tags with actual SendFox tags.
      *
@@ -242,9 +242,9 @@ class Connect extends AbstractConnect implements ConnectionInterface
      */
     public function replace_placeholder_tags($content, $type = 'html')
     {
-
+    
     }
-
+    
     /**
      * {@inherit_doc}
      *
@@ -262,7 +262,7 @@ class Connect extends AbstractConnect implements ConnectionInterface
             'DELETE' => 'DELETE'
         ];
     }
-
+    
     /**
      * {@inherit_doc}
      *
@@ -274,7 +274,7 @@ class Connect extends AbstractConnect implements ConnectionInterface
     {
         return [];
     }
-
+    
     /**
      * Register WebHook Connection.
      *
@@ -287,10 +287,10 @@ class Connect extends AbstractConnect implements ConnectionInterface
         if (defined('MAILOPTIN_DETACH_LIBSODIUM')) {
             $connections[self::$connectionName] = __('Webhook', 'mailoptin');
         }
-
+        
         return $connections;
     }
-
+    
     /**
      *
      * {@inheritdoc}
@@ -309,7 +309,7 @@ class Connect extends AbstractConnect implements ConnectionInterface
     {
         return [];
     }
-
+    
     /**
      * @param string $name
      * @param string $email
@@ -322,18 +322,18 @@ class Connect extends AbstractConnect implements ConnectionInterface
     {
         return (new SendWebhookRequest($name, $email, $request_method, $extras))->trigger();
     }
-
+    
     /**
      * @return Connect|null
      */
     public static function get_instance()
     {
         static $instance = null;
-
+        
         if (is_null($instance)) {
             $instance = new self();
         }
-
+        
         return $instance;
     }
 }

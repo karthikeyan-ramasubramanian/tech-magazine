@@ -7,10 +7,10 @@
     </div>
     <div class="pull-right hidden-xs <?php echo isset($noLegend) || isset($noLegendCalender) ? 'hide' : ''; ?>">
         <small>
-            <img class="img-width-9" src="<?php echo plugins_url('/assets/images/b2s/post-icon.png', B2S_PLUGIN_FILE); ?>" alt="beitrag">  <?php esc_html_e('Post', 'blog2social') ?> 
-            <img class="img-width-9" src="<?php echo plugins_url('/assets/images/b2s/job-icon.png', B2S_PLUGIN_FILE); ?>" alt="job"> <?php esc_html_e('Job', 'blog2social') ?>
-            <img class="img-width-9" src="<?php echo plugins_url('/assets/images/b2s/event-icon.png', B2S_PLUGIN_FILE); ?>" alt="event"> <?php esc_html_e('Event', 'blog2social') ?>
-            <img class="img-width-9" src="<?php echo plugins_url('/assets/images/b2s/product-icon.png', B2S_PLUGIN_FILE); ?>" alt="product"> <?php esc_html_e('Product', 'blog2social') ?>
+            <img class="img-width-9" src="<?php echo esc_url(plugins_url('/assets/images/b2s/post-icon.png', B2S_PLUGIN_FILE)); ?>" alt="beitrag">  <?php esc_html_e('Post', 'blog2social') ?> 
+            <img class="img-width-9" src="<?php echo esc_url(plugins_url('/assets/images/b2s/job-icon.png', B2S_PLUGIN_FILE)); ?>" alt="job"> <?php esc_html_e('Job', 'blog2social') ?>
+            <img class="img-width-9" src="<?php echo esc_url(plugins_url('/assets/images/b2s/event-icon.png', B2S_PLUGIN_FILE)); ?>" alt="event"> <?php esc_html_e('Event', 'blog2social') ?>
+            <img class="img-width-9" src="<?php echo esc_url(plugins_url('/assets/images/b2s/product-icon.png', B2S_PLUGIN_FILE)); ?>" alt="product"> <?php esc_html_e('Product', 'blog2social') ?>
         </small>
     </div>
 </div>
@@ -39,7 +39,7 @@
                     <span class="glyphicon glyphicon-ok glyphicon-success"></span> <?php esc_html_e('Select individual images per post', 'blog2social') ?><br>
                     <span class="glyphicon glyphicon-ok glyphicon-success"></span> <?php esc_html_e('Reporting & calendar: keep track of your published and scheduled social media posts', 'blog2social') ?><br>
                     <br>
-                    <a target="_blank" href="<?php echo B2S_Tools::getSupportLink('affiliate'); ?>" class="btn btn-success center-block"><?php esc_html_e('Upgrade to SMART and above', 'blog2social') ?></a>
+                    <a target="_blank" href="<?php echo esc_url(B2S_Tools::getSupportLink('affiliate')); ?>" class="btn btn-success center-block"><?php esc_html_e('Upgrade to SMART and above', 'blog2social') ?></a>
                     <br>
                     <center> <?php echo sprintf(__('or <a target="_blank" href="%s">start with free 30-days-trial of Blog2Social Premium</a> (no payment information needed)', 'blog2social'), esc_url('https://service.blog2social.com/trial')); ?> </center>
                 </div>            

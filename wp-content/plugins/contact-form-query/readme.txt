@@ -3,9 +3,9 @@ Contributors: scriptstown
 Tags: contact form, email, notification, entry, form, message
 Donate link: https://scriptstown.com/
 Requires at least: 5.0
-Tested up to: 5.9
+Tested up to: 6.0
 Requires PHP: 5.6
-Stable tag: 1.4.6
+Stable tag: 1.4.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,6 +53,9 @@ Use the shortcode **[contact_form_query]** in any page or post to display the co
 6. Latest Messages Dashboard Widget
 
 == Changelog ==
+
+= 1.4.7 =
+* Tested up to 6.0.
 
 = 1.4.6 =
 * Improvement: Load plugin translations using the init action.

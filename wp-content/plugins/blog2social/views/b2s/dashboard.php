@@ -59,11 +59,11 @@ $b2sGeneralOptions = get_option('B2S_PLUGIN_GENERAL_OPTIONS');
                                 <div class="pull-right">
                                     <div class="form-inline">
                                         <label class="b2s-text-xl b2s-color-grey"><?php esc_html_e("Follow us", "blog2social") ?></label>
-                                        <a href="https://www.facebook.com/Blog2Social/" target="_blank" rel="nofollow"><img src="<?php echo plugins_url('/assets/images/portale/1_flat.png', B2S_PLUGIN_FILE); ?>" width="28" alt="Facebook"></a>
-                                        <a href="https://twitter.com/Blog2Social" target="_blank" rel="nofollow"><img src="<?php echo plugins_url('/assets/images/portale/2_flat.png', B2S_PLUGIN_FILE); ?>" width="28" alt="Twitter"></a>
-                                        <a href="https://www.linkedin.com/showcase/blog2social-com/" target="_blank" rel="nofollow"><img src="<?php echo plugins_url('/assets/images/portale/3_flat.png', B2S_PLUGIN_FILE); ?>" width="28" alt="Linkedin"></a>
-                                        <a href="https://www.instagram.com/adenion_gmbh/" target="_blank" rel="nofollow"><img src="<?php echo plugins_url('/assets/images/portale/12_flat.png', B2S_PLUGIN_FILE); ?>" width="28" alt="Instagram"></a>
-                                        <a href="https://www.pinterest.de/adeniongmbh/" target="_blank" rel="nofollow"><img src="<?php echo plugins_url('/assets/images/portale/20_flat.png', B2S_PLUGIN_FILE); ?>" width="28" alt="Pinterest"></a>
+                                        <a href="https://www.facebook.com/Blog2Social/" target="_blank" rel="nofollow"><img src="<?php echo esc_url(plugins_url('/assets/images/portale/1_flat.png', B2S_PLUGIN_FILE)); ?>" width="28" alt="Facebook"></a>
+                                        <a href="https://twitter.com/Blog2Social" target="_blank" rel="nofollow"><img src="<?php echo esc_url(plugins_url('/assets/images/portale/2_flat.png', B2S_PLUGIN_FILE)); ?>" width="28" alt="Twitter"></a>
+                                        <a href="https://www.linkedin.com/showcase/blog2social-com/" target="_blank" rel="nofollow"><img src="<?php echo esc_url(plugins_url('/assets/images/portale/3_flat.png', B2S_PLUGIN_FILE)); ?>" width="28" alt="Linkedin"></a>
+                                        <a href="https://www.instagram.com/adenion_gmbh/" target="_blank" rel="nofollow"><img src="<?php echo esc_url(plugins_url('/assets/images/portale/12_flat.png', B2S_PLUGIN_FILE)); ?>" width="28" alt="Instagram"></a>
+                                        <a href="https://www.pinterest.de/adeniongmbh/" target="_blank" rel="nofollow"><img src="<?php echo esc_url(plugins_url('/assets/images/portale/20_flat.png', B2S_PLUGIN_FILE)); ?>" width="28" alt="Pinterest"></a>
                                     </div>
                                 </div>
                             </div>
@@ -81,7 +81,7 @@ $b2sGeneralOptions = get_option('B2S_PLUGIN_GENERAL_OPTIONS');
         ?>
     </div>
 </div>
-<input type="hidden" id="b2s-redirect-url-sched-post" value="<?php echo $b2sSiteUrl . 'wp-admin/admin.php?page=blog2social-sched'; ?>"/>
+<input type="hidden" id="b2s-redirect-url-sched-post" value="<?php echo esc_url($b2sSiteUrl) . 'wp-admin/admin.php?page=blog2social-sched'; ?>"/>
 <input type="hidden" id="isLegacyMode" value="<?php echo (isset($b2sGeneralOptions['legacy_mode']) ? (int) esc_attr($b2sGeneralOptions['legacy_mode']) : 0); ?>">
 <input type="hidden" id="showFullCalenderText" value="<?php esc_html_e('show full calendar', 'blog2social'); ?>">
 
@@ -101,8 +101,52 @@ $b2sGeneralOptions = get_option('B2S_PLUGIN_GENERAL_OPTIONS');
                     <div class="col-xs-12">
                         <?php
                         $settingsItem = new B2S_Settings_Item();
-                        echo $settingsItem->setNetworkSettingsHtml();
-                        echo $settingsItem->getNetworkSettingsHtml();
+                        echo wp_kses($settingsItem->setNetworkSettingsHtml(), array(
+                            'input' => array(
+                                'type' => array(),
+                                'class' => array(),
+                                'value' => array(),
+                                'data-post-format-type' => array(),
+                                'data-network-id' => array(),
+                                'data-network-type' => array()
+                            )
+                        ));
+                        echo wp_kses($settingsItem->getNetworkSettingsHtml(), array(
+                            'div' => array(
+                                'class' => array(),
+                                'data-post-format-type' => array(),
+                                'data-network-type' => array(),
+                                'data-network-id' => array(),
+                                'data-network-title' => array(),
+                                'style' => array()
+                            ),
+                            'b' => array(),
+                            'br' => array(),
+                            'a' => array(
+                                'target' => array(),
+                                'href' => array()
+                            ),
+                            'hr' => array(),
+                            'span' => array(
+                                'class' => array()
+                            ),
+                            'label' => array(),
+                            'input' => array(
+                                'type' => array(),
+                                'name' => array(),
+                                'value' => array(),
+                                'class' => array(),
+                                'data-post-wp-type' => array(),
+                                'data-post-format-type' => array(),
+                                'data-network-type' => array(),
+                                'data-network-id' => array(),
+                                'data-post-format' => array()
+                            ),
+                            'img' => array(
+                                'class' => array(),
+                                'src' => array()
+                            )
+                        ));
                         ?>
                     </div>
                 </div>
@@ -160,7 +204,7 @@ $b2sGeneralOptions = get_option('B2S_PLUGIN_GENERAL_OPTIONS');
                     <div class="col-md-6 col-xs-12">
                         <div class="b2s-post-type-area text-center">
                             <div class="image">
-                                <img class="img-width-150" src="<?php echo plugins_url('/assets/images/b2s/blog-post-icon.png', B2S_PLUGIN_FILE); ?>" alt="blog post">
+                                <img class="img-width-150" src="<?php echo esc_url(plugins_url('/assets/images/b2s/blog-post-icon.png', B2S_PLUGIN_FILE)); ?>" alt="blog post">
                             </div>
                             <div class="text">
                                 <?php esc_html_e("Share your WordPress posts, pages or products", "blog2social") ?>
@@ -173,7 +217,7 @@ $b2sGeneralOptions = get_option('B2S_PLUGIN_GENERAL_OPTIONS');
                     <div class="col-md-6 col-xs-12">
                         <div class="b2s-post-type-area text-center">
                             <div class="image">
-                                <img class="img-width-150" src="<?php echo plugins_url('/assets/images/b2s/content-curation-icon.png', B2S_PLUGIN_FILE); ?>" alt="content curation">
+                                <img class="img-width-150" src="<?php echo esc_url(plugins_url('/assets/images/b2s/content-curation-icon.png', B2S_PLUGIN_FILE)); ?>" alt="content curation">
                             </div>
                             <div class="text">
                                 <?php esc_html_e("Create or share content from other sources", "blog2social") ?>
@@ -213,7 +257,36 @@ $b2sGeneralOptions = get_option('B2S_PLUGIN_GENERAL_OPTIONS');
                                         <input id="b2sPagination" type="hidden" value="1" name="b2sPagination">
                                         <?php
                                         $postFilter = new B2S_Post_Filter('all');
-                                        echo $postFilter->getItemHtml();
+                                        echo wp_kses($postFilter->getItemHtml(), array(
+                                                'div' => array(
+                                                'class' => array()
+                                            ),
+                                            'input' => array(
+                                                'id' => array(),
+                                                'name' => array(),
+                                                'class' => array(),
+                                                'value' => array(),
+                                                'type' => array(),
+                                                'placeholder' => array(),
+                                            ),
+                                            'a' => array(
+                                                'href' => array(),
+                                                'id' => array(),
+                                                'class' => array()
+                                            ),
+                                            'span' => array(
+                                                'class' => array()
+                                            ),
+                                            'small' => array(),
+                                            'select' => array(
+                                                'id' => array(),
+                                                'name' => array(),
+                                                'class' => array()
+                                            ),
+                                            'option' => array(
+                                                'value' => array()
+                                            )
+                                        ));
                                         ?>
                                     </form>
                                 </div>

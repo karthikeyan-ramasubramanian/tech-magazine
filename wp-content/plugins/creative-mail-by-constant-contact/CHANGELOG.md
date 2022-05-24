@@ -1,5 +1,8 @@
 Changelog
 =========
+#### 1.5.3 - README update
+- Removing broken Youtube video link
+
 #### 1.5.2 - March 22 2022
 - Small bug fix for PHP versions previous to 7.1
 

@@ -1,4 +1,29 @@
 <div class="item item-flex-nogrow item-flex-wrap">
+	<?php
+	$o = new wpdreamsTextSmall("results_width", __('Results box width', 'ajax-search-pro'), array(
+		'icon' => 'desktop',
+		'value' => $sd['results_width']
+	));
+	$params[$o->getName()] = $o->getData();
+	$o = new wpdreamsTextSmall("results_width_tablet", '', array(
+		'icon' => 'tablet',
+		'value' => $sd['results_width_tablet']
+	));
+	$params[$o->getName()] = $o->getData();
+	$o = new wpdreamsTextSmall("results_width_phone", '', array(
+		'icon' => 'phone',
+		'value' => $sd['results_width_phone']
+	));
+	$params[$o->getName()] = $o->getData();
+	?>
+	<div class="descMsg item-flex-grow item-flex-100">
+		<?php echo sprintf(
+			__('Use with <a href="%s" target="_blank">CSS units</a> (like %s or %s or %s ..) Default: <strong>%s</strong>', 'ajax-search-lite'),
+			'https://www.w3schools.com/cssref/css_units.asp', '10px', '50%', 'auto', 'auto'
+		); ?>
+	</div>
+</div>
+<div class="item item-flex-nogrow item-flex-wrap">
     <?php
     $o = new wpdreamsCustomSelect("v_res_column_count", __('Number of result columns', 'ajax-search-lite'), array(
         'selects'=>array(
@@ -68,11 +93,32 @@
     $params[$o->getName()] = $o->getData();
     ?>
 </div>
-<div class="item">
-    <?php
-    $o = new wpdreamsYesNo("showdate", __("Show date in results?", "ajax-search-lite"), $sd['showdate']);
-    $params[$o->getName()] = $o->getData();
-    ?>
+<div class="item item-flex-nogrow item-conditional" style="flex-wrap: wrap;">
+	<?php
+	$o = new wpdreamsYesNo("showdate", __('Show date in results?', 'ajax-search-lite'), $sd['showdate']);
+	$params[$o->getName()] = $o->getData();
+	?>
+	<div wd-enable-on="showdate:1">
+	<?php
+	$o = new wpdreamsYesNo("custom_date", __('Use custom date format?', 'ajax-search-lite'),
+		$sd['custom_date']);
+	$params[$o->getName()] = $o->getData();
+	?>
+	</div>
+	<div wd-enable-on="showdate:1">
+	<?php
+	$o = new wpdreamsText("custom_date_format", __(' format', 'ajax-search-lite'),
+		$sd['custom_date_format']);
+	$params[$o->getName()] = $o->getData();
+	?>
+	</div>
+	<div class='descMsg' style="min-width: 100%;
+        flex-wrap: wrap;
+        flex-basis: auto;
+        flex-grow: 1;
+        box-sizing: border-box;">
+		<?php echo __('If turned OFF, it will use WordPress defaults. Default custom value: <b>Y-m-d H:i:s</b>', 'ajax-search-lite'); ?>
+	</div>
 </div>
 <div class="item">
     <?php

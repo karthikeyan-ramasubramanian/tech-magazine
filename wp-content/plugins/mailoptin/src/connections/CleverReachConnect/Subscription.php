@@ -56,19 +56,22 @@ class Subscription extends AbstractCleverReachConnect
                 $subscriber_data['tags'] = array_map('trim', explode(',', $lead_tags));
             }
 
-            $subscription_form = $this->get_integration_data('CleverReachConnect_form');
-    
+            $subscription_form = apply_filters('mo_connections_cleverreach_subscription_form', $this->get_integration_data('CleverReachConnect_form'), $this);
+
             //checking is conversion_page is empty, then set defaults to home_url()
-            if(empty($this->extras['conversion_page'])) {
+            if (empty($this->extras['conversion_page'])) {
                 $this->extras['conversion_page'] = home_url();
             }
-    
+
             //also checking if the referrer is empty, then set to conversion_page
-            if(empty($this->extras['referrer'])) {
+            if (empty($this->extras['referrer'])) {
                 $this->extras['referrer'] = $this->extras['conversion_page'];
             }
-            
+
             $doi_data = [];
+
+            $user_agent = empty($this->extras['user_agent']) ? $_SERVER['HTTP_USER_AGENT'] : $this->extras['user_agent'];
+            $user_agent = ! empty($user_agent) ? $user_agent : 'Mozilla\/5.0 (X11; Linux x86_64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/64.0.3282.186 Safari\/537.36';
 
             if ( ! empty($subscription_form)) {
                 $ip_address          = get_ip_address();
@@ -76,8 +79,8 @@ class Subscription extends AbstractCleverReachConnect
                 $doi_data['form_id'] = absint($subscription_form);
                 $doi_data['doidata'] = [
                     'user_ip'    => ! empty($ip_address) ? $ip_address : '127.0.0.1',
-                    'referer'    => $this->extras['referrer'],
-                    'user_agent' => $this->extras['user_agent']
+                    'referer'    => empty($this->extras['referrer']) ? home_url() : $this->extras['referrer'],
+                    'user_agent' => $user_agent
                 ];
             }
 

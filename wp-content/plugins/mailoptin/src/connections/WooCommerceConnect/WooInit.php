@@ -736,10 +736,15 @@ class WooInit
     {
         $order = wc_get_order($order_id);
 
-        $subscribe_customer = $order->get_meta('mailoptin_woocommerce_optin_checkbox', true);
+        $subscription_type = Settings::instance()->mailoptin_woocommerce_subscribe_customers();
 
-        //don't add customer if the customer did not tick the checkbox
-        if ('no' === $subscribe_customer) return;
+        if ($subscription_type == 'yes') {
+
+            $subscribe_customer = $order->get_meta('mailoptin_woocommerce_optin_checkbox', true);
+
+            //don't add customer if the customer did not tick the checkbox
+            if ('no' === $subscribe_customer) return;
+        }
 
         $product_items = $order->get_items();
 
@@ -755,7 +760,7 @@ class WooInit
             if (in_array($new_status, $order_statuses) && ! in_array($old_status, $order_statuses)) {
 
                 //check if the product has an existing connected integration
-                if ( ! empty($product_object->get_meta('mailoptinWooCommerceSelectIntegration'))) {
+                if (is_object($product_object) && method_exists($product_object, 'get_meta') && ! empty($product_object->get_meta('mailoptinWooCommerceSelectIntegration'))) {
                     Product::get_instance()->process_submission($product_object, $order);
                 }
 

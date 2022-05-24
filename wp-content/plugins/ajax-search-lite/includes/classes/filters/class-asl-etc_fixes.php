@@ -9,7 +9,7 @@ if (!class_exists("WD_ASL_EtcFixes_Filter")) {
      *
      * @class         WD_ASL_EtcFixes_Filter
      * @version       1.0
-     * @package       AjaxSearchPro/Classes/Filters
+     * @package       AjaxSearchLite/Classes/Filters
      * @category      Class
      * @author        Ernest Marcinko
      */
@@ -32,6 +32,17 @@ if (!class_exists("WD_ASL_EtcFixes_Filter")) {
             }
             return $menu_items;
         }
+
+		function switchToNewScriptsOnLiveLoader( $options ) {
+			if ( $options['res_live_search'] ) {
+				$com_options = wd_asl()->o['asl_compatibility'];
+				if ( strpos($com_options['js_source'], 'jqueryless') === false ) {
+					$com_options['js_source'] = 'jqueryless-min';
+					update_option('asl_compatibility', $com_options);
+				}
+			}
+			return $options;
+		}
 
         /**
          * Fix for the Oxygen builder plugin editor error console

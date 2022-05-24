@@ -1,5 +1,18 @@
 ﻿== Changelog ==
 
+= 1.2.47.1 =
+* Removed the Full Site Editing callout in customizer.
+* Fixed bug where VTI was matching in a link.
+
+= 1.2.47.0 =
+* Added LearnDash to [ESP integration](https://mailoptin.io/?p=33850&ref=changelog).
+* Added filter to hubspot properties.
+
+= 1.2.46.1 =
+* Added filter to the admin email that receives optin error messages
+* Added shortcode optin embed support for all display rules.
+* Fixed fatal error conflict with Astra theme.
+
 = 1.2.46.0 =
 * Added newsman integration.
 * Added email automation support to zoho campaigns.

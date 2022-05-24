@@ -28,9 +28,9 @@ class Connect extends AbstractMoosendConnect implements ConnectionInterface
         add_action('init', [$this, 'campaign_log_public_preview']);
 
         add_filter('mailoptin_registered_connections', [$this, 'register_connection']);
-    
+
         add_action('wp_ajax_mailoptin_customizer_fetch_moosend_segments', [$this, 'customizer_fetch_moosend_segment']);
-    
+
         add_action('mailoptin_email_campaign_enqueue_customizer_js', function () {
             wp_enqueue_script(
                 'moosend-group-control',
@@ -39,7 +39,7 @@ class Connect extends AbstractMoosendConnect implements ConnectionInterface
                 MAILOPTIN_VERSION_NUMBER
             );
         });
-        
+
         parent::__construct();
     }
 
@@ -85,79 +85,83 @@ class Connect extends AbstractMoosendConnect implements ConnectionInterface
 
         return $connections;
     }
-    
+
     public function get_list_segments($list_id)
     {
         if (is_null($list_id) || empty($list_id) || ! $list_id) return [];
-        
+
         try {
-    
+
             $output = get_transient("mo_moosend_get_segments_$list_id");
-    
+
             if ($output === false) {
                 $output = ['' => __('Select...', 'mailoptin')];
-    
+
                 $segment_types = $this->get_segment_types($list_id);
-    
-                if(!empty($segment_types)) {
+
+                if ( ! empty($segment_types)) {
                     foreach ($segment_types as $key => $segment) {
                         $output[$key] = $segment;
                     }
                 }
-    
-    
+
+
                 $output = json_encode($output);
-    
+
                 set_transient("mo_moosend_get_segments_$list_id", $output, 10 * MINUTE_IN_SECONDS);
             }
-        
+
             return json_decode($output, true);
-            
+
         } catch (\Exception $e) {
             self::save_optin_error_log($e->getMessage(), 'mailchimp');
-            
+
             return [];
         }
     }
-    
+
     /**
      * Fetch Moosend segments of a list for Email Customizer.
      */
-    public function customizer_fetch_moosend_segment() {
+    public function customizer_fetch_moosend_segment()
+    {
         check_ajax_referer('customizer-fetch-email-list', 'security');
-    
+
         \MailOptin\Core\current_user_has_privilege() || exit;
-    
+
         $list_id = sanitize_text_field($_REQUEST['list_id']);
-        
+
         $segments = $this->get_list_segments($list_id);
-    
+
         if (count($segments) > 1) {
             foreach ($segments as $key => $value) {
                 echo '<option value="' . esc_attr($key) . '">' . $value . '</option>';
             }
         }
-    
+
         $structure = ob_get_clean();
-    
+
         wp_send_json_success($structure);
-    
+
         wp_die();
     }
-    
+
     /**
      * @param $list_id
+     *
      * @return array
      */
-    public function get_segment_types($list_id) {
+    public function get_segment_types($list_id)
+    {
         try {
             //Fetch the segments
             $response = $this->moosend_instance()->get_segments_groups($list_id);
-    
+
             //Convert it to array of id=>name
             return wp_list_pluck($response, 'Name', 'ID');
         } catch (\Exception $e) {
             self::save_optin_error_log($e->getMessage(), 'moosend');
+
             return [];
         }
     }
@@ -175,8 +179,8 @@ class Connect extends AbstractMoosendConnect implements ConnectionInterface
         ];
 
         $replace = [
-            '{VR_HOSTED_LINK}',
-            '{UNSUBSCRIBE_LINK}',
+            'https://#trackingDomain#/show_campaign/#campaign:key#/#recipient:key#',
+            '#unsubscribeLink#'
         ];
 
         $content = str_replace($search, $replace, $content);
@@ -210,7 +214,7 @@ class Connect extends AbstractMoosendConnect implements ConnectionInterface
     {
         try {
 
-            $response = $this->moosend_instance()->get_custom_fields( $list_id );
+            $response = $this->moosend_instance()->get_custom_fields($list_id);
 
             //Convert it to array of name=>name
             return wp_list_pluck($response, 'Name', 'ID');
@@ -227,9 +231,9 @@ class Connect extends AbstractMoosendConnect implements ConnectionInterface
      * @param string $content_html
      * @param string $content_text
      *
+     * @return array
      * @throws \Exception
      *
-     * @return array
      */
     public function send_newsletter($email_campaign_id, $campaign_log_id, $subject, $content_html, $content_text)
     {

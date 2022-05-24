@@ -480,10 +480,10 @@ class B2S_Tools {
                     if (isset($userDetails['B2S_PLUGIN_USER_VERSION']) && (int) $userDetails['B2S_PLUGIN_USER_VERSION'] > 0) {
                         $userVersion = $userDetails['B2S_PLUGIN_USER_VERSION'];
                         if(is_array($b2sVersionType) && isset($b2sVersionType[$userVersion]) && !empty($b2sVersionType[$userVersion])){
-                            $ver = " (Blog2Social " . esc_html__('License', 'blog2social') . ": " . $b2sVersionType[$userVersion] . ")";
+                            $ver = " (Blog2Social " . esc_html__('License', 'blog2social') . ": " . esc_html($b2sVersionType[$userVersion]) . ")";
                         }
                     }
-                    $options .= '<option value="' . $user->data->ID . '" ' . (($user->data->ID == $selectId) ? "selected" : "") . '>' . esc_attr($user->data->display_name) . " (" . esc_attr($user->data->user_email) . ")" . $ver . '</option>';
+                    $options .= '<option value="' . esc_attr($user->data->ID) . '" ' . (($user->data->ID == $selectId) ? "selected" : "") . '>' . esc_html($user->data->display_name) . " (" . esc_html($user->data->user_email) . ")" . $ver . '</option>';
                 }
             }
         }
@@ -618,6 +618,32 @@ class B2S_Tools {
         arsort($wordCountArr);
         $wordCountArr = array_slice($wordCountArr, 0, 10);
         return $wordCountArr;
+    }
+    
+    public static function sanitize_array($array = array()) {
+        if(is_array($array) && !empty($array)) {
+            foreach ($array as $key => &$value) {
+                if (is_array($value)) {
+                    $value = self::sanitize_array($value);
+                } else {
+                    $value = sanitize_text_field($value);
+                }
+            }
+        }
+        return $array;
+    }
+    
+    public static function esc_html_array($array = array(), $kses = array()) {
+        if(is_array($array) && !empty($array)) {
+            foreach ($array as $key => &$value) {
+                if (is_array($value)) {
+                    $value = self::esc_html_array($value);
+                } else {
+                    $value = wp_kses($value, $kses);
+                }
+            }
+        }
+        return $array;
     }
     
 }

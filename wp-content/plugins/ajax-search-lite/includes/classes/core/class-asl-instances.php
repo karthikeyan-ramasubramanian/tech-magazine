@@ -102,6 +102,7 @@ class WD_ASL_Instances {
     public function update( $id = 0, $data = array() ) {
 
         $this->refresh = true;
+		$data = apply_filters('asl_save_search_instance_options', $data);
 
         return update_option("asl_options", $data);
     }

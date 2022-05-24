@@ -64,6 +64,11 @@ class WD_ASL_Init {
             unset( wd_asl()->o['asl_compatibility']['load_mcustom_js']);
             asl_save_option('asl_compatibility');
         }
+		// 4.10
+		if ( isset( $comp['old_browser_compatibility']) ) {
+			unset( wd_asl()->o['asl_compatibility']['old_browser_compatibility'] );
+			asl_save_option('asl_compatibility');
+		}
 
         // 4.18.2
         $ana = wd_asl()->o['asl_analytics'];
@@ -101,12 +106,12 @@ class WD_ASL_Init {
             // ------------------------- 4.7.13 -----------------------------
             if ( isset($sd['redirectonclick']) ) {
                 if ( $sd['redirectonclick'] == 0 )
-                    $sd['redirect_click_to'] = 'ajax_search';
+                    $sd['click_action'] = 'ajax_search';
                 unset($sd['redirectonclick']);
             }
             if ( isset($sd['redirect_on_enter']) ) {
                 if ( $sd['redirect_on_enter'] == 0 )
-                    $sd['redirect_enter_to'] = 'ajax_search';
+                    $sd['return_action'] = 'ajax_search';
                 unset($sd['redirect_on_enter']);
             }
             // ------------------------- 4.7.14 -----------------------------
@@ -188,6 +193,13 @@ class WD_ASL_Init {
 				unset($sd['descriptionfield_cf']);
 			}
 
+			if ( isset($sd['redirect_enter_to']) ) {
+				$sd['return_action'] = $sd['redirect_enter_to'];
+				$sd['click_action'] = $sd['redirect_click_to'];
+				unset($sd['redirect_enter_to']);
+				unset($sd['redirect_click_to']);
+			}
+
             // At the end, update
             wd_asl()->instances->update(0, $sd);
         }
@@ -197,31 +209,36 @@ class WD_ASL_Init {
     /**
      * Extra styles if needed..
      */
-    public function styles() {
-        if(isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/(?i)msie [6-8]/',$_SERVER['HTTP_USER_AGENT']) ) {
-            $comp_options = wd_asl()->o['asl_compatibility'];
-            if ( $comp_options['old_browser_compatibility'] == 1 ) {
-                return;
-            }
-        }
-    }
+    public function styles() {}
 
-    /**
-     * Prints the scripts
-     */
-    public function scripts() {
+	/**
+	 * Prints the scripts
+	 * @noinspection PhpInconsistentReturnPointsInspection
+	 */
+	public function scripts() {
+		wd_asl()->scripts = WD_ASL_Scripts::getInstance();
 
-        $com_opt = wd_asl()->o['asl_compatibility'];
-        if(isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/(?i)msie [6-8]/',$_SERVER['HTTP_USER_AGENT']) ) {
-            if ( $com_opt['old_browser_compatibility'] == 1 ) {
-                return;
-            }
-        }
+		$exit1 = apply_filters('asl_load_css_js', false);
+		$exit2 = apply_filters('asl_load_js', false);
+		if ( $exit1 || $exit2 )
+			return false;
 
-        $exit1 = apply_filters('asl_load_css_js', false);
-        $exit2 = apply_filters('asl_load_js', false);
-        if ( $exit1 || $exit2 )
-            return false;
+		$performance_options = wd_asl()->o['asl_performance'];
+		$analytics = wd_asl()->o['asl_analytics'];
+		$comp_settings = wd_asl()->o['asl_compatibility'];
+		$load_in_footer = $performance_options['load_in_footer'] == 1;
+		$media_query = ASL_DEBUG == 1 ? asl_gen_rnd_str() : ASL_CURRENT_VERSION;
+		if ( wd_asl()->manager->getContext() == "backend" ) {
+			$legacy = false;
+			$js_minified = false;
+			$js_optimized = true;
+			$js_async_load = false;
+		} else {
+			$legacy = $comp_settings['js_source'] != 'jqueryless-min' && $comp_settings['js_source'] != 'jqueryless-nomin';
+			$js_minified = $comp_settings['js_source'] == 'jqueryless-min';
+			$js_optimized = $comp_settings['script_loading_method'] != 'classic';
+			$js_async_load = $comp_settings['script_loading_method'] == 'optimized_async';
+		}
 
 		$single_highlight = false;
 		$single_highlight_arr = array();
@@ -232,7 +249,6 @@ class WD_ASL_Init {
 				if ( $s['data']['single_highlight'] == 1 ) {
 					$single_highlight = true;
 					$single_highlight_arr[] = array(
-						'id' => $s['id'],
 						'selector' => $s['data']['single_highlight_selector'],
 						'scroll' => $s['data']['single_highlight_scroll'] == 1,
 						'scroll_offset' => intval($s['data']['single_highlight_offset']),
@@ -242,140 +258,135 @@ class WD_ASL_Init {
 			}
 		}
 
-        // ------------ Dequeue some scripts causing issues on the back-end --------------
-        wp_dequeue_script( 'otw-admin-colorpicker' );
-        wp_dequeue_script( 'otw-admin-select2' );
-        wp_dequeue_script( 'otw-admin-otwpreview' );
-        wp_dequeue_script( 'otw-admin-fonts');
-        wp_dequeue_script( 'otw-admin-functions');
-        wp_dequeue_script( 'otw-admin-variables');
 
-        $performance_options = wd_asl()->o['asl_performance'];
-        $analytics = wd_asl()->o['asl_analytics'];
+		$ajax_url = admin_url('admin-ajax.php');
+		if ( $performance_options['use_custom_ajax_handler'] == 1) {
+			$ajax_url = ASL_URL . 'ajax_search.php';
+		}
 
-        $prereq = 'jquery';
-        $js_source = $com_opt['js_source'];
-        $scripts = array();
+		if (ASL_DEBUG < 1 && strpos($comp_settings['js_source'], "scoped") !== false) {
+			$scope = "asljQuery";
+		} else {
+			$scope = "jQuery";
+		}
 
-        $load_in_footer = w_isset_def($performance_options['load_in_footer'], 1) == 1 ? true : false;
-        $load_mcustom = w_isset_def($com_opt['load_scroll_js'], "yes") == "yes";
+		$handle = 'wd-asl-ajaxsearchlite';
 
-        // Load the wp hooks interface
-		wp_enqueue_script( 'wp-hooks' );
+		if ( $legacy ) {
+			wd_asl()->scripts_legacy = WD_ASL_Scripts_Legacy::getInstance();
+			wd_asl()->scripts_legacy->enqueue();
+			$additional_scripts = array();
+		} else {
+			if ( !$js_async_load ) {
+				wd_asl()->scripts->enqueue(
+					wd_asl()->scripts->get(array(), $js_minified, $js_optimized, array(
+						'wd-asl-async-loader', 'wd-asl-prereq-and-wrapper'
+					)),
+					array(
+						'media_query' => $media_query,
+						'in_footer' => $load_in_footer
+					)
+				);
+				$additional_scripts = wd_asl()->scripts->get(array(), $js_minified, $js_optimized,
+					array('wd-asl-async-loader', 'wd-asl-prereq-and-wrapper', 'wd-asl-ajaxsearchlite-wrapper')
+				);
+			} else {
+				$handle = 'wd-asl-prereq-and-wrapper';
+				wd_asl()->scripts->enqueue(
+					wd_asl()->scripts->get($handle, $js_minified, $js_optimized),
+					array(
+						'media_query' => $media_query,
+						'in_footer' => $load_in_footer
+					)
+				);
+				$additional_scripts = wd_asl()->scripts->get(array(), $js_minified, $js_optimized,
+					array('wd-asl-async-loader',
+						'wd-asl-prereq-and-wrapper',
+						'wd-asl-ajaxsearchlite-wrapper',
+						'wd-asl-ajaxsearchlite-prereq'
+					)
+				);
+			}
+		}
 
-        if ($js_source == 'nomin' || $js_source == 'nomin-scoped') {
-            if ($js_source == "nomin-scoped") {
-                $prereq = "wpdreams-asljquery";
-                wp_register_script('wpdreams-asljquery', ASL_URL . 'js/' . $js_source . '/asljquery.js', array(), ASL_CURR_VER_STRING, $load_in_footer);
-                wp_enqueue_script('wpdreams-asljquery');
-                $scripts[] = ASL_URL . 'js/' . $js_source . '/asljquery.js';
-            }
-            wp_register_script('wpdreams-highlight', ASL_URL . 'js/' . $js_source . '/jquery.highlight.js', array($prereq), ASL_CURR_VER_STRING, $load_in_footer);
-            wp_enqueue_script('wpdreams-highlight');
-			$scripts[] = ASL_URL . 'js/' . $js_source . '/jquery.highlight.js';
-            if ( $load_mcustom ) {
-                wp_register_script('wpdreams-scroll', ASL_URL . 'js/' . $js_source . '/simplebar.js', array($prereq), ASL_CURR_VER_STRING, $load_in_footer);
-                wp_enqueue_script('wpdreams-scroll');
-				$scripts[] = ASL_URL . 'js/' . $js_source . '/simplebar.js';
-            }
-            wp_register_script('wpdreams-ajaxsearchlite', ASL_URL . 'js/' . $js_source . '/jquery.ajaxsearchlite.js', array($prereq), ASL_CURR_VER_STRING, $load_in_footer);
-            wp_enqueue_script('wpdreams-ajaxsearchlite');
-			$scripts[] = ASL_URL . 'js/' . $js_source . '/jquery.ajaxsearchlite.js';
-
-            wp_register_script('wpdreams-asl-wrapper', ASL_URL . 'js/' . $js_source . '/asl_wrapper.js', array($prereq, "wpdreams-ajaxsearchlite"), ASL_CURR_VER_STRING, $load_in_footer);
-            wp_enqueue_script('wpdreams-asl-wrapper');
-			$scripts[] = ASL_URL . 'js/' . $js_source . '/asl_wrapper.js';
-        } else {
-            wp_enqueue_script('jquery');
-            wp_register_script('wpdreams-ajaxsearchlite', ASL_URL . "js/" . $js_source . "/jquery.ajaxsearchlite.min.js", array(), ASL_CURR_VER_STRING, $load_in_footer);
-            wp_enqueue_script('wpdreams-ajaxsearchlite');
-			$scripts[] = ASL_URL . 'js/' . $js_source . '/jquery.ajaxsearchlite.min.js';
-        }
-
-        $ajax_url = admin_url('admin-ajax.php');
-        if ( w_isset_def($performance_options['use_custom_ajax_handler'], 0) == 1 )
-            $ajax_url = ASL_URL . 'ajax_search.php';
-
-        if (strpos($com_opt['js_source'], 'min-scoped') !== false) {
-            $scope = "asljQuery";
-        } else {
-            $scope = "jQuery";
-        }
-
-        ASL_Helpers::addInlineScript( 'wpdreams-ajaxsearchlite', 'ASL', array(
+		ASL_Helpers::addInlineScript( $handle, 'ASL', array(
 			'wp_rocket_exception' => 'DOMContentLoaded',	// WP Rocket hack to prevent the wrapping of the inline script: https://docs.wp-rocket.me/article/1265-load-javascript-deferred
-            'ajaxurl' => $ajax_url,
-            'backend_ajaxurl' => admin_url( 'admin-ajax.php'),
-            'js_scope' => $scope,
-            'detect_ajax' => $com_opt['detect_ajax'],
-            'scrollbar' => $load_mcustom,
-            'js_retain_popstate' => $com_opt['js_retain_popstate'],
-            'version' => ASL_CURRENT_VERSION,
-			'min_script_src' => $scripts,
+			'ajaxurl' => $ajax_url,
+			'backend_ajaxurl' => admin_url('admin-ajax.php'),
+			'js_scope' => $scope,
+			'asl_url' => ASL_URL,
+			'detect_ajax' => w_isset_def($comp_settings['detect_ajax'], 0),
+			'media_query' => ASL_CURRENT_VERSION,
+			'version' => ASL_CURRENT_VERSION,
+			'pageHTML' => '',
+			'additional_scripts' => $additional_scripts,
+			'script_async_load' => $js_async_load,
+			'scrollbar' => $comp_settings['load_scroll_js'] == "yes" && asl_is_asset_required('simplebar'),
+			'css_async' => false,
+			'js_retain_popstate' => w_isset_def($comp_settings['js_retain_popstate'], 1),
 			'highlight' => array(
 				'enabled' => $single_highlight,
 				'data' => $single_highlight_arr
 			),
-            'fix_duplicates' => $com_opt['js_fix_duplicates'],
-            'analytics' => array(
-                'method' => $analytics['analytics'],
-                'tracking_id' => $analytics['analytics_tracking_id'],
-                'string' => $analytics['analytics_string'],
-                'event' => array(
-                    'focus' => array(
-                        'active' => $analytics['gtag_focus'],
-                        'action' => $analytics['gtag_focus_action'],
-                        "category" => $analytics['gtag_focus_ec'],
-                        "label" =>  $analytics['gtag_focus_el'],
-                        "value" => $analytics['gtag_focus_value']
-                    ),
-                    'search_start' => array(
-                        'active' => $analytics['gtag_search_start'],
-                        'action' => $analytics['gtag_search_start_action'],
-                        "category" => $analytics['gtag_search_start_ec'],
-                        "label" =>  $analytics['gtag_search_start_el'],
-                        "value" => $analytics['gtag_search_start_value']
-                    ),
-                    'search_end' => array(
-                        'active' => $analytics['gtag_search_end'],
-                        'action' => $analytics['gtag_search_end_action'],
-                        "category" => $analytics['gtag_search_end_ec'],
-                        "label" =>  $analytics['gtag_search_end_el'],
-                        "value" => $analytics['gtag_search_end_value']
-                    ),
-                    'magnifier' => array(
-                        'active' => $analytics['gtag_magnifier'],
-                        'action' => $analytics['gtag_magnifier_action'],
-                        "category" => $analytics['gtag_magnifier_ec'],
-                        "label" =>  $analytics['gtag_magnifier_el'],
-                        "value" => $analytics['gtag_magnifier_value']
-                    ),
-                    'return' => array(
-                        'active' => $analytics['gtag_return'],
-                        'action' => $analytics['gtag_return_action'],
-                        "category" => $analytics['gtag_return_ec'],
-                        "label" =>  $analytics['gtag_return_el'],
-                        "value" => $analytics['gtag_return_value']
-                    ),
-                    'facet_change' => array(
-                        'active' => $analytics['gtag_facet_change'],
-                        'action' => $analytics['gtag_facet_change_action'],
-                        "category" => $analytics['gtag_facet_change_ec'],
-                        "label" =>  $analytics['gtag_facet_change_el'],
-                        "value" => $analytics['gtag_facet_change_value']
-                    ),
-                    'result_click' => array(
-                        'active' => $analytics['gtag_result_click'],
-                        'action' => $analytics['gtag_result_click_action'],
-                        "category" => $analytics['gtag_result_click_ec'],
-                        "label" =>  $analytics['gtag_result_click_el'],
-                        "value" => $analytics['gtag_result_click_value']
-                    )
-                )
-            )
-        ), 'before', true);
-
-    }
+			'fix_duplicates' => $comp_settings['js_fix_duplicates'],
+			'analytics' => array(
+				'method' => $analytics['analytics'],
+				'tracking_id' => $analytics['analytics_tracking_id'],
+				'string' => $analytics['analytics_string'],
+				'event' => array(
+					'focus' => array(
+						'active' => $analytics['gtag_focus'],
+						'action' => $analytics['gtag_focus_action'],
+						"category" => $analytics['gtag_focus_ec'],
+						"label" =>  $analytics['gtag_focus_el'],
+						"value" => $analytics['gtag_focus_value']
+					),
+					'search_start' => array(
+						'active' => $analytics['gtag_search_start'],
+						'action' => $analytics['gtag_search_start_action'],
+						"category" => $analytics['gtag_search_start_ec'],
+						"label" =>  $analytics['gtag_search_start_el'],
+						"value" => $analytics['gtag_search_start_value']
+					),
+					'search_end' => array(
+						'active' => $analytics['gtag_search_end'],
+						'action' => $analytics['gtag_search_end_action'],
+						"category" => $analytics['gtag_search_end_ec'],
+						"label" =>  $analytics['gtag_search_end_el'],
+						"value" => $analytics['gtag_search_end_value']
+					),
+					'magnifier' => array(
+						'active' => $analytics['gtag_magnifier'],
+						'action' => $analytics['gtag_magnifier_action'],
+						"category" => $analytics['gtag_magnifier_ec'],
+						"label" =>  $analytics['gtag_magnifier_el'],
+						"value" => $analytics['gtag_magnifier_value']
+					),
+					'return' => array(
+						'active' => $analytics['gtag_return'],
+						'action' => $analytics['gtag_return_action'],
+						"category" => $analytics['gtag_return_ec'],
+						"label" =>  $analytics['gtag_return_el'],
+						"value" => $analytics['gtag_return_value']
+					),
+					'facet_change' => array(
+						'active' => $analytics['gtag_facet_change'],
+						'action' => $analytics['gtag_facet_change_action'],
+						"category" => $analytics['gtag_facet_change_ec'],
+						"label" =>  $analytics['gtag_facet_change_el'],
+						"value" => $analytics['gtag_facet_change_value']
+					),
+					'result_click' => array(
+						'active' => $analytics['gtag_result_click'],
+						'action' => $analytics['gtag_result_click_action'],
+						"category" => $analytics['gtag_result_click_ec'],
+						"label" =>  $analytics['gtag_result_click_el'],
+						"value" => $analytics['gtag_result_click_value']
+					)
+				)
+			)
+		), 'before', true);
+	}
 
     public function pluginReset( $triggerActivate = true ) {
         $options = array(
@@ -395,7 +406,6 @@ class WD_ASL_Init {
             'asl_stat',
             'asl_updates',
             'asl_updates_lc',
-            'asl_media_query',
             'asl_performance_stats',
             'asl_recently_updated',
             'asl_debug_data'

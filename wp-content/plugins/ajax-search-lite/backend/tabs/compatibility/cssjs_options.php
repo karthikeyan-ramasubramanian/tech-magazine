@@ -1,41 +1,38 @@
 <div class="item">
 	<?php
 	$o = new wpdreamsCustomSelect("js_source",  __('Javascript source', 'ajax-search-lite'), array(
-			'selects'   => array(
-				array('option' => __('Non minified', 'ajax-search-lite'), 'value' => 'nomin'),
-				array('option' => __('Minified', 'ajax-search-lite'), 'value' => 'min'),
-				array('option' => __('Non-minified scoped', 'ajax-search-lite'), 'value' => 'nomin-scoped'),
-				array('option' => __('Minified scoped', 'ajax-search-lite'), 'value' => 'min-scoped'),
-			),
+			'selects'   => wd_asl()->o['asl_compatibility_def']['js_source_def'],
 			'value'     => $com_options['js_source']
 		)
 	);
 	$params[$o->getName()] = $o->getData();
 	?>
 	<p class="descMsg">
-	<ul style="float:right;text-align:left;width:50%;">
-		<li><?php echo __('<b>Non minified</b> - Optimal Compatibility, Medium space', 'ajax-search-lite'); ?></li>
-		<li><?php echo __('<b>Minified</b> - Optimal Compatibility, Low space (recommended)', 'ajax-search-lite'); ?></li>
-		<li><?php echo __('<b>Non minified Scoped</b> - High Compatibility, High space', 'ajax-search-lite'); ?></li>
-		<li><?php echo __('<b>Minified Scoped</b> - High Compatibility, Medium space', 'ajax-search-lite'); ?></li>
-	</ul>
-	<div class="clear"></div>
+		<strong>Legacy</strong> scripts use <strong>jQuery</strong> and will be removed on the first 2022 release.
+		<?php echo sprintf( __('<a target="_blank" href="%s">Read More</a>'),
+			'https://documentation.ajaxsearchlite.com/compatibility-settings/javascript-compatibility' ); ?>
 	</p>
 </div>
-<div class="item">
+<div class="item" wd-enable-on="js_source:jqueryless-nomin,jqueryless-min">
 	<?php
-	$o = new wpdreamsCustomSelect("js_init", __('Javascript init method', 'ajax-search-lite'), array(
+	$o = new wpdreamsCustomSelect("script_loading_method", __('Script loading method', 'ajax-search-pro'), array(
 			'selects'=>array(
-				array('option'=>__('Dynamic (default)', 'ajax-search-lite'), 'value'=>'dynamic'),
-				array('option'=>__('Blocking', 'ajax-search-lite'), 'value'=>'blocking')
+				array('option'=>'Classic', 'value'=>'classic'),
+				array('option'=>'Optimized (recommended)', 'value'=>'optimized'),
+				array('option'=>'Optimized asynchronous', 'value'=>'optimized_async')
 			),
-			'value'=>$com_options['js_init']
+			'value'=>$com_options['script_loading_method']
 		)
 	);
 	$params[$o->getName()] = $o->getData();
 	?>
 	<p class="descMsg">
-		<?php echo __('Try to choose <strong>Blocking</strong> if the search bar is not responding to anything.', 'ajax-search-lite'); ?>
+	<ul style="float:right;text-align:left;width:70%;">
+		<li><?php echo __('<b>Classic</b> - All scripts are loaded as blocking at the same time', 'ajax-search-pro'); ?></li>
+		<li><?php echo __('<b>Optimized</b> - Scripts are loaded separately, but only the required ones', 'ajax-search-pro'); ?></li>
+		<li><?php echo __('<b>Optimized asnynchronous</b> - Same as the Optimized, but the scripts load in the background', 'ajax-search-pro'); ?></li>
+	</ul>
+	<div class="clear"></div>
 	</p>
 </div>
 <div class="item">
@@ -90,9 +87,4 @@
 		<li>When set to <strong>No</strong>, the custom scrollbar will <strong>not be used at all</strong>.</li>
 	</ul>
 	</p>
-</div>
-<div class="item">
-	<?php $o = new wpdreamsYesNo("old_browser_compatibility", __('Display the default search box on old browsers? (IE<=8)', 'ajax-search-lite'),
-		$com_options['old_browser_compatibility']
-	); ?>
 </div>

@@ -120,7 +120,10 @@ class Product
     {
         $field_map = [];
 
-        $connection_service    = $product_object->get_meta('mailoptinWooCommerceSelectIntegration');
+        $connection_service = $product_object->get_meta('mailoptinWooCommerceSelectIntegration');
+
+        if (empty($connection_service)) return;
+
         $connection_email_list = $product_object->get_meta($connection_service . '[mailoptinWooCommerceSelectList]');
 
         foreach (WooInit::get_instance()->merge_vars_field_map($connection_service, $connection_email_list) as $key => $value) {

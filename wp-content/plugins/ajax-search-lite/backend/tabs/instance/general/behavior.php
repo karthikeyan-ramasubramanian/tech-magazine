@@ -7,24 +7,27 @@
             </a>
         </span>
 	</legend>
-	<div class="item item-flex-nogrow item-conditional" style="flex-wrap: wrap;">
+	<div class="item item-flex-nogrow" style="flex-wrap: wrap;">
 		<?php
 		$o = new wpdreamsYesNo("exactonly", __("Show exact matches only?", "ajax-search-lite"),
 			$sd['exactonly']);
 		$params[$o->getName()] = $o->getData();
-
-		$o = new wpdreamsCustomSelect('exact_match_location', "..and match fields against the search phrase",
-			array(
-				'selects' => array(
-					array('option' => __('Anywhere', 'ajax-search-lite'), 'value' => 'anywhere'),
-					array('option' => __('Starting with phrase', 'ajax-search-lite'), 'value' => 'start'),
-					array('option' => __('Ending with phrase', 'ajax-search-lite'), 'value' => 'end'),
-					array('option' => __('Complete match', 'ajax-search-lite'), 'value' => 'full')
-				),
-				'value' => $sd['exact_match_location']
-			));
-		$params[$o->getName()] = $o->getData();
 		?>
+		<div wd-enable-on="exactonly:1">
+			<?php
+			$o = new wpdreamsCustomSelect('exact_match_location', "..and match fields against the search phrase",
+				array(
+					'selects' => array(
+						array('option' => __('Anywhere', 'ajax-search-lite'), 'value' => 'anywhere'),
+						array('option' => __('Starting with phrase', 'ajax-search-lite'), 'value' => 'start'),
+						array('option' => __('Ending with phrase', 'ajax-search-lite'), 'value' => 'end'),
+						array('option' => __('Complete match', 'ajax-search-lite'), 'value' => 'full')
+					),
+					'value' => $sd['exact_match_location']
+				));
+			$params[$o->getName()] = $o->getData();
+			?>
+		</div>
 	</div>
 	<div class="item">
 		<?php
@@ -42,7 +45,7 @@
 		<div class="descMsg">
 			<?php echo __('This determines if the result should match either of the entered phrases (OR logic) or all of the entered phrases (AND logic).', 'ajax-search-lite'); ?>
 		</div>
-		<div class="kwLogicInfo infoMsg hiddend">
+		<div class="kwLogicInfo infoMsg" wd-show-on="keyword_logic:orex,andex">
 			<?php echo __('Please note: For <strong>performance rasons</strong> exact word matching in the Lite version is only able to check space-separated words. Commas, dots, question marks etc.. are not considered as word separators.', 'ajax-search-lite'); ?>
 		</div>
 	</div>
@@ -101,7 +104,7 @@
 	</div>
 	<div class="item item-flex-nogrow" style="flex-wrap: wrap;">
 		<?php
-		$o = new wpdreamsCustomSelect("redirect_click_to", __("Action when clicking <strong>the magnifier</strong> icon", "ajax-search-lite"),
+		$o = new wpdreamsCustomSelect("click_action", __("Action when clicking <strong>the magnifier</strong> icon", "ajax-search-lite"),
 			array(
 				'selects' => array(
 					array("option" => __("Trigger live search", "ajax-search-lite"), "value" => "ajax_search"),
@@ -111,10 +114,13 @@
 					array("option" => __("Redirec to: Custom URL", "ajax-search-lite"), "value" => "custom_url"),
 					array("option" => __("Do nothing", "ajax-search-lite"), "value" => "nothing")
 				),
-				'value' => $sd['redirect_click_to']
+				'value' => $sd['click_action']
 			));
 		$params[$o->getName()] = $o->getData();
 
+		?>
+		<div wd-hide-on="click_action:ajax_search,nothing,same">
+		<?php
 		$o = new wpdreamsCustomSelect("click_action_location", " location: ",
 			array(
 				'selects' => array(
@@ -125,10 +131,11 @@
 			));
 		$params[$o->getName()] = $o->getData();
 		?>
+		</div>
 	</div>
 	<div class="item item-flex-nogrow" style="flex-wrap: wrap;">
 		<?php
-		$o = new wpdreamsCustomSelect("redirect_enter_to", __("Action when pressing <strong>the return</strong> key", "ajax-search-lite"),
+		$o = new wpdreamsCustomSelect("return_action", __("Action when pressing <strong>the return</strong> key", "ajax-search-lite"),
 			array(
 				'selects' => array(
 					array("option" => __("Trigger live search", "ajax-search-lite"), "value" => "ajax_search"),
@@ -138,10 +145,12 @@
 					array("option" => __("Redirec to: Custom URL", "ajax-search-lite"), "value" => "custom_url"),
 					array("option" => __("Do nothing", "ajax-search-lite"), "value" => "nothing")
 				),
-				'value' => $sd['redirect_enter_to']
+				'value' => $sd['return_action']
 			));
 		$params[$o->getName()] = $o->getData();
-
+		?>
+		<div wd-hide-on="return_action:ajax_search,nothing,same">
+		<?php
 		$o = new wpdreamsCustomSelect("return_action_location", " location: ",
 			array(
 				'selects' => array(
@@ -152,8 +161,9 @@
 			));
 		$params[$o->getName()] = $o->getData();
 		?>
+		</div>
 	</div>
-	<div class="item">
+	<div class="item" wd-conditional-logic="or" wd-show-on="return_action:custom_url;click_action:custom_url">
 		<?php
 		$o = new wpdreamsText("custom_redirect_url", __("Custom redirect URL", "ajax-search-lite"), $sd['custom_redirect_url']);
 		$params[$o->getName()] = $o->getData();
@@ -178,7 +188,7 @@
 		?>
 		<div class="descMsg" style="min-width: 100%;flex-wrap: wrap;flex-basis: auto;flex-grow: 1;box-sizing: border-box;"><?php echo __("Might not work with some Themes.", "ajax-search-lite"); ?></p>
 		</div>
-		<div class="item">
+		<div class="item" wd-disable-on="override_default_results:0">
 			<?php
 			$o = new wpdreamsTextSmall("results_per_page", __('Results count per page?', 'ajax-search-lite'),
 				$sd['results_per_page']);

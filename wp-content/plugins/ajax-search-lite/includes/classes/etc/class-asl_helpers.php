@@ -9,7 +9,7 @@ if (!class_exists("ASL_Helpers")) {
      *
      * @class         ASL_Helpers
      * @version       1.0
-     * @package       AjaxSearchPro/Classes/Etc
+     * @package       AjaxSearchLite/Classes/Etc
      * @category      Class
      * @author        Ernest Marcinko
      */
