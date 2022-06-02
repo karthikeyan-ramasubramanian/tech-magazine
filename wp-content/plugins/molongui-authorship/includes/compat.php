@@ -15,10 +15,12 @@ if ( apply_filters( 'authorship/plugin_compatibility', authorship_is_feature_ena
     if ( is_plugin_active( 'bb-theme-builder/bb-theme-builder.php' ) ) require_once $path . 'beaver-builder-theme-builder.php';
     if ( is_plugin_active( 'buddyboss-platform/bp-loader.php' ) ) require_once $path . 'buddyboss-platform.php';
     if ( class_exists( 'BuddyPress' ) ) require_once $path . 'buddypress.php';
+    if ( is_plugin_active( 'dp-divi-filtergrid/dp-divi-filtergrid.php' ) ) require_once $path . 'dp-divi-filtergrid.php';
     if ( is_plugin_active( 'elementor-pro/elementor-pro.php' ) ) require_once $path . 'elementor-pro.php';
     if ( is_plugin_active( 'essential-grid/essential-grid.php' ) ) require_once $path . 'essential-grid.php';
     if ( is_plugin_active( 'events-manager/events-manager.php' ) ) require_once $path . 'events-manager.php';
     if ( is_plugin_active( 'google-sitemap-generator/sitemap.php' ) ) require_once $path . 'google-sitemap-generator.php';
+    if ( is_plugin_active( 'hootkit/hootkit.php' ) ) require_once $path . 'hootkit.php';
     if ( is_plugin_active( 'jetpack/jetpack.php' ) ) require_once $path . 'jetpack.php';
     if ( is_plugin_active( 'sfwd-lms/sfwd_lms.php' ) ) require_once $path . 'learndash.php';
     if ( is_plugin_active( 'memberpress/memberpress.php' ) ) require_once $path . 'memberpress.php';
@@ -75,6 +77,7 @@ if ( apply_filters( 'authorship/theme_compatibility', authorship_is_feature_enab
     elseif ( 'BuddyBoss Theme' == $theme->name or 'BuddyBoss Theme' == $theme->parent_theme )       require_once $path . 'buddyboss.php';
     elseif ( 'BuddyX' == $theme->name or 'BuddyX' == $theme->parent_theme )                         require_once $path . 'buddyx.php';
     elseif ( 'SmartMag' == $theme->name or 'SmartMag' == $theme->parent_theme )                     require_once $path . 'smart-mag.php';
+    elseif ( 'Mission News' == $theme->name or 'Mission News' == $theme->parent_theme )             require_once $path . 'mission-news.php';
     elseif ( 'Creativo Theme' == $theme->name or 'Creativo Theme' == $theme->parent_theme )         require_once $path . 'creativo.php';
     elseif ( 'AdoreChurch' == $theme->name or 'AdoreChurch' == $theme->parent_theme )               require_once $path . 'adorechurch.php';
     elseif ( strpos( $theme->name, 'Dynamic News' ) !== false or strpos( $theme->parent_theme, 'Dynamic News' ) !== false ) require_once $path . 'dynamic-news.php';

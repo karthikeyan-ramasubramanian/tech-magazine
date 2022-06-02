@@ -2,30 +2,41 @@
 defined( 'ABSPATH' ) or exit;
 
 $fw_options = array();
-if ( apply_filters( 'authorship/options/add_common_main', true ) )
+if ( apply_filters( 'authorship/options/add_common', true ) )
 {
     $fw_options[] = array
     (
         'display' => true,
         'type'    => 'section',
-        'id'      => 'more',
-        'name'    => __( "More", 'molongui-authorship' ),
+        'id'      => 'advanced',
+        'name'    => __( "Advanced", 'molongui-authorship' ),
     );
     $fw_options[] = array
     (
         'display'  => true,
         'advanced' => false,
         'type'     => 'header',
-        'class'    => 'hidden',
+        'class'    => '',
         'label'    => __( "Uninstall", 'molongui-authorship' ),
-        'buttons'  => array(),
+        'buttons'  => array
+        (
+            'save' => array
+            (
+                'display'  => true,
+                'type'     => 'save',
+                'label'    => __( "Save", 'molongui-authorship' ),
+                'title'    => __( "Save Settings", 'molongui-authorship' ),
+                'class'    => 'm-save-options',
+                'disabled' => true,
+            ),
+        ),
     );
     $fw_options[] = array
     (
         'display'  => true,
         'advanced' => false,
         'type'     => 'toggle',
-        'class'    => 'hidden',
+        'class'    => '',
         'default'  => true,
         'id'       => 'keep_config',
         'title'    => '',
@@ -38,7 +49,7 @@ if ( apply_filters( 'authorship/options/add_common_main', true ) )
         'display'  => true,
         'advanced' => false,
         'type'     => 'toggle',
-        'class'    => 'hidden',
+        'class'    => '',
         'default'  => true,
         'id'       => 'keep_data',
         'title'    => '',
@@ -47,4 +58,4 @@ if ( apply_filters( 'authorship/options/add_common_main', true ) )
         'label'    => __( "Keep plugin data for future use upon plugin uninstall.", 'molongui-authorship' ),
     );
 }
-$fw_options = apply_filters( 'authorship/common/options', $fw_options );
+$fw_options = apply_filters( 'authorship/options/common', $fw_options );

@@ -13,3 +13,15 @@ function authorship_autoadd_box()
     add_filter( 'the_content', 'authorship_render_box', $options['box_hook_priority'], 1 );
 }
 add_action( 'init', 'authorship_autoadd_box' );
+function authorship_dont_autoadd_box()
+{
+    $autoadd = false;
+
+    if ( ( ( is_single() or is_page() ) and in_the_loop() and is_main_query() )
+         or
+         ( wp_doing_ajax() and is_main_query() )
+    ) $autoadd = true;
+
+    return $autoadd;
+}
+add_filter( 'authorship/render_box', 'authorship_dont_autoadd_box', 9 );

@@ -13,3 +13,13 @@ add_filter( 'molongui_authorship_do_filter_name', function( $leave, &$args )
     }
     return false;
 }, 10, 2 );
+add_filter( 'authorship/render_box', function( $render )
+{
+    $dbt = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 10 );
+    if ( array_search( 'flatsome_video', array_column( $dbt, 'function' ) ) )
+    {
+        $render = false;
+    }
+
+    return $render;
+}, 10, 1 );

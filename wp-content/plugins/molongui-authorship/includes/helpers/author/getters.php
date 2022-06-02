@@ -205,7 +205,7 @@ if ( !function_exists( 'molongui_get_guests' ) )
 }
 if ( !function_exists( 'molongui_get_authors' ) )
 {
-    function molongui_get_authors( $type = 'authors', $include_users = array(), $exclude_users = array(), $include_guests = array(), $exclude_guests = array(), $order = 'ASC', $orderby = 'name', $get_data = false, $with_posts = false, $post_types = array( 'post' ) )
+    function molongui_get_authors( $type = 'authors', $include_users = array(), $exclude_users = array(), $include_guests = array(), $exclude_guests = array(), $order = 'ASC', $orderby = 'name', $get_data = false, $min_post_count = 0, $post_types = array( 'post' ) )
     {
         $authors = array();
         $options = authorship_get_options();
@@ -213,14 +213,14 @@ if ( !function_exists( 'molongui_get_authors' ) )
         {
             if ( 'post_count' === $orderby )
             {
-                $with_posts = true;
+                $min_post_count = !empty( $min_post_count ) ? $min_post_count : 1;
             }
             elseif ( 'id' === $orderby )
             {
                 $orderby = 'ID';
             }
         }
-        if ( $with_posts ) $get_data = true;
+        if ( $min_post_count ) $get_data = true;
         if ( $type == 'authors' or $type == 'users' )
         {
             $args = array
@@ -237,11 +237,33 @@ if ( !function_exists( 'molongui_get_authors' ) )
                 {
                     $author    = new Author( $user->ID, 'user', $user );
                     $authors[] = $author->get_data();
-                    if ( $with_posts )
+                    if ( $min_post_count )
                     {
+                        $skip = false;
                         end( $authors );
                         $key = key( $authors );
-                        if ( !authorship_author_has_posts( $authors[$key], $post_types ) )
+
+                        if ( 1 === (int)$min_post_count )
+                        {
+                            if ( !authorship_author_has_posts( $authors[$key], $post_types ) )
+                            {
+                                $skip = true;
+                            }
+                        }
+                        else
+                        {
+                            $total_post_count = 0;
+                            foreach ( $post_types as $post_type )
+                            {
+                                $total_post_count = $total_post_count + $authors[$key]['post_count'][$post_type];
+                            }
+
+                            if ( $total_post_count < (int)$min_post_count )
+                            {
+                                $skip = true;
+                            }
+                        }
+                        if ( $skip )
                         {
                             unset( $authors[$key] );
                             continue;
@@ -264,11 +286,33 @@ if ( !function_exists( 'molongui_get_authors' ) )
                 {
                     $author    = new Author( $guest->ID, 'guest', $guest );
                     $authors[] = $author->get_data();
-                    if ( $with_posts )
+                    if ( $min_post_count )
                     {
+                        $skip = false;
                         end( $authors );
                         $key = key( $authors );
-                        if ( !authorship_author_has_posts( $authors[$key], $post_types ) )
+
+                        if ( 1 === (int)$min_post_count )
+                        {
+                            if ( !authorship_author_has_posts( $authors[$key], $post_types ) )
+                            {
+                                $skip = true;
+                            }
+                        }
+                        else
+                        {
+                            $total_post_count = 0;
+                            foreach ( $post_types as $post_type )
+                            {
+                                $total_post_count = $total_post_count + $authors[$key]['post_count'][$post_type];
+                            }
+
+                            if ( $total_post_count < (int)$min_post_count )
+                            {
+                                $skip = true;
+                            }
+                        }
+                        if ( $skip )
                         {
                             unset( $authors[$key] );
                             continue;

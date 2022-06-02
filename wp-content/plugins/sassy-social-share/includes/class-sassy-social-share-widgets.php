@@ -98,14 +98,14 @@ class Sassy_Social_Share_Standard_Widget extends WP_Widget {
 		}
 		if ( isset( $instance['target_url'] ) ) {
 			if ( $instance['target_url'] == 'default' ) {
-				$sharing_url = esc_url( $this->public_class_object->get_http_protocol() . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] );
+				$sharing_url = esc_url_raw( $this->public_class_object->get_http_protocol() . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] );
 				if ( is_home() ) {
 					$sharing_url = home_url();
 					$post_id = 0;
 				} elseif ( ! is_singular() ) {
 					$post_id = 0;
 				} elseif ( isset( $_SERVER['QUERY_STRING'] ) && $_SERVER['QUERY_STRING'] ) {
-					$sharing_url = esc_url( $this->public_class_object->get_http_protocol() . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] );
+					$sharing_url = esc_url_raw( $this->public_class_object->get_http_protocol() . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] );
 				} elseif ( get_permalink( $post -> ID ) ) {
 					$sharing_url = get_permalink( $post->ID );
 				}
@@ -143,12 +143,12 @@ class Sassy_Social_Share_Standard_Widget extends WP_Widget {
 
 		foreach ( $sharing_divs as $sharing_div ) {
 			if ( $sharing_div ) {
-				echo "<div class='heateor_sss_sharing_container heateor_sss_horizontal_sharing' " . ( $this->public_class_object->is_amp_page() ? "" : "data-heateor-sss-href='" . ( isset( $share_count_url ) && $share_count_url ? $share_count_url : $sharing_url ) . "'" ) . ( ( $cached_share_count === false || $this->public_class_object->is_amp_page() ) ? "" : 'data-heateor-sss-no-counts="1"' ) . ">";
+				global $heateor_sss_allowed_tags;
+				echo wp_kses( "<div class='heateor_sss_sharing_container heateor_sss_horizontal_sharing' " . ( $this->public_class_object->is_amp_page() ? "" : "data-heateor-sss-href='" . ( isset( $share_count_url ) && $share_count_url ? $share_count_url : $sharing_url ) . "'" ) . ( ( $cached_share_count === false || $this->public_class_object->is_amp_page() ) ? "" : 'data-heateor-sss-no-counts="1"' ) . ">", $heateor_sss_allowed_tags );
 				if ( ! empty( $instance['title'] ) ) { 
 					$title = apply_filters( 'widget_title', $instance[ 'title' ] ); 
-					echo $before_title . $title . $after_title;
+					echo $before_title . esc_html( $title ) . $after_title;
 				}
-				global $heateor_sss_allowed_tags;
 				echo wp_kses( $sharing_div, $heateor_sss_allowed_tags );
 				echo '</div>';
 			}
@@ -346,14 +346,14 @@ class Sassy_Social_Share_Floating_Widget extends WP_Widget {
 		$post_id = $post->ID;
 		if ( isset( $instance['target_url'] ) ) {
 			if ( $instance['target_url'] == 'default' ) {
-				$sharing_url = esc_url( $this->public_class_object->get_http_protocol() . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] );
+				$sharing_url = esc_url_raw( $this->public_class_object->get_http_protocol() . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] );
 				if ( is_home() ) {
 					$sharing_url = home_url();
 					$post_id = 0;
 				}  elseif ( ! is_singular() ) {
 					$post_id = 0;
 				} elseif ( isset( $_SERVER['QUERY_STRING'] ) && $_SERVER['QUERY_STRING'] ) {
-					$sharing_url = esc_url( $this->public_class_object->get_http_protocol() . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] );
+					$sharing_url = esc_url_raw( $this->public_class_object->get_http_protocol() . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] );
 				} elseif ( get_permalink( $post->ID ) ) {
 					$sharing_url = get_permalink( $post->ID );
 				}
@@ -387,11 +387,13 @@ class Sassy_Social_Share_Floating_Widget extends WP_Widget {
 
 		echo $before_widget;
 
-		echo "<div class='heateor_sss_sharing_container heateor_sss_vertical_sharing" . ( isset( $this->options['hide_mobile_sharing'] ) ? ' heateor_sss_hide_sharing' : '' ) . ( isset( $this->options['bottom_mobile_sharing'] ) ? ' heateor_sss_bottom_sharing' : '' ) . "' data-heateor-ss-offset='" . $ss_offset . "' style='width:" . ( ( $this->options['vertical_sharing_size'] ? $this->options['vertical_sharing_size'] : 35 ) + 4 ) . "px;" . ( isset( $instance['alignment'] ) && $instance['alignment'] != '' && isset( $instance[$instance['alignment'] . '_offset'] ) ? $instance['alignment'] . ': ' . ( $instance[$instance['alignment'].'_offset'] == '' ? 0 : $instance[$instance['alignment'] . '_offset'] ) . 'px;' : '' ) . ( isset( $instance['top_offset'] ) ? 'top: ' . ( $instance['top_offset'] == '' ? 0 : $instance['top_offset'] ) . 'px;' : '' ) . ( isset( $instance['vertical_bg'] ) && $instance['vertical_bg'] != '' ? 'background-color:' . $instance['vertical_bg'] . ';' : '-webkit-box-shadow:none;box-shadow:none;' ) . "' " . ( $this->public_class_object->is_amp_page() ? "" : "data-heateor-sss-href='" . ( isset( $share_count_url ) && $share_count_url ? $share_count_url : $sharing_url ) . "'" ) . ( ( $cached_share_count === false || $this->public_class_object->is_amp_page() ) ? "" : 'data-heateor-sss-no-counts="1"' ) . ">";
+		global $heateor_sss_allowed_tags;
+		echo wp_kses( "<div class='heateor_sss_sharing_container heateor_sss_vertical_sharing" . ( isset( $this->options['hide_mobile_sharing'] ) ? ' heateor_sss_hide_sharing' : '' ) . ( isset( $this->options['bottom_mobile_sharing'] ) ? ' heateor_sss_bottom_sharing' : '' ) . "' data-heateor-ss-offset='" . $ss_offset . "' style='width:" . ( ( $this->options['vertical_sharing_size'] ? $this->options['vertical_sharing_size'] : 35 ) + 4 ) . "px;" . ( isset( $instance['alignment'] ) && $instance['alignment'] != '' && isset( $instance[$instance['alignment'] . '_offset'] ) ? $instance['alignment'] . ': ' . ( $instance[$instance['alignment'].'_offset'] == '' ? 0 : $instance[$instance['alignment'] . '_offset'] ) . 'px;' : '' ) . ( isset( $instance['top_offset'] ) ? 'top: ' . ( $instance['top_offset'] == '' ? 0 : $instance['top_offset'] ) . 'px;' : '' ) . ( isset( $instance['vertical_bg'] ) && $instance['vertical_bg'] != '' ? 'background-color:' . $instance['vertical_bg'] . ';' : '-webkit-box-shadow:none;box-shadow:none;' ) . "' " . ( $this->public_class_object->is_amp_page() ? "" : "data-heateor-sss-href='" . ( isset( $share_count_url ) && $share_count_url ? $share_count_url : $sharing_url ) . "'" ) . ( ( $cached_share_count === false || $this->public_class_object->is_amp_page() ) ? "" : 'data-heateor-sss-no-counts="1"' ) . ">", $heateor_sss_allowed_tags );
 		
 		$short_url = $this->public_class_object->get_short_url( $sharing_url, $post_id );
 		
-		echo $this->public_class_object->prepare_sharing_html( $short_url ? $short_url : $sharing_url, 'vertical', isset( $instance['show_counts'] ), isset( $instance['total_shares'] ) );
+		global $heateor_sss_allowed_tags;
+		echo wp_kses( $this->public_class_object->prepare_sharing_html( $short_url ? $short_url : $sharing_url, 'vertical', isset( $instance['show_counts'] ), isset( $instance['total_shares'] ) ), $heateor_sss_allowed_tags );
 		echo '</div>';
 		if ( ( isset( $instance['show_counts'] ) || isset( $instance['total_shares'] ) ) && $cached_share_count === false ) {
 			echo '<script>heateorSssLoadEvent(
@@ -476,7 +478,7 @@ class Sassy_Social_Share_Floating_Widget extends WP_Widget {
 				<option value="homepage" <?php echo isset( $instance['target_url'] ) && $instance['target_url'] == 'homepage' ? 'selected' : '' ; ?>><?php _e( 'Url of the homepage of your website', 'sassy-social-share' ) ?></option>
 				<option value="custom" <?php echo isset( $instance['target_url'] ) && $instance['target_url'] == 'custom' ? 'selected' : '' ; ?>><?php _e( 'Custom Url', 'sassy-social-share' ) ?></option>
 			</select>
-			<input placeholder="Custom url" style="width:95%; margin-top: 5px; <?php echo ! isset( $instance['target_url'] ) || $instance['target_url'] != 'custom' ? 'display: none' : '' ; ?>" class="widefat heateorSssVerticalSharingTargetUrl" id="<?php echo esc_attr( $this->get_field_id( 'target_url_custom' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'target_url_custom' ) ); ?>" type="text" value="<?php echo isset( $instance['target_url_custom'] ) ? $instance['target_url_custom'] : ''; ?>" /> 
+			<input placeholder="Custom url" style="width:95%; margin-top: 5px; <?php echo ! isset( $instance['target_url'] ) || $instance['target_url'] != 'custom' ? 'display: none' : '' ; ?>" class="widefat heateorSssVerticalSharingTargetUrl" id="<?php echo esc_attr( $this->get_field_id( 'target_url_custom' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'target_url_custom' ) ); ?>" type="text" value="<?php echo isset( $instance['target_url_custom'] ) ? esc_url( $instance['target_url_custom'] ) : ''; ?>" /> 
 			<label for="<?php echo esc_attr( $this->get_field_id( 'alignment' ) ); ?>"><?php _e( 'Alignment', 'sassy-social-share' ); ?></label> 
 			<select onchange="heateorSssToggleSharingOffset(this.value)" style="width: 95%" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'alignment' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'alignment' ) ); ?>">
 				<option value="left" <?php echo ! isset( $instance['alignment'] ) || $instance['alignment'] == 'left' ? 'selected' : ''; ?>><?php _e( 'Left', 'sassy-social-share' ) ?></option>
@@ -677,7 +679,7 @@ class Sassy_Social_Share_Follow_Widget extends WP_Widget {
 			}
 		}
 
-		echo $this->follow_icons( $instance );
+		echo wp_kses( $this->follow_icons( $instance ), $heateor_sss_allowed_tags );
 
 		echo '<div style="clear:both"></div>';
 		echo '</div>';
@@ -957,7 +959,7 @@ class Sassy_Social_Share_Follow_Widget extends WP_Widget {
 				<br><br>
 				<input id="<?php echo esc_attr( $this->get_field_id('mobile_sharing_bottom' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'bottom_mobile_sharing' ) ); ?>" type="checkbox" <?php echo isset( $instance['bottom_mobile_sharing'] ) ? 'checked = "checked"' : '';?> value="1" />
 
-				<label><?php echo sprintf( __( 'Stick vertical floating interface horizontally at bottom only when screen is narrower than %s pixels', 'sassy-social-share' ), '<input style="width:46px" name="' . esc_attr( $this->get_field_name( 'horizontal_screen_width' ) ) . '" type="text" value="' . ( isset( $instance['horizontal_screen_width'] ) ? $instance['horizontal_screen_width'] : '' ) . '" />' ) ?></label>
+				<label><?php echo sprintf( __( 'Stick vertical floating interface horizontally at bottom only when screen is narrower than %s pixels', 'sassy-social-share' ), '<input style="width:46px" name="' . esc_attr( $this->get_field_name( 'horizontal_screen_width' ) ) . '" type="text" value="' . ( isset( $instance['horizontal_screen_width'] ) ? esc_attr( $instance['horizontal_screen_width'] ) : '' ) . '" />' ) ?></label>
 
 				<br><br>
 
@@ -994,8 +996,8 @@ class Sassy_Social_Share_Follow_Widget extends WP_Widget {
 				}
 			}
 			jQuery(function(){
-				heateorSssFloatingAlignment('<?php echo isset( $instance['type'] ) ? $instance['type'] : 'standard'; ?>');
-				heateorSssAlignmentOffsetLabel('<?php echo isset( $instance['alignment'] ) ? $instance['alignment'] : 'left'; ?>');
+				heateorSssFloatingAlignment('<?php echo isset( $instance['type'] ) ? esc_js( $instance['type'] ) : 'standard'; ?>');
+				heateorSssAlignmentOffsetLabel('<?php echo isset( $instance['alignment'] ) ? esc_js( $instance['alignment'] ) : 'left'; ?>');
 			});
 			</script>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'custom_color' ) ); ?>"><?php _e( 'Apply icon color and background color from Theme Selection section:', 'sassy-social-share' ); ?></label> 
@@ -1031,26 +1033,26 @@ class Sassy_Social_Share_Follow_Widget extends WP_Widget {
 			<label for="<?php echo esc_attr( $this->get_field_id( 'github' ) ); ?>"><?php _e( 'Github URL:', 'sassy-social-share' ); ?></label> 
 			<input style="width: 95%" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'github' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'github' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['github'] ); ?>" /><br/>
 			<span>https://github.com/ID</span><br/><br/>
-			<label for="<?php echo $this->get_field_id( 'linkedin' ); ?>"><?php _e( 'Linkedin URL:', 'sassy-social-share' ); ?></label> 
-			<input style="width: 95%" class="widefat" id="<?php echo $this->get_field_id( 'linkedin' ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'linkedin' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['linkedin'] ); ?>" /><br/>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'linkedin' ) ); ?>"><?php _e( 'Linkedin URL:', 'sassy-social-share' ); ?></label> 
+			<input style="width: 95%" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'linkedin' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'linkedin' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['linkedin'] ); ?>" /><br/>
 			<span>https://www.linkedin.com/in/ID</span><br/><br/>
-			<label for="<?php echo $this->get_field_id( 'linkedin_company' ); ?>"><?php _e( 'Linkedin Company URL:', 'sassy-social-share' ); ?></label> 
-			<input style="width: 95%" class="widefat" id="<?php echo $this->get_field_id( 'linkedin_company' ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'linkedin_company' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['linkedin_company'] ); ?>" /><br/>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'linkedin_company' ) ); ?>"><?php _e( 'Linkedin Company URL:', 'sassy-social-share' ); ?></label> 
+			<input style="width: 95%" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'linkedin_company' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'linkedin_company' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['linkedin_company'] ); ?>" /><br/>
 			<span>https://www.linkedin.com/company/ID</span><br/><br/>
-			<label for="<?php echo $this->get_field_id( 'medium' ); ?>"><?php _e( 'Medium URL:', 'sassy-social-share' ); ?></label> 
-			<input style="width: 95%" class="widefat" id="<?php echo $this->get_field_id( 'medium' ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'medium' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['medium'] ); ?>" /><br/>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'medium' ) ); ?>"><?php _e( 'Medium URL:', 'sassy-social-share' ); ?></label> 
+			<input style="width: 95%" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'medium' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'medium' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['medium'] ); ?>" /><br/>
 			<span>https://medium.com/@ID</span><br/><br/>
-			<label for="<?php echo $this->get_field_id( 'mewe' ); ?>"><?php _e( 'MeWe URL:', 'sassy-social-share' ); ?></label> 
-			<input style="width: 95%" class="widefat" id="<?php echo $this->get_field_id( 'mewe' ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'mewe' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['mewe'] ); ?>" /><br/>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'mewe' ) ); ?>"><?php _e( 'MeWe URL:', 'sassy-social-share' ); ?></label> 
+			<input style="width: 95%" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'mewe' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'mewe' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['mewe'] ); ?>" /><br/>
 			<span>https://mewe.com/profile/ID</span><br/><br/>
-			<label for="<?php echo $this->get_field_id( 'odnoklassniki' ); ?>"><?php _e( 'Odnoklassniki URL:', 'sassy-social-share' ); ?></label> 
-			<input style="width: 95%" class="widefat" id="<?php echo $this->get_field_id( 'odnoklassniki' ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'odnoklassniki' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['odnoklassniki'] ); ?>" /><br/>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'odnoklassniki' ) ); ?>"><?php _e( 'Odnoklassniki URL:', 'sassy-social-share' ); ?></label> 
+			<input style="width: 95%" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'odnoklassniki' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'odnoklassniki' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['odnoklassniki'] ); ?>" /><br/>
 			<span>https://ok.ru/profile/ID</span><br/><br/>
-			<label for="<?php echo $this->get_field_id( 'telegram' ); ?>"><?php _e( 'Telegram URL:', 'sassy-social-share' ); ?></label> 
-			<input style="width: 95%" class="widefat" id="<?php echo $this->get_field_id( 'telegram' ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'telegram' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['telegram'] ); ?>" /><br/>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'telegram' ) ); ?>"><?php _e( 'Telegram URL:', 'sassy-social-share' ); ?></label> 
+			<input style="width: 95%" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'telegram' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'telegram' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['telegram'] ); ?>" /><br/>
 			<span>https://t.me/username</span><br/><br/>
-			<label for="<?php echo $this->get_field_id( 'tumblr' ); ?>"><?php _e( 'Tumblr URL:', 'sassy-social-share' ); ?></label> 
-			<input style="width: 95%" class="widefat" id="<?php echo $this->get_field_id( 'tumblr' ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'tumblr' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['tumblr'] ); ?>" /><br/>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'tumblr' ) ); ?>"><?php _e( 'Tumblr URL:', 'sassy-social-share' ); ?></label> 
+			<input style="width: 95%" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'tumblr' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'tumblr' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['tumblr'] ); ?>" /><br/>
 			<span>https://ID.tumblr.com</span><br/><br/>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'vimeo' ) ); ?>"><?php _e( 'Vimeo URL:', 'sassy-social-share' ); ?></label> 
 			<input style="width: 95%" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'vimeo' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'vimeo' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['vimeo'] ); ?>" /><br/>
@@ -1077,7 +1079,7 @@ class Sassy_Social_Share_Follow_Widget extends WP_Widget {
 			<input style="width: 95%" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'gab' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'gab' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['gab'] ); ?>" /><br/>
 			<span>https://gab.com/ID</span><br/><br/>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'after_widget_content' ) ); ?>"><?php _e( 'After widget content:', 'sassy-social-share' ); ?></label> 
-			<input class="widefat" id="<?php echo $this->get_field_id( 'after_widget_content' ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'after_widget_content' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['after_widget_content'] ); ?>" /> 
+			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'after_widget_content' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'after_widget_content' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['after_widget_content'] ); ?>" /> 
 		</p>
 		<?php
     }

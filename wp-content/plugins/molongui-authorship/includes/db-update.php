@@ -4,6 +4,104 @@ namespace Molongui\Authorship\Includes;
 \defined( 'ABSPATH' ) or exit;
 class DB_Update
 {
+    public function db_update_21()
+    {
+        $options = \get_option( 'molongui_authorship_options' );
+
+        if ( !empty( $options['author_box_avatar_link'] ) and 1 == $options['author_box_avatar_link'] )
+        {
+            $options['author_box_avatar_link'] = 'archive';
+        }
+
+        if ( !empty( $options['author_box_name_link'] ) and 1 == $options['author_box_name_link'] )
+        {
+            $options['author_box_name_link'] = 'archive';
+        }
+
+        \update_option( 'molongui_authorship_options', $options );
+    }
+    public function db_update_20()
+    {
+        $now = \get_option( 'molongui_authorship_installation' );
+
+        if ( !empty( $now ) )
+        {
+            $new = array
+            (
+                'timestamp' => $now['install_date'],
+                'version'   => $now['install_version'],
+            );
+            \update_option( 'molongui_authorship_install', $new );
+            \delete_option( 'molongui_authorship_installation' );
+        }
+        $options = \get_option( 'molongui_authorship_options' );
+        \add_option( 'molongui_authorship_options_backup_19', $options );
+        require_once MOLONGUI_AUTHORSHIP_DIR . 'includes/helpers/options/update.php';
+        $options = \authorship_options_update_20( $options );
+        if ( false )
+        {
+            unset( $options['headline'] );
+            unset( $options['show_headline'] );
+            unset( $options['headline_text_size'] );
+            unset( $options['box_headline_tag'] );
+
+            unset( $options['show_avatar'] );
+            unset( $options['avatar_src'] );
+            unset( $options['avatar_local_fallback'] );
+            unset( $options['avatar_border_style'] );
+            unset( $options['avatar_border_width'] );
+            unset( $options['avatar_border_color'] );
+            unset( $options['avatar_style'] );
+
+            unset( $options['show_meta'] );
+            unset( $options['meta_text_size'] );
+            unset( $options['meta_text_case'] );
+            unset( $options['meta_text_style'] );
+            unset( $options['meta_text_align'] );
+            unset( $options['meta_separator'] );
+            unset( $options['web'] );
+            unset( $options['more_posts'] );
+            unset( $options['bio'] );
+            unset( $options['bio_text_size'] );
+            unset( $options['bio_line_height'] );
+            unset( $options['bio_text_case'] );
+            unset( $options['bio_text_style'] );
+            unset( $options['bio_text_align'] );
+            unset( $options['bio_text_color'] );
+            unset( $options['show_empty_related'] );
+            unset( $options['related_orderby'] );
+            unset( $options['related_order'] );
+            unset( $options['related_items'] );
+            unset( $options['related_post_types'] );
+            unset( $options['related_text_case'] );
+            unset( $options['related_text_color'] );
+
+            unset( $options['box_width'] );
+            unset( $options['box_background'] );
+            unset( $options['box_margin'] );
+            unset( $options['box_border'] );
+            unset( $options['box_border_width'] );
+            unset( $options['box_border_style'] );
+            unset( $options['box_border_color'] );
+            unset( $options['box_shadow'] );
+            unset( $options['profile_layout'] );
+            unset( $options['profile_title'] );
+            unset( $options['related_title'] );
+            unset( $options['tabs_position'] );
+            unset( $options['tabs_background'] );
+            unset( $options['tabs_color'] );
+            unset( $options['tabs_active_color'] );
+            unset( $options['tabs_text_color'] );
+            unset( $options['tabs_border'] );
+            unset( $options['tabs_border_style'] );
+            unset( $options['tabs_border_width'] );
+            unset( $options['tabs_border_color'] );
+            unset( $options['about_the_author'] );
+            unset( $options['related_posts'] );
+            unset( $options['box_class'] );
+        }
+        \update_option( 'molongui_authorship_options', $options );
+    }
     public function db_update_19()
     {
         $main     = \get_option( 'molongui_authorship_main' );

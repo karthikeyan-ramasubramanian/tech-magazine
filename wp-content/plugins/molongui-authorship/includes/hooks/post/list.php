@@ -1,5 +1,19 @@
 <?php
 defined( 'ABSPATH' ) or exit;
+function authorship_fix_mine_count()
+{
+    $current_screen = get_current_screen();
+    if ( !in_array( $current_screen->id, molongui_enabled_post_screens( MOLONGUI_AUTHORSHIP_PREFIX, 'all' ) ) ) return;
+
+    $mine_count = get_user_meta( get_current_user_id(), 'molongui_author_'.$current_screen->post_type.'_count', true );
+
+    ?>
+    <script type="text/javascript">
+        jQuery(document).ready(function($) { $('.subsubsub .mine .count').html("(<?php echo $mine_count; ?>)"); });
+    </script>
+    <?php
+}
+add_action( 'admin_print_footer_scripts-edit.php', 'authorship_fix_mine_count' );
 function authorship_post_edit_list_columns( $columns )
 {
     $new_columns = array();

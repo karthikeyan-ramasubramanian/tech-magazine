@@ -199,16 +199,16 @@ class Sassy_Social_Share_Shortcodes {
 			$target_url = esc_url( home_url() );
 			$post_id = 0;
 		} elseif ( ! is_singular() && $type == 'vertical' ) {
-			$target_url = esc_url( $this->public_class_object->get_http_protocol() . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] );
+			$target_url = esc_url_raw( $this->public_class_object->get_http_protocol() . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] );
 			$post_id = 0;
 		} elseif ( isset( $_SERVER['QUERY_STRING'] ) && $_SERVER['QUERY_STRING'] ) {
-			$target_url = esc_url( $this->public_class_object->get_http_protocol() . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] );
+			$target_url = esc_url_raw( $this->public_class_object->get_http_protocol() . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] );
 			$post_id = $post -> ID;
 		} elseif ( get_permalink( $post -> ID ) ) {
 			$target_url = get_permalink( $post -> ID );
 			$post_id = $post -> ID;
 		} else {
-			$target_url = esc_url( $this->public_class_object->get_http_protocol() . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] );
+			$target_url = esc_url_raw( $this->public_class_object->get_http_protocol() . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] );
 			$post_id = 0;
 		}
 		$share_count_url = $target_url;

@@ -5,6 +5,7 @@ function authorship_get_options()
     $options = (array) get_option( MOLONGUI_AUTHORSHIP_PREFIX.'_options', array() );
 
     if ( empty( $options ) ) $options = authorship_get_defaults();
+    $options = apply_filters( 'authorship/get_options', $options );
 
     return $options;
 }

@@ -12,7 +12,7 @@ function authorship_add_settings_menu_items()
             '',
             _x( "Author Box", "Settings submenu title", 'molongui-authorship' ),
             'manage_options',
-            'admin.php?page=molongui-authorship&tab=author-box',
+            authorship_editor_url(),
             '',
             $position
         );
@@ -26,7 +26,7 @@ function authorship_add_settings_menu_items()
             '',
             _x( "Guest Authors", "Settings submenu title", 'molongui-authorship' ),
             'manage_options',
-            'admin.php?page=molongui-authorship&tab=guest-authors',
+            authorship_options_url( 'guest-authors' ),
             '',
             $position
         );
@@ -40,7 +40,7 @@ function authorship_add_settings_menu_items()
             '',
             _x( "Co-authors", "Settings submenu title", 'molongui-authorship' ),
             'manage_options',
-            'admin.php?page=molongui-authorship&tab=co-authors',
+            authorship_options_url( 'co-authors' ),
             '',
             $position
         );

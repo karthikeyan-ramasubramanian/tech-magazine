@@ -216,7 +216,7 @@ class Sassy_Social_Share_Public {
 			if ( ! is_wp_error( $response ) ) {
 				$short_url_object = json_decode( wp_remote_retrieve_body( $response ) );
 				if ( isset( $short_url_object->link ) ) {
-					$short_url = esc_url( $short_url_object->link );
+					$short_url = esc_url_raw( $short_url_object->link );
 					update_post_meta( $post_id, '_heateor_sss_bitly_url', $short_url );
 					return $short_url;
 				}
@@ -718,7 +718,7 @@ class Sassy_Social_Share_Public {
 			} else {
 				if ( $this->options['horizontal_target_url'] == 'default' ) {
 					if ( ( isset( $_SERVER['QUERY_STRING'] ) && $_SERVER['QUERY_STRING'] ) || $post_url == '' ) {
-						$post_url = html_entity_decode( esc_url( str_replace( array( '%3Cscript%3E', '%3C/script%3E' ), '', $this->get_http_protocol() . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] ) ) );
+						$post_url = sanitize_url( str_replace( array( '%3Cscript%3E', '%3C/script%3E' ), '', $this->get_http_protocol() . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] ) );
 					}
 					if ( $share_count_url == '' ) {
 						$share_count_url = $post_url;
@@ -728,7 +728,7 @@ class Sassy_Social_Share_Public {
 					$share_count_url = $post_url;
 					$post_id = 0;
 				} elseif ( $this->options['horizontal_target_url'] == 'custom' && $this->options['horizontal_target_url_custom'] ) {
-					$post_url = esc_url( $this->options['horizontal_target_url_custom'] );
+					$post_url = sanitize_url( $this->options['horizontal_target_url_custom'] );
 					$share_count_url = $post_url;
 					$post_id = 0;
 				}
@@ -759,7 +759,8 @@ class Sassy_Social_Share_Public {
 			// show horizontal sharing
 			if ( ( isset( $this->options['home'] ) && is_front_page() ) || ( isset( $this->options['category'] ) && is_category() ) || ( isset( $this->options['archive'] ) && is_archive() ) || ( isset( $this->options['post'] ) && is_single() && isset( $post->post_type ) && $post->post_type == 'post' ) || ( isset( $this->options['page'] ) && is_page() && isset( $post->post_type ) && $post->post_type == 'page' ) || ( isset( $this->options['excerpt'] ) && (is_home() || current_filter() == 'the_excerpt' ) ) || ( isset( $this->options['bb_reply'] ) && current_filter() == 'bbp_get_reply_content' ) || ( isset( $this->options['bb_forum'] ) && ( isset( $this->options['top'] ) && current_filter() == 'bbp_template_before_single_forum' || isset( $this->options['bottom'] ) && current_filter() == 'bbp_template_after_single_forum' ) ) || ( isset( $this->options['bb_topic'] ) && ( isset( $this->options['top'] ) && in_array( current_filter(), array( 'bbp_template_before_single_topic', 'bbp_template_before_lead_topic' ) ) || isset( $this->options['bottom'] ) && in_array( current_filter(), array( 'bbp_template_after_single_topic', 'bbp_template_after_lead_topic' ) ) ) ) || ( isset( $this->options['woocom_shop'] ) && current_filter() == 'woocommerce_after_shop_loop_item' ) || ( isset( $this->options['woocom_product'] ) && current_filter() == 'woocommerce_share' ) || ( isset( $this->options['woocom_thankyou'] ) && current_filter() == 'woocommerce_thankyou' ) || (current_filter() == 'bp_before_group_header' && isset( $this->options['bp_group'] ) ) ) {
 				if ( in_array( current_filter(), array( 'bbp_template_before_single_topic', 'bbp_template_before_lead_topic', 'bbp_template_before_single_forum', 'bbp_template_after_single_topic', 'bbp_template_after_lead_topic', 'bbp_template_after_single_forum', 'woocommerce_after_shop_loop_item', 'woocommerce_share', 'woocommerce_thankyou', 'bp_before_group_header' ) ) ) {
-					echo '<div class="heateorSssClear"></div>' . $horizontal_div . '<div class="heateorSssClear"></div>';
+					global $heateor_sss_allowed_tags;
+					echo wp_kses( '<div class="heateorSssClear"></div>' . $horizontal_div . '<div class="heateorSssClear"></div>', $heateor_sss_allowed_tags );
 				} else {
 					if ( isset( $this->options['top'] ) && isset( $this->options['bottom'] ) ) {
 						$content = $horizontal_div . '<br/>' . $content . '<br/>' . $horizontal_div;
@@ -795,11 +796,11 @@ class Sassy_Social_Share_Public {
 			if ( $this->options['vertical_target_url'] == 'default' ) {
 				$post_url = get_permalink( $post->ID );
 				if ( ! is_singular() ) {
-					$post_url = html_entity_decode( esc_url( str_replace( array( '%3Cscript%3E', '%3C/script%3E' ), '', $this->get_http_protocol() . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] ) ) );
+					$post_url = sanitize_url( str_replace( array( '%3Cscript%3E', '%3C/script%3E' ), '', $this->get_http_protocol() . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] ) );
 					$post_id = 0;
 					$share_count_url = $post_url;
 				} elseif ( ( isset( $_SERVER['QUERY_STRING'] ) && $_SERVER['QUERY_STRING'] ) || $post_url == '' ) {
-					$post_url = html_entity_decode( esc_url( str_replace( array( '%3Cscript%3E', '%3C/script%3E' ), '', $this->get_http_protocol() . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] ) ) );
+					$post_url = sanitize_url( str_replace( array( '%3Cscript%3E', '%3C/script%3E' ), '', $this->get_http_protocol() . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] ) );
 				}
 				if ( $share_count_url == '' ) {
 					$share_count_url = $post_url;
@@ -809,7 +810,7 @@ class Sassy_Social_Share_Public {
 				$share_count_url = $post_url;
 				$post_id = 0;
 			} elseif ( $this->options['vertical_target_url'] == 'custom' && $this->options['vertical_target_url_custom'] ) {
-				$post_url = esc_url( $this->options['vertical_target_url_custom'] );
+				$post_url = sanitize_url( $this->options['vertical_target_url_custom'] );
 				$share_count_url = $post_url;
 				$post_id = 0;
 			}
@@ -905,20 +906,29 @@ class Sassy_Social_Share_Public {
 	}
 
 	/**
+	 * Sanitize the URLs of passed array
+	 *
+	 * @since    3.3.41
+	 */
+	private function sanitize_url_array( $url ) {
+
+		if ( $this->validate_url( $url ) !== false ) {
+			return sanitize_url( $url );
+		}
+	
+	}
+
+	/**
 	 * Get share counts for sharing networks
 	 *
 	 * @since    1.0
 	 */
 	public function fetch_share_counts() {
 
-		if ( isset( $_GET['urls'] ) && count( $_GET['urls'] ) > 0 ) {
-			$target_urls = array_unique( $_GET['urls'] );
-			foreach ( $target_urls as $k => $v ) {
-				if ( $this->validate_url( $v ) === false ) {
-					unset( $target_urls[$k] );
-				} else {
-					$target_urls[$k] = esc_url( $v );
-				}
+		if ( isset( $_GET['urls'] ) && is_array( $_GET['urls'] ) && count( $_GET['urls'] ) > 0 ) {
+			$target_urls = array_map( array( $this, 'sanitize_url_array' ), array_unique( $_GET['urls'] ) );
+			if ( ! is_array( $target_urls ) ) {
+				$target_urls = array();
 			}
 		} else {
 			$this->ajax_response( array( 'status' => 0, 'message' => __( 'Invalid request' ) ) );
@@ -1147,10 +1157,7 @@ class Sassy_Social_Share_Public {
 	public function save_facebook_shares() {
 		
 		if ( isset( $_GET['share_counts'] ) && is_array( $_GET['share_counts'] ) && count( $_GET['share_counts'] ) > 0 ) {
-			$target_urls = $_GET['share_counts'];
-			foreach ( $target_urls as $k => $v ) {
-				$target_urls[$k] = sanitize_text_field( $v );
-			}
+			$target_urls = array_map( 'intval', $_GET['share_counts'] );
 		} else {
 			$this->ajax_response( array( 'status' => 0, 'message' => __( 'Invalid request' ) ) );
 		}
@@ -1295,9 +1302,9 @@ class Sassy_Social_Share_Public {
 				background: <?php echo esc_html( $this->options['horizontal_bg_color_hover'] ) ?>!important;
 			<?php }
 			if ( $this->options['horizontal_font_color_hover'] != '' ) { ?>
-				color: <?php echo $this->options['horizontal_font_color_hover'] ?>;
+				color: <?php echo esc_html( $this->options['horizontal_font_color_hover'] ) ?>;
 			<?php  } ?>
-			border-color: <?php echo $this->options['horizontal_border_color_hover'] != '' ? $this->options['horizontal_border_color_hover'] : 'transparent'; ?>;
+			border-color: <?php echo $this->options['horizontal_border_color_hover'] != '' ? esc_html( $this->options['horizontal_border_color_hover'] ) : 'transparent'; ?>;
 		}
 		.heateor_sss_vertical_sharing span.heateor_sss_svg,.heateor_sss_floating_follow_icons_container span.heateor_sss_svg{
 			<?php if ( $this->options['vertical_bg_color_default'] != '' ) { ?>
@@ -1389,7 +1396,7 @@ class Sassy_Social_Share_Public {
 			$more_icon_enabled = isset($this->options['vertical_more']) ? 1 : 0;
 			$bottom_sharing_responsive_css = 'div.heateor_sss_bottom_sharing{width:100%!important;left:0!important;}div.heateor_sss_bottom_sharing a{width:'.(100/($num_sharing_icons+$total_share_count_enabled+$more_icon_enabled)).'% !important;}div.heateor_sss_bottom_sharing .heateor_sss_svg{width: 100% !important;}div.heateor_sss_bottom_sharing div.heateorSssTotalShareCount{font-size:1em!important;line-height:' . ( $vertical_sharing_icon_height*70/100 ) . 'px!important}div.heateor_sss_bottom_sharing div.heateorSssTotalShareText{font-size:.7em!important;line-height:0px!important}';
 		}
-		echo isset( $this->options['vertical_enable'] ) && isset( $this->options['bottom_mobile_sharing'] ) && $this->options['horizontal_screen_width'] != '' ? 'div.heateor_sss_mobile_footer{display:none;}@media screen and (max-width:' . $this->options['horizontal_screen_width'] . 'px){div.heateor_sss_bottom_sharing .heateorSssTCBackground{background-color:white}'.$bottom_sharing_responsive_css.'div.heateor_sss_mobile_footer{display:block;height:'.($this->options['vertical_sharing_shape'] == 'rectangle' ? $this->options['vertical_sharing_height'] : $this->options['vertical_sharing_size']).'px;}.heateor_sss_bottom_sharing{padding:0!important;' . ( $this->options['bottom_sharing_position_radio'] == 'nonresponsive' && $this->options['bottom_sharing_position'] != '' ? $this->options['bottom_sharing_alignment'] . ':' . $this->options['bottom_sharing_position'] . 'px!important;' . $bottom_sharing_postion_inverse . ':auto!important;' : '' ) . 'display:block!important;width:auto!important;bottom:' . ( isset( $this->options['vertical_total_shares'] ) && ! $this->is_amp_page() ? '-5' : '-2' ) . 'px!important;top: auto!important;}.heateor_sss_bottom_sharing .heateor_sss_square_count{line-height:inherit;}.heateor_sss_bottom_sharing .heateorSssSharingArrow{display:none;}.heateor_sss_bottom_sharing .heateorSssTCBackground{margin-right:1.1em!important}}' : '';
+		echo isset( $this->options['vertical_enable'] ) && isset( $this->options['bottom_mobile_sharing'] ) && $this->options['horizontal_screen_width'] != '' ? 'div.heateor_sss_mobile_footer{display:none;}@media screen and (max-width:' . intval( $this->options['horizontal_screen_width'] ) . 'px){div.heateor_sss_bottom_sharing .heateorSssTCBackground{background-color:white}' . $bottom_sharing_responsive_css . 'div.heateor_sss_mobile_footer{display:block;height:' . esc_html( $this->options['vertical_sharing_shape'] == 'rectangle' ? $this->options['vertical_sharing_height'] : $this->options['vertical_sharing_size'] ) . 'px;}.heateor_sss_bottom_sharing{padding:0!important;' . esc_html( $this->options['bottom_sharing_position_radio'] == 'nonresponsive' && $this->options['bottom_sharing_position'] != '' ? esc_html( $this->options['bottom_sharing_alignment'] ) . ':' . esc_html( $this->options['bottom_sharing_position'] ) . 'px!important;' . esc_html( $bottom_sharing_postion_inverse ) . ':auto!important;' : '' ) . 'display:block!important;width:auto!important;bottom:' . ( isset( $this->options['vertical_total_shares'] ) && ! $this->is_amp_page() ? '-5' : '-2' ) . 'px!important;top: auto!important;}.heateor_sss_bottom_sharing .heateor_sss_square_count{line-height:inherit;}.heateor_sss_bottom_sharing .heateorSssSharingArrow{display:none;}.heateor_sss_bottom_sharing .heateorSssTCBackground{margin-right:1.1em!important}}' : '';
 		echo esc_html( $this->options['custom_css'] );
 		echo isset( $this->options['hide_slider'] ) ? 'div.heateorSssSharingArrow{display:none}' : '';
 		if ( isset( $this->options['hor_enable'] ) && $this->options['hor_sharing_alignment'] == "center" ) {

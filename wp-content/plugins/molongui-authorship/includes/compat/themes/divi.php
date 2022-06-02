@@ -1,11 +1,15 @@
 <?php
 defined( 'ABSPATH' ) or exit;
-add_filter( 'authorship/box/render/bypass_check', function()
+add_filter( 'authorship/render_box', function( $render )
 {
     $dbt = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 10 );
-    if ( array_search( 'et_theme_builder_frontend_render_post_content', array_column( $dbt, 'function' ) ) ) return true;
-    return false;
-});
+    if ( array_search( 'et_theme_builder_frontend_render_post_content', array_column( $dbt, 'function' ) ) )
+    {
+        $render = true;
+    }
+
+    return $render;
+}, 10, 1 );
 add_filter( 'molongui_authorship_do_filter_name', function( $leave, &$args )
 {
     if ( $leave ) return $leave;

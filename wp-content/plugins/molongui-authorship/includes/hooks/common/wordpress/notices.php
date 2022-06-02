@@ -118,6 +118,28 @@ function authorship_display_upgrade_notice()
     }
     authorship_notice_display( $notice['id'], $notice['type'], $notice['content'], $notice['dismissible'], $notice['dismissal'], $notice['class'], $notice['pages'] );
 }
+function authorship_recommended_pro_warning()
+{
+    if ( defined( 'MOLONGUI_AUTHORSHIP_PRO_BASENAME' ) and is_plugin_active( MOLONGUI_AUTHORSHIP_PRO_BASENAME ) )
+    {
+        if ( defined( 'MOLONGUI_AUTHORSHIP_PRO_VERSION' ) and  defined( 'MOLONGUI_AUTHORSHIP_RECOMMENDED_PRO' ) and version_compare( MOLONGUI_AUTHORSHIP_PRO_VERSION, MOLONGUI_AUTHORSHIP_RECOMMENDED_PRO, '<' ) )
+        {
+            /*! translators: 1: <strong> 2: </strong> 3: <strong> 4: </strong> */
+            $message  = sprintf( esc_html__( '%1$sYou are running an old version of Molongui Authorship Pro%2$s. Some plugin features might not work as expected. %3$sPlease update the plugin%4$s to the latest available version.', 'molongui-authorship' ), '<strong>', '</strong>', '<strong>', '</strong>' );
+
+            if ( current_user_can( 'activate_plugins' ) )
+            {
+                $update_url    = wp_nonce_url( self_admin_url( 'update.php?action=upgrade-plugin&plugin=' ) . MOLONGUI_AUTHORSHIP_PRO_BASENAME, 'upgrade-plugin_'.MOLONGUI_AUTHORSHIP_PRO_BASENAME );
+                $download_url  = 'https://www.molongui.com/my-account/api-downloads/';
+                $message      .= sprintf( '<p><a href="%s" class="button-primary">%s</a> <a href="%s" target="_blank" class="button">%s</a></p>', $update_url, __( "Update It Now", 'molongui-authorship' ), $download_url, __( "Download latest", 'molongui-authorship' ) );
+            }
+
+            $html_message = sprintf( '<div class="error">%s</div>', wpautop( $message ) );
+            echo wp_kses_post( $html_message );
+        }
+    }
+}
+add_action( 'admin_notices', 'authorship_recommended_pro_warning' );
 function authorship_display_rate_notice()
 {
     $installation = get_option( MOLONGUI_AUTHORSHIP_INSTALLATION );

@@ -1,7 +1,7 @@
 <?php
 defined( 'ABSPATH' ) or exit;
-$customizer_url = authorship_get_customizer();
-$is_pro = authorship_has_pro();
+$editor_url = authorship_editor_url();
+$is_pro     = authorship_has_pro();
 
 $options = array();
 if ( true )
@@ -65,7 +65,7 @@ if ( true )
         'class'    => '',
         'title'    => '',
         'desc'     => '',
-        'help'     => sprintf( __( "%sAn %sauthor box%s is a great way to credit authors for their work. It displays author information on their posts.%s %sYou can %scustomize%s how they look like to nicely integrate them on your site. And easily configure how and when to display them.%s %sDisable this option only if you don't want to display any author box at all.%s", 'molongui-authorship' ), '<p>', '<strong>', '</strong>', '</p>', '<p>', '<a href="'.$customizer_url.'">', '</a>', '</p>', '<p>', '</p>' ),
+        'help'     => sprintf( __( "%sAn %sauthor box%s is a great way to credit authors for their work. It displays author information on their posts.%s %sYou can %scustomize%s how they look like to nicely integrate them on your site. And easily configure how and when to display them.%s %sDisable this option only if you don't want to display any author box at all.%s", 'molongui-authorship' ), '<p>', '<strong>', '</strong>', '</p>', '<p>', '<a href="'.$editor_url.'">', '</a>', '</p>', '<p>', '</p>' ),
         'label'    => sprintf( __( "Enable %sAuthor Boxes%s", 'molongui-authorship' ), '<strong>', '</strong>' ),
     );
     $options[] = array
@@ -313,40 +313,6 @@ if ( true )
     );
     $options[] = array
     (
-        'display'  => apply_filters( 'authorship/options/display_banners', true ),
-        'advanced' => false,
-        'type'     => 'header',
-        'id'       => 'box_shortcode_header',
-        'deps'     => '',
-        'class'    => '',
-        'search'   => '',
-        'label'    => __( "Shortcode", 'molongui-authorship' ),
-        'buttons'  => array(),
-    );
-    $options[] = array
-    (
-        'display'  => apply_filters( 'authorship/options/display_banners', true ),
-        'advanced' => false,
-        'deps'     => '',
-        'search'   => '',
-        'type'     => 'banner',
-        'class'    => '',
-        'default'  => '',
-        'id'       => 'shortcode',
-        'title'    => __( "Display the author box anywhere: Custom post types, Sidebar, Footer...", 'molongui-authorship' ),
-        'desc'     => __( "Easy-to-use shortcode with many customization attributes", 'molongui-authorship' ),
-        'label'    => '',
-        'button'   => array
-        (
-            'label'  => __( "Upgrade", 'molongui-authorship' ),
-            'title'  => __( "Upgrade", 'molongui-authorship' ),
-            'class'  => 'm-upgrade',
-            'href'   => MOLONGUI_AUTHORSHIP_WEB,
-            'target' => '_blank',
-        ),
-    );
-    $options[] = array
-    (
         'display'  => true,
         'advanced' => false,
         'deps'     => '',
@@ -359,9 +325,9 @@ if ( true )
         (
             'customize' => array
             (
-                'display'  => true,
+                'display'  => false,
                 'type'     => 'link',
-                'href'     => $customizer_url,
+                'href'     => $editor_url,
                 'label'    => __( "Edit Styling", 'molongui-authorship' ),
                 'title'    => __( "Click to customize author box styles", 'molongui-authorship' ),
                 'class'    => '',
@@ -369,7 +335,7 @@ if ( true )
             ),
             'advanced' => array
             (
-                'display'  => true,
+                'display'  => false,
                 'type'     => 'advanced',
                 'label'    => __( "Show Advanced", 'molongui-authorship' ),
                 'title'    => __( "Click to show advanced settings", 'molongui-authorship' ),
@@ -378,7 +344,7 @@ if ( true )
             ),
             'save' => array
             (
-                'display'  => true,
+                'display'  => false,
                 'type'     => 'save',
                 'label'    => __( "Save", 'molongui-authorship' ),
                 'title'    => __( "Save Settings", 'molongui-authorship' ),
@@ -389,14 +355,14 @@ if ( true )
     );
     $options[] = array
     (
-        'display'  => true,
+        'display'  => false,
         'advanced' => false,
         'deps'     => '',
         'search'   => '',
         'type'     => 'inline-dropdown',
         'class'    => '',
         'default'  => 'slim',
-        'id'       => 'box_layout',
+        'id'       => 'author_box_layout',
         'title'    => '',
         'desc'     => '',
         'help'     => array
@@ -405,7 +371,7 @@ if ( true )
             'link' => array
             (
                 'label'  => __( "Open Customizer", 'molongui-authorship' ),
-                'url'    => $customizer_url,
+                'url'    => $editor_url,
                 'target' => 'internal',
             ),
         ),
@@ -449,7 +415,7 @@ if ( true )
     );
     $options[] = array
     (
-        'display'     => true,
+        'display'     => false,
         'advanced'    => true,
         'deps'        => '',
         'search'      => '',
@@ -457,7 +423,7 @@ if ( true )
         'placeholder' => '',
         'default'     => '',
         'class'       => '',
-        'id'          => 'box_class',
+        'id'          => 'author_box_custom_css_class',
         'title'       => '',
         'desc'        => '',
         'help'        => sprintf( __( "%sYou can provide a CSS class you want to be added to the author box. %sThis is useful if you need to add some custom styling to the author box or overwrite a default value.%s %sRemember that CSS selectors are generally case-insensitive.%s", 'molongui-authorship' ), '<p>', '</p>', '<p>', '</p>', '<p>', '</p>' ),
@@ -465,7 +431,7 @@ if ( true )
     );
     $options[] = array
     (
-        'display'  => true,
+        'display'  => false,
         'advanced' => true,
         'type'     => 'toggle',
         'deps'     => '',
@@ -485,19 +451,53 @@ if ( true )
         'type'     => 'link',
         'deps'     => '',
         'search'   => '',
-        'id'       => 'open_customizer',
+        'id'       => 'open_editor',
         'default'  => '',
         'class'    => '',
         'title'    => '',
         'desc'     => '',
-        'help'     => __( "Click to open WordPress Customizer", 'molongui-authorship' ),
-        'label'    => __( "Open Live-Preview Author Box Customizer", 'molongui-authorship' ),
-        'href'     => $customizer_url,
+        'help'     => __( "Click to open the Author Box Editor", 'molongui-authorship' ),
+        'label'    => sprintf( __( "The author box appearance can be easily customized using the %slive-preview Editor%s. Click here to open it!", 'molongui-authorship' ), '<strong>', '</strong>' ),
+        'href'     => $editor_url,
         'target'   => '_self',
     );
     $options[] = array
     (
-        'display'  => true,
+        'display'  => apply_filters( 'authorship/options/display_banners', true ),
+        'advanced' => false,
+        'type'     => 'header',
+        'id'       => 'box_shortcode_header',
+        'deps'     => '',
+        'class'    => '',
+        'search'   => '',
+        'label'    => __( "Shortcode", 'molongui-authorship' ),
+        'buttons'  => array(),
+    );
+    $options[] = array
+    (
+        'display'  => apply_filters( 'authorship/options/display_banners', true ),
+        'advanced' => false,
+        'deps'     => '',
+        'search'   => '',
+        'type'     => 'banner',
+        'class'    => '',
+        'default'  => '',
+        'id'       => 'shortcode',
+        'title'    => __( "Display the author box anywhere: Custom post types, Sidebar, Footer...", 'molongui-authorship' ),
+        'desc'     => __( "Easy-to-use shortcode with many customization attributes", 'molongui-authorship' ),
+        'label'    => '',
+        'button'   => array
+        (
+            'label'  => __( "Upgrade", 'molongui-authorship' ),
+            'title'  => __( "Upgrade", 'molongui-authorship' ),
+            'class'  => 'm-upgrade',
+            'href'   => MOLONGUI_AUTHORSHIP_WEB,
+            'target' => '_blank',
+        ),
+    );
+    $options[] = array
+    (
+        'display'  => false,
         'advanced' => false,
         'deps'     => '',
         'search'   => '',
@@ -529,7 +529,7 @@ if ( true )
     );
     $options[] = array
     (
-        'display'  => true,
+        'display'  => false,
         'advanced' => false,
         'type'     => 'toggle',
         'id'       => 'show_headline',
@@ -544,7 +544,7 @@ if ( true )
             'link' => array
             (
                 'label'  => __( "Open Customizer", 'molongui-authorship' ),
-                'url'    => $customizer_url,
+                'url'    => $editor_url,
                 'target' => 'internal',
             ),
         ),
@@ -553,7 +553,7 @@ if ( true )
     );
     $options[] = array
     (
-        'display'     => true,
+        'display'     => false,
         'advanced'    => false,
         'type'        => 'inline-text',
         'id'          => 'headline',
@@ -575,7 +575,7 @@ if ( true )
     $headline   = array();
     $headline[] = array
     (
-        'display'  => apply_filters( 'authorship/options/display_banners', true ),
+        'display'  => false, //apply_filters( 'authorship/options/display_banners', true ),
         'advanced' => true,
         'deps'     => '',
         'search'   => '',
@@ -599,7 +599,7 @@ if ( true )
     $options = array_merge( $options, apply_filters( '_authorship/options/headline_tag', $headline ) );
     $options[] = array
     (
-        'display'  => true,
+        'display'  => false,
         'advanced' => false,
         'deps'     => '',
         'search'   => '',
@@ -631,7 +631,7 @@ if ( true )
     );
     $options[] = array
     (
-        'display'  => true,
+        'display'  => false,
         'advanced' => false,
         'type'     => 'toggle',
         'id'       => 'name_link_to_archive',
@@ -652,7 +652,7 @@ if ( true )
     $author_name_tag   = array();
     $author_name_tag[] = array
     (
-        'display'  => apply_filters( 'authorship/options/display_banners', true ),
+        'display'  => false, //apply_filters( 'authorship/options/display_banners', true ),
         'advanced' => true,
         'deps'     => '',
         'search'   => '',
@@ -672,11 +672,9 @@ if ( true )
             'target' => '_blank',
         ),
     );
-
-    $options = array_merge( $options, apply_filters( '_authorship/options/author_name_tag', $author_name_tag ) );
     $options[] = array
     (
-        'display'  => true,
+        'display'  => false,
         'advanced' => false,
         'type'     => 'toggle',
         'id'       => 'show_meta',
@@ -691,7 +689,7 @@ if ( true )
             'link' => array
             (
                 'label'  => __( "Open Customizer", 'molongui-authorship' ),
-                'url'    => $customizer_url,
+                'url'    => $editor_url,
                 'target' => 'internal',
             ),
         ),
@@ -700,7 +698,7 @@ if ( true )
     );
     $options[] = array
     (
-        'display'     => true,
+        'display'     => false,
         'advanced'    => true,
         'type'        => 'inline-text',
         'id'          => 'at',
@@ -720,7 +718,7 @@ if ( true )
     );
     $options[] = array
     (
-        'display'     => true,
+        'display'     => false,
         'advanced'    => true,
         'type'        => 'inline-text',
         'id'          => 'web',
@@ -740,7 +738,7 @@ if ( true )
     );
     $options[] = array
     (
-        'display'     => true,
+        'display'     => false,
         'advanced'    => true,
         'type'        => 'inline-text',
         'id'          => 'more_posts',
@@ -760,7 +758,7 @@ if ( true )
     );
     $options[] = array
     (
-        'display'     => true,
+        'display'     => false,
         'advanced'    => true,
         'deps'        => '',
         'search'      => '',
@@ -781,7 +779,7 @@ if ( true )
     $box_info   = array();
     $box_info[] = array
     (
-        'display'  => apply_filters( 'authorship/options/display_banners', true ),
+        'display'  => false, //apply_filters( 'authorship/options/display_banners', true ),
         'advanced' => false,
         'type'     => 'banner',
         'id'       => 'box_info',
@@ -801,11 +799,9 @@ if ( true )
         ),
         'search'   => '',
     );
-
-    $options = array_merge( $options, apply_filters( '_authorship/options/info/markup', $box_info ) );
     $options[] = array
     (
-        'display'  => true,
+        'display'  => false,
         'advanced' => false,
         'deps'     => '',
         'search'   => '',
@@ -837,7 +833,7 @@ if ( true )
     );
     $options[] = array
     (
-        'display'  => true,
+        'display'  => false,
         'advanced' => false,
         'type'     => 'toggle',
         'id'       => 'show_avatar',
@@ -856,7 +852,7 @@ if ( true )
     );
     $options[] = array
     (
-        'display'  => true,
+        'display'  => false,
         'advanced' => false,
         'type'     => 'toggle',
         'id'       => 'avatar_link_to_archive',
@@ -875,7 +871,7 @@ if ( true )
     );
     $options[] = array
     (
-        'display'  => true,
+        'display'  => false,
         'advanced' => true,
         'type'     => 'inline-dropdown',
         'id'       => 'avatar_src',
@@ -908,7 +904,7 @@ if ( true )
     );
     $options[] = array
     (
-        'display'  => true,
+        'display'  => false,
         'advanced' => true,
         'type'     => 'inline-dropdown',
         'id'       => 'avatar_local_fallback',
@@ -941,7 +937,7 @@ if ( true )
     );
     $options[] = array
     (
-        'display'  => true,
+        'display'  => false,
         'advanced' => true,
         'type'     => 'inline-dropdown',
         'id'       => 'avatar_default_gravatar',
@@ -994,7 +990,7 @@ if ( true )
     );
     $options[] = array
     (
-        'display'     => true,
+        'display'     => false,
         'advanced'    => true,
         'type'        => 'inline-number',
         'id'          => 'avatar_width',
@@ -1013,7 +1009,7 @@ if ( true )
     );
     $options[] = array
     (
-        'display'     => true,
+        'display'     => false,
         'advanced'    => true,
         'type'        => 'inline-number',
         'id'          => 'avatar_height',
@@ -1032,7 +1028,7 @@ if ( true )
     );
     $options[] = array
     (
-        'display'  => true,
+        'display'  => false,
         'advanced' => false,
         'deps'     => '',
         'search'   => '',
@@ -1064,7 +1060,7 @@ if ( true )
     );
     $options[] = array
     (
-        'display'  => true,
+        'display'  => false,
         'advanced' => false,
         'deps'     => '',
         'search'   => '',
@@ -1083,7 +1079,7 @@ if ( true )
     );
     $options[] = array
     (
-        'display'  => true,
+        'display'  => false,
         'advanced' => false,
         'deps'     => '',
         'search'   => '',
@@ -1150,7 +1146,7 @@ if ( true )
         'type'     => 'toggle',
         'class'    => '',
         'default'  => true,
-        'id'       => 'show_related',
+        'id'       => 'author_box_related_show',
         'title'    => '',
         'desc'     => '',
         'help'     => '',
@@ -1164,7 +1160,7 @@ if ( true )
         'type'     => 'banner',
         'id'       => 'related_posts',
         'default'  => '',
-        'deps'     => 'show_related',
+        'deps'     => 'author_box_related_show',
         'class'    => '',
         'title'    => __( "Configure which related posts are displayed to provide more relevant content and a better user experience", 'molongui-authorship' ),
         'desc'     => __( "Select which (custom) post types to retrieve, how many to display and how to order and sort them", 'molongui-authorship' ),
@@ -1183,12 +1179,12 @@ if ( true )
     $options = array_merge( $options, apply_filters( '_authorship/options/related_posts/markup', $related_posts ) );
     $options[] = array
     (
-        'display'  => true,
+        'display'  => false,
         'advanced' => true,
         'type'     => 'toggle',
-        'id'       => 'show_empty_related',
+        'id'       => 'author_box_related_show_empty',
         'default'  => false,
-        'deps'     => 'show_related',
+        'deps'     => 'author_box_related_show',
         'class'    => '',
         'title'    => '',
         'desc'     => '',
@@ -1198,12 +1194,12 @@ if ( true )
     );
     $options[] = array
     (
-        'display'     => true,
+        'display'     => false,
         'advanced'    => true,
         'type'        => 'inline-text',
-        'id'          => 'no_related_posts',
+        'id'          => 'author_box_related_none',
         'default'     => '',
-        'deps'        => 'show_related show_empty_related',
+        'deps'        => 'author_box_related_show show_empty_related',
         'class'       => '',
         'placeholder' => __( 'This author does not have any more posts.', 'molongui-authorship-pro' ),
         'title'       => '',
@@ -1423,6 +1419,63 @@ if ( true )
             'href'   => MOLONGUI_AUTHORSHIP_WEB.'/pricing/',
             'target' => '_blank',
         ),
+    );
+    $options[] = array
+    (
+        'display'  => true,
+        'advanced' => false,
+        'deps'     => '',
+        'search'   => '',
+        'type'     => 'header',
+        'class'    => 'hidden',
+        'id'       => 'box_appearance_header',
+        'label'    => __( "Styling", 'molongui-authorship' ),
+        'buttons'  => array
+        (
+            'editor' => array
+            (
+                'display'  => false,
+                'type'     => 'link',
+                'href'     => $editor_url,
+                'label'    => __( "Edit Styling", 'molongui-authorship' ),
+                'title'    => __( "Click to customize author box styles", 'molongui-authorship' ),
+                'class'    => '',
+                'disabled' => false,
+            ),
+            'advanced' => array
+            (
+                'display'  => false,
+                'type'     => 'advanced',
+                'label'    => __( "Show Advanced", 'molongui-authorship' ),
+                'title'    => __( "Click to show advanced settings", 'molongui-authorship' ),
+                'class'    => 'm-advanced-options',
+                'disabled' => false,
+            ),
+            'save' => array
+            (
+                'display'  => true,
+                'type'     => 'save',
+                'label'    => __( "Save", 'molongui-authorship' ),
+                'title'    => __( "Save Settings", 'molongui-authorship' ),
+                'class'    => 'm-save-options',
+                'disabled' => true,
+            ),
+        ),
+    );
+    $options[] = array
+    (
+        'display'  => true,
+        'advanced' => false,
+        'type'     => 'toggle',
+        'deps'     => '',
+        'search'   => '',
+        'id'       => 'enable_author_box_styles',
+        'default'  => true,
+        'class'    => 'hidden',
+        'title'    => '',
+        'desc'     => '',
+        'help'     => sprintf( __( "%sAuthor boxes are fully customizable. All the settings you need to make them fit your likings and website style are available on the %sWordPress Customizer%s.%s %sIf you prefer to style it from scratch coding your own stylesheets, you can disable loading the packaged CSS files.%s", 'molongui-authorship' ), '<p>', '<strong><i>', '</i></strong>', '</p>', '<p>', '</p>' ),
+        'label'    => sprintf( __( "Load plugin CSS files for the author box %sKeep enabled unless you are a skilled developer that want to provide your own custom styling!%s", 'molongui-authorship' ), '<code>', '</code>' ),
     );
     $options[] = array
     (

@@ -1,5 +1,12 @@
 <?php
 defined( 'ABSPATH' ) or exit;
+function authorship_options_url( $tab = '' )
+{
+    $url = 'admin.php?page=molongui-authorship';
+    $tab = empty( $tab ) ? '' : '&tab='.$tab;
+
+    return admin_url( $url.$tab );
+}
 function authorship_get_post_types()
 {
     $options    = array();

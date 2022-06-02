@@ -22,7 +22,7 @@ foreach( $author['posts'] as $related )
                 <?php endif; ?>
             </div>
 
-            <div class="">
+            <div class="m-a-box-related-entry-data">
                 <!-- Related entry date -->
                 <div class="m-a-box-related-entry-date" <?php echo ( $add_microdata ? 'itemprop="datePublished"' : '' ); ?>>
                     <?php echo get_the_date( '', $related->ID ); ?>
@@ -30,7 +30,7 @@ foreach( $author['posts'] as $related )
 
                 <!-- Related entry title -->
                 <div class="m-a-box-related-entry-title">
-                    <a class="molongui-remove-text-underline" style="color: <?php echo $options['related_text_color']; ?>" <?php echo ( $add_microdata ? 'itemprop="url"' : '' ); ?> href="<?php echo get_permalink( $related->ID ); ?>">
+                    <a class="molongui-remove-underline" href="<?php echo get_permalink( $related->ID ); ?>" <?php echo ( $add_microdata ? 'itemprop="url"' : '' ); ?>>
                         <span <?php echo ( $add_microdata ? 'itemprop="headline"' : '' ); ?>><?php echo $related->post_title; ?></span>
                     </a>
                 </div>

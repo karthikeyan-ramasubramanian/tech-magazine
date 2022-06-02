@@ -124,17 +124,16 @@ function authorship_post_render_author_metabox( $post )
     }
     else
     {
-        $enable_coauthors_link = admin_url( 'admin.php?page=molongui-authorship&tab=molongui_authorship_main' );
         if ( authorship_is_feature_enabled( 'guest' ) )
         {
-            $desc    = sprintf( __( "Select an author for this post. Or enable the %sMulti-Author%s feature to add as many authors as needed.", 'molongui-authorship' ), '<strong><a href="'.$enable_coauthors_link.'" target="_blank">', '</a></strong>' );
+            $desc    = sprintf( __( "Select an author for this post. Or enable the %sMulti-Author%s feature to add as many authors as needed.", 'molongui-authorship' ), '<strong><a href="'.authorship_options_url( 'co-authors' ).'" target="_blank">', '</a></strong>' );
             $author  = get_main_author( $post->ID );
             $select  = authorship_dropdown_authors( 'authors', array( 'mutli' => false, 'selected' => $author->ref ) );
             $add_new = __( "+ Add new guest", 'molongui-authorship' );
         }
         else
         {
-            $desc   = sprintf( __( "Select a user as author for this post. Or enable the %sMulti-Author%s feature to add as many authors as needed or the %sGuest Author%s feature to add contributors without adding new real users.", 'molongui-authorship' ), '<strong><a href="'.$enable_coauthors_link.'" target="_blank">', '</a></strong>', '<strong><a href="" target="_blank">', '</a></strong>' );
+            $desc   = sprintf( __( "Select a user as author for this post. Or enable the %sMulti-Author%s feature to add as many authors as needed or the %sGuest Author%s feature to add contributors without adding new real users.", 'molongui-authorship' ), '<strong><a href="'.authorship_options_url( 'co-authors' ).'" target="_blank">', '</a></strong>', '<strong><a href="" target="_blank">', '</a></strong>' );
             $author = $post->post_author ? $post->post_author : get_current_user_id();
             $select = authorship_dropdown_authors( 'users', array( 'mutli' => false, 'selected' => 'user-'.$author ) );
         }

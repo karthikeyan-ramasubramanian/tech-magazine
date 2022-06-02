@@ -73,17 +73,6 @@ function authorship_get_social_networks( $query = 'all', $networks = array() )
     }
     return $sn;
 }
-function authorship_get_customizer()
-{
-    $customizer_panel = MOLONGUI_AUTHORSHIP_NAME;
-    $latest_post_url  = wp_get_recent_posts( array( 'numberposts' => 1, 'meta_key' => '_molongui_author_box_display', 'meta_value' =>'show', ) );
-    if ( empty( $latest_post_url ) )
-    {
-        $latest_post_url = wp_get_recent_posts( array( 'numberposts' => 1 ) );
-    }
-    if ( empty( $latest_post_url ) ) return admin_url( 'customize.php?autofocus[panel]='.$customizer_panel );
-    return admin_url( 'customize.php?autofocus[panel]='.$customizer_panel.'&url='.get_permalink( $latest_post_url[0]['ID'] ) );
-}
 function authorship_clear_cache( $key = 'all' )
 {
     $known = array( 'posts', 'users', 'guests' );

@@ -4,7 +4,6 @@ namespace Molongui\Authorship\Includes;
 \defined( 'ABSPATH' ) or exit;
 final class Plugin
 {
-    const HAS_CUSTOMIZER = true;
     private static $_instance = null;
     public function __clone()
     {
@@ -74,18 +73,7 @@ final class Plugin
     public function init()
     {
         require_once MOLONGUI_AUTHORSHIP_DIR . 'includes/load.php';
-        \add_action( 'init', array( $this, 'hook_customizer' ) );
         \do_action( 'authorship/init' );
-    }
-    public function hook_customizer()
-    {
-        if ( self::HAS_CUSTOMIZER and \molongui_is_request( 'customizer' ) )
-        {
-            if ( \apply_filters( 'authorship/load_customizer', true ) )
-            {
-                new \Molongui\Authorship\Customizer\Common\Customizer( MOLONGUI_AUTHORSHIP_NAME );
-            }
-        }
     }
 
 } // class

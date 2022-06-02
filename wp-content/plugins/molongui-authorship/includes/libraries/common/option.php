@@ -239,7 +239,7 @@ $this->_options_prefix	= $prefix;
             $output = '';
             $group  = empty( $this->_group )            ? '' : ' data-m-group="'.$this->_group.'"';
             $deps   = empty( $this->_data['deps'] )     ? ' data-m-deps="1"' : ' data-deps="'.$this->_data['deps'].'" data-m-deps="1"';
-            $hide   = empty( $this->_data['advanced'] ) ? '' : ' data-m-option="advanced" style="display: none;"';
+            $hide  = empty( $this->_data['advanced'] ) ? '' : ' data-m-option="advanced" data-m-hide="1" style="display: none;"';
             $title  = empty( $this->_data['title'] )    ? $this->_data['label'] : $this->_data['title'];
             $desc   = empty( $this->_data['desc'] )     ? false : true;
             $button = empty( $this->_data['button'] )   ? false : true;

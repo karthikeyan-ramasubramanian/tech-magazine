@@ -302,9 +302,6 @@ function authorship_guest_render_box_metabox( $post )
 function authorship_guest_render_avatar_metabox( $post )
 {
     $options = authorship_get_options();
-
-    $customizer_link = authorship_get_customizer();
-    $settings_link   = admin_url( 'admin.php?page=molongui-authorship&tab=molongui_authorship_main' );
     include MOLONGUI_AUTHORSHIP_DIR . 'views/guest-author/html-admin-avatar-metabox.php';
 }
 function authorship_guest_render_conversion_metabox( $post )

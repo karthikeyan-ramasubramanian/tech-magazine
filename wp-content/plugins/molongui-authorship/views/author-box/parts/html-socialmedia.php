@@ -1,6 +1,6 @@
 <?php
 
-if ( !empty( $options['show_icons'] ) )
+if ( !empty( $options['author_box_social_show'] ) )
 {
 	$networks = authorship_get_social_networks( 'active' );
     if ( $author['show_social_web'] )   $networks['web']   = array ( 'name' => 'Website', 'url' => 'https://www.example.com/', 'color' => '#333', 'premium' => false, );
@@ -16,58 +16,14 @@ if ( !empty( $options['show_icons'] ) )
 		}
 	}
 	if ( !$continue ) return;
-	if ( isset( $options['icons_style'] ) )
+	if ( isset( $options['author_box_social_style'] ) )
 	{
-		$ico_style = $options['icons_style'];
+		$ico_style = $options['author_box_social_style'];
 		if ( $ico_style == 'default' ) $ico_style = '';
 	}
-	if ( isset( $options['icons_size'] ) ) $ico_size = $options['icons_size'];
-	else $ico_size = 'normal';
-	$ico_color = '';
-	if ( isset( $options['icons_color'] ) and $options['icons_color'] != 'inherit' )
-	{
-		switch ( $options['icons_style'] )
-		{
-			case 'squared':
-			case 'circled':
-
-				$ico_color = 'border-color: ' . $options['icons_color'] . '; background-color: ' . $options['icons_color'] . ';';
-
-			break;
-
-			case 'boxed':
-
-				$ico_color = 'border-color: ' . $options['icons_color'] . '; color: ' . $options['icons_color'] . ';';
-
-			break;
-
-			case 'branded':
-			case 'branded-squared-reverse':
-			case 'branded-circled-reverse':
-			case 'branded-boxed':
-
-				$ico_color = ''; // do nothing
-
-			break;
-
-			case 'branded-squared':
-			case 'branded-circled':
-
-				$ico_color = 'background-color: ' . $options['icons_color'];
-
-			break;
-
-			case 'default':
-			default:
-
-				$ico_color = 'color: ' . $options['icons_color'] . ';';
-
-			break;
-		}
-	}
 	$nofollow = $options['add_nofollow'] ? 'rel="nofollow"' : '' ;
-    $target = !empty( $options['social_link_target'] ) ? $options['social_link_target'] : '_blank' ;
-	echo '<div class="m-a-box-item m-a-box-social '.( ( isset( $options['profile_layout'] ) and !in_array( $options['profile_layout'], array( 'layout-7', 'layout-8' ) ) and isset( $options['profile_valign'] ) and !empty( $options['profile_valign'] ) and $options['profile_valign'] != 'center' ) ? 'molongui-align-self-'.$options['profile_valign'] : '' ).'">';
+    $target = !empty( $options['author_box_social_target'] ) ? '_blank' : '_self' ;
+	echo '<div class="m-a-box-item m-a-box-social '.( ( isset( $options['author_box_profile_layout'] ) and !in_array( $options['author_box_profile_layout'], array( 'layout-7', 'layout-8' ) ) and isset( $options['author_box_profile_valign'] ) and !empty( $options['author_box_profile_valign'] ) and $options['author_box_profile_valign'] != 'center' ) ? 'molongui-align-self-'.$options['author_box_profile_valign'] : '' ).'">';
         foreach ( $networks as $id => $network )
         {
             $url = $author[$id];
@@ -92,7 +48,7 @@ if ( !empty( $options['show_icons'] ) )
                 }
 				?>
 					<div class="m-a-box-social-icon m-a-list-social-icon">
-						<a <?php echo ( $add_microdata ? 'itemprop="sameAs"' : '' ); ?> href="<?php echo $url; ?>" class="icon-container m-ico-<?php echo $ico_style; ?> m-ico-<?php echo $id; ?> molongui-font-size-<?php echo $ico_size; ?>-px" style="<?php echo $ico_color; ?>" <?php echo $nofollow; ?> target="<?php echo $target; ?>">
+						<a class="m-icon-container m-ico-<?php echo $id; ?> m-ico-<?php echo $ico_style; ?>" <?php echo $nofollow; ?> href="<?php echo $url; ?>" target="<?php echo $target; ?>" <?php echo ( $add_microdata ? 'itemprop="sameAs"' : '' ); ?>>
 							<i class="m-a-icon-<?php echo $id; ?>"></i>
 						</a>
 					</div>

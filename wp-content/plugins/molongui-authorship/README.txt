@@ -3,7 +3,7 @@ Contributors: molongui
 Donate link: https://www.paypal.me/amitzy/
 Tags: author, author box, author bio, author biography, simple author box, author profile fields, author social icons, responsive author box, guest, guest author, guest author box, guest posts, co-authors, coauthors, multiple authors, multi-author
 Requires at least: 5.2
-Tested up to: 5.9
+Tested up to: 6.0
 Requires PHP: 5.5
 Stable tag: trunk
 License: GPLv3 or later
@@ -245,6 +245,54 @@ If you have purchased a Pro plugin at [molongui.com](https://www.molongui.com/),
 == Changelog ==
 
 > <strong>Important</strong>: if you use a caching plugin, please flush cache after any plugin update.
+
+= 4.6.4 (2022-05-27) =
+
+* Fixed author box settings resetting to default
+* Fixed some author box styles
+* Removed wrong input field on the new author form
+
+= 4.6.3 (2022-05-18) =
+
+* Improved compatibility with the Hootkit plugin
+* Fixed author pages showing no posts
+* Fixed author avatar and name not linking to author pages
+
+= 4.6.2 (2022-05-16) =
+
+* Fixed author avatar and name links
+
+= 4.6.1 (2022-05-16) =
+
+* Fixed plugin scripts not being loaded
+
+= 4.6.0 (2022-05-16) =
+
+* Added a visual editor to easily customize the author box appearance
+* Added many new options to style the author box
+* Added option to hide author bio in the author box
+* Added option to make author name and avatar link to custom URL
+* Added option to provide your own custom CSS for the author box
+* Moved many styling options from plugin settings page to the new author box visual editor
+* Dropped usage of WP Customizer to customize author box styles. Use the new visual editor
+* Reduced stylesheets size.
+* Improved compatibility with the Newspaper theme
+* Improved compatibility with the Flatsome theme
+* Improved compatibility with the The Issue theme
+* Improved compatibility with the Mission News theme
+* Improved compatibility with the WPML plugin
+* Improved compatibility with the The SEO Framework plugin
+* Improved compatibility with the Divi FilterGrid plugin
+* Fixed 'Mine' filter count displaying wrong value
+* Fixed default plugin settings not initialized upon installation
+* [DEV] Deprecated 'm-a-box-headline' CSS class. Replaced with 'm-a-box-header'
+* [DEV] Deprecated 'm-a-box-string-headline' CSS class. Replaced with 'm-a-box-header-title'
+* [DEV] Deprecated 'm-a-box-title' CSS class. Replaced with 'm-a-box-name'
+* [DEV] Deprecated 'm-a-box-meta-separator' CSS class. Replaced with 'm-a-box-meta-divider'
+* [DEV] Deprecated 'icon-container' CSS class. Replaced with 'm-icon-container'
+* [DEV] Removed 'm-a-box-string-about-the-author' CSS class. Replaced with 'm-a-box-profile-title'
+* [DEV] Removed 'm-a-box-string-related-posts' CSS class. Replaced with 'm-a-box-related-title'
+* Added WordPress 6.0 compatibility
 
 = 4.5.4 (2022-03-30) =
 

@@ -48,5 +48,5 @@ function authorship_options_script_params()
         400 => __( "Doing it wrong!", 'molongui-authorship' ),
         401 => __( "You cannot disable both 'Authors' and 'Molongui' menus. One of them must be displayed so you have access to the plugin settings page.", 'molongui-authorship' ),
     );
-    return apply_filters( "authorship/{$scope}/params", $params );
+    return apply_filters( "authorship/{$scope}/script_params", $params );
 }

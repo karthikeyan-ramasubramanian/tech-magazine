@@ -14,6 +14,12 @@ if ( $error )
     delete_option( 'molongui_authorship_add_author_error_'.get_current_user_id() );
     delete_option( 'molongui_authorship_add_author_input_'.get_current_user_id() );
 }
+$options = authorship_get_options();
+if ( empty( $options['guest_authors'] ) )
+{
+    $input['user-account'] = true;
+    $force_user_account    = true;
+}
 
 $current_color = molongui_get_admin_color();
 ?>
@@ -459,7 +465,7 @@ $current_color = molongui_get_admin_color();
                         <?php if ( current_user_can( 'create_users' ) ) : ?>
 
                             <div class="molongui-new-author__checkbox" title="<?php _e( "Check to create a user account for this author. Leave blank to make this author a guest.", 'molongui-authorship' ); ?>">
-                                <input type="checkbox" class="inp-cbx" id="user-account" name="user-account" <?php checked( !empty( $input['user-account'] ) ); ?> style="display: none;" />
+                                <input type="checkbox" class="inp-cbx" id="user-account" name="user-account" <?php checked( !empty( $input['user-account'] ) ); echo ( !empty( $force_user_account ) ? 'disabled="disabled"' : '' ); ?> style="display: none;" />
                                 <label class="cbx" for="user-account">
                                     <span>
                                         <svg width="12px" height="9px" viewbox="0 0 12 9">
@@ -468,7 +474,18 @@ $current_color = molongui_get_admin_color();
                                     </span>
                                     <div>
                                         <?php _e( "Grant access to the dashboard", 'molongui-authorship' ); ?>
-                                        <p><?php _e( "Create a user account so the author can access the dashboard", 'molongui-authorship' ); ?></p>
+                                        <p>
+                                            <?php
+                                            if ( empty( $force_user_account ) )
+                                            {
+                                                _e( "Create a user account so the author can access the dashboard", 'molongui-authorship' );
+                                            }
+                                            else
+                                            {
+                                                _e( "Guest authors disabled. A new user account will be added for this author", 'molongui-authorship' );
+                                            }
+                                            ?>
+                                        </p>
                                     </div>
                                 </label>
                             </div>

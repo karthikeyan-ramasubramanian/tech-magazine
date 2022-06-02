@@ -20,13 +20,14 @@ class Authors_List_Table extends DynamicParent
     {
         if ( 'top' === $which )
         {
+            $options = authorship_get_options();
             ?><div class="alignleft actions"><?php
 
                 if ( current_user_can( 'list_users' ) )
                 {
                     ?><a href="users.php" class="button"><?php _e( "Edit Users", 'molongui-authorship' ); ?></a>&ensp;<?php
                 }
-                if ( current_user_can( 'edit_posts' ) )
+                if ( $options['guest_authors'] and current_user_can( 'edit_posts' ) )
                 {
                     ?><a href="<?php echo admin_url( 'edit.php?post_type=guest_author' ); ?>" class="button"><?php _e( "Edit Guests", 'molongui-authorship' ); ?></a>&ensp;<?php
                 }
@@ -156,7 +157,7 @@ class Authors_List_Table extends DynamicParent
             add_filter( 'authorship/get_avatar/size', array( $this, 'avatar_size' ) );
             add_filter( 'authorship/get_avatar/context', array( $this, 'avatar_context' ) );
 
-            $data = molongui_get_authors( $type, array(), array(), array(), array(), $order, $orderby, true, false, array( 'post' ) );
+            $data = molongui_get_authors( $type, array(), array(), array(), array(), $order, $orderby, true, 0, array( 'post' ) );
 
             if ( !in_array( $role_filter, array( 'all', 'guests' ) ) )
             {

@@ -26,6 +26,8 @@ function authorship_authors_menu_icon()
 }
 function authorship_add_authors_submenu()
 {
+    $options = authorship_get_options();
+
     $page_hook = add_submenu_page
     (
         'authors',
@@ -37,16 +39,33 @@ function authorship_add_authors_submenu()
     );
     add_action( "load-$page_hook", 'authorship_add_authors_screen_options' );
 
-    add_submenu_page
-    (
-        'authors',
-        _x( "Add New Author", "Page title", 'molongui-authorship' ),
-        _x( "Add New", "Authors submenu title", 'molongui-authorship' ),
-        'edit_others_posts',
-        'author-new',
-        'authorship_render_add_author_screen',
-        5
-    );
+    if ( current_user_can( 'create_users' ) or $options['guest_authors'] )
+    {
+        add_submenu_page
+        (
+            'authors',
+            _x( "Add New Author", "Page title", 'molongui-authorship' ),
+            _x( "Add New", "Authors submenu title", 'molongui-authorship' ),
+            'edit_others_posts',
+            'author-new',
+            'authorship_render_add_author_screen',
+            5
+        );
+    }
+
+    if ( $options['author_box'] )
+    {
+        add_submenu_page
+        (
+            'authors',
+            _x( "Author Box Editor", "Authors submenu title", 'molongui-authorship' ),
+            _x( "Author Box Editor", "Authors submenu title", 'molongui-authorship' ),
+            'manage_options',
+            'author-box-editor',
+            'authorship_render_author_box_editor'
+        );
+    }
+
     add_submenu_page
     (
         'authors',
@@ -106,6 +125,7 @@ function authorship_render_add_author_screen()
 }
 function authorship_render_author_box_editor()
 {
+    include MOLONGUI_AUTHORSHIP_DIR . 'views/admin/html-page-editor.php';
 }
 function authorship_render_tools_screen()
 {

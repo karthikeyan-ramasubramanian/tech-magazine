@@ -37,7 +37,7 @@ function authorship_add_author()
             $notify = !empty( $_REQUEST['user-notify'] ) ? 'both' : 'admin';
             wp_new_user_notification( $user_id, null, $notify );
             authorship_user_clear_object_cache();
-            wp_safe_redirect( add_query_arg( 'user_id', $user_id, self_admin_url( 'user-edit.php' ) ) );
+            wp_safe_redirect( add_query_arg( 'user_id', $user_id, self_admin_url( 'user-edit.php#molongui-user-fields' ) ) );
             die();
         }
     }

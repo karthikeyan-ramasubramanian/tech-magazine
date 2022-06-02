@@ -39,7 +39,7 @@ function authorship_user_filter_profile_picture_description( $description, $prof
     }
     else
     {
-        $add .= sprintf( __( 'Or you can upload a custom profile picture enabling Molongui Authorship "Local Avatar" feature %shere%s.', 'molongui-authorship' ), '<a href="' . admin_url() . 'admin.php?page=molongui-authorship" target="_blank">', '</a>' );
+        $add .= sprintf( __( 'Or you can upload a custom profile picture enabling Molongui Authorship "Local Avatar" feature %shere%s.', 'molongui-authorship' ), '<a href="' . authorship_options_url( 'users' ) . '" target="_blank">', '</a>' );
     }
 
     return $description . $add;

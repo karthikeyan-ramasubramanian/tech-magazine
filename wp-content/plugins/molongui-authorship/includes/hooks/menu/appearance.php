@@ -11,7 +11,7 @@ function authorship_add_theme_menu_items()
             '',
             _x( "Author Box", "Settings submenu title", 'molongui-authorship' ),
             'manage_options',
-            authorship_get_customizer(),
+            authorship_editor_url(),
             '',
             1
         );

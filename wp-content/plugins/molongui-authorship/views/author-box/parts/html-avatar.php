@@ -1,34 +1,34 @@
 <?php
 ?>
 
-<?php if ( $author['img'] and ( !empty( $options['show_avatar'] ) and $options['show_avatar'] ) ) : ?>
-	<div class="m-a-box-item m-a-box-avatar <?php echo ( ( !empty( $options['profile_valign'] ) and $options['profile_valign'] != 'center' ) ? 'molongui-align-self-'.$options['profile_valign'] : '' ); ?>">
+<?php if ( $author['img'] and !empty( $options['author_box_avatar_show'] ) ) : ?>
+	<div class="m-a-box-item m-a-box-avatar" data-source="<?php echo $options['author_box_avatar_source']; ?>">
 		<?php
-            if ( !$options['avatar_link_to_archive'] or
-                 ( $author['type'] === 'guest' and !authorship_has_pro() ) or
-                 ( $author['type'] === 'guest' and !$options['guest_pages'] ) or
-                 ( $author['type'] === 'user'  and !$options['user_archive_enabled'] ) )
-            {
+            if ( empty( $options['author_box_avatar_link'] ) or 'none' === $options['author_box_avatar_link']
+                 or
+                 ( 'custom' === $options['author_box_avatar_link'] and empty( $author['web'] ) )
+                 or
+                 ( 'archive' === $options['author_box_avatar_link']
+                    and
+                    ( ( 'guest' === $author['type'] and !authorship_has_pro() )
+                        or
+                      ( 'guest' === $author['type'] and !$options['guest_pages'] )
+                        or
+                      ( 'user' === $author['type'] and !$options['user_archive_enabled'] )
+                    )
+                 )
+            ){
 	            ?>
                 <span>
                     <?php echo $author['img']; ?>
                 </span>
                 <?php
             }
-            elseif ( is_customize_preview() and
-	                 ( ( $author['type'] === 'guest' and $options['guest_pages'] and authorship_has_pro() ) or
-	                   ( $author['type'] === 'user'  and $options['user_archive_enabled'] ) ) )
-            {
-                ?>
-                <a href="#" class="customize-unpreviewable">
-                    <?php echo $author['img']; ?>
-                </a>
-                <?php
-            }
             else
             {
+                $url = 'archive' === $options['author_box_avatar_link'] ? $author['archive'] : $author['web'];
                 ?>
-                <a href="<?php echo esc_url( $author['archive'] ); ?>">
+                <a class="m-a-box-avatar-url" href="<?php echo esc_url( $url ); ?>">
                     <?php echo $author['img']; ?>
                 </a>
                 <?php

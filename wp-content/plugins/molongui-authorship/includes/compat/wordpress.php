@@ -51,7 +51,8 @@ add_filter( 'authorship/filter_author_link', function( $default, &$args )
 {
     $wp_fns = array
     (
-        'wp_list_authors', // wp-includes/author-template.php
+        'wp_list_authors',                   // wp-includes/author-template.php
+        'render_block_core_latest_comments', // wp-includes/blocks/latest-comments.php
     );
     if ( array_intersect( $wp_fns, array_column( $args['dbt'], 'function' ) ) ) return true;
     if ( ( is_author() or is_guest_author() ) and isset( $args['dbt'][4]['function'] ) and ( $args['dbt'][4]['function'] == 'get_author_feed_link' ) )
@@ -128,21 +129,6 @@ add_filter( 'authorship/render_box', function( $default, $post )
     if ( array_intersect( $wp_fns, array_column( $dbt, 'function' ) ) ) return false;
     return $default;
 }, 10, 2 );
-if ( version_compare( get_bloginfo( 'version' ),'4.7.0', '<' ) )
-{
-    if ( !function_exists( 'wp_get_additional_image_sizes()' ) )
-    {
-        function wp_get_additional_image_sizes() {
-            global $_wp_additional_image_sizes;
-
-            if ( ! $_wp_additional_image_sizes ) {
-                $_wp_additional_image_sizes = array();
-            }
-
-            return $_wp_additional_image_sizes;
-        }
-    }
-}
 if ( version_compare( get_bloginfo( 'version' ),'5.3.0', '<' ) )
 {
     if ( !function_exists( 'wp_get_registered_image_subsizes()' ) )

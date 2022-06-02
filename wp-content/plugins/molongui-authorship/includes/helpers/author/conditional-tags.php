@@ -90,3 +90,27 @@ if ( !function_exists( 'authorship_author_name_exists' ) )
         if (  $user_displayname_check and  $guest_displayname_check ) return 'both';
     }
 }
+function authorship_is_author_archived( $id = null, $type = 'user' )
+{
+    if ( empty( $id ) )
+    {
+        if ( !$authors = molongui_find_authors() )
+        {
+            return false;
+        }
+        $id   = $authors[0]->id;
+        $type = $authors[0]->type;
+    }
+
+    $author   = new Author( $id, $type );
+    $archived = $author->get_meta( 'archived' );
+
+    return $archived ? true : false;
+}
+if ( !function_exists( 'is_author_archived' ) )
+{
+    function is_author_archived( $id, $type )
+    {
+        authorship_is_author_archived( $id, $type );
+    }
+}

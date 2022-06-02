@@ -4,112 +4,150 @@ function authorship_set_defaults()
 {
     return array
     (
-        'author_box' => true,
-        'box_post_types_auto'    => "post", // Data stored as a string with comma-separated items. No array!
-        'box_post_types_manual'  => '',     // Data stored as a string with comma-separated items. No array!
-        'box_hook_priority'      => 11,
-        'box_position'           => 'below',
-        'hide_if_no_bio'         => false,
-        'box_layout_multiauthor' => 'default',
-        'box_layout'               => 'slim',
-        'box_class'                => '',
+        'author_box'               => true,
+        'box_post_types_auto'      => "post", // Data stored as a string with comma-separated items. No array!
+        'box_post_types_manual'    => '',     // Data stored as a string with comma-separated items. No array!
+        'box_position'             => 'below',
+        'hide_if_no_bio'           => false,
+        'box_hook_priority'        => 11,
+        'box_layout_multiauthor'   => 'default',
+        'encode_email'             => false,
+        'encode_phone'             => false,
+        'box_schema'               => true,
+        'enable_cdn_compat'        => false,
         'enable_author_box_styles' => true,
-        'show_headline'    => false,
-        'headline'         => __( "About the author", 'molongui-authorship' ),
-        'box_headline_tag' => 'h3',
-        'name_link_to_archive' => true,
-        'box_author_name_tag'  => 'h5',
-        'show_meta'            => true,
-        'at'                   => __( "at", 'molongui-authorship' ),
-        'web'                  => __( "Website", 'molongui-authorship' ),
-        'more_posts'           => __( "+ posts", 'molongui-authorship' ),
-        'bio'                  => __( "Bio", 'molongui-authorship' ),
-        'bio_field'            => 'full',
-        'show_avatar'             => true,
-        'avatar_link_to_archive'  => true,
-        'avatar_src'              => 'local',
-        'avatar_local_fallback'   => 'gravatar',
-        'avatar_default_gravatar' => 'mp',
-        'avatar_width'            => 150,
-        'avatar_height'           => 150,
-        'show_icons'         => true,
-        'social_link_target' => '_blank',
-        'show_related'       => true,
-        'related_orderby'    => 'date',
-        'related_order'      => 'desc',
-        'related_items'      => 4,
-        'related_post_types' => "post", // Data stored as a string with comma-separated items. No array!
-        'show_empty_related' => true,
-        'no_related_posts'   => __( "This author does not have any more posts.", 'molongui-authorship' ),
-        'encode_email' => false,
-        'encode_phone' => false,
-        'box_schema' => true,
-        'enable_cdn_compat' => false,
-        'hide_elements' => '',
-        'box_margin'       => '20',
-        'box_width'        => '100',
-        'box_border'       => 'all',
-        'box_border_style' => 'solid',
-        'box_border_width' => '3',
-        'box_border_color' => '#adadad',
-        'box_background'   => '#efefef',
-        'box_shadow'       => 'right',
-        'headline_text_size'  => '18',
-        'headline_text_style' => '',
-        'headline_text_case'  => 'none',
-        'headline_text_align' => 'left',
-        'headline_text_color' => 'inherit',
-        'tabs_position'     => 'top-full',
-        'tabs_background'   => 'transparent',
-        'tabs_color'        => '#f4f4f4',
-        'tabs_active_color' => '#efefef',
-        'tabs_border'       => 'top',
-        'tabs_border_style' => 'solid',
-        'tabs_border_width' => '4',
-        'tabs_border_color' => 'orange',
-        'tabs_text_color'   => 'inherit',
-        'profile_layout'          => 'layout-1',
-        'profile_valign'          => 'center',
-        'bottom_background_color' => '#e0e0e0',
-        'bottom_border_style'     => 'solid',
-        'bottom_border_width'     => '1',
-        'bottom_border_color'     => '#b6b6b6',
-            'about_the_author'       => __( "About the author", 'molongui-authorship' ),
-            'related_posts'          => __( "Related Posts", 'molongui-authorship' ),
-            'profile_title'          => __( "Author Profile", 'molongui-authorship' ),
-            'related_title'          => __( "Related Entries", 'molongui-authorship' ),
-        'avatar_style'            => 'none',
-        'avatar_border_style'     => 'solid',
-        'avatar_border_width'     => '2',
-        'avatar_border_color'     => '#bfbfbf',
-        'avatar_text_color'       => '#dd9933',
-        'avatar_bg_color'         => '#000000',
-        'name_text_size'           => '22',
-        'name_text_style'          => '',
-        'name_text_case'           => 'none',
-        'name_text_color'          => 'inherit',
-        'name_text_align'          => 'left',
-        'name_inherited_underline' => 'keep',
-        'meta_text_size'  => '12',
-        'meta_text_style' => '',
-        'meta_text_case'  => 'none',
-        'meta_text_color' => 'inherit',
-        'meta_text_align' => 'left',
-        'meta_separator'  => '|',
-        'bio_text_size'   => '14',
-        'bio_line_height' => '1',
-        'bio_text_style'  => '',
-        'bio_text_case'   => 'normal',
-        'bio_text_align'  => 'justify',
-        'bio_text_color'  => 'inherit',
-        'icons_style' => 'default',
-        'icons_size'  => '20',
-        'icons_color' => '#999999',
-        'related_layout' => 'layout-1',
-        'related_text_size'  => '14',
-        'related_text_style' => '',
-        'related_text_case'  => 'none',
-        'related_text_color' => 'inherit',
+        'hide_elements'            => '',
+        'author_box_header_title'            => '', // none. Author box header disabled.
+        'author_box_header_url'              => '', // none
+        'author_box_header_bottom_space'     => 20,
+        'author_box_header_font_size'        => '', // inherit
+        'author_box_header_line_height'      => '', // inherit
+        'author_box_header_font_weight'      => '', // default = inherit
+        'author_box_header_text_transform'   => '', // default = inherit
+        'author_box_header_font_style'       => '', // default = inherit
+        'author_box_header_text_decoration'  => '', // default = inherit
+        'author_box_header_text_align'       => '', // default = inherit
+        'author_box_header_color'            => '', // inherit
+        'author_box_header_tag'              => 'h3',
+        'author_box_avatar_show'                     => 1, // show
+        'author_box_avatar_link'                     => true,
+        'author_box_avatar_source'                   => 'local',
+        'author_box_avatar_fallback'                 => 'gravatar',
+        'author_box_avatar_default_gravatar'         => 'mp',
+        'author_box_avatar_width'                    => 150,
+        'author_box_avatar_height'                   => 150,
+        'author_box_avatar_border_style'             => 'solid',
+        'author_box_avatar_border_width'             => '2',
+        'author_box_avatar_border_color'             => '#bfbfbf',
+        'author_box_avatar_border_radius'            => '', // inherit
+        'author_box_avatar_acronym_color'            => '#dd9933', // goldish
+        'author_box_avatar_acronym_background_color' => '#1d2327', // dark gray
+        'author_box_name_font_size'       => 22,
+        'author_box_name_line_height'     => '', // inherit
+        'author_box_name_font_weight'     => '', // default = inherit
+        'author_box_name_text_transform'  => '', // default = inherit
+        'author_box_name_font_style'      => '', // default = inherit
+        'author_box_name_text_decoration' => '', // default = inherit
+        'author_box_name_text_align'      => '', // default = inherit
+        'author_box_name_color'           => '', // inherit
+        'author_box_name_link'            => 'archive',
+        'author_box_name_underline'       => 'keep',
+        'author_box_name_tag'             => 'h5',
+        'author_box_meta_show'            => true,
+        'author_box_meta_font_size'       => 12,
+        'author_box_meta_line_height'     => '', // inherit
+        'author_box_meta_font_weight'     => '', // default = inherit
+        'author_box_meta_text_transform'  => '', // default = inherit
+        'author_box_meta_font_style'      => '', // default = inherit
+        'author_box_meta_text_decoration' => '', // default = inherit
+        'author_box_meta_text_align'      => '', // default = inherit
+        'author_box_meta_color'           => '', // inherit
+        'author_box_meta_divider'         => '|',
+        'author_box_meta_divider_spacing' => '0.2',
+        'author_box_meta_at'              => __( "at", 'molongui-authorship' ),
+        'author_box_meta_web'             => __( "Website", 'molongui-authorship' ),
+        'author_box_meta_posts'           => __( "+ posts", 'molongui-authorship' ),
+        'author_box_meta_bio'             => __( "Bio", 'molongui-authorship' ),
+        'author_box_bio_source'          => 'full',
+        'author_box_bio_font_size'       => 14,
+        'author_box_bio_line_height'     => '', // inherit
+        'author_box_bio_font_weight'     => '', // default = inherit
+        'author_box_bio_text_transform'  => '', // default = inherit
+        'author_box_bio_font_style'      => '', // default = inherit
+        'author_box_bio_text_decoration' => '', // default = inherit
+        'author_box_bio_text_align'      => '', // default = inherit
+        'author_box_bio_color'           => '', // inherit
+        'author_box_social_show'      => true,
+        'author_box_social_style'     => 'default',
+        'author_box_social_font_size' => 20,
+        'author_box_social_color'     => '#999999',
+        'author_box_social_target'    => '_blank',
+        'author_box_related_show'            => true,
+        'author_box_related_layout'          => 'layout-1',
+        'author_box_related_show_empty'      => true,
+        'author_box_related_none'            => __( "This author does not have any more posts.", 'molongui-authorship' ),
+        'author_box_related_orderby'         => 'date',
+        'author_box_related_order'           => 'DESC',
+        'author_box_related_count'           => 4,
+        'author_box_related_post_types'      => "post", // Data stored as a string with comma-separated items. No array!
+        'author_box_related_font_size'       => 14,
+        'author_box_related_line_height'     => '', // inherit
+        'author_box_related_font_weight'     => '', // default = inherit
+        'author_box_related_text_transform'  => '', // default = inherit
+        'author_box_related_font_style'      => '', // default = inherit
+        'author_box_related_text_decoration' => '', // default = inherit
+        'author_box_related_text_align'      => '', // default = inherit
+        'author_box_related_color'           => '', // inherit
+        'author_box_margin_top'    => '20px',
+        'author_box_margin_right'  => '0',
+        'author_box_margin_bottom' => '20px',
+        'author_box_margin_left'   => '0',
+
+        'author_box_border_top'    => '1px',
+        'author_box_border_right'  => '0',
+        'author_box_border_bottom' => '1px',
+        'author_box_border_left'   => '0',
+        'author_box_border_style'  => 'solid',
+        'author_box_border_color'  => '#e8e8e8',
+        'author_box_border_radius' => 0,
+
+        'author_box_padding_top'    => '0',
+        'author_box_padding_right'  => '0',
+        'author_box_padding_bottom' => '0',
+        'author_box_padding_left'   => '0',
+
+        'author_box_width'            => 100,
+        'author_box_background_color' => '#f7f8f9',
+
+        'author_box_layout'                  => 'slim',
+        'author_box_profile_title'           => __( "Author Profile", 'molongui-authorship' ),
+        'author_box_related_title'           => __( "Related Posts", 'molongui-authorship' ),
+        'author_box_profile_layout'          => 'layout-1',
+        'author_box_profile_valign'          => 'center',
+        'author_box_bottom_background_color' => '#e0e0e0',
+        'author_box_bottom_border_style'     => 'solid',
+        'author_box_bottom_border_width'     => '1',
+        'author_box_bottom_border_color'     => '#b6b6b6',
+
+        'author_box_shadow_color'    => '#ababab',
+        'author_box_shadow_h_offset' => 10,
+        'author_box_shadow_v_offset' => 10,
+        'author_box_shadow_blur'     => 10,
+        'author_box_shadow_spread'   => '',
+        'author_box_shadow_inset'    => 0,
+
+        'author_box_tabs_position'                => 'top-full',
+        'author_box_tabs_color'                   => '#f4f4f4',
+        'author_box_tabs_background_color'        => 'transparent',
+        'author_box_tabs_text_color'              => 'inherit',
+        'author_box_tabs_active_background_color' => '#efefef',
+        'author_box_tabs_active_text_color'       => 'inherit',
+        'author_box_tabs_active_border'           => 'top',
+        'author_box_tabs_active_border_style'     => 'solid',
+        'author_box_tabs_active_border_width'     => '4',
+        'author_box_tabs_active_border_color'     => 'orange',
+        'author_box_custom_css'       => '',
+        'author_box_custom_css_class' => '',
 
         'guest_authors'               => true,
 
@@ -145,7 +183,7 @@ function authorship_set_defaults()
         'user_archive_base'          => 'author',
         'user_archive_slug'          => false,
         'post_types' => "post", // Data stored as a string with comma-separated items. No array!
-        'social_networks' => "facebook,twitter,youtube,pinterest,tumblr,instagram,soundcloud,spotify,skype,medium,whatsapp", // Data stored as a string with comma-separated items. No array!
+        'social_networks' => "facebook,twitter,youtube,pinterest,tiktok,instagram,soundcloud,spotify,skype,medium,whatsapp", // Data stored as a string with comma-separated items. No array!
         'add_nofollow'    => false,
         'byline_name_link' => true,
         'byline_prefix'    => '',

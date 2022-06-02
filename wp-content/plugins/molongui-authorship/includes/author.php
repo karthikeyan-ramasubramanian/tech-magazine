@@ -344,7 +344,7 @@ class Author
 	{
 		$avatar  = '';
 		$attr    = array();
-        $options = \authorship_get_options();
+        $options = \apply_filters( '_authorship/get_options', \authorship_get_options() );
         $size    = apply_filters( 'authorship/get_avatar/size', $size, $options );
         $context = apply_filters( 'authorship/get_avatar/context', $context, $options );
         $source  = apply_filters( 'authorship/get_avatar/source', $source, $options );
@@ -366,14 +366,13 @@ class Author
 		{
             if ( \authorship_is_feature_enabled( 'box_styles' ) )
             {
-                $width  = $options['avatar_width'];
-                $height = $options['avatar_height'];
+                $width  = $options['author_box_avatar_width'];
+                $height = $options['author_box_avatar_height'];
                 $size   = array( $width, $height );
             }
-            $attr = array( 'class' => 'm-radius-'.$options['avatar_style'].' molongui-border-style-'.$options['avatar_border_style'].' molongui-border-width-'.$options['avatar_border_width'].'-px', 'style' => 'border-color:'.$options['avatar_border_color'].';' );
             if ( \authorship_is_feature_enabled( 'microdata' ) ) $attr = \array_merge( $attr, array( 'itemprop' => 'image' ) );
 		}
-        switch ( !empty( $source ) ? $source : ( !empty( $options['avatar_src'] ) ?  $options['avatar_src'] : '' ) )
+        switch ( !empty( $source ) ? $source : ( !empty( $options['author_box_avatar_source'] ) ?  $options['author_box_avatar_source'] : '' ) )
         {
             case 'gravatar':
                 if ( $context != 'url' ) $avatar = $this->get_gravatar( $this->get_mail(), \array_merge( $attr, array( 'width' => $width, 'height' => $height ) ), $options );
@@ -415,7 +414,7 @@ class Author
                 }
                 if ( empty( $avatar ) and $context != 'url' )
                 {
-                    switch ( empty( $default ) ? $options['avatar_local_fallback'] : $default )
+                    switch ( empty( $default ) ? $options['author_box_avatar_fallback'] : $default )
                     {
                         case 'gravatar':
                             $avatar = $this->get_gravatar( $this->get_mail(), \array_merge( $attr, array( 'width' => $width, 'height' => $height ) ), $options );
@@ -450,9 +449,8 @@ class Author
         elseif (  $has_w and !$has_h ) $size = $attr['width'];
         elseif ( !$has_w and  $has_h ) $size = $attr['height'];
         $attr['extra_attr']  = '';
-        $attr['extra_attr'] .= 'style = "border-color:' . $options['avatar_border_color'].';"';
         if ( \authorship_is_feature_enabled( 'microdata' ) ) $attr['extra_attr'] .= 'itemprop = "image"';
-        $default = $options['avatar_default_gravatar'];
+        $default = $options['author_box_avatar_default_gravatar'];
         if ( $default == 'random' )
         {
             $defaults = array( 'mp', 'identicon', 'monsterid', 'wavatar', 'retro', 'robohash', 'blank' );
@@ -468,16 +466,13 @@ class Author
 		if ( empty( $name ) ) return '';
 		if ( empty( $options ) ) $options = \authorship_get_options();
 
-		$class  = empty( $attr['class'] ) ? '' : $attr['class'];
-        $style  = empty( $attr['style'] ) ? '' : $attr['style'];
+		$class  = empty( $attr['class'] )  ? '' : $attr['class'];
+        $style  = empty( $attr['style'] )  ? '' : $attr['style'];
+        $width  = empty( $attr['width'] )  ? '' : ' width:'  . $attr['width'].'px;';
+        $height = empty( $attr['height'] ) ? '' : ' height:' . $attr['height'].'px;';
         $valign = '';
-        if ( is_admin() )
-        {
-            $style .= ' text-align: center; font-size: 2.2em; font-weight: 300;';
-            $valign = 'position: relative; top: 50%; -webkit-transform: perspective(1px) translateY(-50%); -ms-transform: perspective(1px) translateY(-50%); transform: perspective(1px) translateY(-50%);';
-        }
 		$html  = '';
-        $html .= '<div data-avatar-type="acronym" class="' . $class . ' acronym-container" style="' . $style . ' width:' . $attr['width'].'px; height:' . $attr['height'].'px; background:' . $options['avatar_bg_color'].'; color:' . $options['avatar_text_color'].';">';
+        $html .= '<div data-avatar-type="acronym" class="' . $class . ' acronym-container" style="' . $style . $width . $height . '">';
 		$html .= '<div class="molongui-vertical-aligned" style="' . $valign . '">';
 		$html .= \molongui_get_acronym( $name );
 		$html .= '</div>';
@@ -517,6 +512,7 @@ class Author
             'show_social_mail',
             'show_social_web',
             'show_social_phone',
+            'archived',
             'social',
         ));
         $data['id']                = $this->id;
@@ -543,6 +539,7 @@ class Author
         if ( in_array( 'show_social_mail', $fields ) )  $data['show_social_mail']  = $this->get_meta( 'show_icon_mail' );
         if ( in_array( 'show_social_web', $fields ) )   $data['show_social_web']   = $this->get_meta( 'show_icon_web' );
         if ( in_array( 'show_social_phone', $fields ) ) $data['show_social_phone'] = $this->get_meta( 'show_icon_phone' );
+        if ( in_array( 'archived', $fields ) )          $data['archived']          = $this->get_meta( 'archived' );
 
         if ( in_array( 'social', $fields ) ) foreach ( $networks as $id => $network ) $data[$id] = $this->get_meta( $id );
         if ( $this->type == 'guest' ) \do_action( 'authorship/author/guest/after_get_data', $this->id );
@@ -591,10 +588,7 @@ class Author
 
             case 'related':
                 $options                       = \authorship_get_options();
-                $parsed_args['post_type']      = \explode( ",", $options['related_post_types'] );
-                $parsed_args['posts_per_page'] = $options['related_items'];
-                $parsed_args['orderby']        = $options['related_orderby'];
-                $parsed_args['order']          = $options['related_order'];
+                $parsed_args['post_type']      = \explode( ",", $options['author_box_related_post_types'] );
 
             break;
         }
@@ -650,10 +644,10 @@ class Author
                     'no_found_rows'       => $parsed_args['no_found_rows'],
                     'ignore_sticky_posts' => $parsed_args['ignore_sticky_posts'],
                     'fields'              => $parsed_args['fields'],
-                    'author_id'           => $this->id,
-                    'author_type'         => $this->type,
-                    'site_id'             => \get_current_blog_id(),
-                    'language'            => \molongui_get_language(),
+                    'author_id'           => $parsed_args['author_id'],
+                    'author_type'         => $parsed_args['author_type'],
+                    'site_id'             => $parsed_args['site_id'],
+                    'language'            => $parsed_args['language'],
                 );
                 $data = \molongui_query( $args, 'posts' );
                 $posts = empty( $data->posts ) ? array() : $data->posts;
@@ -703,10 +697,10 @@ class Author
                     'no_found_rows'       => $parsed_args['no_found_rows'],
                     'ignore_sticky_posts' => $parsed_args['ignore_sticky_posts'],
                     'fields'              => $parsed_args['fields'],
-                    'author_id'           => $this->id,
-                    'author_type'         => $this->type,
-                    'site_id'             => \get_current_blog_id(),
-                    'language'            => \molongui_get_language(),
+                    'author_id'           => $parsed_args['author_id'],
+                    'author_type'         => $parsed_args['author_type'],
+                    'site_id'             => $parsed_args['site_id'],
+                    'language'            => $parsed_args['language'],
                 );
                 $data1 = \molongui_query( $args1, 'posts' );
                 if ( !empty( $parsed_args['meta_query'] ) )
@@ -763,10 +757,10 @@ class Author
                     'no_found_rows'       => $parsed_args['no_found_rows'],
                     'ignore_sticky_posts' => $parsed_args['ignore_sticky_posts'],
                     'fields'              => $parsed_args['fields'],
-                    'author_id'           => $this->id,
-                    'author_type'         => $this->type,
-                    'site_id'             => \get_current_blog_id(),
-                    'language'            => \molongui_get_language(),
+                    'author_id'           => $parsed_args['author_id'],
+                    'author_type'         => $parsed_args['author_type'],
+                    'site_id'             => $parsed_args['site_id'],
+                    'language'            => $parsed_args['language'],
                 );
                 $data2 = \molongui_query( $args2, 'posts' );
                 $data = \array_merge( ( empty( $data1->posts ) ? array() : $data1->posts ), ( empty( $data2->posts ) ? array() : $data2->posts ) );
@@ -785,10 +779,10 @@ class Author
                     'no_found_rows'       => $parsed_args['no_found_rows'],
                     'ignore_sticky_posts' => $parsed_args['ignore_sticky_posts'],
                     'fields'              => $parsed_args['fields'],
-                    'author_id'           => $this->id,
-                    'author_type'         => $this->type,
-                    'site_id'             => \get_current_blog_id(),
-                    'language'            => \molongui_get_language(),
+                    'author_id'           => $parsed_args['author_id'],
+                    'author_type'         => $parsed_args['author_type'],
+                    'site_id'             => $parsed_args['site_id'],
+                    'language'            => $parsed_args['language'],
                 );
                 $posts = \molongui_query( $args3, 'posts' );
                 $posts = empty( $posts->posts ) ? array() : $posts->posts;

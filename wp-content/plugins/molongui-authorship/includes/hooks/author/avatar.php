@@ -7,9 +7,9 @@ function authorship_add_image_sizes()
     add_image_size( 'authorship-box-avatar', 150, 150, true );
     add_image_size( 'authorship-box-related', 70, 70, true );
     $options = authorship_get_options();
-    if ( ( !empty( $options['avatar_width'] ) and $options['avatar_width'] != 150 ) or ( !empty( $options['avatar_height'] ) and $options['avatar_height'] != 150 ) )
+    if ( ( !empty( $options['author_box_avatar_width'] ) and $options['author_box_avatar_width'] != 150 ) or ( !empty( $options['author_box_avatar_height'] ) and $options['author_box_avatar_height'] != 150 ) )
     {
-        add_image_size( 'authorship-custom-avatar', $options['avatar_width'], $options['avatar_height'], true );
+        add_image_size( 'authorship-custom-avatar', $options['author_box_avatar_width'], $options['author_box_avatar_height'], true );
     }
     do_action( 'authorship/add_image_size' );
 }

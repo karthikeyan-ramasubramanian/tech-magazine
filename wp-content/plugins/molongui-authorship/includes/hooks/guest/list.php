@@ -2,6 +2,13 @@
 
 use Molongui\Authorship\Includes\Author;
 defined( 'ABSPATH' ) or exit;
+function authorship_remove_mine_filter( $views )
+{
+    unset( $views['mine'] );
+
+    return $views;
+}
+add_filter( 'views_edit-'.MOLONGUI_AUTHORSHIP_CPT, 'authorship_remove_mine_filter' );
 function authorship_guest_add_list_columns( $columns )
 {
     unset( $columns['title'] );

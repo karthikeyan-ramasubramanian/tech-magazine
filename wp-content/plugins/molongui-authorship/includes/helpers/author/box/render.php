@@ -4,10 +4,6 @@ use Molongui\Authorship\Includes\Author;
 defined( 'ABSPATH' ) or exit;
 function authorship_render_box( $content )
 {
-    if ( !apply_filters( 'authorship/box/render/bypass_check', false ) )
-    {
-        if ( ( !is_single() and !is_page() ) or is_guest_author() or !is_main_query() or !in_the_loop() ) return $content;
-    }
     global $post;
     if ( !apply_filters( 'authorship/render_box', true, $post ) ) return $content;
     $post_authors = get_post_authors( $post->ID );
@@ -62,9 +58,10 @@ function authorship_box_markup( $post, $post_authors, $options = array(), $check
     if ( empty( $post_authors ) ) return;
     if ( empty( $options ) ) $options = authorship_get_options();
     $html           = '';
+    $box_ids        = array();
     $is_multiauthor = empty( $post->ID ) ? false : is_multiauthor_post( $post->ID );
     $show_headline  = true;
-    $add_microdata  = authorship_is_feature_enabled( 'microdata' );
+    $add_microdata  = !empty( $options['box_schema'] );//authorship_is_feature_enabled( 'microdata' );
     foreach ( $post_authors as $post_author )
     {
         if ( $check and authorship_hide_box( $post, $post_author, $options ) )
@@ -74,14 +71,15 @@ function authorship_box_markup( $post, $post_authors, $options = array(), $check
         }
         $author                     = new Author( $post_author->id, $post_author->type );
         $authors[$post_author->ref] = $author->get_data();
-        if ( $options['show_related'] or $options['box_layout'] == 'tabbed' )
+        if ( $options['author_box_related_show'] or $options['author_box_layout'] == 'tabbed' )
         {
-            $authors[$post_author->ref]['posts'] = $author->get_posts( array( 'fields' => 'all', 'post_type' => 'related', 'post_status' => 'publish', 'post__not_in' => ( is_object( $post ) and !empty( $post->ID ) ) ? array( $post->ID ) : '' ) );
+            $authors[$post_author->ref]['posts'] = $author->get_posts( array( 'fields' => 'all', 'post_type' => 'related', 'post_status' => 'publish', 'order' => $options['author_box_related_order'], 'orderby' => $options['author_box_related_orderby'], 'posts_per_page' => $options['author_box_related_count'], 'post__not_in' => ( is_object( $post ) and !empty( $post->ID ) ) ? array( $post->ID ) : '' ) );
         }
         if ( !$is_multiauthor or ( $is_multiauthor and $options['box_layout_multiauthor'] == 'individual' ) )
         {
             $author = $authors[$post_author->ref];
             $random_id = molongui_rand();
+            $box_ids[] = $random_id;
             molongui_enqueue_element_queries();
             authorship_enqueue_box_styles();
             ob_start();
@@ -99,15 +97,16 @@ function authorship_box_markup( $post, $post_authors, $options = array(), $check
     )
     {
         $random_id = molongui_rand();
+        $box_ids[] = $random_id;
         $common_posts = get_coauthored_posts( $post_authors, false, array(), 'selected' );
-        $show_related = ( $options['box_layout'] != 'slim' and !empty( $options['show_related'] ) and ( !empty( $common_posts ) or !empty( $options['show_empty_related'] ) ) );
+        $show_related = ( $options['author_box_layout'] != 'slim' and !empty( $options['author_box_related_show'] ) and ( !empty( $common_posts ) or !empty( $options['author_box_related_show_empty'] ) ) );
         molongui_enqueue_element_queries();
         authorship_enqueue_box_styles();
         ob_start();
         include MOLONGUI_AUTHORSHIP_DIR . 'views/author-box/html-multiauthor-layout.php';
         $html .= ob_get_clean();
     }
-    return $html;
+    return apply_filters( 'authorship/author_box_markup', $html, $post, $post_authors, $options, $check, $box_ids );
 }
 function authorship_hide_box( $post, $author, $options )
 {
@@ -170,42 +169,4 @@ function authorship_hide_box( $post, $author, $options )
         }
     }
     return false;
-}
-function authorship_box_border( $box_border )
-{
-    switch ( $box_border )
-    {
-        case 'none':
-            return 'molongui-border-none';
-        break;
-
-        case 'horizontals':
-            return 'molongui-border-right-none molongui-border-left-none';
-        break;
-
-        case 'verticals':
-            return 'molongui-border-top-none molongui-border-bottom-none';
-        break;
-
-        case 'top':
-            return 'molongui-border-right-none molongui-border-bottom-none molongui-border-left-none';
-        break;
-
-        case 'right':
-            return 'molongui-border-top-none molongui-border-bottom-none molongui-border-left-none';
-        break;
-
-        case 'bottom':
-            return 'molongui-border-top-none molongui-border-right-none molongui-border-left-none';
-        break;
-
-        case 'left':
-            return 'molongui-border-top-none molongui-border-right-none molongui-border-bottom-none';
-        break;
-
-        case 'all':
-        default:
-            return '';
-        break;
-    }
 }

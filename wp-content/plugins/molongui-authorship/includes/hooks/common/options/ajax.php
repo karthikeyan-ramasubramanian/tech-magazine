@@ -10,6 +10,7 @@ function authorship_save_options()
     {
         $options['plugin_version'] = MOLONGUI_AUTHORSHIP_VERSION;
         $current = (array) get_option( MOLONGUI_AUTHORSHIP_PREFIX.'_options', array() );
+        $options = array_merge( $current, $options );
         $options = apply_filters( 'authorship/validate_options', $options, $current );
         update_option( MOLONGUI_AUTHORSHIP_PREFIX.'_options', $options );
 

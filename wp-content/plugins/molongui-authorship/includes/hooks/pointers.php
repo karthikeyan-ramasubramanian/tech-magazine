@@ -14,7 +14,7 @@ function authorship_admin_pointers( $pointers, $prefix )
             (
                 'selector'   => '#toplevel_page_authors',
                 'title'      => __( "Molongui Authorship", 'molongui-authorship' ),
-                'text'       => sprintf( __( "Now you can %smanage all your authors%s from this new menu. Add new ones and configure the plugin to make it work like you want it to.", 'molongui-authorship' ), '<strong>', '</strong>' ),
+                'text'       => sprintf( __( "Now you can %smanage all your authors%s from this menu. Add new ones and configure the plugin to make it work like you want it to.", 'molongui-authorship' ), '<strong>', '</strong>' ),
                 'icon_class' => 'dashicons-admin-settings',
                 'width'      => 300,
                 'next'       => ( $box ? $prefix . '_box' : $prefix . '_users' ),

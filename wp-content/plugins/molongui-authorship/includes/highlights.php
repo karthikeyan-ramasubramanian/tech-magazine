@@ -11,12 +11,12 @@ class Highlights
 		?>
 		<p><?php  _e( "Molongui Authorship is probably the most complete suite on all about authors and authorship. Check below some of its awesome features:", 'molongui-authorship' ); ?></p>
         <ul>
-			<li class="molongui-notice-icon-check"><?php printf( __( "%sCo-authors%s. Assign multiple authors to your posts. Just locate the 'Authors' module on the right of your post edit screen and start adding authors.", 'molongui-authorship' ), '<strong>', '</strong>' ); ?></li>
-			<li class="molongui-notice-icon-check"><?php printf( __( "%sGuest authors%s. Assign guest authors to your posts without creating WordPress user accounts. Open the 'Guest authors' menu and define your guest authors.", 'molongui-authorship' ), '<strong>', '</strong>' ); ?></li>
+			<li class="molongui-notice-icon-check"><?php printf( __( "%sCo-authors%s. Assign multiple authors to your posts. Just locate the 'Authors' module on the right of your edit post screen and start adding authors.", 'molongui-authorship' ), '<strong>', '</strong>' ); ?></li>
+			<li class="molongui-notice-icon-check"><?php printf( __( "%sGuest authors%s. Assign guest authors to your posts without creating WordPress user accounts. Open the 'Authors' menu and define your guest authors.", 'molongui-authorship' ), '<strong>', '</strong>' ); ?></li>
             <li class="molongui-notice-icon-check"><?php printf( __( "%sAuthor box%s. Display the author profile in all your posts or just on those you define. Customize the box to your likings to best fit your site with %slive-preview%s!.", 'molongui-authorship' ), '<strong>', '</strong>', '<strong>', '</strong>' ); ?></li>
             <li class="molongui-notice-icon-check <?php echo ( !$is_pro ? 'molongui-notice-only-premium' : '' ); ?>"><span><?php _e( 'Pro only', 'molongui-authorship' ); ?></span><?php printf( __( "%sShortcodes%s. Display author boxes on your sidebar or anywhere you like, a list of authors and contributors of your blog and a list of posts by author.", 'molongui-authorship' ), '<strong>', '</strong>' ); ?></li>
 		    <?php if ( !$is_pro ) : ?>
-                <li class="molongui-notice-icon-check molongui-notice-only-premium"><span><?php _e( 'Pro only', 'molongui-authorship' ); ?></span><?php printf( __( "%sPro features%s. More layouts, more styles, more customization settings, guest author archive pages and Premium support.", 'molongui-authorship' ), '<strong>', '</strong>' ); ?></li>
+                <li class="molongui-notice-icon-check molongui-notice-only-premium"><span><?php _e( "Pro only", 'molongui-authorship' ); ?></span><?php printf( __( "%sPro features%s. More layouts, more styles, more customization settings, guest author archive pages and Premium support.", 'molongui-authorship' ), '<strong>', '</strong>' ); ?></li>
 		    <?php endif; ?>
         </ul>
 		<?php
@@ -30,11 +30,11 @@ class Highlights
 			(
 				'customizer' => array
 				(
-                    'href'   => authorship_get_customizer(),
+                    'href'   => authorship_editor_url(),
                     'target' => '_self',
                     'class'  => 'molongui-notice-button-green',
                     'icon'   => '',
-                    'label'  => __( 'Customizer', 'molongui-authorship' ),
+                    'label'  => __( "Editor", 'molongui-authorship' ),
                     'hidden' => false,
 				),
 				'settings' => array
@@ -43,7 +43,7 @@ class Highlights
 					'target' => '_self',
 					'class'  => '',
 					'icon'   => '',
-					'label'  => __( 'Settings', 'molongui-authorship' ),
+					'label'  => __( "Settings", 'molongui-authorship' ),
 					'hidden' => false,
 				),
 				'documentation' => array
@@ -52,7 +52,7 @@ class Highlights
 					'target' => '_blank',
 					'class'  => '',
 					'icon'   => '',
-					'label'  => __( 'Documentation', 'molongui-authorship' ),
+					'label'  => __( "Documentation", 'molongui-authorship' ),
 					'hidden' => false,
 				),
 				'premium' => array
@@ -61,7 +61,7 @@ class Highlights
 					'target' => '_blank',
 					'class'  => 'molongui-notice-button-orange',
 					'icon'   => '',
-					'label'  => __( 'Go Pro', 'molongui-authorship' ),
+					'label'  => __( "Go Pro", 'molongui-authorship' ),
 					'hidden' => $is_pro,
 				),
 			),

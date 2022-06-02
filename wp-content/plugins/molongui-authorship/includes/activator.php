@@ -47,14 +47,14 @@ class Activator
 		if ( \get_option( MOLONGUI_AUTHORSHIP_INSTALLATION ) ) return;
 		$installation = array
 		(
-			'install_date'    => \time(),
-			'install_version' => MOLONGUI_AUTHORSHIP_VERSION,
+			'timestamp' => \time(),
+			'version'   => MOLONGUI_AUTHORSHIP_VERSION,
 		);
 		\add_option( MOLONGUI_AUTHORSHIP_INSTALLATION, $installation, null, false );
 	}
     public static function add_default_options()
     {
-        require_once MOLONGUI_AUTHORSHIP_DIR . 'includes/helpers/common/plugins.php';
+        require_once MOLONGUI_AUTHORSHIP_DIR . 'includes/helpers/options/defaults.php';
         require_once MOLONGUI_AUTHORSHIP_DIR . 'includes/helpers/common/options/options.php';
 
         \authorship_add_defaults();

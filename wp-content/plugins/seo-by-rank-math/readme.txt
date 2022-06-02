@@ -2,10 +2,10 @@
 Contributors: rankmath
 Plugin link: https://rankmath.com/?utm_source=LP&utm_campaign=WP
 Tags: seo, sitemap, google search console, schema, redirection, WordPress SEO
-Tested up to: 5.9
+Tested up to: 6.0
 Requires at least: 5.6
 Requires PHP: 7.2
-Stable tag: 1.0.87
+Stable tag: 1.0.89.1
 License: GPL-2.0+
 License URI: https://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -185,7 +185,7 @@ Even with significantly more features than other plugins, Rank Math SEO loads am
 ### Take a sneak peek into Rank Math SEO’s features ###
 
 #### Detailed Setup Tutorial ####
-[youtube https://www.youtube.com/watch?v=dTvZuMRzW4w]
+[youtube https://www.youtube.com/watch?v=cQLvCBVev3I]
 
 ### List of Best Rank Math SEO Features ###
 
@@ -580,26 +580,30 @@ Please drop us an email at support@rankmath.com and we would be more than happy 
 
 == Changelog ==
 
-= 1.0.87 [Apr 13, 2022] =
-* Added: Close button to permanently hide the [Analytics Stats bar](https://rankmath.com/kb/analytics-stats-bar/) from the frontend
+= 1.0.89.1 [May 21, 2022] =
+* Fixed: [Content AI](https://rankmath.com/kb/how-to-use-content-ai/#num-6-5-media-count) was not detecting the images present in the content area
+* Fixed: Content AI was crashing the editor on some setups when the site was not connected to Rank Math account
+* Fixed: Some sites were showing PHP warning after the last update
 
-= 1.0.86.2 [Apr 09, 2022] =
-* Added: Filter to show/hide [Analytics Stats Bar on the frontend](https://rankmath.com/kb/filters-hooks-api-developer/#hide-analytics-stats-bar)
-* Improved: Hide [Analytics Stats Bar on the frontend](https://rankmath.com/kb/analytics-stats-bar/) on all the pages after clicking on the close button
-* Fixed: [Author Sitemap](https://rankmath.com/kb/configure-sitemaps/#authors) was not working on some setups after the last update
-
-= 1.0.86.1 [Apr 07, 2022] =
-* Fixed: Hide [frontend Analytics Stats](https://rankmath.com/kb/analytics-stats-bar/) when Google Search Console is not connected to the site
-
-= 1.0.86 [Apr 07, 2022] =
-* Added: [NEW!] Introducing Stats Bar. Now, you can view [Analytics stats on the frontend](https://rankmath.com/kb/analytics-stats-bar/)
-* Improved: Optimized the [Redirection](https://rankmath.com/kb/setting-up-redirections/) queries for better performance
-* Fixed: PHP warnings on some setups when [Admin Menu Bar](https://rankmath.com/kb/quick-actions/) was enabled
-* Fixed: [Remove Product Base](https://rankmath.com/kb/general-settings/#remove-base) option was not working well on auto-translated secondary languages products created using WPML
-* Fixed: Duplicate sitemap was getting generated. Now, this duplicate sitemap page will redirect to the main sitemap
-* Fixed: [Content AI Media count](https://rankmath.com/kb/seo-score-vs-content-ai-score/#media-count) was showing different counts in different editors
-* Fixed: Content AI was not detecting the videos added using the Elementor's Video widget
-* Fixed: Content AI was not detecting the iframe videos
-* Fixed: Average position in [Analytics](https://rankmath.com/kb/analytics/) page was showing the wrong color
+= 1.0.89 [May 20, 2022] =
+* Added: Support for shortcodes in the [FAQ](https://rankmath.com/kb/faq-schema-block/) & [HowTo](https://rankmath.com/blog/howto-schema/) block content
+* Added: [New filter](https://rankmath.com/kb/filters-hooks-api-developer/#allow-line-breaks) to allow line breaks in the FAQ & HowTo block content
+* Added: [Compatibility check](https://rankmath.com/kb/how-to-setup/#compatibility-check) to check if the `base64_*` functions are available
+* Improved: Description for [Schema Type Titles & Meta option](https://rankmath.com/kb/titles-and-meta/#rich-snippet-type) to make it easy to understand
+* Improved: Error messages on different pages to make it easy to understand
+* Improved: The code that generates [Thumbnail overlay](https://rankmath.com/kb/meta-box-social-tab/#add-icon-overlay-to-thumbnails)
+* Improved: Optimized and improved the overall code
+* Removed: The `image:caption` & `image:title` properties from the sitemap as Google no longer uses them. You can read more about it [here](https://developers.google.com/search/blog/2022/05/spring-cleaning-sitemap-extensions)
+* Fixed: [Google Search Console](https://rankmath.com/kb/general-settings/#search-console) data import was not working well with the domain property
+* Fixed: [Content Analysis](https://rankmath.com/kb/score-100-in-tests/) was not working when a comma was used in the [Focus keyword](https://rankmath.com/kb/what-is-a-focus-keyword/)
+* Fixed: Link Suggestion was not working well when the 'AMP for WP' plugin is active
+* Fixed: WP Super Cache plugin's cache was completely getting cleared after updating the WooCommerce Product
+* Fixed: PHP warning when invalid regex was used in the [404 Monitor Exclude Path](https://rankmath.com/kb/general-settings/#exclude-paths) setting
+* Fixed: Content AI was not working well on the posts created using the 'Builder by SiteOrigin' plugin
+* Fixed: Dashboard widget was showing without any content to the users who didn't have the required capability
+* Fixed: Links pointing to the media files were also counted as internal links by the [Link Counter](https://rankmath.com/kb/link-counter/)
+* Fixed: Missing tooltips in the Content Analysis tests
+* Fixed: Improved the styling of the [Classic Editor Metabox](https://rankmath.com/kb/on-page-seo/#num-3-in-classic-editor) when it is moved to the editor's sidebar
+* Fixed: [Remove Snippet Data](https://rankmath.com/kb/titles-and-meta/#product-categories-remove-snippet-data) option was not working on some setups
 
 Full changelog can be found here - **[Rank Math SEO changelog](https://rankmath.com/changelog/?utm_source=Plugin&utm_medium=Changelog&utm_campaign=WP)**

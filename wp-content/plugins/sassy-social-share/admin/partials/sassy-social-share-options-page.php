@@ -97,21 +97,21 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 										}
 										</style>
 										<div>
-											<div class="heateorSssCounterPreviewTop" style="width:<?php echo 60 + ( isset( $options['horizontal_sharing_shape'] ) && $options['horizontal_sharing_shape'] == 'rectangle' ? $options['horizontal_sharing_width'] : $options['horizontal_sharing_size'] ) ?>px">44</div>
+											<div class="heateorSssCounterPreviewTop" style="width:<?php echo esc_attr( 60 + ( isset( $options['horizontal_sharing_shape'] ) && $options['horizontal_sharing_shape'] == 'rectangle' ? $options['horizontal_sharing_width'] : $options['horizontal_sharing_size'] ) ) ?>px">44</div>
 											<div class="heateorSssCounterPreviewLeft">44</div>
 											<div id="heateor_sss_preview" style="cursor:pointer;float:left">
 												<div class="heateorSssCounterPreviewInnertop">44</div>
 												<div class="heateorSssCounterPreviewInnerleft">44</div>
-												<div id="horizontal_svg" style="float:left;width:100%;height:100%;background:url( 'data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20viewBox%3D%22-4%20-4%2040%2040%22%3E%3Cpath%20d%3D%22M17.78%2027.5V17.008h3.522l.527-4.09h-4.05v-2.61c0-1.182.33-1.99%202.023-1.99h2.166V4.66c-.375-.05-1.66-.16-3.155-.16-3.123%200-5.26%201.905-5.26%205.405v3.016h-3.53v4.09h3.53V27.5h4.223z%22%20fill%3D%22<?php echo $sharing_color ? str_replace( '#', '%23', $sharing_color) : "%23fff" ?>%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E' ) no-repeat center center; margin: auto"></div>
+												<div id="horizontal_svg" style="float:left;width:100%;height:100%;background:url( 'data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20viewBox%3D%22-4%20-4%2040%2040%22%3E%3Cpath%20d%3D%22M17.78%2027.5V17.008h3.522l.527-4.09h-4.05v-2.61c0-1.182.33-1.99%202.023-1.99h2.166V4.66c-.375-.05-1.66-.16-3.155-.16-3.123%200-5.26%201.905-5.26%205.405v3.016h-3.53v4.09h3.53V27.5h4.223z%22%20fill%3D%22<?php echo $sharing_color ? esc_attr( str_replace( '#', '%23', $sharing_color ) ) : "%23fff" ?>%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E' ) no-repeat center center; margin: auto"></div>
 												<div class="heateorSssCounterPreviewInnerright">44</div>
 												<div class="heateorSssCounterPreviewInnerbottom">44</div>
 											</div>
 											<div class="heateorSssCounterPreviewRight">44</div>
-											<div class="heateorSssCounterPreviewBottom" style="width:<?php echo 60 + ( isset( $options['horizontal_sharing_shape'] ) && $options['horizontal_sharing_shape'] == 'rectangle' ? $options['horizontal_sharing_width'] : $options['horizontal_sharing_size'] ) ?>px">44</div>
+											<div class="heateorSssCounterPreviewBottom" style="width:<?php echo esc_attr( 60 + ( isset( $options['horizontal_sharing_shape'] ) && $options['horizontal_sharing_shape'] == 'rectangle' ? $options['horizontal_sharing_width'] : $options['horizontal_sharing_size'] ) ) ?>px">44</div>
 										</div>
 										
 										<script type="text/javascript">
-										var tempHorShape = '<?php echo $sharing_shape ?>', tempHorSize = '<?php echo $sharing_size ?>', tempHorHeight = '<?php echo $sharing_height ?>', tempHorWidth = '<?php echo $sharing_width ?>', heateorSssSharingBgHover = '<?php echo $horizontal_bg_hover ?>', heateorSssSharingBg = '<?php echo $horizontal_bg ? $horizontal_bg : "#3C589A" ?>', heateorSssBorderWidth = '<?php echo $border_width ?>', heateorSssBorderColor = '<?php echo $border_color ?>', heateorSssSharingBorderRadius = '<?php echo $sharing_border_radius ? $sharing_border_radius . "px" : "0px" ?>';
+										var tempHorShape = '<?php echo esc_js( $sharing_shape ) ?>', tempHorSize = '<?php echo esc_js( $sharing_size ) ?>', tempHorHeight = '<?php echo esc_js( $sharing_height ) ?>', tempHorWidth = '<?php echo esc_js( $sharing_width ) ?>', heateorSssSharingBgHover = '<?php echo esc_js( $horizontal_bg_hover ) ?>', heateorSssSharingBg = '<?php echo esc_js( $horizontal_bg ) ? esc_js( $horizontal_bg ) : "#3C589A" ?>', heateorSssBorderWidth = '<?php echo esc_js( $border_width ) ?>', heateorSssBorderColor = '<?php echo esc_js( $border_color ) ?>', heateorSssSharingBorderRadius = '<?php echo $sharing_border_radius ? esc_js( $sharing_border_radius ) . "px" : "0px" ?>';
 
 										heateorSssSharingHorizontalPreview();
 
@@ -176,7 +176,7 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 											<img id="heateor_sss_icon_size_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 										</th>
 										<td>
-											<input style="width:50px" id="heateor_sss_icon_size" name="heateor_sss[horizontal_sharing_size]" type="text" value="<?php echo $sharing_size; ?>" />
+											<input style="width:50px" id="heateor_sss_icon_size" name="heateor_sss[horizontal_sharing_size]" type="text" value="<?php echo esc_attr( $sharing_size ); ?>" />
 											<input id="heateor_sss_size_plus" type="button" value="+" onmouseup="tempHorSize = document.getElementById( 'heateor_sss_icon_size' ).value;heateorSssSharingHorizontalPreview()" />
 											<input id="heateor_sss_size_minus" type="button" value="-" onmouseup="tempHorSize = document.getElementById( 'heateor_sss_icon_size' ).value;heateorSssSharingHorizontalPreview()" />
 											<script type="text/javascript">
@@ -202,7 +202,7 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 											<img id="heateor_sss_icon_width_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 										</th>
 										<td>
-											<input style="width:50px" id="heateor_sss_icon_width" name="heateor_sss[horizontal_sharing_width]" type="text" value="<?php echo $sharing_width; ?>" />
+											<input style="width:50px" id="heateor_sss_icon_width" name="heateor_sss[horizontal_sharing_width]" type="text" value="<?php echo esc_attr( $sharing_width ); ?>" />
 											<input id="heateor_sss_width_plus" type="button" value="+" onmouseup="tempHorWidth = document.getElementById( 'heateor_sss_icon_width' ).value;heateorSssSharingHorizontalPreview()" />
 											<input id="heateor_sss_width_minus" type="button" value="-" onmouseup="tempHorWidth = document.getElementById( 'heateor_sss_icon_width' ).value;heateorSssSharingHorizontalPreview()" />
 											<script type="text/javascript">
@@ -226,7 +226,7 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 											<img id="heateor_sss_icon_height_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 										</th>
 										<td>
-											<input style="width:50px" id="heateor_sss_icon_height" name="heateor_sss[horizontal_sharing_height]" type="text" value="<?php echo $sharing_height; ?>" />
+											<input style="width:50px" id="heateor_sss_icon_height" name="heateor_sss[horizontal_sharing_height]" type="text" value="<?php echo esc_attr( $sharing_height ); ?>" />
 											<input id="heateor_sss_height_plus" type="button" value="+" onmouseup="tempHorHeight = document.getElementById( 'heateor_sss_icon_height' ).value;heateorSssSharingHorizontalPreview()" />
 											<input id="heateor_sss_height_minus" type="button" value="-" onmouseup="tempHorHeight = document.getElementById( 'heateor_sss_icon_height' ).value;heateorSssSharingHorizontalPreview()" />
 											<script type="text/javascript">
@@ -252,7 +252,7 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 											<img id="heateor_sss_icon_border_radius_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 										</th>
 										<td>
-											<input style="width:50px" id="heateor_sss_icon_border_radius" name="heateor_sss[horizontal_border_radius]" type="text" value="<?php echo $sharing_border_radius; ?>" onkeyup="heateorSssSharingBorderRadius = this.value.trim() ? this.value.trim() + 'px' : '0px';heateorSssUpdateSharingPreview(heateorSssSharingBorderRadius, 'borderRadius', '0px', 'heateor_sss_preview' )" />
+											<input style="width:50px" id="heateor_sss_icon_border_radius" name="heateor_sss[horizontal_border_radius]" type="text" value="<?php echo esc_attr( $sharing_border_radius ); ?>" onkeyup="heateorSssSharingBorderRadius = this.value.trim() ? this.value.trim() + 'px' : '0px';heateorSssUpdateSharingPreview(heateorSssSharingBorderRadius, 'borderRadius', '0px', 'heateor_sss_preview' )" />
 										</td>
 									</tr>
 
@@ -272,10 +272,10 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 									</th>
 									<td>
 										<script type="text/javascript">var heateorSssSharingTempColor = '<?php echo $sharing_color ? esc_js( $sharing_color ) : "#fff" ?>';</script>
-										<label for="heateor_sss_font_color_default"><?php _e("Default", 'sassy-social-share' ); ?></label><input style="width: 100px" id="heateor_sss_font_color_default" onkeyup="if (this.value.trim() == '' || this.value.trim().length >= 3) { jQuery( '#horizontal_svg' ).attr( 'style', jQuery( '#horizontal_svg' ).attr( 'style' ).replace(heateorSssSharingTempColor.replace( '#', '%23' ), this.value.trim() ? this.value.trim().replace( '#', '%23' ) : '%23fff' ) ); heateorSssSharingTempColor = this.value.trim() ? this.value.trim() : '#fff';jQuery( '#heateor_sss_preview' ).css( 'color', heateorSssSharingTempColor.replace( '%23','#' ) ) }" name="heateor_sss[horizontal_font_color_default]" type="text" value="<?php echo $sharing_color; ?>" />
-										<input name="heateor_sss[horizontal_sharing_replace_color]" type="hidden" value="<?php echo isset( $options['horizontal_sharing_replace_color'] ) ? $options['horizontal_sharing_replace_color'] : ''; ?>" />
-										<label style="margin-left:10px" for="heateor_sss_font_color_hover"><?php _e("On Hover", 'sassy-social-share' ); ?></label><input style="width: 100px" id="heateor_sss_font_color_hover" name="heateor_sss[horizontal_font_color_hover]" type="text" onkeyup="" value="<?php echo $sharing_color_hover; ?>" />
-										<input name="heateor_sss[horizontal_sharing_replace_color_hover]" type="hidden" value="<?php echo isset( $options['horizontal_sharing_replace_color_hover'] ) ? $options['horizontal_sharing_replace_color_hover'] : ''; ?>" />
+										<label for="heateor_sss_font_color_default"><?php _e("Default", 'sassy-social-share' ); ?></label><input style="width: 100px" id="heateor_sss_font_color_default" onkeyup="if (this.value.trim() == '' || this.value.trim().length >= 3) { jQuery( '#horizontal_svg' ).attr( 'style', jQuery( '#horizontal_svg' ).attr( 'style' ).replace(heateorSssSharingTempColor.replace( '#', '%23' ), this.value.trim() ? this.value.trim().replace( '#', '%23' ) : '%23fff' ) ); heateorSssSharingTempColor = this.value.trim() ? this.value.trim() : '#fff';jQuery( '#heateor_sss_preview' ).css( 'color', heateorSssSharingTempColor.replace( '%23','#' ) ) }" name="heateor_sss[horizontal_font_color_default]" type="text" value="<?php echo esc_attr( $sharing_color ); ?>" />
+										<input name="heateor_sss[horizontal_sharing_replace_color]" type="hidden" value="<?php echo isset( $options['horizontal_sharing_replace_color'] ) ? esc_attr( $options['horizontal_sharing_replace_color'] ) : ''; ?>" />
+										<label style="margin-left:10px" for="heateor_sss_font_color_hover"><?php _e("On Hover", 'sassy-social-share' ); ?></label><input style="width: 100px" id="heateor_sss_font_color_hover" name="heateor_sss[horizontal_font_color_hover]" type="text" onkeyup="" value="<?php echo esc_attr( $sharing_color_hover ); ?>" />
+										<input name="heateor_sss[horizontal_sharing_replace_color_hover]" type="hidden" value="<?php echo isset( $options['horizontal_sharing_replace_color_hover'] ) ? esc_attr( $options['horizontal_sharing_replace_color_hover'] ) : ''; ?>" />
 									</td>
 								</tr>
 
@@ -293,8 +293,8 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 										<img id="heateor_sss_bg_color_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 									</th>
 									<td>
-										<label for="heateor_sss_bg_color_default"><?php _e("Default", 'sassy-social-share' ); ?></label><input style="width: 100px" id="heateor_sss_bg_color_default" name="heateor_sss[horizontal_bg_color_default]" type="text" onkeyup="heateorSssSharingBg = this.value.trim() ? this.value.trim() : '#3C589A'; heateorSssUpdateSharingPreview(this.value.trim(), 'backgroundColor', '#3C589A', 'heateor_sss_preview' )" value="<?php echo $horizontal_bg ?>" />
-										<label style="margin-left:10px" for="heateor_sss_bg_color_hover"><?php _e("On Hover", 'sassy-social-share' ); ?></label><input style="width: 100px" id="heateor_sss_bg_color_hover" name="heateor_sss[horizontal_bg_color_hover]" type="text" onkeyup="heateorSssSharingBgHover = this.value.trim() ? this.value.trim() : '#3C589A';" value="<?php echo $horizontal_bg_hover ?>" />
+										<label for="heateor_sss_bg_color_default"><?php _e("Default", 'sassy-social-share' ); ?></label><input style="width: 100px" id="heateor_sss_bg_color_default" name="heateor_sss[horizontal_bg_color_default]" type="text" onkeyup="heateorSssSharingBg = this.value.trim() ? this.value.trim() : '#3C589A'; heateorSssUpdateSharingPreview(this.value.trim(), 'backgroundColor', '#3C589A', 'heateor_sss_preview' )" value="<?php echo esc_attr( $horizontal_bg ) ?>" />
+										<label style="margin-left:10px" for="heateor_sss_bg_color_hover"><?php _e("On Hover", 'sassy-social-share' ); ?></label><input style="width: 100px" id="heateor_sss_bg_color_hover" name="heateor_sss[horizontal_bg_color_hover]" type="text" onkeyup="heateorSssSharingBgHover = this.value.trim() ? this.value.trim() : '#3C589A';" value="<?php echo esc_attr( $horizontal_bg_hover ) ?>" />
 									</td>
 								</tr>
 
@@ -315,13 +315,13 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 										<script type="text/javascript">var heateorSssBorderWidthHover = '<?php echo $border_width_hover = isset( $options['horizontal_border_width_hover'] ) ? esc_js( $options['horizontal_border_width_hover'] ) : ''; ?>', heateorSssBorderColorHover = '<?php echo $border_color_hover = isset( $options['horizontal_border_color_hover'] ) ? esc_js( $options['horizontal_border_color_hover'] ) : ''; ?>'</script>
 										<label><strong><?php _e( "Default", 'sassy-social-share' ); ?></strong></label>
 										<br/>
-										<label for="heateor_sss_border_width_default"><?php _e("Border Width", 'sassy-social-share' ); ?></label><input style="width: 100px" id="heateor_sss_border_width_default" onkeyup="heateorSssBorderWidth = this.value.trim(); jQuery( '#heateor_sss_preview' ).css( 'borderStyle', 'solid' ); heateorSssUpdateSharingPreview(this.value.trim(), 'borderWidth', '0px', 'heateor_sss_preview' ); heateorSssSharingHorizontalPreview();" name="heateor_sss[horizontal_border_width_default]" type="text" value="<?php echo $border_width ?>" />pixel(s)
-										<label style="margin-left:10px" for="heateor_sss_border_color_default"><?php _e("Border Color", 'sassy-social-share' ); ?></label><input style="width: 100px" onkeyup="heateorSssBorderColor = this.value.trim(); jQuery( '#heateor_sss_preview' ).css( 'borderStyle', 'solid' ); heateorSssUpdateSharingPreview(this.value.trim(), 'borderColor', 'transparent', 'heateor_sss_preview' )" id="heateor_sss_border_color_default" name="heateor_sss[horizontal_border_color_default]" type="text" value="<?php echo $border_color ?>" />
+										<label for="heateor_sss_border_width_default"><?php _e("Border Width", 'sassy-social-share' ); ?></label><input style="width: 100px" id="heateor_sss_border_width_default" onkeyup="heateorSssBorderWidth = this.value.trim(); jQuery( '#heateor_sss_preview' ).css( 'borderStyle', 'solid' ); heateorSssUpdateSharingPreview(this.value.trim(), 'borderWidth', '0px', 'heateor_sss_preview' ); heateorSssSharingHorizontalPreview();" name="heateor_sss[horizontal_border_width_default]" type="text" value="<?php echo esc_attr( $border_width ) ?>" />pixel(s)
+										<label style="margin-left:10px" for="heateor_sss_border_color_default"><?php _e("Border Color", 'sassy-social-share' ); ?></label><input style="width: 100px" onkeyup="heateorSssBorderColor = this.value.trim(); jQuery( '#heateor_sss_preview' ).css( 'borderStyle', 'solid' ); heateorSssUpdateSharingPreview(this.value.trim(), 'borderColor', 'transparent', 'heateor_sss_preview' )" id="heateor_sss_border_color_default" name="heateor_sss[horizontal_border_color_default]" type="text" value="<?php echo esc_attr( $border_color ) ?>" />
 										<br/><br/>
 										<label><strong><?php _e("On Hover", 'sassy-social-share' ); ?></strong></label>
 										<br/>
-										<label for="heateor_sss_border_width_hover"><?php _e("Border Width", 'sassy-social-share' ); ?></label><input style="width: 100px" id="heateor_sss_border_width_hover" name="heateor_sss[horizontal_border_width_hover]" type="text" value="<?php echo $border_width_hover ?>" onkeyup="heateorSssBorderWidthHover = this.value.trim();" />pixel(s)
-										<label style="margin-left:10px" for="heateor_sss_border_color_hover"><?php _e("Border Color", 'sassy-social-share' ); ?></label><input style="width: 100px" id="heateor_sss_border_color_hover" name="heateor_sss[horizontal_border_color_hover]" type="text" value="<?php echo $border_color_hover ?>" onkeyup="heateorSssBorderColorHover = this.value.trim();" />
+										<label for="heateor_sss_border_width_hover"><?php _e("Border Width", 'sassy-social-share' ); ?></label><input style="width: 100px" id="heateor_sss_border_width_hover" name="heateor_sss[horizontal_border_width_hover]" type="text" value="<?php echo esc_attr( $border_width_hover ) ?>" onkeyup="heateorSssBorderWidthHover = this.value.trim();" />pixel(s)
+										<label style="margin-left:10px" for="heateor_sss_border_color_hover"><?php _e("Border Color", 'sassy-social-share' ); ?></label><input style="width: 100px" id="heateor_sss_border_color_hover" name="heateor_sss[horizontal_border_color_hover]" type="text" value="<?php echo esc_attr( $border_color_hover ) ?>" onkeyup="heateorSssBorderColorHover = this.value.trim();" />
 									</td>
 								</tr>
 
@@ -357,7 +357,7 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 										<label style="margin-right:10px" for="heateor_sss_counter_inner_bottom"><?php _e("Inner Bottom", 'sassy-social-share' ); ?></label>
 									</td>
 								</tr>
-								<script type="text/javascript">heateorSssCounterPreview( '<?php echo $counter_position ?>' );</script>
+								<script type="text/javascript">heateorSssCounterPreview( '<?php echo esc_js( $counter_position ) ?>' );</script>
 
 								<tr class="heateor_sss_help_content" id="heateor_sss_counter_help_cont">
 									<td colspan="2">
@@ -413,21 +413,21 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 										}
 										</style>
 										<div>
-											<div class="heateorSssCounterVerticalPreviewTop" style="width:<?php echo 60 + ( isset( $options['vertical_sharing_shape'] ) && $options['vertical_sharing_shape'] == 'rectangle' ? $options['vertical_sharing_width'] : $options['vertical_sharing_size'] ) ?>px">44</div>
+											<div class="heateorSssCounterVerticalPreviewTop" style="width:<?php echo esc_attr( 60 + ( isset( $options['vertical_sharing_shape'] ) && $options['vertical_sharing_shape'] == 'rectangle' ? $options['vertical_sharing_width'] : $options['vertical_sharing_size'] ) ) ?>px">44</div>
 											<div class="heateorSssCounterVerticalPreviewLeft">44</div>
 											<div id="heateor_sss_vertical_preview" style="cursor:pointer;float:left">
 												<div class="heateorSssCounterVerticalPreviewInnertop">44</div>
 												<div class="heateorSssCounterVerticalPreviewInnerleft">44</div>
-												<div id="vertical_svg" style="float:left;width:100%;height:100%;background:url( 'data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20viewBox%3D%22-4%20-4%2040%2040%22%3E%3Cpath%20d%3D%22M17.78%2027.5V17.008h3.522l.527-4.09h-4.05v-2.61c0-1.182.33-1.99%202.023-1.99h2.166V4.66c-.375-.05-1.66-.16-3.155-.16-3.123%200-5.26%201.905-5.26%205.405v3.016h-3.53v4.09h3.53V27.5h4.223z%22%20fill%3D%22<?php echo $vertical_sharing_color ? str_replace( '#', '%23', $vertical_sharing_color) : "%23fff" ?>%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E' ) no-repeat center center; margin: auto"></div>
+												<div id="vertical_svg" style="float:left;width:100%;height:100%;background:url( 'data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20viewBox%3D%22-4%20-4%2040%2040%22%3E%3Cpath%20d%3D%22M17.78%2027.5V17.008h3.522l.527-4.09h-4.05v-2.61c0-1.182.33-1.99%202.023-1.99h2.166V4.66c-.375-.05-1.66-.16-3.155-.16-3.123%200-5.26%201.905-5.26%205.405v3.016h-3.53v4.09h3.53V27.5h4.223z%22%20fill%3D%22<?php echo esc_attr( $vertical_sharing_color ? str_replace( '#', '%23', $vertical_sharing_color) : "%23fff" ) ?>%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E' ) no-repeat center center; margin: auto"></div>
 												<div class="heateorSssCounterVerticalPreviewInnerright">44</div>
 												<div class="heateorSssCounterVerticalPreviewInnerbottom">44</div>
 											</div>
 											<div class="heateorSssCounterVerticalPreviewRight">44</div>
-											<div class="heateorSssCounterVerticalPreviewBottom" style="width:<?php echo 60 + ( isset( $options['vertical_sharing_shape'] ) && $options['vertical_sharing_shape'] == 'rectangle' ? $options['vertical_sharing_width'] : $options['vertical_sharing_size'] ) ?>px">44</div>
+											<div class="heateorSssCounterVerticalPreviewBottom" style="width:<?php echo esc_attr( 60 + ( isset( $options['vertical_sharing_shape'] ) && $options['vertical_sharing_shape'] == 'rectangle' ? $options['vertical_sharing_width'] : $options['vertical_sharing_size'] ) ) ?>px">44</div>
 										</div>
 										
 										<script type="text/javascript">
-										var tempVerticalShape = '<?php echo $vertical_sharing_shape ?>', tempVerticalSize = '<?php echo $vertical_sharing_size ?>', tempVerticalHeight = '<?php echo $vertical_sharing_height ?>', tempVerticalWidth = '<?php echo $vertical_sharing_width ?>', heateorSssVerticalSharingBgHover = '<?php echo $vertical_bg_hover ?>', heateorSssVerticalSharingBg = '<?php echo $vertical_bg ? $vertical_bg : "#3C589A" ?>', heateorSssVerticalBorderWidth = '<?php echo $vertical_border_width ?>', heateorSssVerticalBorderColor = '<?php echo $vertical_border_color ?>', heateorSssVerticalBorderWidthHover = '<?php echo $vertical_border_width_hover = isset( $options['vertical_border_width_hover'] ) ? $options['vertical_border_width_hover'] : ''; ?>', heateorSssVerticalBorderColorHover = '<?php echo $vertical_border_color_hover = isset( $options['vertical_border_color_hover'] ) ? $options['vertical_border_color_hover'] : ''; ?>', heateorSssVerticalBorderRadius = '<?php echo $vertical_sharing_border_radius ? $vertical_sharing_border_radius . "px" : "0px" ?>';
+										var tempVerticalShape = '<?php echo esc_js( $vertical_sharing_shape ) ?>', tempVerticalSize = '<?php echo esc_js( $vertical_sharing_size ) ?>', tempVerticalHeight = '<?php echo esc_js( $vertical_sharing_height ) ?>', tempVerticalWidth = '<?php echo esc_js( $vertical_sharing_width ) ?>', heateorSssVerticalSharingBgHover = '<?php echo esc_js( $vertical_bg_hover ) ?>', heateorSssVerticalSharingBg = '<?php echo esc_js( $vertical_bg ? $vertical_bg : "#3C589A" ) ?>', heateorSssVerticalBorderWidth = '<?php echo esc_js( $vertical_border_width ) ?>', heateorSssVerticalBorderColor = '<?php echo esc_js( $vertical_border_color ) ?>', heateorSssVerticalBorderWidthHover = '<?php echo $vertical_border_width_hover = isset( $options['vertical_border_width_hover'] ) ? esc_js( $options['vertical_border_width_hover'] ) : ''; ?>', heateorSssVerticalBorderColorHover = '<?php echo $vertical_border_color_hover = isset( $options['vertical_border_color_hover'] ) ? esc_js( $options['vertical_border_color_hover'] ) : ''; ?>', heateorSssVerticalBorderRadius = '<?php echo $vertical_sharing_border_radius ? esc_js( $vertical_sharing_border_radius ) . "px" : "0px" ?>';
 										
 										heateorSssSharingVerticalPreview();
 										
@@ -492,7 +492,7 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 											<img id="heateor_sss_vertical_sharing_icon_size_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 										</th>
 										<td>
-											<input style="width:50px" id="heateor_sss_vertical_sharing_icon_size" name="heateor_sss[vertical_sharing_size]" type="text" value="<?php echo $vertical_sharing_size; ?>" />
+											<input style="width:50px" id="heateor_sss_vertical_sharing_icon_size" name="heateor_sss[vertical_sharing_size]" type="text" value="<?php echo esc_attr( $vertical_sharing_size ); ?>" />
 											<input id="heateor_sss_vertical_sharing_size_plus" type="button" value="+" onmouseup="tempVerticalSize = document.getElementById( 'heateor_sss_vertical_sharing_icon_size' ).value;heateorSssSharingVerticalPreview()" />
 											<input id="heateor_sss_vertical_sharing_size_minus" type="button" value="-" onmouseup="tempVerticalSize = document.getElementById( 'heateor_sss_vertical_sharing_icon_size' ).value;heateorSssSharingVerticalPreview()" />
 											<script type="text/javascript">
@@ -518,7 +518,7 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 											<img id="heateor_sss_vertical_icon_width_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 										</th>
 										<td>
-											<input style="width:50px" id="heateor_sss_vertical_icon_width" name="heateor_sss[vertical_sharing_width]" type="text" value="<?php echo $vertical_sharing_width; ?>" />
+											<input style="width:50px" id="heateor_sss_vertical_icon_width" name="heateor_sss[vertical_sharing_width]" type="text" value="<?php echo esc_attr( $vertical_sharing_width ); ?>" />
 											<input id="heateor_sss_vertical_width_plus" type="button" value="+" onmouseup="tempVerticalWidth = document.getElementById( 'heateor_sss_vertical_icon_width' ).value;heateorSssSharingVerticalPreview()" />
 											<input id="heateor_sss_vertical_width_minus" type="button" value="-" onmouseup="tempVerticalWidth = document.getElementById( 'heateor_sss_vertical_icon_width' ).value;heateorSssSharingVerticalPreview()" />
 											<script type="text/javascript">
@@ -542,7 +542,7 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 											<img id="heateor_sss_vertical_icon_height_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 										</th>
 										<td>
-											<input style="width:50px" id="heateor_sss_vertical_icon_height" name="heateor_sss[vertical_sharing_height]" type="text" value="<?php echo $vertical_sharing_height; ?>" />
+											<input style="width:50px" id="heateor_sss_vertical_icon_height" name="heateor_sss[vertical_sharing_height]" type="text" value="<?php echo esc_attr( $vertical_sharing_height ); ?>" />
 											<input id="heateor_sss_vertical_height_plus" type="button" value="+" onmouseup="tempVerticalHeight = document.getElementById( 'heateor_sss_vertical_icon_height' ).value;heateorSssSharingVerticalPreview()" />
 											<input id="heateor_sss_vertical_height_minus" type="button" value="-" onmouseup="tempVerticalHeight = document.getElementById( 'heateor_sss_vertical_icon_height' ).value;heateorSssSharingVerticalPreview()" />
 											<script type="text/javascript">
@@ -568,7 +568,7 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 											<img id="heateor_sss_vertical_icon_border_radius_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 										</th>
 										<td>
-											<input style="width:50px" id="heateor_sss_vertical_icon_border_radius" name="heateor_sss[vertical_border_radius]" type="text" value="<?php echo $vertical_sharing_border_radius; ?>" onkeyup="heateorSssVerticalBorderRadius = this.value.trim() ? this.value.trim() + 'px' : '0px';heateorSssUpdateSharingPreview(heateorSssVerticalBorderRadius, 'borderRadius', '0px', 'heateor_sss_vertical_preview' )" />
+											<input style="width:50px" id="heateor_sss_vertical_icon_border_radius" name="heateor_sss[vertical_border_radius]" type="text" value="<?php echo esc_attr( $vertical_sharing_border_radius ); ?>" onkeyup="heateorSssVerticalBorderRadius = this.value.trim() ? this.value.trim() + 'px' : '0px';heateorSssUpdateSharingPreview(heateorSssVerticalBorderRadius, 'borderRadius', '0px', 'heateor_sss_vertical_preview' )" />
 										</td>
 									</tr>
 
@@ -587,11 +587,11 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 										<img id="heateor_sss_vertical_font_color_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 									</th>
 									<td>
-										<script type="text/javascript">var heateorSssVerticalSharingTempColor = '<?php echo $vertical_sharing_color ? $vertical_sharing_color : "#fff" ?>';</script>
-										<label for="heateor_sss_vertical_font_color_default"><?php _e("Default", 'sassy-social-share' ); ?></label><input style="width: 100px" id="heateor_sss_vertical_font_color_default" name="heateor_sss[vertical_font_color_default]" onkeyup="if (this.value.trim() == '' || this.value.trim().length >= 3) { jQuery( '#vertical_svg' ).attr( 'style', jQuery( '#vertical_svg' ).attr( 'style' ).replace(heateorSssVerticalSharingTempColor.replace( '#', '%23' ), this.value.trim() ? this.value.trim().replace( '#', '%23' ) : '%23fff' ) ); heateorSssVerticalSharingTempColor = this.value.trim() ? this.value.trim() : '#fff';jQuery( '#heateor_sss_vertical_preview' ).css( 'color', heateorSssVerticalSharingTempColor.replace( '%23','#' ) ) }" type="text" value="<?php echo $vertical_sharing_color ?>" />
-										<input name="heateor_sss[vertical_sharing_replace_color]" type="hidden" value="<?php echo isset( $options['vertical_sharing_replace_color'] ) ? $options['vertical_sharing_replace_color'] : ''; ?>" />
-										<label style="margin-left:10px" for="heateor_sss_vertical_font_color_hover"><?php _e("On Hover", 'sassy-social-share' ); ?></label><input style="width: 100px" id="heateor_sss_vertical_font_color_hover" name="heateor_sss[vertical_font_color_hover]" type="text" value="<?php echo $vertical_sharing_color_hover; ?>" />
-										<input name="heateor_sss[vertical_sharing_replace_color_hover]" type="hidden" value="<?php echo isset( $options['vertical_sharing_replace_color_hover'] ) ? $options['vertical_sharing_replace_color_hover'] : ''; ?>" />
+										<script type="text/javascript">var heateorSssVerticalSharingTempColor = '<?php echo $vertical_sharing_color ? esc_js( $vertical_sharing_color ) : "#fff" ?>';</script>
+										<label for="heateor_sss_vertical_font_color_default"><?php _e("Default", 'sassy-social-share' ); ?></label><input style="width: 100px" id="heateor_sss_vertical_font_color_default" name="heateor_sss[vertical_font_color_default]" onkeyup="if (this.value.trim() == '' || this.value.trim().length >= 3) { jQuery( '#vertical_svg' ).attr( 'style', jQuery( '#vertical_svg' ).attr( 'style' ).replace(heateorSssVerticalSharingTempColor.replace( '#', '%23' ), this.value.trim() ? this.value.trim().replace( '#', '%23' ) : '%23fff' ) ); heateorSssVerticalSharingTempColor = this.value.trim() ? this.value.trim() : '#fff';jQuery( '#heateor_sss_vertical_preview' ).css( 'color', heateorSssVerticalSharingTempColor.replace( '%23','#' ) ) }" type="text" value="<?php echo esc_attr( $vertical_sharing_color ) ?>" />
+										<input name="heateor_sss[vertical_sharing_replace_color]" type="hidden" value="<?php echo isset( $options['vertical_sharing_replace_color'] ) ? esc_attr( $options['vertical_sharing_replace_color'] ) : ''; ?>" />
+										<label style="margin-left:10px" for="heateor_sss_vertical_font_color_hover"><?php _e("On Hover", 'sassy-social-share' ); ?></label><input style="width: 100px" id="heateor_sss_vertical_font_color_hover" name="heateor_sss[vertical_font_color_hover]" type="text" value="<?php echo esc_attr( $vertical_sharing_color_hover ); ?>" />
+										<input name="heateor_sss[vertical_sharing_replace_color_hover]" type="hidden" value="<?php echo isset( $options['vertical_sharing_replace_color_hover'] ) ? esc_attr( $options['vertical_sharing_replace_color_hover'] ) : ''; ?>" />
 									</td>
 								</tr>
 
@@ -609,8 +609,8 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 										<img id="heateor_sss_vertical_icon_bg_color_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 									</th>
 									<td>
-										<label for="heateor_sss_vertical_icon_bg_color_default"><?php _e("Default", 'sassy-social-share' ); ?></label><input style="width: 100px" id="heateor_sss_vertical_icon_bg_color_default" name="heateor_sss[vertical_bg_color_default]" type="text" onkeyup="heateorSssVerticalSharingBg = this.value.trim() ? this.value.trim() : '#3C589A'; heateorSssUpdateSharingPreview(this.value.trim(), 'backgroundColor', '#3C589A', 'heateor_sss_vertical_preview' )" value="<?php echo $vertical_bg ?>" />
-										<label style="margin-left:10px" for="heateor_sss_vertical_bg_color_hover"><?php _e("On Hover", 'sassy-social-share' ); ?></label><input style="width: 100px" id="heateor_sss_vertical_bg_color_hover" name="heateor_sss[vertical_bg_color_hover]" type="text" onkeyup="heateorSssVerticalSharingBgHover = this.value.trim() ? this.value.trim() : '#3C589A';" value="<?php echo $vertical_bg_hover ?>" />
+										<label for="heateor_sss_vertical_icon_bg_color_default"><?php _e("Default", 'sassy-social-share' ); ?></label><input style="width: 100px" id="heateor_sss_vertical_icon_bg_color_default" name="heateor_sss[vertical_bg_color_default]" type="text" onkeyup="heateorSssVerticalSharingBg = this.value.trim() ? this.value.trim() : '#3C589A'; heateorSssUpdateSharingPreview(this.value.trim(), 'backgroundColor', '#3C589A', 'heateor_sss_vertical_preview' )" value="<?php echo esc_attr( $vertical_bg ) ?>" />
+										<label style="margin-left:10px" for="heateor_sss_vertical_bg_color_hover"><?php _e("On Hover", 'sassy-social-share' ); ?></label><input style="width: 100px" id="heateor_sss_vertical_bg_color_hover" name="heateor_sss[vertical_bg_color_hover]" type="text" onkeyup="heateorSssVerticalSharingBgHover = this.value.trim() ? this.value.trim() : '#3C589A';" value="<?php echo esc_attr( $vertical_bg_hover ) ?>" />
 									</td>
 								</tr>
 
@@ -630,13 +630,13 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 									<td>
 										<label><strong><?php _e("Default", 'sassy-social-share' ); ?></strong></label>
 										<br/>
-										<label for="heateor_sss_vertical_border_width_default"><?php _e("Border Width", 'sassy-social-share' ); ?></label><input style="width: 100px" onkeyup="heateorSssVerticalBorderWidth = this.value.trim(); jQuery( '#heateor_sss_vertical_preview' ).css( 'borderStyle', 'solid' ); heateorSssUpdateSharingPreview(this.value.trim(), 'borderWidth', '0px', 'heateor_sss_vertical_preview' ); heateorSssSharingVerticalPreview();" id="heateor_sss_vertical_border_width_default" name="heateor_sss[vertical_border_width_default]" type="text" value="<?php echo $vertical_border_width ?>" />pixel(s)
-										<label style="margin-left:10px" for="heateor_sss_vertical_border_color_default"><?php _e("Border Color", 'sassy-social-share' ); ?></label><input onkeyup="heateorSssVerticalBorderColor = this.value.trim(); jQuery( '#heateor_sss_vertical_preview' ).css( 'borderStyle', 'solid' ); heateorSssUpdateSharingPreview(this.value.trim(), 'borderColor', 'transparent', 'heateor_sss_vertical_preview' )" style="width: 100px" id="heateor_sss_vertical_border_color_default" name="heateor_sss[vertical_border_color_default]" type="text" value="<?php echo $vertical_border_color = isset( $options['vertical_border_color_default'] ) ? $options['vertical_border_color_default'] : ''; ?>" />
+										<label for="heateor_sss_vertical_border_width_default"><?php _e("Border Width", 'sassy-social-share' ); ?></label><input style="width: 100px" onkeyup="heateorSssVerticalBorderWidth = this.value.trim(); jQuery( '#heateor_sss_vertical_preview' ).css( 'borderStyle', 'solid' ); heateorSssUpdateSharingPreview(this.value.trim(), 'borderWidth', '0px', 'heateor_sss_vertical_preview' ); heateorSssSharingVerticalPreview();" id="heateor_sss_vertical_border_width_default" name="heateor_sss[vertical_border_width_default]" type="text" value="<?php echo esc_attr( $vertical_border_width ) ?>" />pixel(s)
+										<label style="margin-left:10px" for="heateor_sss_vertical_border_color_default"><?php _e("Border Color", 'sassy-social-share' ); ?></label><input onkeyup="heateorSssVerticalBorderColor = this.value.trim(); jQuery( '#heateor_sss_vertical_preview' ).css( 'borderStyle', 'solid' ); heateorSssUpdateSharingPreview(this.value.trim(), 'borderColor', 'transparent', 'heateor_sss_vertical_preview' )" style="width: 100px" id="heateor_sss_vertical_border_color_default" name="heateor_sss[vertical_border_color_default]" type="text" value="<?php echo $vertical_border_color = isset( $options['vertical_border_color_default'] ) ? esc_attr( $options['vertical_border_color_default'] ) : ''; ?>" />
 										<br/><br/>
 										<label><strong><?php _e("On Hover", 'sassy-social-share' ); ?></strong></label>
 										<br/>
-										<label for="heateor_sss_vertical_border_width_hover"><?php _e("Border Width", 'sassy-social-share' ); ?></label><input style="width: 100px" id="heateor_sss_vertical_border_width_hover" name="heateor_sss[vertical_border_width_hover]" onkeyup="heateorSssVerticalBorderWidthHover = this.value.trim();" type="text" value="<?php echo $vertical_border_width_hover ?>" />pixel(s)
-										<label style="margin-left:10px" for="heateor_sss_vertical_border_color_hover"><?php _e("Border Color", 'sassy-social-share' ); ?></label><input style="width: 100px" id="heateor_sss_vertical_border_color_hover" name="heateor_sss[vertical_border_color_hover]" onkeyup="heateorSssVerticalBorderColorHover = this.value.trim()" type="text" value="<?php echo $vertical_border_color_hover; ?>" />
+										<label for="heateor_sss_vertical_border_width_hover"><?php _e("Border Width", 'sassy-social-share' ); ?></label><input style="width: 100px" id="heateor_sss_vertical_border_width_hover" name="heateor_sss[vertical_border_width_hover]" onkeyup="heateorSssVerticalBorderWidthHover = this.value.trim();" type="text" value="<?php echo esc_attr( $vertical_border_width_hover ) ?>" />pixel(s)
+										<label style="margin-left:10px" for="heateor_sss_vertical_border_color_hover"><?php _e("Border Color", 'sassy-social-share' ); ?></label><input style="width: 100px" id="heateor_sss_vertical_border_color_hover" name="heateor_sss[vertical_border_color_hover]" onkeyup="heateorSssVerticalBorderColorHover = this.value.trim()" type="text" value="<?php echo esc_attr( $vertical_border_color_hover ); ?>" />
 									</td>
 								</tr>
 
@@ -672,7 +672,7 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 										<label style="margin-right:10px" for="heateor_sss_vertical_counter_inner_bottom"><?php _e("Inner Bottom", 'sassy-social-share' ); ?></label>
 									</td>
 								</tr>
-								<script type="text/javascript">heateorSssVerticalCounterPreview( '<?php echo $vertical_counter_position ?>' );</script>
+								<script type="text/javascript">heateorSssVerticalCounterPreview( '<?php echo esc_js( $vertical_counter_position ) ?>' );</script>
 
 								<tr class="heateor_sss_help_content" id="heateor_sss_vertical_counter_help_cont">
 									<td colspan="2">
@@ -723,13 +723,13 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 							<img id="heateor_sss_horizontal_target_url_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td id="heateor_sss_target_url_column">
-							<input id="heateor_sss_target_url_default" name="heateor_sss[horizontal_target_url]" type="radio" <?php echo !isset( $options['horizontal_target_url'] ) || $options['horizontal_target_url'] == 'default' ? 'checked = "checked"' : '';?> value="default" />
+							<input id="heateor_sss_target_url_default" name="heateor_sss[horizontal_target_url]" type="radio" <?php echo ! isset( $options['horizontal_target_url'] ) || $options['horizontal_target_url'] == 'default' ? 'checked = "checked"' : '';?> value="default" />
 							<label for="heateor_sss_target_url_default"><?php _e( 'Url of the webpage where icons are located (default)', 'sassy-social-share' ) ?></label><br/>
 							<input id="heateor_sss_target_url_home" name="heateor_sss[horizontal_target_url]" type="radio" <?php echo isset( $options['horizontal_target_url'] ) && $options['horizontal_target_url'] == 'home' ? 'checked = "checked"' : '';?> value="home" />
 							<label for="heateor_sss_target_url_home"><?php _e( 'Url of the homepage of your website', 'sassy-social-share' ) ?></label><br/>
 							<input id="heateor_sss_target_url_custom" name="heateor_sss[horizontal_target_url]" type="radio" <?php echo isset( $options['horizontal_target_url'] ) && $options['horizontal_target_url'] == 'custom' ? 'checked = "checked"' : '';?> value="custom" />
 							<label for="heateor_sss_target_url_custom"><?php _e( 'Custom url', 'sassy-social-share' ) ?></label><br/>
-							<input id="heateor_sss_target_url_custom_url" name="heateor_sss[horizontal_target_url_custom]" type="text" value="<?php echo isset( $options['horizontal_target_url_custom'] ) ? $options['horizontal_target_url_custom'] : '' ?>" />
+							<input id="heateor_sss_target_url_custom_url" name="heateor_sss[horizontal_target_url_custom]" type="text" value="<?php echo isset( $options['horizontal_target_url_custom'] ) ? esc_url( $options['horizontal_target_url_custom'] ) : '' ?>" />
 							</td>
 						</tr>
 						<tr class="heateor_sss_help_content" id="heateor_sss_horizontal_target_url_help_cont">
@@ -746,7 +746,7 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 							<img id="heateor_sss_title_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
-							<input id="heateor_sss_fblogin_title" name="heateor_sss[title]" type="text" value="<?php echo isset( $options['title'] ) ? $options['title'] : '' ?>" />
+							<input id="heateor_sss_fblogin_title" name="heateor_sss[title]" type="text" value="<?php echo isset( $options['title'] ) ? esc_attr( $options['title'] ) : '' ?>" />
 							</td>
 						</tr>
 						
@@ -784,14 +784,14 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 							$options['vertical_re_providers'] = array();
 						}
 						?>
-						<tbody id="heateor_sss_instagram_options" <?php echo ! isset( $options['horizontal_re_providers'] ) || ! in_array( 'instagram', $options['horizontal_re_providers'] ) ? 'style = "display: none"' : '';?> >
+						<tbody id="heateor_sss_instagram_options" <?php echo ! isset( $options['horizontal_re_providers'] ) || ! in_array( 'instagram', $options['horizontal_re_providers'] ) ? 'style="display: none"' : '';?> >
 							<tr>
 								<th>
 								<label for="heateor_sss_instagram_username"><?php _e( "Instagram username", 'sassy-social-share' ); ?></label>
 								<img id="heateor_sss_instagram_username_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 								</th>
 								<td>
-								<input id="heateor_sss_instagram_username" name="heateor_sss[instagram_username]" type="text" value="<?php echo $instagram_username ?>" />
+								<input id="heateor_sss_instagram_username" name="heateor_sss[instagram_username]" type="text" value="<?php echo esc_attr( $instagram_username ) ?>" />
 								</td>
 							</tr>
 							
@@ -804,14 +804,14 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 							</tr>
 						</tbody>
 
-						<tbody id="heateor_sss_youtube_options" <?php echo ! isset( $options['horizontal_re_providers'] ) || ! in_array( 'youtube', $options['horizontal_re_providers'] ) ? 'style = "display: none"' : '';?> >
+						<tbody id="heateor_sss_youtube_options" <?php echo ! isset( $options['horizontal_re_providers'] ) || ! in_array( 'youtube', $options['horizontal_re_providers'] ) ? 'style="display: none"' : '';?> >
 							<tr>
 								<th>
 								<label for="heateor_sss_youtube_username"><?php _e( "Youtube URL", 'sassy-social-share' ); ?></label>
 								<img id="heateor_sss_youtube_username_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 								</th>
 								<td>
-								<input id="heateor_sss_youtube_username" name="heateor_sss[youtube_username]" type="text" value="<?php echo $youtube_username ?>" />
+								<input id="heateor_sss_youtube_username" name="heateor_sss[youtube_username]" type="text" value="<?php echo esc_attr( $youtube_username ) ?>" />
 								</td>
 							</tr>
 							
@@ -824,14 +824,14 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 							</tr>
 						</tbody>	
 
-						<tbody id="heateor_sss_comment_options" <?php echo ! isset( $options['horizontal_re_providers'] ) || ! in_array( 'Comment', $options['horizontal_re_providers'] ) ? 'style = "display: none"' : '';?> >
+						<tbody id="heateor_sss_comment_options" <?php echo ! isset( $options['horizontal_re_providers'] ) || ! in_array( 'Comment', $options['horizontal_re_providers'] ) ? 'style="display: none"' : '';?> >
 							<tr>
 								<th>
 								<label for="heateor_sss_comment_container_id"><?php _e( "HTML ID of container element of comment form", 'sassy-social-share' ); ?></label>
 								<img id="heateor_sss_comment_container_id_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 								</th>
 								<td>
-								<input id="heateor_sss_comment_container_id" name="heateor_sss[comment_container_id]" type="text" value="<?php echo $commentform_container_id ?>" />
+								<input id="heateor_sss_comment_container_id" name="heateor_sss[comment_container_id]" type="text" value="<?php echo esc_attr( $commentform_container_id ) ?>" />
 								</td>
 							</tr>
 							
@@ -878,32 +878,32 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 								$horSharingStyle .= 'border-radius:' . $options['horizontal_border_radius'] . 'px;';
 							}
 							?>
-							var heateorSssHorSharingStyle = '<?php echo $horSharingStyle ?>', heateorSssHorDeliciousRadius = '<?php echo $horDeliciousRadius ?>', heateorSssLikeButtons = ["<?php echo implode( '","', $like_buttons) ?>"];
+							var heateorSssHorSharingStyle = '<?php echo esc_js( $horSharingStyle ) ?>', heateorSssHorDeliciousRadius = '<?php echo esc_js( $horDeliciousRadius ) ?>', heateorSssLikeButtons = ["<?php echo esc_js( implode( '","', $like_buttons ) ) ?>"];
 							</script>
 							<style type="text/css">
 							<?php if ( $horizontal_bg != '' ) { ?>
-								ul#heateor_sss_rearrange i.heateorSssInstagramBackground{background:<?php echo $horizontal_bg ?>!important;}
+								ul#heateor_sss_rearrange i.heateorSssInstagramBackground{background:<?php echo esc_html( $horizontal_bg ) ?>!important;}
 							<?php } 
 							if ( $horizontal_bg_hover != '' ) { ?>
-								ul#heateor_sss_rearrange i.heateorSssInstagramBackground:hover{background:<?php echo $horizontal_bg_hover ?>!important;}
+								ul#heateor_sss_rearrange i.heateorSssInstagramBackground:hover{background:<?php echo esc_html( $horizontal_bg_hover ) ?>!important;}
 							<?php } ?>
 							.heateorSssSharingBackground{
 								<?php if ( $horizontal_bg ) { ?>
-								background-color: <?php echo $horizontal_bg ?>;
+								background-color: <?php echo esc_html( $horizontal_bg ) ?>;
 								<?php } if ( $border_width ) { ?>
-								border-width: <?php echo $border_width ?>px;
+								border-width: <?php echo esc_html( $border_width ) ?>px;
 								border-style: solid;
 								<?php } ?>
-								border-color: <?php echo $border_color ? $border_color : 'transparent'; ?>;
+								border-color: <?php echo $border_color ? esc_html( $border_color ) : 'transparent'; ?>;
 							}
 							.heateorSssSharingBackground:hover{
 								<?php if ( $horizontal_bg_hover ) { ?>
-								background-color: <?php echo $horizontal_bg_hover ?>;
+								background-color: <?php echo esc_html( $horizontal_bg_hover ) ?>;
 								<?php }if ( $border_width_hover ) { ?>
-								border-width: <?php echo $border_width_hover ?>px;
+								border-width: <?php echo esc_html( $border_width_hover ) ?>px;
 								border-style: solid;
 								<?php } ?>
-								border-color: <?php echo $border_color_hover ? $border_color_hover : 'transparent'; ?>;
+								border-color: <?php echo $border_color_hover ? esc_html( $border_color_hover ) : 'transparent'; ?>;
 							}
 							</style>
 							<ul id="heateor_sss_rearrange">
@@ -911,9 +911,9 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 								if ( isset( $options['horizontal_re_providers'] ) ) {
 									foreach ( $options['horizontal_re_providers'] as $rearrange ) {
 										?>
-										<li title="<?php echo ucfirst( str_replace( '_', ' ', $rearrange ) ) ?>" id="heateor_sss_re_horizontal_<?php echo str_replace(array( ' ', '.' ), '_', $rearrange) ?>" >
-										<i style="display:block;<?php echo $horSharingStyle ?>" class="<?php echo in_array( $rearrange, $like_buttons) ? '' : 'heateorSssSharingBackground' ?> heateorSss<?php echo ucfirst(str_replace(array( '_', '.', ' ' ), '', $rearrange) ) ?>Background"><div class="heateorSssSharingSvg heateorSss<?php echo ucfirst(str_replace(array( '_', ' ', '.' ), '', $rearrange) ) ?>Svg" style="<?php echo $horDeliciousRadius ?>"></div></i>
-										<input type="hidden" name="heateor_sss[horizontal_re_providers][]" value="<?php echo $rearrange ?>">
+										<li title="<?php echo esc_attr( ucfirst( str_replace( '_', ' ', $rearrange ) ) ) ?>" id="heateor_sss_re_horizontal_<?php echo esc_attr( str_replace(array( ' ', '.' ), '_', $rearrange ) ) ?>" >
+										<i style="display:block;<?php echo esc_attr( $horSharingStyle ) ?>" class="<?php echo in_array( $rearrange, $like_buttons ) ? '' : 'heateorSssSharingBackground' ?> heateorSss<?php echo esc_attr( ucfirst( str_replace( array( '_', '.', ' ' ), '', $rearrange ) ) ) ?>Background"><div class="heateorSssSharingSvg heateorSss<?php echo esc_attr( ucfirst( str_replace( array( '_', ' ', '.' ), '', $rearrange ) ) ) ?>Svg" style="<?php echo esc_attr( $horDeliciousRadius ) ?>"></div></i>
+										<input type="hidden" name="heateor_sss[horizontal_re_providers][]" value="<?php echo esc_attr( $rearrange ) ?>">
 										</li>
 										<?php
 									}
@@ -952,8 +952,8 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 							foreach( $like_buttons as $like_button ) {
 								?>
 								<div class="heateorSssHorizontalSharingProviderContainer">
-								<input id="heateor_sss_<?php echo $like_button ?>" type="checkbox" <?php echo isset( $options['horizontal_re_providers'] ) && in_array( $like_button, $options['horizontal_re_providers'] ) ? 'checked = "checked"' : '';?> value="<?php echo $like_button ?>" />
-								<label for="heateor_sss_<?php echo $like_button ?>"><img src="<?php echo plugins_url( '../../images/sharing/'. $like_button .'.png', __FILE__ ) ?>" /></label>
+								<input id="heateor_sss_<?php echo esc_attr( $like_button ) ?>" type="checkbox" <?php echo isset( $options['horizontal_re_providers'] ) && in_array( $like_button, $options['horizontal_re_providers'] ) ? 'checked = "checked"' : '';?> value="<?php echo esc_attr( $like_button ) ?>" />
+								<label for="heateor_sss_<?php echo esc_attr( $like_button ) ?>"><img src="<?php echo plugins_url( '../../images/sharing/'. $like_button .'.png', __FILE__ ) ?>" /></label>
 								</div>
 								<?php
 							}
@@ -965,9 +965,9 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 							foreach( $sharing_networks as $sharing_network ) {
 								?>
 								<div class="heateorSssHorizontalSharingProviderContainer">
-								<input id="heateor_sss_<?php echo $sharing_network ?>" type="checkbox" <?php echo isset( $options['horizontal_re_providers'] ) && in_array( $sharing_network, $options['horizontal_re_providers'] ) ? 'checked = "checked"' : '';?> value="<?php echo $sharing_network ?>" />
-								<label for="heateor_sss_<?php echo $sharing_network ?>"><i style="display:block;width:18px;height:18px;" class="heateorSssSharing heateorSss<?php echo str_replace( array( '_', '.', ' ' ), '', ucfirst( $sharing_network ) ) ?>Background"><ss style="display:block;" class="heateorSssSharingSvg heateorSss<?php echo str_replace(array( '_', '.', ' ' ), '', ucfirst( $sharing_network) ) ?>Svg"></ss></i></label>
-								<label class="lblSocialNetwork" for="heateor_sss_<?php echo $sharing_network ?>"><?php echo str_replace( '_', ' ', ucfirst( $sharing_network ) ) ?></label>
+								<input id="heateor_sss_<?php echo esc_attr( $sharing_network ) ?>" type="checkbox" <?php echo isset( $options['horizontal_re_providers'] ) && in_array( $sharing_network, $options['horizontal_re_providers'] ) ? 'checked = "checked"' : '';?> value="<?php echo esc_attr( $sharing_network ) ?>" />
+								<label for="heateor_sss_<?php echo esc_attr( $sharing_network ) ?>"><i style="display:block;width:18px;height:18px;" class="heateorSssSharing heateorSss<?php echo esc_attr( str_replace( array( '_', '.', ' ' ), '', ucfirst( $sharing_network ) ) ) ?>Background"><ss style="display:block;" class="heateorSssSharingSvg heateorSss<?php echo esc_attr( str_replace( array( '_', '.', ' ' ), '', ucfirst( $sharing_network) ) ) ?>Svg"></ss></i></label>
+								<label class="lblSocialNetwork" for="heateor_sss_<?php echo esc_attr( $sharing_network ) ?>"><?php echo esc_html( str_replace( '_', ' ', ucfirst( $sharing_network ) ) ) ?></label>
 								</div>
 								<?php
 							}
@@ -1050,8 +1050,8 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 							if ( count( $post_types ) ) {	
 								foreach ( $post_types as $post_type ) {
 									?>
-									<input id="heateor_sss_<?php echo $post_type ?>" name="heateor_sss[<?php echo $post_type ?>]" type="checkbox" <?php echo isset( $options[$post_type] ) ? 'checked = "checked"' : '';?> value="1" />
-									<label for="heateor_sss_<?php echo $post_type ?>"><?php echo ucfirst( $post_type ) . 's'; ?></label><br/>
+									<input id="heateor_sss_<?php echo esc_attr( $post_type ) ?>" name="heateor_sss[<?php echo esc_attr( $post_type ) ?>]" type="checkbox" <?php echo isset( $options[$post_type] ) ? 'checked = "checked"' : '';?> value="1" />
+									<label for="heateor_sss_<?php echo esc_attr( $post_type ) ?>"><?php echo esc_html( ucfirst( $post_type ) ); ?></label><br/>
 									<?php
 								}
 							}
@@ -1064,7 +1064,7 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 								<label for="heateor_sss_bp_group"><?php _e( 'BuddyPress group (only at top of content)', 'sassy-social-share' ) ?></label><br/>
 								<?php
 							}
-							if (function_exists( 'is_bbpress' ) ) {
+							if ( function_exists( 'is_bbpress' ) ) {
 								?>
 								<input id="heateor_sss_bb_forum" name="heateor_sss[bb_forum]" type="checkbox" <?php echo isset( $options['bb_forum'] ) ? 'checked = "checked"' : '';?> value="1" />
 								<label for="heateor_sss_bb_forum"><?php _e( 'BBPress forum', 'sassy-social-share' ) ?></label>
@@ -1210,13 +1210,13 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 							<img id="heateor_sss_vertical_target_url_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td id="heateor_sss_vertical_target_url_column">
-							<input id="heateor_sss_vertical_target_url_default" name="heateor_sss[vertical_target_url]" type="radio" <?php echo !isset( $options['vertical_target_url'] ) || $options['vertical_target_url'] == 'default' ? 'checked = "checked"' : '';?> value="default" />
+							<input id="heateor_sss_vertical_target_url_default" name="heateor_sss[vertical_target_url]" type="radio" <?php echo ! isset( $options['vertical_target_url'] ) || $options['vertical_target_url'] == 'default' ? 'checked = "checked"' : '';?> value="default" />
 							<label for="heateor_sss_vertical_target_url_default"><?php _e( 'Url of the webpage where icons are located (default)', 'sassy-social-share' ) ?></label><br/>
 							<input id="heateor_sss_vertical_target_url_home" name="heateor_sss[vertical_target_url]" type="radio" <?php echo isset( $options['vertical_target_url'] ) && $options['vertical_target_url'] == 'home' ? 'checked = "checked"' : '';?> value="home" />
 							<label for="heateor_sss_vertical_target_url_home"><?php _e( 'Url of the homepage of your website', 'sassy-social-share' ) ?></label><br/>
 							<input id="heateor_sss_vertical_target_url_custom" name="heateor_sss[vertical_target_url]" type="radio" <?php echo isset( $options['vertical_target_url'] ) && $options['vertical_target_url'] == 'custom' ? 'checked = "checked"' : '';?> value="custom" />
 							<label for="heateor_sss_vertical_target_url_custom"><?php _e( 'Custom url', 'sassy-social-share' ) ?></label><br/>
-							<input id="heateor_sss_vertical_target_url_custom_url" name="heateor_sss[vertical_target_url_custom]" type="text" value="<?php echo isset( $options['vertical_target_url_custom'] ) ? $options['vertical_target_url_custom'] : '' ?>" />
+							<input id="heateor_sss_vertical_target_url_custom_url" name="heateor_sss[vertical_target_url_custom]" type="text" value="<?php echo isset( $options['vertical_target_url_custom'] ) ? esc_url( $options['vertical_target_url_custom'] ) : '' ?>" />
 							</td>
 						</tr>
 						<tr class="heateor_sss_help_content" id="heateor_sss_vertical_target_url_help_cont">
@@ -1227,14 +1227,14 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 							</td>
 						</tr>
 						
-						<tbody id="heateor_sss_vertical_instagram_options" <?php echo ! in_array( 'instagram', $options['vertical_re_providers'] ) ? 'style = "display: none"' : '';?> >
+						<tbody id="heateor_sss_vertical_instagram_options" <?php echo ! in_array( 'instagram', $options['vertical_re_providers'] ) ? 'style="display:none"' : '';?> >
 							<tr>
 								<th>
 								<label for="heateor_sss_vertical_instagram_username"><?php _e("Instagram username", 'sassy-social-share' ); ?></label>
 								<img id="heateor_sss_vertical_instagram_username_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 								</th>
 								<td>
-								<input id="heateor_sss_vertical_instagram_username" name="heateor_sss[vertical_instagram_username]" type="text" value="<?php echo $instagram_username ?>" />
+								<input id="heateor_sss_vertical_instagram_username" name="heateor_sss[vertical_instagram_username]" type="text" value="<?php echo esc_attr( $instagram_username ) ?>" />
 								</td>
 							</tr>
 							
@@ -1246,7 +1246,7 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 								</td>
 							</tr>
 						</tbody>
-						<tbody id="heateor_sss_vertical_youtube_options" <?php echo ! in_array( 'youtube', $options['vertical_re_providers'] ) ? 'style = "display: none"' : '';?> >
+						<tbody id="heateor_sss_vertical_youtube_options" <?php echo ! in_array( 'youtube', $options['vertical_re_providers'] ) ? 'style="display:none"' : '';?> >
 						<tr>
 								<th>
 								<label for="heateor_sss_vertical_youtube_username"><?php _e( "Youtube URL", 'sassy-social-share' ); ?></label>
@@ -1255,7 +1255,7 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 								<td>
 									
 
-								<input id="heateor_sss_vertical_youtube_username" name="heateor_sss[vertical_youtube_username]" type="text" value="<?php echo $youtube_username ?>" />
+								<input id="heateor_sss_vertical_youtube_username" name="heateor_sss[vertical_youtube_username]" type="text" value="<?php echo esc_attr( $youtube_username ) ?>" />
 								</td>
 							</tr>
 							
@@ -1267,14 +1267,14 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 								</td>
 							</tr>
 						</tbody>
-						<tbody id="heateor_sss_vertical_comment_options" <?php echo ! in_array( 'Comment', $options['vertical_re_providers'] ) ? 'style = "display: none"' : '';?> >
+						<tbody id="heateor_sss_vertical_comment_options" <?php echo ! in_array( 'Comment', $options['vertical_re_providers'] ) ? 'style="display: none"' : '';?> >
 							<tr>
 								<th>
 								<label for="heateor_sss_vertical_comment_container_id"><?php _e( "HTML ID of container element of comment form", 'sassy-social-share' ); ?></label>
 								<img id="heateor_sss_vertical_comment_container_id_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 								</th>
 								<td>
-								<input id="heateor_sss_vertical_comment_container_id" name="heateor_sss[vertical_comment_container_id]" type="text" value="<?php echo $commentform_container_id ?>" />
+								<input id="heateor_sss_vertical_comment_container_id" name="heateor_sss[vertical_comment_container_id]" type="text" value="<?php echo esc_attr( $commentform_container_id ) ?>" />
 								</td>
 							</tr>
 							
@@ -1309,32 +1309,32 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 								$verticalSharingStyle .= 'border-radius:' . $options['vertical_border_radius'] . 'px;';
 							}
 							?>
-							var heateorSssVerticalSharingStyle = '<?php echo $verticalSharingStyle ?>', heateorSssVerticalDeliciousRadius = '<?php echo $verticalDeliciousRadius ?>';
+							var heateorSssVerticalSharingStyle = '<?php echo esc_js( $verticalSharingStyle ) ?>', heateorSssVerticalDeliciousRadius = '<?php echo esc_js( $verticalDeliciousRadius ) ?>';
 							</script>
 							<style type="text/css">
 							<?php if ( $options['vertical_bg_color_default'] != '' ) {?>
-								ul#heateor_sss_vertical_rearrange  i.heateorSssInstagramBackground{background:<?php echo $vertical_bg ?>!important;}
+								ul#heateor_sss_vertical_rearrange  i.heateorSssInstagramBackground{background:<?php echo esc_html( $vertical_bg ) ?>!important;}
 							<?php }
 							if ( $options['vertical_bg_color_hover'] != '' ) { ?>
-								ul#heateor_sss_vertical_rearrange i.heateorSssInstagramBackground:hover{background:<?php echo $vertical_bg_hover ?>!important;}
+								ul#heateor_sss_vertical_rearrange i.heateorSssInstagramBackground:hover{background:<?php echo esc_html( $vertical_bg_hover ) ?>!important;}
 							<?php } ?>
 							.heateorSssVerticalSharingBackground{
 								<?php if ( $vertical_bg ) { ?>
-								background-color: <?php echo $vertical_bg ?>;
+								background-color: <?php echo esc_html( $vertical_bg ) ?>;
 								<?php }if ( $vertical_border_width) { ?>
-								border-width: <?php echo $vertical_border_width ?>px;
+								border-width: <?php echo esc_html( $vertical_border_width ) ?>px;
 								border-style: solid;
 								<?php } ?>
-								border-color: <?php echo $vertical_border_color ? $vertical_border_color : 'transparent'; ?>;
+								border-color: <?php echo $vertical_border_color ? esc_html( $vertical_border_color ) : 'transparent'; ?>;
 							}
 							.heateorSssVerticalSharingBackground:hover{
 								<?php if ( $vertical_bg_hover ) { ?>
-								background-color: <?php echo $vertical_bg_hover ?>;
+								background-color: <?php echo esc_html( $vertical_bg_hover ) ?>;
 								<?php } if ( $vertical_border_width_hover ) { ?>
-								border-width: <?php echo $vertical_border_width_hover ?>px;
+								border-width: <?php echo esc_html( $vertical_border_width_hover ) ?>px;
 								border-style: solid;
 								<?php } ?>
-								border-color: <?php echo $vertical_border_color_hover ? $vertical_border_color_hover : 'transparent'; ?>;
+								border-color: <?php echo $vertical_border_color_hover ? esc_html( $vertical_border_color_hover ) : 'transparent'; ?>;
 							}
 							</style>
 							<ul id="heateor_sss_vertical_rearrange">
@@ -1342,9 +1342,9 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 								if ( isset( $options['vertical_re_providers'] ) ) {
 									foreach ( $options['vertical_re_providers'] as $rearrange ) {
 										?>
-										<li title="<?php echo ucfirst( str_replace( '_', ' ', $rearrange ) ) ?>" id="heateor_sss_re_vertical_<?php echo str_replace( array( ' ', '.' ), '_', $rearrange ) ?>" >
-										<i style="display:block;<?php echo $verticalSharingStyle ?>" class="<?php echo in_array( $rearrange, $like_buttons ) ? '' : 'heateorSssVerticalSharingBackground' ?> heateorSss<?php echo ucfirst( str_replace( array( '_', '.', ' ' ), '', $rearrange ) ) ?>Background"><div class="heateorSssSharingSvg heateorSss<?php echo ucfirst( str_replace( array( '_', '.', ' ' ), '', $rearrange ) ) ?>Svg" style="<?php echo $verticalDeliciousRadius ?>"></div></i>
-										<input type="hidden" name="heateor_sss[vertical_re_providers][]" value="<?php echo $rearrange ?>">
+										<li title="<?php echo esc_attr( ucfirst( str_replace( '_', ' ', $rearrange ) ) ) ?>" id="heateor_sss_re_vertical_<?php echo esc_attr( str_replace( array( ' ', '.' ), '_', $rearrange ) ) ?>" >
+										<i style="display:block;<?php echo esc_attr( $verticalSharingStyle ) ?>" class="<?php echo in_array( $rearrange, $like_buttons ) ? '' : 'heateorSssVerticalSharingBackground' ?> heateorSss<?php echo esc_attr( ucfirst( str_replace( array( '_', '.', ' ' ), '', $rearrange ) ) ) ?>Background"><div class="heateorSssSharingSvg heateorSss<?php echo esc_attr( ucfirst( str_replace( array( '_', '.', ' ' ), '', $rearrange ) ) ) ?>Svg" style="<?php echo esc_attr( $verticalDeliciousRadius ) ?>"></div></i>
+										<input type="hidden" name="heateor_sss[vertical_re_providers][]" value="<?php echo esc_attr( $rearrange ) ?>">
 										</li>
 										<?php
 									}
@@ -1383,8 +1383,8 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 							foreach( $like_buttons as $like_button ) {
 								?>
 								<div class="heateorSssVerticalSharingProviderContainer">
-								<input id="heateor_sss_vertical_<?php echo $like_button ?>" type="checkbox" <?php echo isset( $options['vertical_re_providers'] ) && in_array( $like_button, $options['vertical_re_providers'] ) ? 'checked = "checked"' : '';?> value="<?php echo $like_button ?>" />
-								<label for="heateor_sss_vertical_<?php echo $like_button ?>"><img src="<?php echo plugins_url( '../../images/sharing/'. $like_button .'.png', __FILE__ ) ?>" /></label>
+								<input id="heateor_sss_vertical_<?php echo esc_attr( $like_button ) ?>" type="checkbox" <?php echo isset( $options['vertical_re_providers'] ) && in_array( $like_button, $options['vertical_re_providers'] ) ? 'checked = "checked"' : ''; ?> value="<?php echo esc_attr( $like_button ) ?>" />
+								<label for="heateor_sss_vertical_<?php echo esc_attr( $like_button ) ?>"><img src="<?php echo plugins_url( '../../images/sharing/'. $like_button .'.png', __FILE__ ) ?>" /></label>
 								</div>
 								<?php
 							}
@@ -1396,9 +1396,9 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 							foreach( $sharing_networks as $sharing_network) {
 								?>
 								<div class="heateorSssVerticalSharingProviderContainer">
-								<input id="heateor_sss_vertical_sharing_<?php echo $sharing_network ?>" type="checkbox" <?php echo isset( $options['vertical_re_providers'] ) && in_array( $sharing_network, $options['vertical_re_providers'] ) ? 'checked = "checked"' : '';?> value="<?php echo $sharing_network ?>" />
-								<label for="heateor_sss_vertical_sharing_<?php echo $sharing_network ?>"><i style="display:block;width:18px;height:18px;" class="heateorSssSharing heateorSss<?php echo str_replace(array( '_', '.', ' ' ), '', ucfirst( $sharing_network) ) ?>Background"><ss style="display:block;" class="heateorSssSharingSvg heateorSss<?php echo str_replace(array( '_', '.', ' ' ), '', ucfirst( $sharing_network) ) ?>Svg"></ss></i></label>
-								<label class="lblSocialNetwork" for="heateor_sss_' . $sharing_network . '"><?php echo str_replace( '_', ' ', ucfirst( $sharing_network ) ) ?></label>
+								<input id="heateor_sss_vertical_sharing_<?php echo esc_attr( $sharing_network ) ?>" type="checkbox" <?php echo isset( $options['vertical_re_providers'] ) && in_array( $sharing_network, $options['vertical_re_providers'] ) ? 'checked = "checked"' : '';?> value="<?php echo esc_attr( $sharing_network ) ?>" />
+								<label for="heateor_sss_vertical_sharing_<?php echo esc_attr( $sharing_network ) ?>"><i style="display:block;width:18px;height:18px;" class="heateorSssSharing heateorSss<?php echo esc_attr( str_replace( array( '_', '.', ' ' ), '', ucfirst( $sharing_network ) ) ) ?>Background"><ss style="display:block;" class="heateorSssSharingSvg heateorSss<?php echo esc_attr( str_replace( array( '_', '.', ' ' ), '', ucfirst( $sharing_network ) ) ) ?>Svg"></ss></i></label>
+								<label class="lblSocialNetwork" for="heateor_sss_' . $sharing_network . '"><?php echo esc_html( str_replace( '_', ' ', ucfirst( $sharing_network ) ) ) ?></label>
 								</div>
 								<?php
 							}
@@ -1412,7 +1412,7 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 							<img id="heateor_sss_vertical_bg_color_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
-							<input style="width: 100px" name="heateor_sss[vertical_bg]" type="text" value="<?php echo isset( $options['vertical_bg'] ) ? $options['vertical_bg'] : '' ?>" />
+							<input style="width: 100px" name="heateor_sss[vertical_bg]" type="text" value="<?php echo isset( $options['vertical_bg'] ) ? esc_attr( $options['vertical_bg'] ) : '' ?>" />
 							</td>
 						</tr>
 						
@@ -1448,11 +1448,11 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 						<tbody id="heateor_sss_left_offset_rows" <?php echo ( isset( $options['alignment'] ) && $options['alignment'] == 'left' ) ? '' : 'style="display: none"' ?>>
 						<tr>
 							<th>
-							<label for="heateor_sss_left_offset"><?php _e("Left offset", 'sassy-social-share' ); ?></label>
+							<label for="heateor_sss_left_offset"><?php _e( "Left offset", 'sassy-social-share' ); ?></label>
 							<img id="heateor_sss_left_offset_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
-							<input style="width: 100px" id="heateor_sss_left_offset" name="heateor_sss[left_offset]" type="text" value="<?php echo isset( $options['left_offset'] ) ? $options['left_offset'] : '' ?>" />px
+							<input style="width: 100px" id="heateor_sss_left_offset" name="heateor_sss[left_offset]" type="text" value="<?php echo isset( $options['left_offset'] ) ? esc_attr( $options['left_offset'] ) : '' ?>" />px
 							</td>
 						</tr>
 						
@@ -1465,14 +1465,14 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 						</tr>
 						</tbody>
 						
-						<tbody id="heateor_sss_right_offset_rows" <?php echo ( isset( $options['alignment'] ) && $options['alignment'] == 'right' ) ? '' : 'style="display: none"' ?>>
+						<tbody id="heateor_sss_right_offset_rows" <?php echo ( isset( $options['alignment'] ) && $options['alignment'] == 'right' ) ? '' : 'style="display:none"' ?>>
 						<tr>
 							<th>
 							<label for="heateor_sss_right_offset"><?php _e("Right offset", 'sassy-social-share' ); ?></label>
 							<img id="heateor_sss_right_offset_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
-							<input style="width: 100px" id="heateor_sss_right_offset" name="heateor_sss[right_offset]" type="text" value="<?php echo isset( $options['right_offset'] ) ? $options['right_offset'] : '' ?>" />px
+							<input style="width: 100px" id="heateor_sss_right_offset" name="heateor_sss[right_offset]" type="text" value="<?php echo isset( $options['right_offset'] ) ? esc_attr( $options['right_offset'] ) : '' ?>" />px
 							</td>
 						</tr>
 						
@@ -1491,7 +1491,7 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 							<img id="heateor_sss_top_offset_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
-							<input style="width: 100px" id="heateor_sss_top_offset" name="heateor_sss[top_offset]" type="text" value="<?php echo isset( $options['top_offset'] ) ? $options['top_offset'] : '' ?>" />px
+							<input style="width: 100px" id="heateor_sss_top_offset" name="heateor_sss[top_offset]" type="text" value="<?php echo isset( $options['top_offset'] ) ? esc_attr( $options['top_offset'] ) : '' ?>" />px
 							</td>
 						</tr>
 						
@@ -1525,8 +1525,8 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 							if ( count( $post_types ) ) {
 								foreach ( $post_types as $post_type ) {
 									?>
-									<input id="heateor_sss_vertical_<?php echo $post_type ?>" name="heateor_sss[vertical_<?php echo $post_type ?>]" type="checkbox" <?php echo isset( $options['vertical_' . $post_type] ) ? 'checked = "checked"' : '';?> value="1" />
-									<label for="heateor_sss_vertical_<?php echo $post_type ?>"><?php echo ucfirst( $post_type ) . 's'; ?></label><br/>
+									<input id="heateor_sss_vertical_<?php echo esc_attr( $post_type ) ?>" name="heateor_sss[vertical_<?php echo $post_type ?>]" type="checkbox" <?php echo isset( $options['vertical_' . $post_type] ) ? 'checked = "checked"' : '';?> value="1" />
+									<label for="heateor_sss_vertical_<?php echo esc_attr( $post_type ) ?>"><?php echo esc_html( ucfirst( $post_type ) ); ?></label><br/>
 									<?php
 								}
 							}
@@ -1801,12 +1801,12 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 							<img id="heateor_sss_share_count_cache_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
-							<input style="width: 50px;" id="heateor_sss_share_count_cache" name="heateor_sss[share_count_cache_refresh_count]" type="text" value="<?php echo $options['share_count_cache_refresh_count']; ?>" />
+							<input style="width: 50px;" id="heateor_sss_share_count_cache" name="heateor_sss[share_count_cache_refresh_count]" type="text" value="<?php echo esc_attr( $options['share_count_cache_refresh_count'] ); ?>" />
 							<select name="heateor_sss[share_count_cache_refresh_unit]">
-								<option value="seconds" <?php echo $options['share_count_cache_refresh_unit'] == 'seconds' ? 'selected' : ''; ?>>Second(s)</option>
-								<option value="minutes" <?php echo $options['share_count_cache_refresh_unit'] == 'minutes' ? 'selected' : ''; ?>>Minute(s)</option>
-								<option value="hours" <?php echo $options['share_count_cache_refresh_unit'] == 'hours' ? 'selected' : ''; ?>>Hour(s)</option>
-								<option value="days" <?php echo $options['share_count_cache_refresh_unit'] == 'days' ? 'selected' : ''; ?>>Day(s)</option>
+								<option value="seconds" <?php echo $options['share_count_cache_refresh_unit'] == 'seconds' ? 'selected' : ''; ?>><?php _e( 'Second(s)', 'sassy-social-share' ) ?></option>
+								<option value="minutes" <?php echo $options['share_count_cache_refresh_unit'] == 'minutes' ? 'selected' : ''; ?>><?php _e( 'Minute(s)', 'sassy-social-share' ) ?></option>
+								<option value="hours" <?php echo $options['share_count_cache_refresh_unit'] == 'hours' ? 'selected' : ''; ?>><?php _e( 'Hour(s)', 'sassy-social-share' ) ?></option>
+								<option value="days" <?php echo $options['share_count_cache_refresh_unit'] == 'days' ? 'selected' : ''; ?>><?php _e( 'Day(s)', 'sassy-social-share' ) ?></option>
 							</select>
 							</td>
 						</tr>
@@ -1888,7 +1888,7 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 							<img id="heateor_sss_bitly_access_token_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
-							<input id="heateor_sss_bitly_access_token" name="heateor_sss[bitly_access_token]" type="text" value="<?php echo isset( $options['bitly_access_token'] ) ? $options['bitly_access_token'] : '' ?>" />
+							<input id="heateor_sss_bitly_access_token" name="heateor_sss[bitly_access_token]" type="text" value="<?php echo isset( $options['bitly_access_token'] ) ? esc_attr( $options['bitly_access_token'] ) : '' ?>" />
 							</td>
 						</tr>
 						
@@ -1957,7 +1957,7 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 							<img id="heateor_sss_twitter_username_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
-							<input id="heateor_sss_twitter_username" name="heateor_sss[twitter_username]" type="text" value="<?php echo isset( $options['twitter_username'] ) ? $options['twitter_username'] : '' ?>" />
+							<input id="heateor_sss_twitter_username" name="heateor_sss[twitter_username]" type="text" value="<?php echo isset( $options['twitter_username'] ) ? esc_attr( $options['twitter_username'] ) : '' ?>" />
 							</td>
 						</tr>
 						
@@ -1976,7 +1976,7 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 							<img id="heateor_sss_buffer_username_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							</th>
 							<td>
-							<input id="heateor_sss_buffer_username" name="heateor_sss[buffer_username]" type="text" value="<?php echo isset( $options['buffer_username'] ) ? $options['buffer_username'] : '' ?>" />
+							<input id="heateor_sss_buffer_username" name="heateor_sss[buffer_username]" type="text" value="<?php echo isset( $options['buffer_username'] ) ? esc_attr( $options['buffer_username'] ) : '' ?>" />
 							</td>
 						</tr>
 						
@@ -2037,7 +2037,7 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 							<td colspan="2">
 							<textarea id="heateor_sss_import_config_txt" rows="5" cols="50"></textarea>
 							<br/>
-							<input type="button" class="button-primary" value="<?php _e( "Import Configuration", 'sassy-social-share' ); ?>"  onclick="heateorSssImportConfig()" />
+							<input type="button" class="button-primary" value="<?php _e( "Import Configuration", 'sassy-social-share' ); ?>"  onclick="heateorSssImportConfig()" style="margin-top:10px" />
 							<div class="heateor_sss_clear"></div>
 							<img src="<?php echo plugins_url( '../../images/ajax_loader.gif', __FILE__ ) ?>" id="import_config_loading" style="display:none;margin-top:5px" />
 							</td>

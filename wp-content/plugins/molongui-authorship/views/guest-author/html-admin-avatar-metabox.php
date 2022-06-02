@@ -6,21 +6,21 @@ defined( 'ABSPATH' ) or exit;
 
     <div class="m-field">
 
-        <?php if ( empty( $options['show_avatar'] ) ) : ?>
+        <?php if ( empty( $options['author_box_avatar_show'] ) ) : ?>
 
             <label class="m-title"><strong><?php _e( "Avatar Display Disabled", 'molongui-authorship' ); ?></strong></label>
             <p class="m-description">
-                <?php _e( "Avatar display is disabled", 'molongui-authorship' ); echo ". "; printf( __( "You can enable author avatars at the WordPress %sCustomizer%s. There you can select whether to display custom local images, gravatars or acronyms.", 'molongui-authorship' ), '<a href="'.$customizer_link.'">', '</a>' ) ; ?>
+                <?php _e( "Avatar display is disabled", 'molongui-authorship' ); echo ". "; printf( __( "You can enable author avatars at the %sMolongui Author Box Editor%s. There you can select whether to display custom local images, gravatars or author acronym.", 'molongui-authorship' ), '<a href="'.authorship_editor_url().'">', '</a>' ) ; ?>
             </p>
-            <a class="button button-large" href="<?php echo $customizer_link; ?>"><?php _e( "Open Customizer", 'molongui-authorship' ); ?></a>
+            <a class="button button-large" href="<?php echo authorship_editor_url(); ?>"><?php _e( "Open Customizer", 'molongui-authorship' ); ?></a>
 
         <?php else : ?>
 
-            <?php if ( 'local' == $options['avatar_src'] ) : ?>
+            <?php if ( 'local' == $options['author_box_avatar_source'] ) : ?>
                 <label class="m-title"><strong><?php _e( "Local Avatar Disabled", 'molongui-authorship' ); ?></strong></label>
                 <p class="m-description">
                     <?php
-                        switch ( $options['avatar_local_fallback'] )
+                        switch ( $options['author_box_avatar_fallback'] )
                         {
                             case 'gravatar':
                                 _e( "Local Avatar feature is disabled", 'molongui-authorship' ); echo ". "; _e( "As configured, author avatar will be taken from Gravatar using author's email address and if none associated, a default image will be shown.", 'molongui-authorship' );
@@ -39,7 +39,7 @@ defined( 'ABSPATH' ) or exit;
             <?php else : ?>
                 <p class="m-description">
                     <?php
-                        switch ( $options['avatar_src'] )
+                        switch ( $options['author_box_avatar_source'] )
                         {
                             case 'gravatar':
                                 _e( "As configured, author avatar will be taken from Gravatar using author's email address and if none associated, a default image will be shown.", 'molongui-authorship' );
@@ -54,9 +54,9 @@ defined( 'ABSPATH' ) or exit;
             <?php endif; ?>
 
             <p class="m-description">
-                <?php printf( __( "If you want to upload a custom image for this guest author, enable local avatars for both, users and guests, on the plugin settings page (click %shere%s).", 'molongui-authorship' ), '<a href="'.$settings_link.'">', '</a>' ); ?>
+                <?php printf( __( "If you want to upload a custom image for this guest author, enable local avatars for both, users and guests, on the plugin settings page (click %shere%s).", 'molongui-authorship' ), '<a href="'.authorship_options_url( 'users' ).'">', '</a>' ); ?>
             </p>
-            <a class="button button-large" href="<?php echo $settings_link; ?>"><?php _e( "Settings Page", 'molongui-authorship' ); ?></a>
+            <a class="button button-large" href="<?php echo authorship_options_url( 'users' ); ?>"><?php _e( "Settings Page", 'molongui-authorship' ); ?></a>
 
         <?php endif; ?>
     </div>

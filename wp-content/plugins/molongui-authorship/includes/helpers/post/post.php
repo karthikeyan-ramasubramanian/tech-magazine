@@ -227,7 +227,7 @@ if ( !function_exists( 'get_coauthored_posts' ) )
             break;
 
             case 'related':
-                $entries = explode( ",", $options['related_post_types'] );
+                $entries = explode( ",", $options['author_box_related_post_types'] );
             break;
 
             default:
@@ -258,9 +258,9 @@ if ( !function_exists( 'get_coauthored_posts' ) )
         $args = array
         (
             'post_type'      => $entries,
-            'orderby'        => !empty( $options['related_orderby'] ) ? $options['related_orderby'] : 'date',
-            'order'          => !empty( $options['related_order'] )   ? $options['related_order']   : 'desc',
-            'posts_per_page' => $get_all ? '-1' : $options['related_items'],
+            'orderby'        => !empty( $options['author_box_related_orderby'] ) ? $options['author_box_related_orderby'] : 'date',
+            'order'          => !empty( $options['author_box_related_order'] )   ? $options['author_box_related_order']   : 'desc',
+            'posts_per_page' => $get_all ? '-1' : $options['author_box_related_count'],
             'post__not_in'   => $exclude,
             'meta_query'     => $mq,
             'site_id'        => get_current_blog_id(),

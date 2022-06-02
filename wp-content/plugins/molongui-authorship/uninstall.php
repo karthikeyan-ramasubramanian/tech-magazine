@@ -19,14 +19,13 @@ function molongui_authorship_uninstall_single_site()
 
     $plugin_name   = 'molongui-authorship';
     $plugin_prefix = 'molongui_authorship';
-    $db_main_key   = $plugin_prefix.'_main';
-    $settings      = get_option( $db_main_key );
-    if ( isset( $settings['keep_config'] ) and $settings['keep_config'] == 0 )
+    $options       = get_option( $plugin_prefix.'_options' );
+    if ( isset( $options['keep_config'] ) and $options['keep_config'] == 0 )
 	{
         $like = $plugin_prefix.'_%';
         $wpdb->query( "DELETE FROM {$wpdb->prefix}options WHERE option_name LIKE '{$like}';" );
 	}
-    if ( isset( $settings['keep_data'] ) and $settings['keep_data'] == 0 )
+    if ( isset( $options['keep_data'] ) and $options['keep_data'] == 0 )
 	{
 		$ids = $wpdb->get_results
         (

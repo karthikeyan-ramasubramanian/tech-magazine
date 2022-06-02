@@ -49,3 +49,29 @@ add_filter( 'authorship/filter_author_link', function( $default, $args )
     }
     return $default;
 }, 10, 2 );
+add_filter( '_authorship/filter/get_user_by', function( $data, $args )
+{
+    list( $filter, $user ) = $data;
+
+    if ( is_author() )
+    {
+        $fn    = 'widget';
+        $class = 'ET_Authors_Widget';
+        if ( $key = array_search( $fn, array_column( $args['dbt'], 'function' ) ) and
+             isset( $args['dbt'][$key]['class'] ) and ( $args['dbt'][$key]['class'] == $class ) )
+        {
+            $filter = false;
+        }
+    }
+    return array( $filter, $user );
+}, 10, 2 );
+add_filter( 'authorship/render_box', function( $render )
+{
+    $dbt = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 10 );
+    if ( array_search( 'et_theme_builder_frontend_render_post_content', array_column( $dbt, 'function' ) ) )
+    {
+        $render = true;
+    }
+
+    return $render;
+}, 10, 1 );
