@@ -1,0 +1,96 @@
+3627.340 (1) Opened log file at time: Tue, 21 Jun 2022 07:25:50 +0000 on https://blogs.techsnapie.com
+3627.380 (1) UpdraftPlus WordPress backup plugin (https://updraftplus.com): 1.22.12 WP: 5.9.3 PHP: 8.0.10 (litespeed, Linux ip-172-31-30-73 5.8.0-1038-aws #40~20.04.1-Ubuntu SMP Thu Jun 17 13:25:28 UTC 2021 x86_64) MySQL: 10.3.31-MariaDB-0ubuntu0.20.04.1 (max packet size=16777216) WPLANG: en_US Server: LiteSpeed safe_mode: 0 max_execution_time: 900 memory_limit: 500M (used: 20.7M | 24M) multisite: N openssl: OpenSSL 1.1.1f  31 Mar 2020 mcrypt: N LANG:  ZipArchive::addFile: Y
+3627.421 (1) Free space on disk containing Updraft's temporary directory: 16672.1 MB
+3627.460 (1) Requesting backup semaphore lock (951b6add6dfd)
+3627.489 (1) [Info] Lock (updraft_lock_566202205a99, wp_options) acquired
+3627.507 (1) Backup run: resumption=1, nonce=951b6add6dfd, file_nonce=951b6add6dfd begun at=1655792723 (3628s ago), job type=backup, previous check-in=668.61s
+3627.522 (1) Long time past since expected resumption time: approx expected=1655794091.5, now=1655796351, diff=2259.5
+3627.547 (1) [Warning] Your website is visited infrequently and UpdraftPlus is not getting the resources it hoped for; please read this page: https://updraftplus.com/faqs/why-am-i-getting-warnings-about-my-site-not-having-enough-visitors/
+3627.570 (1) Scheduling a resumption (2) after 699 seconds (1655797050) in case this run gets aborted
+3627.601 (1) Checking if we have a zip executable available
+3627.620 (1) Zip engine: found/will use a binary zip: /usr/bin/zip
+3627.623 (1) Creation of backups of directories: already finished
+3627.663 (1) Terminate: backup_2022-06-21-1155_Techsnapie_Magazines_566202205a99-uploads.zip exists with activity within the last 30 seconds (time_mod=1655796331, time_now=1655796351, diff=20, size=405558.1KB). This likely means that another UpdraftPlus run is at work; so we will exit.
+3627.713 (1) Rescheduling resumption 2: moving to 600 seconds from now (1655796951)
+3627.747 (1) To decrease the likelihood of overlaps, increasing resumption interval to: 699 + 120 = 819
+5091.397 (2) Opened log file at time: Tue, 21 Jun 2022 07:50:15 +0000 on https://blogs.techsnapie.com
+5091.401 (2) UpdraftPlus WordPress backup plugin (https://updraftplus.com): 1.22.12 WP: 5.9.3 PHP: 8.0.10 (litespeed, Linux ip-172-31-30-73 5.8.0-1038-aws #40~20.04.1-Ubuntu SMP Thu Jun 17 13:25:28 UTC 2021 x86_64) MySQL: 10.3.31-MariaDB-0ubuntu0.20.04.1 (max packet size=16777216) WPLANG: en_US Server: LiteSpeed safe_mode: 0 max_execution_time: 900 memory_limit: 500M (used: 19.6M | 22M) multisite: N openssl: OpenSSL 1.1.1f  31 Mar 2020 mcrypt: N LANG:  ZipArchive::addFile: Y
+5091.405 (2) Free space on disk containing Updraft's temporary directory: 16672 MB
+5091.409 (2) Requesting backup semaphore lock (951b6add6dfd)
+5091.418 (2) [Debug] Lock option (updraft_lock_951b6add6dfd, wp_options) was created in the database
+5091.421 (2) [Info] Lock (updraft_lock_951b6add6dfd, wp_options) acquired after initialising the database
+5091.427 (2) Backup run: resumption=2, nonce=951b6add6dfd, file_nonce=951b6add6dfd begun at=1655792723 (5092s ago), job type=backup, previous check-in=0.32s
+5091.433 (2) Scheduling a resumption (3) after 819 seconds (1655798634) in case this run gets aborted
+5091.477 (2) Checking if we have a zip executable available
+5091.480 (2) Zip engine: found/will use a binary zip: /usr/bin/zip
+5091.483 (2) Creation of backups of directories: already finished
+5091.488 (2) Saving backup status to database (elements: 9)
+5091.505 (2) Database dump (WordPress DB): Creation was completed already
+5091.508 (2) SQL compatibility mode is: ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+5091.514 (2) backup_2022-06-21-1155_Techsnapie_Magazines_566202205a99-plugins.zip: plugins: Note: This file was not marked as successfully uploaded, but does not exist on the local filesystem; now marking as uploaded (/home/blogs.techsnapie.com/public_html/wp-content/updraft/backup_2022-06-21-1155_Techsnapie_Magazines_566202205a99-plugins.zip)
+5091.517 (2) Recording as successfully uploaded: backup_2022-06-21-1155_Techsnapie_Magazines_566202205a99-plugins.zip
+5091.521 (2) backup_2022-06-21-1155_Techsnapie_Magazines_566202205a99-themes.zip: themes: Note: This file was not marked as successfully uploaded, but does not exist on the local filesystem; now marking as uploaded (/home/blogs.techsnapie.com/public_html/wp-content/updraft/backup_2022-06-21-1155_Techsnapie_Magazines_566202205a99-themes.zip)
+5091.525 (2) Recording as successfully uploaded: backup_2022-06-21-1155_Techsnapie_Magazines_566202205a99-themes.zip
+5091.531 (2) backup_2022-06-21-1155_Techsnapie_Magazines_566202205a99-uploads.zip: uploads: This file has not yet been successfully uploaded: will queue
+5091.533 (2) backup_2022-06-21-1155_Techsnapie_Magazines_566202205a99-uploads2.zip: uploads: Note: This file was not marked as successfully uploaded, but does not exist on the local filesystem; now marking as uploaded (/home/blogs.techsnapie.com/public_html/wp-content/updraft/backup_2022-06-21-1155_Techsnapie_Magazines_566202205a99-uploads2.zip)
+5091.536 (2) Recording as successfully uploaded: backup_2022-06-21-1155_Techsnapie_Magazines_566202205a99-uploads2.zip
+5091.540 (2) backup_2022-06-21-1155_Techsnapie_Magazines_566202205a99-others.zip: others: Note: This file was not marked as successfully uploaded, but does not exist on the local filesystem; now marking as uploaded (/home/blogs.techsnapie.com/public_html/wp-content/updraft/backup_2022-06-21-1155_Techsnapie_Magazines_566202205a99-others.zip)
+5091.544 (2) Recording as successfully uploaded: backup_2022-06-21-1155_Techsnapie_Magazines_566202205a99-others.zip
+5091.548 (2) backup_2022-06-21-1155_Techsnapie_Magazines_951b6add6dfd-db.gz: db: This file is not ours to upload and has been/will be handled by another job.
+5091.549 (2) Saving backup history. Total backup size: Unknown
+5091.556 (2) Requesting upload of the files that have not yet been successfully uploaded (1)
+5091.560 (2) Cloud backup selection (1/1): googledrive with instance (1/1) (last)
+5091.563 (2) Beginning dispatch of backup to remote (googledrive) (instance identifier s-552ac2f0cfb5cc4b79a2142ce54d567c)
+5092.282 (2) Google Drive: quota usage: used=2743.1 MB, total=15360 MB, available=12616.9 MB
+5092.285 (2) Google Drive: backup_2022-06-21-1155_Techsnapie_Magazines_566202205a99-uploads.zip: Attempting to upload to Google Drive (into folder id: 1OqFiYkmQ1QZCQ5FTZqIz0sMb3E_DXBsW)
+5092.813 (2) Googledrive chunked upload: 0.3 % uploaded (1048576 - increasing chunk size to 2048 KB - memory usage: 20.7 / 24)
+5093.075 (2) Googledrive chunked upload: 0.8 % uploaded (3145728 - increasing chunk size to 4096 KB - memory usage: 20.7 / 24)
+5093.376 (2) Googledrive chunked upload: 1.8 % uploaded (7340032 - increasing chunk size to 8192 KB - memory usage: 20.7 / 24)
+5093.929 (2) Googledrive chunked upload: 3.8 % uploaded (15728640 - increasing chunk size to 16384 KB - memory usage: 20.7 / 24)
+5094.570 (2) Googledrive chunked upload: 7.8 % uploaded (32505856 - increasing chunk size to 32768 KB - memory usage: 20.7 / 24)
+5095.602 (2) Googledrive chunked upload: 15.9 % uploaded (66060288 - increasing chunk size to 65536 KB - memory usage: 20.7 / 24)
+5097.543 (2) Googledrive chunked upload: 32.1 % uploaded (133169152)
+5104.643 (2) Googledrive chunked upload: 48.2 % uploaded (200278016)
+5115.252 (2) Googledrive chunked upload: 64.4 % uploaded (267386880)
+5122.570 (2) Googledrive chunked upload: 80.5 % uploaded (334495744)
+5129.710 (2) Googledrive chunked upload: 96.7 % uploaded (401604608)
+5133.003 (2) Googledrive chunked upload: 100 % uploaded (401604608)
+5133.120 (2) Google Drive: OK: Archive backup_2022-06-21-1155_Techsnapie_Magazines_566202205a99-uploads.zip uploaded in 40.83 seconds
+5133.123 (2) Recording as successfully uploaded: backup_2022-06-21-1155_Techsnapie_Magazines_566202205a99-uploads.zip
+5133.603 (2) Deleting local file: backup_2022-06-21-1155_Techsnapie_Magazines_566202205a99-uploads.zip: OK
+5133.639 (2) Deleting zip manifest (backup_2022-06-21-1155_Techsnapie_Magazines_566202205a99-uploads.zip.list.tmp)
+5133.719 (2) Retain: beginning examination of existing backup sets; user setting: retain_files=5, retain_db=5
+5133.748 (2) Number of backup sets in history: 5; groups (db): 1
+5133.751 (2) Examining (for databases) backup set with group_id=0, nonce=951b6add6dfd, datestamp=1655792723 (Jun 21 2022 06:25:23)
+5133.778 (2) This backup set is the backup set just made, so will not be deleted.
+5133.778 (2) Examining (for databases) backup set with group_id=0, nonce=0c2b36c38a1b, datestamp=1655706279 (Jun 20 2022 06:24:39)
+5133.778 (2) This backup set remains non-empty (f=1/d=1); will retain in history
+5133.800 (2) Examining (for databases) backup set with group_id=0, nonce=45066db7fe2f, datestamp=1655619657 (Jun 19 2022 06:20:57)
+5133.800 (2) This backup set remains non-empty (f=1/d=1); will retain in history
+5133.800 (2) Examining (for databases) backup set with group_id=0, nonce=ca0af6da1ad6, datestamp=1655533278 (Jun 18 2022 06:21:18)
+5133.800 (2) This backup set remains non-empty (f=1/d=1); will retain in history
+5133.800 (2) Examining (for databases) backup set with group_id=0, nonce=a9d441f0b567, datestamp=1655447150 (Jun 17 2022 06:25:50)
+5133.800 (2) This backup set remains non-empty (f=1/d=1); will retain in history
+5133.800 (2) Number of backup sets in history: 5; groups (files): 1
+5133.824 (2) Examining (for files) backup set with nonce=951b6add6dfd, datestamp=1655792723 (Jun 21 2022 06:25:23)
+5133.824 (2) This backup set is the backup set just made, so will not be deleted.
+5133.827 (2) This backup set is the backup set just made, so will not be deleted.
+5133.827 (2) This backup set is the backup set just made, so will not be deleted.
+5133.827 (2) This backup set is the backup set just made, so will not be deleted.
+5133.827 (2) This backup set remains non-empty (f=1/d=1); will retain in history
+5133.855 (2) Examining (for files) backup set with nonce=0c2b36c38a1b, datestamp=1655706279 (Jun 20 2022 06:24:39)
+5133.855 (2) This backup set remains non-empty (f=1/d=1); will retain in history
+5133.855 (2) Examining (for files) backup set with nonce=45066db7fe2f, datestamp=1655619657 (Jun 19 2022 06:20:57)
+5133.855 (2) This backup set remains non-empty (f=1/d=1); will retain in history
+5133.855 (2) Examining (for files) backup set with nonce=ca0af6da1ad6, datestamp=1655533278 (Jun 18 2022 06:21:18)
+5133.855 (2) This backup set remains non-empty (f=1/d=1); will retain in history
+5133.855 (2) Examining (for files) backup set with nonce=a9d441f0b567, datestamp=1655447150 (Jun 17 2022 06:25:50)
+5133.855 (2) This backup set remains non-empty (f=1/d=1); will retain in history
+5133.855 (2) Retain: saving new backup history (sets now: 5) and finishing retain operation
+5133.912 (2) Resume backup (951b6add6dfd, 2): finish run
+5133.967 (2) [Info] Lock option (updraft_lock_951b6add6dfd, wp_options) released
+5133.995 (2) There were no errors in the uploads, so the 'resume' event (3) is being unscheduled
+5134.052 (2) Fetching RSS news feed
+5136.886 (2) Fetched RSS news feed; result is a: SimplePie
+5137.300 (2) Sending email ('Files and database (Full backup)') report (attachments: 1, size: 10.9 KB) to: karth...
+5137.961 (2) The backup apparently succeeded (with warnings) and is now complete
