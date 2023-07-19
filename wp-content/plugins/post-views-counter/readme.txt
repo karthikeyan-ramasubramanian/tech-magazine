@@ -1,11 +1,11 @@
 === Post Views Counter ===
 Contributors: dfactory
-Donate link: http://dfactory.eu/
+Donate link: http://www.dfactory.co/
 Tags: counter, hits, posts, postviews, post views, views, count, statistics, stats, analytics, pageviews, tracking
-Requires at least: 5.0
-Requires PHP: 5.3.0
-Tested up to: 5.9
-Stable tag: 1.3.11
+Requires at least: 5.1
+Requires PHP: 5.4.0
+Tested up to: 6.2
+Stable tag: 1.3.13
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
 
@@ -13,9 +13,9 @@ Post Views Counter allows you to display how many times a post, page or custom p
 
 == Description ==
 
-[Post Views Counter](http://www.dfactory.eu/plugins/post-views-counter/) allows you to display how many times a post, page or custom post type had been viewed with this simple, fast and easy to use plugin.
+[Post Views Counter](http://www.dfactory.co/products/post-views-counter/) allows you to display how many times a post, page or custom post type had been viewed with this simple, fast and easy to use plugin.
 
-For more information, check out plugin page at [dFactory](http://dfactory.eu/) or plugin [support forum](http://www.dfactory.eu/support/forum/post-views-counter/).
+For more information, check out plugin page at [dFactory](http://www.dfactory.co/) or plugin [support forum](http://www.dfactory.co/support/forum/post-views-counter/).
 
 = Features include: =
 
@@ -62,6 +62,25 @@ No questions yet.
 2. screenshot-2.png
 
 == Changelog ==
+
+= 1.3.13 =
+* New: Compatibility with WP 6.2 and PHP 8.2
+* Fix: Invalid year in seconds
+* Fix: Possible invalid cookie data in views storage
+* Fix: Default database prefix
+* Tweak: Switch from wp_localize_script to wp_add_inline_script 
+* Tweak: Updated bot detection
+
+
+= 1.3.12 =
+* Fix: Frontend Javascript rewritten from jQuery to Vanilla JS
+* Fix: Admin Bar Style loading on every page
+* Fix: Network initialization process for new sites
+* Fix: IP address encryption
+* Fix: REST API endpoints
+* Fix: Removed couple of deprecated functions
+* Tweak: Updated chart.js script to version 3.9.1
+* Tweak: Added SameSite attribute to cookie
 
 = 1.3.11 =
 * Fix: Potentailly incorrect counting of post views in edge case db queries
@@ -180,7 +199,7 @@ No questions yet.
 
 = 1.1.4 =
 * Fix: Dashicons link broken.
-* Tweak: Confirmed WordPress 4.4 compatibility 
+* Tweak: Confirmed WordPress 4.4 compatibility
 
 = 1.1.3 =
 * Fix: Duplicated views count in custom post types
@@ -205,7 +224,7 @@ No questions yet.
 * New: French translation, thanks to [Theophil Bethel](http://reseau-chretien-gironde.fr/)
 
 = 1.0.10 =
-* New: Option to limit post views editing to admins only 
+* New: Option to limit post views editing to admins only
 
 = 1.0.9 =
 * New: Spanish translation, thanks to [Carlos Rodriguez](http://cglevel.com/)
@@ -240,8 +259,5 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.3.11 =
-* Fix: Potentailly incorrect counting of post views in edge case db queries
-* Fix: Possible empty chart in dashboard
-* Fix: Incorrect saving of dashboard widget user options
-* Tweak: Updated Chart.js to version 3.7.0
+= 1.3.13 =
+* New: Compatibility with WP 6.2 and PHP 8.2

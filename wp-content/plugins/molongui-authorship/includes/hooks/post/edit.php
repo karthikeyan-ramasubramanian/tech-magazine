@@ -47,7 +47,7 @@ function authorship_post_trash( $post_id )
 {
     if ( is_customize_preview() ) return;
     $post_type = authorship_get_post_type( $post_id );
-    if ( !molongui_is_post_type_enabled( MOLONGUI_AUTHORSHIP_PREFIX, $post_type ) ) return;
+    if ( !authorship_is_post_type_enabled( $post_type, $post_id ) ) return;
     authorship_post_clear_object_cache();
     $post_status = authorship_post_status( $post_type );
     if ( in_array( get_post_meta( $post_id, '_wp_trash_meta_status', true ), $post_status ) )
@@ -59,7 +59,7 @@ add_action( 'trashed_post', 'authorship_post_trash' );
 function authorship_post_untrash( $post_id )
 {
     $post_type = authorship_get_post_type( $post_id );
-    if ( !molongui_is_post_type_enabled( MOLONGUI_AUTHORSHIP_PREFIX, $post_type ) ) return;
+    if ( !authorship_is_post_type_enabled( $post_type, $post_id ) ) return;
     authorship_post_clear_object_cache();
     $post_status = authorship_post_status( $post_type );
     if ( in_array( get_post_meta( $post_id, '_wp_trash_meta_status', true ), $post_status ) )
@@ -142,6 +142,7 @@ function authorship_post_render_author_metabox( $post )
 }
 function authorship_post_render_box_metabox( $post )
 {
+    wp_nonce_field( 'molongui_authorship_post', 'molongui_authorship_post_nonce' );
     $screen = get_current_screen();
     $author_box_display  = get_post_meta( $post->ID, '_molongui_author_box_display', true );
     $author_box_position = get_post_meta( $post->ID, '_molongui_author_box_position', true );
@@ -212,7 +213,7 @@ function authorship_dropdown_authors( $type = 'authors', $args = array() )
 }
 function authorship_post_update_author( $data, $postarr, $unsanitized_postarr = array() )
 {
-    if ( !isset( $data['post_type'] ) or !molongui_is_post_type_enabled( MOLONGUI_AUTHORSHIP_PREFIX, $data['post_type'] ) ) return $data;
+    if ( !isset( $data['post_type'] ) or !authorship_is_post_type_enabled( $data['post_type'] ) ) return $data;
     if ( !authorship_byline_takeover() ) return $data;
     $current_author  = !empty( $postarr['post_author'] ) ? $postarr['post_author'] : false;
     $new_post_author = false;

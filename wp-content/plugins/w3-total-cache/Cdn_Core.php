@@ -497,16 +497,6 @@ class Cdn_Core {
 					);
 				break;
 
-			case 'maxcdn':
-				$engine_config = array(
-					'authorization_key' => $c->get_string( 'cdn.maxcdn.authorization_key' ),
-					'zone_id' => $c->get_integer( 'cdn.maxcdn.zone_id' ),
-					'domain' => $c->get_array( 'cdn.maxcdn.domain' ),
-					'ssl' => $c->get_string( 'cdn.maxcdn.ssl' ),
-					'compression' => false
-				);
-				break;
-
 			case 'mirror':
 				$engine_config = array(
 					'domain' => $c->get_array( 'cdn.mirror.domain' ),
@@ -564,6 +554,7 @@ class Cdn_Core {
 					'bucket_location' => $c->get_string( 'cdn.s3.bucket.location' ),
 					'cname' => $c->get_array( 'cdn.s3.cname' ),
 					'ssl' => $c->get_string( 'cdn.s3.ssl' ),
+					'public_objects' => $c->get_string( 'cdn.s3.public_objects' ),
 					'compression' => $compression
 				);
 				break;
@@ -726,7 +717,7 @@ class Cdn_Core {
 			}
 		}
 
-		return ltrim( $remote_uri, '/' );
+		return apply_filters( 'w3tc_uri_cdn_uri', ltrim( $remote_uri, '/' ) );
 	}
 
 	/**

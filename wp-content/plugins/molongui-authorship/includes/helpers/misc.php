@@ -17,7 +17,6 @@ function authorship_is_feature_enabled( $feature = null )
         'cache'         => 'enable_cache',
         'box_styles'    => 'enable_author_box_styles',
         'microdata'     => 'box_schema',
-        'byline_tags'   => 'enable_byline_template_tags',
         'theme_compat'  => 'enable_theme_compat',
         'plugin_compat' => 'enable_plugin_compat',
         'author_in_api' => 'enable_authors_in_api',

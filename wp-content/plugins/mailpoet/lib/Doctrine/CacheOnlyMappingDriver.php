@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace MailPoet\Doctrine;
 
@@ -52,7 +52,7 @@ class CacheOnlyMappingDriver implements MappingDriver {
   /**
    * Copy pasted from MailPoetVendor\Doctrine\Persistence\Mapping\AbstractClassMetadataFactory
    */
-  protected function getCacheKey(string $className) : string {
+  protected function getCacheKey(string $className): string {
     return str_replace('\\', '__', $className) . $this->cacheSalt;
   }
 }

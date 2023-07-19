@@ -6,10 +6,6 @@ class WD_ASL_Scripts {
 	private static $_instance;
 
 	private $scripts = array(
-		'wd-asl-scroll-simple' => array(
-			'src' => 'js/{js_source}/external/simplebar.js',
-			'prereq' => false
-		),
 		'wd-asl-ajaxsearchlite' => array(
 			'src' => 'js/{js_source}/plugin/merged/asl.js',
 			'prereq' => false
@@ -201,13 +197,6 @@ class WD_ASL_Scripts {
 
 		$required = false;
 		switch ( $handle ) {
-			case 'wd-asl-scroll-simple':
-				if (
-					wd_asl()->o['asl_compatibility']['load_scroll_js'] == "yes"
-				) {
-					$required = true;
-				}
-				break;
 			case 'wd-asl-ajaxsearchlite-settings':
 				if ( asl_is_asset_required('settings') ) {
 					$required = true;

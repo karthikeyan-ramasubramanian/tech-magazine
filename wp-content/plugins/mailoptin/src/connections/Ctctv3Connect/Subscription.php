@@ -3,8 +3,6 @@
 namespace MailOptin\Ctctv3Connect;
 
 use MailOptin\Core\Repositories\OptinCampaignsRepository as OCR;
-use function MailOptin\Core\get_ip_address;
-use function MailOptin\Core\strtotime_utc;
 
 class Subscription extends AbstractCtctv3Connect
 {
@@ -121,7 +119,7 @@ class Subscription extends AbstractCtctv3Connect
             return parent::ajax_failure(__('There was an error saving your contact. Please try again.', 'mailoptin'));
 
         } catch (\Exception $e) {
-            self::save_optin_error_log($e->getCode() . ': ' . $e->getMessage(), 'constantcontactv3', $this->extras['optin_campaign_id']);
+            self::save_optin_error_log($e->getCode() . ': ' . $e->getMessage(), 'constantcontactv3', $this->extras['optin_campaign_id'], $this->extras['optin_campaign_type']);
 
             return parent::ajax_failure(__('There was an error saving your contact. Please try again.', 'mailoptin'));
         }

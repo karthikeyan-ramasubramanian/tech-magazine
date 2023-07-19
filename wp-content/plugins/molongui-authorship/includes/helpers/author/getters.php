@@ -75,13 +75,6 @@ function molongui_find_authors()
 {
     $authors = array();
     global $wp_query;
-    global $post;
-    if ( empty( $post ) or !$post->ID or $post->ID == 0 )
-    {
-        $post = $wp_query->get_queried_object();//$post = get_queried_object();
-    }
-    $post_type  = get_post_type( $post );
-    $post_types = molongui_supported_post_types( MOLONGUI_AUTHORSHIP_PREFIX, 'all' );
     if ( !empty( $wp_query->query_vars['guest-author-name'] ) )
     {
         if ( $guest = molongui_get_author_by( 'name', $wp_query->query_vars['guest-author-name'], 'guest', false ) )
@@ -114,9 +107,16 @@ function molongui_find_authors()
             $authors[0]->ref = 'user-'.$user->ID;
         }
     }
-    elseif ( in_array( $post_type, $post_types ) )
+    else
     {
-        $authors = get_post_authors( $post->ID );
+        $post_id = authorship_get_post_id();
+
+        if ( !$post_id )
+        {
+            return false;
+        }
+
+        $authors = get_post_authors( $post_id );
     }
     if ( empty( $authors ) or $authors[0]->id == 0 ) return false;
     return $authors;
@@ -211,13 +211,21 @@ if ( !function_exists( 'molongui_get_authors' ) )
         $options = authorship_get_options();
         if ( !empty( $orderby ) )
         {
-            if ( 'post_count' === $orderby )
+            switch ( $orderby )
             {
-                $min_post_count = !empty( $min_post_count ) ? $min_post_count : 1;
-            }
-            elseif ( 'id' === $orderby )
-            {
-                $orderby = 'ID';
+                case 'id':
+                    $orderby = 'ID';
+                break;
+                case 'post_count':
+                    $min_post_count = !empty( $min_post_count ) ? (int)$min_post_count : 1;
+                break;
+                case 'first_name':
+                case 'last_name':
+                case 'mail':
+                case 'job':
+                case 'company':
+                    $get_data = true;
+                break;
             }
         }
         if ( $min_post_count ) $get_data = true;
@@ -255,7 +263,7 @@ if ( !function_exists( 'molongui_get_authors' ) )
                             $total_post_count = 0;
                             foreach ( $post_types as $post_type )
                             {
-                                $total_post_count = $total_post_count + $authors[$key]['post_count'][$post_type];
+                                $total_post_count = $total_post_count + (int)$authors[$key]['post_count'][$post_type];
                             }
 
                             if ( $total_post_count < (int)$min_post_count )
@@ -304,7 +312,7 @@ if ( !function_exists( 'molongui_get_authors' ) )
                             $total_post_count = 0;
                             foreach ( $post_types as $post_type )
                             {
-                                $total_post_count = $total_post_count + $authors[$key]['post_count'][$post_type];
+                                $total_post_count = $total_post_count + (int)$authors[$key]['post_count'][$post_type];
                             }
 
                             if ( $total_post_count < (int)$min_post_count )
@@ -348,7 +356,7 @@ if ( !function_exists( 'molongui_get_authors' ) )
                 return strcasecmp( $a[$orderby], $b[$orderby] );
             });
         }
-        if ( $order == 'desc' ) $authors = array_reverse( $authors );
+        if ( 'desc' == $order ) $authors = array_reverse( $authors );
         return $authors;
     }
 }

@@ -97,7 +97,7 @@ class Connect extends AbstractConvertFoxConnect implements ConnectionInterface
      */
     public function replace_placeholder_tags($content, $type = 'html')
     {
-
+        return $this->replace_footer_placeholder_tags($content);
     }
 
     /**

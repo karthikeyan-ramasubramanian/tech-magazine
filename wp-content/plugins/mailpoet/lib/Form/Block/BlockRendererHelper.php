@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Form\Block;
 
@@ -37,7 +37,7 @@ class BlockRendererHelper {
       $rules['required'] = true;
       $rules['minlength'] = ModelValidator::EMAIL_MIN_LENGTH;
       $rules['maxlength'] = ModelValidator::EMAIL_MAX_LENGTH;
-      $rules['error-message'] = __('Please specify a valid email address.', 'mailpoet');
+      $rules['type-message'] = __('This value should be a valid email.', 'mailpoet');
     }
 
     if (($blockId === 'first_name') || ($blockId === 'last_name')) {
@@ -61,6 +61,7 @@ class BlockRendererHelper {
 
     if (!empty($block['params']['required'])) {
       $rules['required'] = true;
+      $rules['errors-container'] = '.mailpoet_error_' . $blockId . '_' . $formId;
       $rules['required-message'] = __('This field is required.', 'mailpoet');
     }
 
@@ -70,6 +71,7 @@ class BlockRendererHelper {
         $rules['error-message'] = __('Please specify a valid phone number.', 'mailpoet');
       } else {
         $rules['type'] = $this->wp->escAttr($block['params']['validate']);
+        $rules['error-message'] = $this->translateValidationErrorMessage($block['params']['validate']);
       }
     }
 
@@ -107,28 +109,40 @@ class BlockRendererHelper {
 
   public function renderLabel(array $block, array $formSettings): string {
     $html = '';
+    $forId = '';
+
     if (
       isset($block['params']['hide_label'])
       && $block['params']['hide_label']
     ) {
       return $html;
     }
-    if (
-      isset($block['params']['label_within'])
-      && $block['params']['label_within']
-    ) {
-      return $html;
-    }
+
     $automationId = null;
     if (in_array($block['id'], ['email', 'last_name', 'first_name'], true)) {
       $automationId = 'data-automation-id="form_' . $block['id'] . '_label" ';
     }
+
+    if (isset($formSettings['id'])) {
+      $forId = 'for="form_' . $block['id'] . '_' . $formSettings['id'] . '" ';
+    }
+
     if (
       isset($block['params']['label'])
       && strlen(trim($block['params']['label'])) > 0
     ) {
+      $labelClass = 'class="mailpoet_' . $block['type'] . '_label" ';
+
+      if (
+        isset($block['params']['label_within'])
+        && $block['params']['label_within']
+      ) {
+        $labelClass = 'class="mailpoet-screen-reader-text" ';
+      }
+
       $html .= '<label '
-        . 'class="mailpoet_' . $block['type'] . '_label" '
+        . $forId
+        . $labelClass
         . $this->renderFontStyle($formSettings, $block['styles'] ?? [])
         . ($automationId ?? '')
         . '>';
@@ -143,13 +157,44 @@ class BlockRendererHelper {
     return $html;
   }
 
+  public function renderLegend(array $block, array $formSettings): string {
+    $html = '';
+
+    if (
+      isset($block['params']['hide_label'])
+      && $block['params']['hide_label']
+    ) {
+      return $html;
+    }
+
+    if (
+      isset($block['params']['label'])
+      && strlen(trim($block['params']['label'])) > 0
+    ) {
+      // Use _label suffix for backward compatibility
+      $labelClass = 'class="mailpoet_' . $block['type'] . '_label" ';
+      $html .= '<legend '
+        . $labelClass
+        . $this->renderFontStyle($formSettings, $block['styles'] ?? [])
+        . '>';
+      $html .= htmlspecialchars($block['params']['label']);
+
+      if (isset($block['params']['required']) && $block['params']['required']) {
+        $html .= ' <span class="mailpoet_required">*</span>';
+      }
+
+      $html .= '</legend>';
+    }
+    return $html;
+  }
+
   public function renderFontStyle(array $formSettings, array $styles = []) {
     $rules = [];
     if (isset($formSettings['fontSize'])) {
-      $rules[] = 'font-size: ' . trim($formSettings['fontSize']) . 'px;';
-      $rules[] = 'line-height: ' . (float)trim($formSettings['fontSize']) * 1.2 . 'px";';
+      $rules[] = 'font-size: ' . $formSettings['fontSize'] . (is_numeric($formSettings['fontSize']) ? "px;" : ";");
+      $rules[] = 'line-height: 1.2;';
     }
-    if (isset($styles['bold'])) {
+    if (isset($styles['bold']) && $styles['bold']) {
       $rules[] = 'font-weight: bold;';
     }
     return $rules ? 'style="' . $this->wp->escAttr(implode("", $rules)) . '"' : '';
@@ -214,5 +259,24 @@ class BlockRendererHelper {
       $modifiers[] = 'disabled';
     }
     return join(' ', $modifiers);
+  }
+
+  private function translateValidationErrorMessage(string $validate): string {
+    switch ($validate) {
+      case 'email':
+        return __('This value should be a valid email.', 'mailpoet');
+      case 'url':
+        return __('This value should be a valid url.', 'mailpoet');
+      case 'number':
+        return __('This value should be a valid number.', 'mailpoet');
+      case 'integer':
+        return __('This value should be a valid integer.', 'mailpoet');
+      case 'digits':
+        return __('This value should be digits.', 'mailpoet');
+      case 'alphanum':
+        return __('This value should be alphanumeric.', 'mailpoet');
+      default:
+        return __('This value seems to be invalid.', 'mailpoet');
+    }
   }
 }

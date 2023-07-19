@@ -3,6 +3,7 @@
 namespace MailOptin\Core;
 
 use Carbon\Carbon;
+use MailOptin\Core\Repositories\EmailCampaignRepository;
 use MailOptin\Libsodium\LibsodiumSettingsPage;
 use PAnD as PAnD;
 use stdClass;
@@ -24,17 +25,13 @@ class Cron
     {
         if ( ! wp_next_scheduled('mo_hourly_recurring_job')) {
             // we are adding 10 mins to give room for timestamp/hourly checking to be correct.
-            $tz = Carbon::now(0)->endOfHour()->addMinute(10)->timestamp;
+            $tz = Carbon::now('UTC')->endOfHour()->addMinute(10)->timestamp;
 
             wp_schedule_event($tz, 'hourly', 'mo_hourly_recurring_job');
         }
 
         if ( ! wp_next_scheduled('mo_daily_recurring_job')) {
             wp_schedule_event(time(), 'daily', 'mo_daily_recurring_job');
-        }
-
-        if ( ! wp_next_scheduled('mo_twice_daily_recurring_job')) {
-            wp_schedule_event(time(), 'twicedaily', 'mo_twice_daily_recurring_job');
         }
     }
 
@@ -45,6 +42,10 @@ class Cron
         if ( ! PAnD::is_admin_notice_active('catch_late_email_digest_event-7')) {
             return;
         }
+
+        $digest_campaigns = EmailCampaignRepository::get_by_email_campaign_type(EmailCampaignRepository::POSTS_EMAIL_DIGEST, 1);
+
+        if ( ! is_array($digest_campaigns) || empty($digest_campaigns)) return;
 
         $cron = wp_get_scheduled_event('mo_hourly_recurring_job');
 

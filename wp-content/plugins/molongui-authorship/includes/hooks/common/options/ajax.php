@@ -4,7 +4,7 @@ function authorship_save_options()
 {
     if ( !isset( $_POST['nonce'] ) ) return;
     if ( !wp_verify_nonce( $_POST['nonce'], 'mfw_save_options_nonce' ) ) return;
-    $options = $_POST['data'];
+    $options = wp_unslash( $_POST['data'] );
 
     if ( isset( $options ) and is_array( $options ) )
     {

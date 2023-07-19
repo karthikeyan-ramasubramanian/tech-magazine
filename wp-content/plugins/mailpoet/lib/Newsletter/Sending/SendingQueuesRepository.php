@@ -139,9 +139,32 @@ class SendingQueuesRepository extends Repository {
     } else {
       $newsletter = $queue->getNewsletter();
       if (!$newsletter instanceof NewsletterEntity) return;
+      if ($newsletter->getStatus() === NewsletterEntity::STATUS_CORRUPT) { // force a re-render
+        $queue->setNewsletterRenderedBody(null);
+        $this->persist($queue);
+      }
       $newsletter->setStatus(NewsletterEntity::STATUS_SENDING);
       $task->setStatus(null);
       $this->flush();
     }
+  }
+
+  public function deleteByTask(ScheduledTaskEntity $scheduledTask): void {
+    $this->entityManager->createQueryBuilder()
+      ->delete(SendingQueueEntity::class, 'sq')
+      ->where('sq.task = :task')
+      ->setParameter('task', $scheduledTask)
+      ->getQuery()
+      ->execute();
+  }
+
+  public function saveCampaignId(SendingQueueEntity $queue, string $campaignId): void {
+    $meta = $queue->getMeta();
+    if (!is_array($meta)) {
+      $meta = [];
+    }
+    $meta['campaignId'] = $campaignId;
+    $queue->setMeta($meta);
+    $this->flush();
   }
 }

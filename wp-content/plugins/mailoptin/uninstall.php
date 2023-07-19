@@ -20,7 +20,6 @@ function mailoptin_mo_uninstall_function()
         OptinCampaignsRepository::burst_all_cache();
 
         wp_clear_scheduled_hook('mo_daily_recurring_job');
-        wp_clear_scheduled_hook('mo_twice_daily_recurring_job');
         wp_clear_scheduled_hook('mo_hourly_recurring_job');
 
         /** Delete plugin options */

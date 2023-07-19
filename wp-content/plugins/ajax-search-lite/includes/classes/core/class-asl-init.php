@@ -56,19 +56,28 @@ class WD_ASL_Init {
      * Fix known backwards incompatibilities
      */
     public function backwards_compatibility_fixes() {
+		$comp = wd_asl()->o['asl_compatibility'];
 
-        // 4.8.1
-        $comp = wd_asl()->o['asl_compatibility'];
-        if ( isset($comp['load_mcustom_js']) ) {
-            wd_asl()->o['asl_compatibility']['load_scroll_js'] = $comp['load_mcustom_js'];
-            unset( wd_asl()->o['asl_compatibility']['load_mcustom_js']);
-            asl_save_option('asl_compatibility');
-        }
 		// 4.10
 		if ( isset( $comp['old_browser_compatibility']) ) {
 			unset( wd_asl()->o['asl_compatibility']['old_browser_compatibility'] );
 			asl_save_option('asl_compatibility');
 		}
+
+		// 4.10.1 - Turn off the jquery script versions
+		if ( $comp['js_source'] == 'min' || $comp['js_source'] == 'min-scoped' ) {
+			wd_asl()->o['asl_compatibility']['js_source'] = 'jqueryless-min';
+			asl_save_option('asl_compatibility');
+		} else if ( $comp['js_source'] == 'nomin' || $comp['js_source'] == 'nomin-scoped' ) {
+			wd_asl()->o['asl_compatibility']['js_source'] = 'jqueryless-nomin';
+			asl_save_option('asl_compatibility');
+		}
+
+        // 4.10.4
+        if ( isset($comp['load_scroll_js']) ) {
+            unset( wd_asl()->o['asl_compatibility']['load_scroll_js']);
+            asl_save_option('asl_compatibility');
+        }
 
         // 4.18.2
         $ana = wd_asl()->o['asl_analytics'];
@@ -229,12 +238,10 @@ class WD_ASL_Init {
 		$load_in_footer = $performance_options['load_in_footer'] == 1;
 		$media_query = ASL_DEBUG == 1 ? asl_gen_rnd_str() : ASL_CURRENT_VERSION;
 		if ( wd_asl()->manager->getContext() == "backend" ) {
-			$legacy = false;
 			$js_minified = false;
 			$js_optimized = true;
 			$js_async_load = false;
 		} else {
-			$legacy = $comp_settings['js_source'] != 'jqueryless-min' && $comp_settings['js_source'] != 'jqueryless-nomin';
 			$js_minified = $comp_settings['js_source'] == 'jqueryless-min';
 			$js_optimized = $comp_settings['script_loading_method'] != 'classic';
 			$js_async_load = $comp_settings['script_loading_method'] == 'optimized_async';
@@ -271,43 +278,37 @@ class WD_ASL_Init {
 		}
 
 		$handle = 'wd-asl-ajaxsearchlite';
-
-		if ( $legacy ) {
-			wd_asl()->scripts_legacy = WD_ASL_Scripts_Legacy::getInstance();
-			wd_asl()->scripts_legacy->enqueue();
-			$additional_scripts = array();
+		if ( !$js_async_load ) {
+			wd_asl()->scripts->enqueue(
+				wd_asl()->scripts->get(array(), $js_minified, $js_optimized, array(
+					'wd-asl-async-loader', 'wd-asl-prereq-and-wrapper'
+				)),
+				array(
+					'media_query' => $media_query,
+					'in_footer' => $load_in_footer
+				)
+			);
+			$additional_scripts = wd_asl()->scripts->get(array(), $js_minified, $js_optimized,
+				array('wd-asl-async-loader', 'wd-asl-prereq-and-wrapper', 'wd-asl-ajaxsearchlite-wrapper')
+			);
 		} else {
-			if ( !$js_async_load ) {
-				wd_asl()->scripts->enqueue(
-					wd_asl()->scripts->get(array(), $js_minified, $js_optimized, array(
-						'wd-asl-async-loader', 'wd-asl-prereq-and-wrapper'
-					)),
-					array(
-						'media_query' => $media_query,
-						'in_footer' => $load_in_footer
-					)
-				);
-				$additional_scripts = wd_asl()->scripts->get(array(), $js_minified, $js_optimized,
-					array('wd-asl-async-loader', 'wd-asl-prereq-and-wrapper', 'wd-asl-ajaxsearchlite-wrapper')
-				);
-			} else {
-				$handle = 'wd-asl-prereq-and-wrapper';
-				wd_asl()->scripts->enqueue(
-					wd_asl()->scripts->get($handle, $js_minified, $js_optimized),
-					array(
-						'media_query' => $media_query,
-						'in_footer' => $load_in_footer
-					)
-				);
-				$additional_scripts = wd_asl()->scripts->get(array(), $js_minified, $js_optimized,
-					array('wd-asl-async-loader',
-						'wd-asl-prereq-and-wrapper',
-						'wd-asl-ajaxsearchlite-wrapper',
-						'wd-asl-ajaxsearchlite-prereq'
-					)
-				);
-			}
+			$handle = 'wd-asl-prereq-and-wrapper';
+			wd_asl()->scripts->enqueue(
+				wd_asl()->scripts->get($handle, $js_minified, $js_optimized),
+				array(
+					'media_query' => $media_query,
+					'in_footer' => $load_in_footer
+				)
+			);
+			$additional_scripts = wd_asl()->scripts->get(array(), $js_minified, $js_optimized,
+				array('wd-asl-async-loader',
+					'wd-asl-prereq-and-wrapper',
+					'wd-asl-ajaxsearchlite-wrapper',
+					'wd-asl-ajaxsearchlite-prereq'
+				)
+			);
 		}
+
 
 		ASL_Helpers::addInlineScript( $handle, 'ASL', array(
 			'wp_rocket_exception' => 'DOMContentLoaded',	// WP Rocket hack to prevent the wrapping of the inline script: https://docs.wp-rocket.me/article/1265-load-javascript-deferred
@@ -321,14 +322,13 @@ class WD_ASL_Init {
 			'pageHTML' => '',
 			'additional_scripts' => $additional_scripts,
 			'script_async_load' => $js_async_load,
-			'scrollbar' => $comp_settings['load_scroll_js'] == "yes" && asl_is_asset_required('simplebar'),
+			'init_only_in_viewport' => $comp_settings['init_instances_inviewport_only'] == 1,
+			'font_url' => str_replace('http:', "", plugins_url()). '/ajax-search-lite/css/fonts/icons2.woff2',
 			'css_async' => false,
-			'js_retain_popstate' => w_isset_def($comp_settings['js_retain_popstate'], 1),
 			'highlight' => array(
 				'enabled' => $single_highlight,
 				'data' => $single_highlight_arr
 			),
-			'fix_duplicates' => $comp_settings['js_fix_duplicates'],
 			'analytics' => array(
 				'method' => $analytics['analytics'],
 				'tracking_id' => $analytics['analytics_tracking_id'],
@@ -386,6 +386,17 @@ class WD_ASL_Init {
 				)
 			)
 		), 'before', true);
+
+		add_action('wp_print_footer_scripts', function() use($handle){
+			$script_data = wd_asl()->instances->get_script_data();
+			if ( count($script_data) > 0 ) {
+				$script = "window.ASL_INSTANCES = [];";
+				foreach ( $script_data as $id => $data ) {
+					$script .= "window.ASL_INSTANCES[$id] = $data;";
+				}
+				wp_add_inline_script($handle, $script, 'before');
+			}
+		}, 0);
 	}
 
     public function pluginReset( $triggerActivate = true ) {

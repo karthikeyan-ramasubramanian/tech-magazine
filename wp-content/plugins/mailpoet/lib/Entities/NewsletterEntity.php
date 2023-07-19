@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Entities;
 
@@ -26,18 +26,30 @@ use MailPoetVendor\Symfony\Component\Validator\Constraints as Assert;
 class NewsletterEntity {
   // types
   const TYPE_AUTOMATIC = 'automatic';
+  const TYPE_AUTOMATION = 'automation';
+  const TYPE_TRANSACTIONAL = 'transactional';
   const TYPE_STANDARD = 'standard';
   const TYPE_WELCOME = 'welcome';
   const TYPE_NOTIFICATION = 'notification';
   const TYPE_NOTIFICATION_HISTORY = 'notification_history';
   const TYPE_WC_TRANSACTIONAL_EMAIL = 'wc_transactional';
   const TYPE_RE_ENGAGEMENT = 're_engagement';
+  const TYPE_CONFIRMATION_EMAIL_CUSTOMIZER = 'confirmation_email';
 
   // standard newsletters
   const STATUS_DRAFT = 'draft';
   const STATUS_SCHEDULED = 'scheduled';
   const STATUS_SENDING = 'sending';
   const STATUS_SENT = 'sent';
+  const STATUS_CORRUPT = 'corrupt';
+
+  /**
+   * Newsletters that their body HTML can get re-generated
+   * @see NewsletterSaveController::updateQueue
+   */
+  const TYPES_WITH_RESETTABLE_BODY = [
+    NewsletterEntity::TYPE_STANDARD,
+  ];
 
   // automatic newsletters status
   const STATUS_ACTIVE = 'active';
@@ -134,7 +146,7 @@ class NewsletterEntity {
   private $parent;
 
   /**
-   * @ORM\OneToMany(targetEntity="MailPoet\Entities\NewsletterEntity", mappedBy="parent")
+   * @ORM\OneToMany(targetEntity="MailPoet\Entities\NewsletterEntity", mappedBy="parent", fetch="EXTRA_LAZY")
    * @var ArrayCollection<int, NewsletterEntity>
    */
   private $children;
@@ -179,6 +191,10 @@ class NewsletterEntity {
   public function __clone() {
     // reset ID
     $this->id = null;
+    $this->newsletterSegments = new ArrayCollection();
+    $this->children = new ArrayCollection();
+    $this->options = new ArrayCollection();
+    $this->queues = new ArrayCollection();
   }
 
   /**
@@ -443,6 +459,21 @@ class NewsletterEntity {
       return ($field = $option->getOptionField()) ? $field->getName() === $name : false;
     })->first();
     return $option ?: null;
+  }
+
+  /**
+   * @return array<string, mixed> Associative array of newsletter option values with option names as keys
+   */
+  public function getOptionsAsArray(): array {
+    $optionsArray = [];
+    foreach ($this->options as $option) {
+      $name = $option->getName();
+      if (!$name) {
+        continue;
+      }
+      $optionsArray[$name] = $option->getValue();
+    }
+    return $optionsArray;
   }
 
   public function getOptionValue(string $name) {

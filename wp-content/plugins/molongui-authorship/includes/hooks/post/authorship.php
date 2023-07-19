@@ -9,7 +9,7 @@ function authorship_enable_post_authors_update()
 add_action( 'authorship/init', 'authorship_enable_post_authors_update' );
 function authorship_post_authors_update()
 {
-    if ( defined( 'DISABLE_WP_CRON' ) and DISABLE_WP_CRON ) return;
+    if ( apply_filters( 'authorship/check_wp_cron', true ) and ( defined( 'DISABLE_WP_CRON' ) and DISABLE_WP_CRON ) ) return false;
 
     if ( get_option( 'molongui_authorship_update_post_authors' ) )
     {
@@ -17,7 +17,7 @@ function authorship_post_authors_update()
         authorship_update_post_authors();
     }
 }
-add_action( 'admin_init', 'authorship_post_authors_update' );
+add_action( 'admin_init', 'authorship_post_authors_update', 10 );
 function authorship_post_authors_update_completed()
 {
     if ( get_option( 'm_update_post_authors_complete' ) )

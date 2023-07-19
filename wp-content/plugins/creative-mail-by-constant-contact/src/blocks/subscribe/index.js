@@ -26,7 +26,10 @@ registerBlockType("ce4wp/subscribe", {
     // Remove the support for wide alignment.
     alignWide: false,
   },
-  keywords: [__("contact"), __("form"), __("email"), __("mail")],
+  keywords: [ __('contact', 'creative-mail-by-constant-contact'),
+              __('form', 'creative-mail-by-constant-contact'),
+              __('email', 'creative-mail-by-constant-contact'),
+              __('mail', 'creative-mail-by-constant-contact')],
   deprecated: [
     {
       attributes: {

@@ -11,87 +11,87 @@ use Raygun4php\RaygunClient;
  *
  * @package CreativeMail\Managers
  */
-final class RaygunManager
-{
-    // Lets make this a singleton
-    private static $instance;
-    private $raygun_client;
+final class RaygunManager {
 
-    /**
-     * RaygunManager constructor.
-     */
-    public function __construct()
-    {
-        $this->raygun_client = new RaygunClient(CE4WP_RAYGUN_PHP_KEY);
-    }
+	/**
+	 * The RaygunManager instance.
+	 *
+	 * @var RaygunManager
+	 */
+	private static $instance;
 
-    /**
-     * Transmits an error to the Raygun.io API
-     *
-     * @param int    $err_no          The error number
-     * @param string $err_str         The error string
-     * @param string $err_file        The file the error occurred in
-     * @param int    $err_line        The line the error occurred on
-     */
-    function error_handler($err_no, $err_str, $err_file, $err_line)
-    {
-        $this->raygun_client->SendError($err_no, $err_str, $err_file, $err_line, self::build_tags(), self::build_custom_user_data());
-    }
+	/**
+	 * The RaygunClient instance.
+	 *
+	 * @var RaygunClient
+	 */
+	private $raygun_client;
 
-    /**
-     * Transmits an exception to the Raygun.io API
-     *
-     * @param \Exception $exception      An exception object to transmit
-     */
-    function exception_handler($exception)
-    {
-        $this->raygun_client->SendException($exception, self::build_tags(), self::build_custom_user_data());
-    }
+	/**
+	 * RaygunManager constructor.
+	 */
+	public function __construct() {
+		$this->raygun_client = new RaygunClient(CE4WP_RAYGUN_PHP_KEY);
+	}
 
-    function build_tags()
-    {
-        $tags = [];
+	/**
+	 * Transmits an exception to the Raygun.io API
+	 *
+	 * @param Exception $exception      An exception object to transmit.
+	 *
+	 * @return void
+	 */
+	public function exception_handler( Exception $exception ): void {
+		$this->raygun_client->SendException($exception, self::build_tags(), self::build_custom_user_data());
+	}
 
-        try {
-            // Get as many meta data as possible
-            $tags['CE4WP_PLUGIN_VERSION'] = CE4WP_PLUGIN_VERSION;
-            $tags['CE4WP_ENVIRONMENT'] = CE4WP_ENVIRONMENT;
-            $tags['CE4WP_BUILD'] = CE4WP_BUILD_NUMBER;
-        } catch (Exception $e) {
-            // do nothing, otherwise we might have an endless loop
-        }
+	/**
+	 * Builds the tags to be sent to Raygun.io
+	 *
+	 * @return array<string, string>
+	 */
+	public function build_tags(): array {
+		$tags                         = array();
+		$tags['CE4WP_PLUGIN_VERSION'] = CE4WP_PLUGIN_VERSION;
+		$tags['CE4WP_ENVIRONMENT']    = CE4WP_ENVIRONMENT;
+		$tags['CE4WP_BUILD']          = CE4WP_BUILD_NUMBER;
 
-        return $tags;
-    }
+		return $tags;
+	}
 
-    function build_custom_user_data()
-    {
-        $userData = [];
+	/**
+	 * Builds the custom user data to be sent to Raygun.io
+	 *
+	 * @return array<string, mixed>
+	 */
+	private function build_custom_user_data(): array {
+		$userData = array();
 
-        try {
-            // Get as many meta data as possible
-            $userData['CE4WP_APP_URL'] = CE4WP_APP_URL;
-            $userData['CE4WP_APP_GATEWAY_URL'] = CE4WP_APP_GATEWAY_URL;
+		try {
+			// Get as much metadata as possible.
+			$userData['CE4WP_APP_URL']         = CE4WP_APP_URL;
+			$userData['CE4WP_APP_GATEWAY_URL'] = CE4WP_APP_GATEWAY_URL;
 
-            // user data that helps us identify the error
-            $userData['CE4WP_CONNECTED_ACCOUNT_ID'] = get_option(CE4WP_CONNECTED_ACCOUNT_ID);
-            $userData['CE4WP_INSTANCE_UUID_KEY'] = get_option(CE4WP_INSTANCE_UUID_KEY);
-            $userData['CE4WP_MANAGED_EMAIL_NOTIFICATIONS'] = get_option(CE4WP_MANAGED_EMAIL_NOTIFICATIONS);
-            $userData['CE4WP_ACTIVATED_PLUGINS'] = get_option(CE4WP_ACTIVATED_PLUGINS);
+			// User data that helps us identify the error.
+			$userData['CE4WP_CONNECTED_ACCOUNT_ID']        = get_option(CE4WP_CONNECTED_ACCOUNT_ID);
+			$userData['CE4WP_INSTANCE_UUID_KEY']           = get_option(CE4WP_INSTANCE_UUID_KEY);
+			$userData['CE4WP_MANAGED_EMAIL_NOTIFICATIONS'] = get_option(CE4WP_MANAGED_EMAIL_NOTIFICATIONS);
+			$userData['CE4WP_ACTIVATED_PLUGINS']           = get_option(CE4WP_ACTIVATED_PLUGINS);
 
-        } catch (Exception $e) {
-            // do nothing, otherwise we might have an endless loop
-        }
+		} catch ( Exception $e ) {
+			// We don't want to throw an exception here, as this is just a helper function.
+			// We'll just log the error and move on.
+			error_log($e->getMessage());
+		}
 
-        return $userData;
-    }
+		return $userData;
+	}
 
-    public static function get_instance()
-    {
-        if (self::$instance === null) {
-            self::$instance = new RaygunManager();
-        }
+	public static function get_instance(): RaygunManager {
+		if ( null === self::$instance ) {
+			self::$instance = new RaygunManager();
+		}
 
-        return self::$instance;
-    }
+		return self::$instance;
+	}
 }

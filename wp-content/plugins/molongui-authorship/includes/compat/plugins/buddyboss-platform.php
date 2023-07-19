@@ -15,7 +15,7 @@ add_filter( '_authorship/get_avatar_data/filter/author', function( $author, $id_
         $author->type   = 'user';
     }
     return $author;
-}, 10, 3);
+}, 10, 3 );
 function authorship_prevent_bbp_filter_avatar( $data, $id_or_email, $args )
 {
     global $is_related_posts;

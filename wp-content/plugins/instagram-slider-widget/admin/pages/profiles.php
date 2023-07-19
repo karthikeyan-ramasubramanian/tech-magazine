@@ -83,9 +83,9 @@ class WIS_ProfilesPage extends WIS_Page {
 
 		$this->plugin = $plugin;
 
-		$this->instagram = new WIS_Instagram_Profiles( $this );
-		$this->facebook  = new WIS_Facebook_Profiles( $this );
-		$this->youtube   = new WIS_Youtube_Profiles( $this );
+		$this->instagram = class_exists( 'WIS_Instagram_Profiles' ) ? new WIS_Instagram_Profiles( $this ) : null;
+		$this->facebook  = class_exists( 'WIS_Facebook_Profiles' ) ? new WIS_Facebook_Profiles( $this ) : null;
+		$this->youtube   = class_exists( 'WIS_Youtube_Profiles' ) ? new WIS_Youtube_Profiles( $this ) : null;
 
 	}
 
@@ -177,17 +177,17 @@ class WIS_ProfilesPage extends WIS_Page {
 			'instagram' => [
 				'title'       => __( 'Instagram', 'instagram-slider-widget' ),
 				'description' => __( 'Manage Instagram accounts', 'instagram-slider-widget' ),
-				'content'     => $this->instagram->content(),
+				'content'     => isset( $this->instagram ) ? $this->instagram->content() : '',
 			],
 			'facebook'  => [
 				'title'       => __( 'Facebook', 'instagram-slider-widget' ),
 				'description' => __( 'Manage Facebook accounts', 'instagram-slider-widget' ),
-				'content'     => $this->facebook->content(),
+				'content'     => isset( $this->facebook ) ? $this->facebook->content() : '',
 			],
 			'youtube'   => [
 				'title'       => __( 'Youtube', 'instagram-slider-widget' ),
 				'description' => __( 'Manage Youtube accounts', 'instagram-slider-widget' ),
-				'content'     => $this->youtube->content(),
+				'content'     => isset( $this->youtube ) ? $this->youtube->content() : '',
 			],
 		];
 
@@ -220,11 +220,12 @@ class WIS_ProfilesPage extends WIS_Page {
 				break;
 		}
 
-		$_SERVER['REQUEST_URI'] = remove_query_arg( 'action' );
-		$_SERVER['REQUEST_URI'] = remove_query_arg( 'account' );
-		$_SERVER['REQUEST_URI'] = remove_query_arg( 'social' );
-		$_SERVER['REQUEST_URI'] = remove_query_arg( 'business' );
-		wp_redirect( $_SERVER['REQUEST_URI'] );
+		$_SERVER['REQUEST_URI'] = esc_url( remove_query_arg( 'action' ) );
+		$_SERVER['REQUEST_URI'] = esc_url( remove_query_arg( 'account' ) );
+		$_SERVER['REQUEST_URI'] = esc_url( remove_query_arg( 'social' ) );
+		$_SERVER['REQUEST_URI'] = esc_url( remove_query_arg( 'business' ) );
+
+		wp_safe_redirect( $_SERVER['REQUEST_URI'] );
 	}
 
 }

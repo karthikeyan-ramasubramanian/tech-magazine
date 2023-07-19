@@ -10,8 +10,21 @@ function authorship_post_add_author_meta()
     if ( !$options['add_html_meta'] and !$options['add_opengraph_meta'] and !$options['add_facebook_meta'] and !$options['add_twitter_meta'] ) return;
     $authors = get_post_authors( $post->ID );
     if ( empty( $authors ) ) return;
-    if ( authorship_has_pro() ) $meta = "\n<!-- Author Meta Tags by Molongui Authorship Pro, visit: " . MOLONGUI_AUTHORSHIP_WEB . " -->\n";
-    else $meta = "\n<!-- Author Meta Tags by Molongui Authorship, visit: https://wordpress.org/plugins/molongui-authorship/ -->\n";
+    if ( apply_filters( 'authorship/add_html_comments', true ) )
+    {
+        if ( authorship_has_pro() )
+        {
+            $meta = "\n<!-- Author Meta Tags by Molongui Authorship Pro, visit: " . MOLONGUI_AUTHORSHIP_WEB . " -->\n";
+        }
+        else
+        {
+            $meta = "\n<!-- Author Meta Tags by Molongui Authorship, visit: https://wordpress.org/plugins/molongui-authorship/ -->\n";
+        }
+    }
+    else
+    {
+        $meta = "";
+    }
     if ( is_author() or is_guest_author() )
     {
         global $wp_query;

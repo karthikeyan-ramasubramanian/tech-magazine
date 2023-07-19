@@ -318,9 +318,7 @@ $ana_options = wd_asl()->o['asl_analytics'];
             </form>
         </div>
     </div>
-    <div id="asl-side-container">
-        <a class="wd-accessible-switch" href="#"><?php echo isset($_COOKIE['asl-accessibility']) ? 'DISABLE ACCESSIBILITY' : 'ENABLE ACCESSIBILITY'; ?></a>
-    </div>
+    <?php include(ASL_PATH . "backend/sidebar.php"); ?>
     <div class="clear"></div>
 </div>
 <?php

@@ -100,11 +100,15 @@ class CustomizerSettings extends AbstractCustomizer
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
+                'post_author_avatar_url_shortcode' => array(
+                    'type'      => 'option',
+                    'transport' => 'postMessage',
+                ),
                 'post_meta_shortcode'              => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'acf_shortcode'              => array(
+                'acf_shortcode'                    => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
@@ -187,6 +191,11 @@ class CustomizerSettings extends AbstractCustomizer
                 ],
                 'email_campaign_subject'          => [
                     'default'   => $this->customizer_defaults['email_campaign_subject'],
+                    'type'      => 'option',
+                    'transport' => 'postMessage',
+                ],
+                'email_campaign_preheader'          => [
+                    'default'   => $this->customizer_defaults['email_campaign_preheader'],
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ],
@@ -606,15 +615,15 @@ class CustomizerSettings extends AbstractCustomizer
     {
         $send_test_email_args = apply_filters(
             "mailoptin_send_test_email_settings", array(
-                'send_test_email' => array(
-                        'type'      => 'option',
-                        'transport' => 'postMessage',
-                ),
-                'send_test_email_input' => array(
-                    'default'   => $this->customizer_defaults['send_test_email_input'],
-                    'type'      => 'option',
-                    'transport' => 'postMessage',
-                )
+            'send_test_email'       => array(
+                'type'      => 'option',
+                'transport' => 'postMessage',
+            ),
+            'send_test_email_input' => array(
+                'default'   => $this->customizer_defaults['send_test_email_input'],
+                'type'      => 'option',
+                'transport' => 'postMessage',
+            )
         ));
 
         foreach ($send_test_email_args as $id => $args) {

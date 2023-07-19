@@ -107,7 +107,7 @@ class Connect extends AbstractMailChimpConnect implements ConnectionInterface
             'label'       => __('First Name Merge Tag', 'mailoptin'),
             'description' => sprintf(
                 __('If subscribers first names are missing, change this to the correct merge tag. %sLearn more%s', 'mailoptin'),
-                '<a href="https://mailoptin.io/?p=21482" target="_blank">', '</a>'
+                '<a href="https://mailoptin.io/article/subscriber-name-missing-fix/" target="_blank">', '</a>'
             )
         ];
         $controls[] = [
@@ -116,7 +116,7 @@ class Connect extends AbstractMailChimpConnect implements ConnectionInterface
             'label'       => __('Last Name Merge Tag', 'mailoptin'),
             'description' => sprintf(
                 __('If subscribers last names are missing, change this to the correct merge tag. %sLearn more%s', 'mailoptin'),
-                '<a href="https://mailoptin.io/?p=21482" target="_blank">', '</a>'
+                '<a href="https://mailoptin.io/article/subscriber-name-missing-fix/" target="_blank">', '</a>'
             )
         ];
 
@@ -681,6 +681,10 @@ class Connect extends AbstractMailChimpConnect implements ConnectionInterface
                     $content = "<div class='mo-mailchimp-interest-container' style='$style'>";
                     $content .= '<div class="mo-mailchimp-interest-label">' . $label . '</div>';
 
+                    if (apply_filters('mailoptin_mailchimp_sort_groups', false)) {
+                        $mc_list_groups = wp_list_sort($mc_list_groups, 'title');
+                    }
+
                     if ($show_group_label === true) {
 
                         foreach ($mc_list_groups as $mc_list_group) {
@@ -695,6 +699,10 @@ class Connect extends AbstractMailChimpConnect implements ConnectionInterface
 
                                     $content .= '<div class="mo-mailchimp-interest-category-wrap">';
                                     $content .= '<div class="mo-mailchimp-interest-category-label">' . $mc_list_group['title'] . '</div>';
+
+                                    if (apply_filters('mailoptin_mailchimp_sort_group_interests', false)) {
+                                        $mc_list_group['interests'] = wp_list_sort($mc_list_group['interests'], 'name');
+                                    }
 
                                     foreach ($mc_list_group['interests'] as $interest) {
 

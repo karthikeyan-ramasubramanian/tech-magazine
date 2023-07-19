@@ -313,8 +313,7 @@ abstract class EVF_Form_Fields {
 				$is_multiple = isset( $args['multiple'] ) && true === $args['multiple'];
 
 				if ( true === $is_multiple ) {
-					$output = sprintf( '<select class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" %s multiple>', $class, $id, $slug, $id, $slug, $data );
-
+					$output = sprintf( '<select class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s][]" %s multiple>', $class, $id, $slug, $id, $slug, $data );
 				} else {
 					$output = sprintf( '<select class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" %s >', $class, $id, $slug, $id, $slug, $data );
 				}
@@ -324,7 +323,7 @@ abstract class EVF_Form_Fields {
 					if ( true === $is_multiple && is_array( $value ) ) {
 						$selected_value = in_array( $key, $value, true ) ? 'selected="selected"' : '';
 					} else {
-						$selected_value = ( $value === $key ) ? 'selected="selected"' : '';
+						$selected_value = ( $value == $key ) ? 'selected="selected"' : '';
 					}
 					$output .= sprintf( '<option value="%s" %s>%s</option>', esc_attr( $key ), $selected_value, $option_value );
 				}
@@ -548,16 +547,67 @@ abstract class EVF_Form_Fields {
 					$echo
 				);
 				break;
+
+			/*
+			 * Field Required toggle.
+			 */
+			case 'required_field_message_setting':
+				$default = ! empty( $args['default'] ) ? $args['default'] : 'global';
+				if ( isset( $field['required_field_message_setting'] ) ) {
+					if ( 'global' === $field['required_field_message_setting'] ) {
+						$value = $field['required_field_message_setting'];
+					} elseif ( 'individual' === $field['required_field_message_setting'] ) {
+						$value = $field['required_field_message_setting'];
+					}
+				} elseif ( ! empty( $field['required-field-message'] ) ) {
+					$value = 'individual';
+				} else {
+					$value = $default;
+				}
+				$output = $this->field_element(
+					'radio',
+					$field,
+					array(
+						'slug'    => 'required_field_message_setting',
+						'default' => $value,
+						'desc'    => '',
+						'options' => array(
+							'global'     => esc_html__( 'Show Required Message From Global Setting', 'everest-forms' ),
+							'individual' => esc_html__( 'Custom Required Message', 'everest-forms' ),
+						),
+					),
+					false
+				);
+				$output = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'required_field_message_setting',
+						'class'   => isset( $field['required'] ) ? '' : 'hidden',
+						'content' => $output,
+					),
+					$echo
+				);
+				break;
 			/**
 			 * Required Field Message.
 			 */
 			case 'required_field_message':
-				$has_sub_fields = false;
-				$sub_fields     = array();
-
+				$has_sub_fields      = false;
+				$sub_fields          = array();
 				$required_validation = get_option( 'everest_forms_required_validation' );
 				if ( in_array( $field['type'], array( 'number', 'email', 'url', 'phone' ), true ) ) {
 					$required_validation = get_option( 'everest_forms_' . $field['type'] . '_validation' );
+				}
+				$hidden = true;
+				if ( isset( $field['required_field_message_setting'], $field['required'] ) ) {
+					if ( 'global' === $field['required_field_message_setting'] ) {
+						$hidden = true;
+					} elseif ( 'individual' === $field['required_field_message_setting'] ) {
+						$hidden = false;
+					}
+				} elseif ( ! empty( $field['required-field-message'] ) && isset( $field['required'] ) ) {
+					$hidden = false;
 				}
 
 				if ( 'likert' === $field['type'] ) {
@@ -571,7 +621,7 @@ abstract class EVF_Form_Fields {
 								'tooltip' => esc_html__( 'Enter a message to show for this row if it\'s required.', 'everest-forms' ),
 							),
 							'text'  => array(
-								'value' => isset( $field[ $row_slug ] ) ? esc_attr( $field[ $row_slug ] ) : esc_attr( $required_validation ),
+								'value' => isset( $field[ $row_slug ] ) ? esc_attr( $field[ $row_slug ] ) : '',
 							),
 						);
 					}
@@ -584,7 +634,7 @@ abstract class EVF_Form_Fields {
 								'tooltip' => esc_html__( 'Enter a message to show for Address Line 1 if it\'s required.', 'everest-forms' ),
 							),
 							'text'  => array(
-								'value' => isset( $field['required-field-message-address1'] ) ? esc_attr( $field['required-field-message-address1'] ) : esc_attr( $required_validation ),
+								'value' => isset( $field['required-field-message-address1'] ) ? esc_attr( $field['required-field-message-address1'] ) : '',
 							),
 						),
 						'required-field-message-city'     => array(
@@ -593,7 +643,7 @@ abstract class EVF_Form_Fields {
 								'tooltip' => esc_html__( 'Enter a message to show for City if it\'s required.', 'everest-forms' ),
 							),
 							'text'  => array(
-								'value' => isset( $field['required-field-message-city'] ) ? esc_attr( $field['required-field-message-city'] ) : esc_attr( $required_validation ),
+								'value' => isset( $field['required-field-message-city'] ) ? esc_attr( $field['required-field-message-city'] ) : '',
 							),
 						),
 						'required-field-message-state'    => array(
@@ -602,7 +652,7 @@ abstract class EVF_Form_Fields {
 								'tooltip' => esc_html__( 'Enter a message to show for State/Province/Region if it\'s required.', 'everest-forms' ),
 							),
 							'text'  => array(
-								'value' => isset( $field['required-field-message-state'] ) ? esc_attr( $field['required-field-message-state'] ) : esc_attr( $required_validation ),
+								'value' => isset( $field['required-field-message-state'] ) ? esc_attr( $field['required-field-message-state'] ) : '',
 							),
 						),
 						'required-field-message-postal'   => array(
@@ -611,7 +661,7 @@ abstract class EVF_Form_Fields {
 								'tooltip' => esc_html__( 'Enter a message to show for Zip/Postal Code if it\'s required.', 'everest-forms' ),
 							),
 							'text'  => array(
-								'value' => isset( $field['required-field-message-postal'] ) ? esc_attr( $field['required-field-message-postal'] ) : esc_attr( $required_validation ),
+								'value' => isset( $field['required-field-message-postal'] ) ? esc_attr( $field['required-field-message-postal'] ) : '',
 							),
 						),
 						'required-field-message-country'  => array(
@@ -620,7 +670,7 @@ abstract class EVF_Form_Fields {
 								'tooltip' => esc_html__( 'Enter a message to show for Country if it\'s required.', 'everest-forms' ),
 							),
 							'text'  => array(
-								'value' => isset( $field['required-field-message-country'] ) ? esc_attr( $field['required-field-message-country'] ) : esc_attr( $required_validation ),
+								'value' => isset( $field['required-field-message-country'] ) ? esc_attr( $field['required-field-message-country'] ) : '',
 							),
 						),
 					);
@@ -629,7 +679,7 @@ abstract class EVF_Form_Fields {
 				if ( true === $has_sub_fields ) {
 					$sub_field_output_array = array();
 					foreach ( $sub_fields as $sub_field_slug => $sub_field_data ) {
-						$value   = isset( $field['required-field-message'] ) ? esc_attr( $field['required-field-message'] ) : esc_attr( $required_validation );
+						$value   = isset( $field['required-field-message'] ) ? esc_attr( $field['required-field-message'] ) : '';
 						$tooltip = esc_html__( 'Enter a message to show for this field if it\'s required.', 'everest-forms' );
 						$output  = $this->field_element(
 							'label',
@@ -669,13 +719,13 @@ abstract class EVF_Form_Fields {
 						$field,
 						array(
 							'slug'    => 'required-field-message',
-							'class'   => isset( $field['required'] ) ? '' : 'hidden',
+							'class'   => false === $hidden ? '' : 'hidden',
 							'content' => $output,
 						),
 						$echo
 					);
 				} else {
-					$value   = isset( $field['required-field-message'] ) ? esc_attr( $field['required-field-message'] ) : esc_attr( $required_validation );
+					$value   = isset( $field['required-field-message'] ) ? esc_attr( $field['required-field-message'] ) : '';
 					$tooltip = esc_html__( 'Enter a message to show for this field if it\'s required.', 'everest-forms' );
 
 					$output  = $this->field_element(
@@ -703,7 +753,7 @@ abstract class EVF_Form_Fields {
 						$field,
 						array(
 							'slug'    => 'required-field-message',
-							'class'   => isset( $field['required'] ) ? '' : 'hidden',
+							'class'   => false === $hidden ? '' : 'hidden',
 							'content' => $output,
 						),
 						$echo
@@ -909,6 +959,7 @@ abstract class EVF_Form_Fields {
 			case 'address_style':
 				$default = ! empty( $args['default'] ) ? $args['default'] : 'none';
 				$tooltip = esc_html__( 'Select the style', 'everest-forms' );
+				$value   = ! empty( $field['address_style'] ) ? esc_attr( $field['address_style'] ) : '';
 				$output  = $this->field_element(
 					'label',
 					$field,
@@ -924,7 +975,7 @@ abstract class EVF_Form_Fields {
 					$field,
 					array(
 						'slug'    => 'address_style',
-						'value'   => esc_html__( 'style', 'everest-forms' ),
+						'value'   => $value,
 						'tooltip' => $tooltip,
 						'options' => array(
 							'address'          => esc_html__( 'Address', 'everest-forms' ),
@@ -1217,12 +1268,12 @@ abstract class EVF_Form_Fields {
 					array(
 						'label'   => esc_html__( 'U.S. States', 'everest-forms' ),
 						'class'   => 'evf-options-preset-states',
-						'options' => array_values( evf_get_states() ),
+						'options' => array_values( evf_get_states()['US'] ),
 					),
 					array(
 						'label'   => esc_html__( 'U.S. States Postal Code', 'everest-forms' ),
 						'class'   => 'evf-options-preset-states-postal-code',
-						'options' => array_keys( evf_get_states() ),
+						'options' => array_keys( evf_get_states()['US'] ),
 					),
 					array(
 						'label'   => esc_html__( 'Age Groups', 'everest-forms' ),
@@ -1342,7 +1393,7 @@ abstract class EVF_Form_Fields {
 				);
 
 				// Smart tag for default value.
-				$exclude_fields = array( 'rating', 'number', 'range-slider', 'payment-quantity' );
+				$exclude_fields = array( 'rating', 'number', 'range-slider', 'payment-quantity', 'reset' );
 
 				if ( ! in_array( $field['type'], $exclude_fields, true ) ) {
 					$output .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="other"><span class="dashicons dashicons-editor-code"></span></a>';
@@ -1638,10 +1689,13 @@ abstract class EVF_Form_Fields {
 			*/
 			case 'whitelist_domain':
 				$default = ! empty( $args['default'] ) ? $args['default'] : '0';
-				$value   = ! empty( $field['whitelist_domain'] ) ? esc_attr( $field['whitelist_domain'] ) : '';
-				$style   = ! empty( $field['select_whitelist'] ) ? esc_attr( $field['select_whitelist'] ) : 'Allowed Domains';
-				$tooltip = esc_html__( 'You can list the email domains in the Whitelisted Domains', 'everest-forms' );
-				$output  = $this->field_element(
+				// $value for just backward compatibility.
+				$value           = ( isset( $field['whitelist_domain'] ) && ! empty( $field['whitelist_domain'] ) ) ? esc_attr( $field['whitelist_domain'] ) : '';
+				$allowed_domains = ( isset( $field['allowed_domains'] ) && ! empty( $field['allowed_domains'] ) ) ? esc_attr( $field['allowed_domains'] ) : ( ( isset( $field['select_whitelist'] ) && 'allow' === $field['select_whitelist'] ) ? $value : '' );
+				$denied_domains  = ( isset( $field['denied_domains'] ) && ! empty( $field['denied_domains'] ) ) ? esc_attr( $field['denied_domains'] ) : ( ( isset( $field['select_whitelist'] ) && 'deny' === $field['select_whitelist'] ) ? $value : '' );
+				$style           = ( isset( $field['select_whitelist'] ) && ! empty( $field['select_whitelist'] ) ) ? esc_attr( $field['select_whitelist'] ) : 'allow';
+				$tooltip         = esc_html__( 'Please enter valid allowed or denied domains, separated by commas. For example: google.com, yahoo.com', 'everest-forms' );
+				$output          = $this->field_element(
 					'label',
 					$field,
 					array(
@@ -1651,7 +1705,7 @@ abstract class EVF_Form_Fields {
 					),
 					false
 				);
-				$output .= $this->field_element(
+				$output         .= $this->field_element(
 					'select',
 					$field,
 					array(
@@ -1664,7 +1718,7 @@ abstract class EVF_Form_Fields {
 					),
 					false
 				);
-				$output  = $this->field_element(
+				$output          = $this->field_element(
 					'row',
 					$field,
 					array(
@@ -1678,14 +1732,32 @@ abstract class EVF_Form_Fields {
 					'row',
 					$field,
 					array(
-						'slug'    => 'whitelist_domain',
+						'slug'    => 'allowed_domains',
 						'content' => $this->field_element(
 							'text',
 							$field,
 							array(
-								'slug'        => 'whitelist_domain',
-								'value'       => esc_attr( $value ),
-								'placeholder' => esc_attr__( 'for eg. gmail.com', 'everest-forms' ),
+								'slug'        => 'allowed_domains',
+								'value'       => esc_attr( $allowed_domains ),
+								'placeholder' => esc_attr__( 'Allowed Domain(s)', 'everest-forms' ),
+							),
+							false
+						),
+					),
+					$echo
+				);
+				$output .= $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'denied_domains',
+						'content' => $this->field_element(
+							'text',
+							$field,
+							array(
+								'slug'        => 'denied_domains',
+								'value'       => esc_attr( $denied_domains ),
+								'placeholder' => esc_attr__( 'Denied Domain(s)', 'everest-forms' )
 							),
 							false
 						),
@@ -2012,7 +2084,7 @@ abstract class EVF_Form_Fields {
 
 		// Check for permissions.
 		if ( ! current_user_can( 'everest_forms_edit_form', (int) $_POST['form_id'] ) ) {
-			die( esc_html__( 'You do no have permission.', 'everest-forms' ) );
+			die( esc_html__( 'You don\'t have permission.', 'everest-forms' ) );
 		}
 
 		// Check for field type to add.
@@ -2276,18 +2348,28 @@ abstract class EVF_Form_Fields {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $field_id Field Id.
-	 * @param array  $field_submit Submitted Data.
-	 * @param array  $form_data All Form Data.
+	 * @param string       $field_id Field Id.
+	 * @param string|array $field_submit Submitted Data.
+	 * @param array        $form_data All Form Data.
 	 */
 	public function validate( $field_id, $field_submit, $form_data ) {
-		$field_type         = isset( $form_data['form_fields'][ $field_id ]['type'] ) ? $form_data['form_fields'][ $field_id ]['type'] : '';
-		$required_field     = isset( $form_data['form_fields'][ $field_id ]['required'] ) ? $form_data['form_fields'][ $field_id ]['required'] : false;
-		$conditional_status = isset( $form_data['form_fields'][ $field_id ]['conditional_logic_status'] ) ? $form_data['form_fields'][ $field_id ]['conditional_logic_status'] : 0;
+		$field_type          = isset( $form_data['form_fields'][ $field_id ]['type'] ) ? $form_data['form_fields'][ $field_id ]['type'] : '';
+		$required_field      = isset( $form_data['form_fields'][ $field_id ]['required'] ) ? $form_data['form_fields'][ $field_id ]['required'] : false;
+		$field               = isset( $form_data['form_fields'][ $field_id ] ) ? $form_data['form_fields'][ $field_id ] : '';
+		$required_validation = get_option( 'everest_forms_required_validation' );
+		if ( in_array( $field_type, array( 'number', 'email', 'url', 'phone' ), true ) ) {
+			$required_validation = get_option( 'everest_forms_' . $field['type'] . '_validation' );
+		}
+		$required_message = isset( $form_data['form_fields'][ $field_id ]['required-field-message'], $form_data['form_fields'][ $field_id ]['required_field_message_setting'] ) && ! empty( $form_data['form_fields'][ $field_id ]['required-field-message'] ) && 'individual' == $form_data['form_fields'][ $field_id ]['required_field_message_setting'] ? $form_data['form_fields'][ $field_id ]['required-field-message'] : $required_validation;
+		$entry            = $form_data['entry'];
+		$visible          = apply_filters( 'everest_forms_visible_fields', true, $form_data['form_fields'][ $field_id ], $entry, $form_data );
 
+		if ( false === $visible ) {
+			return;
+		}
 		// Basic required check - If field is marked as required, check for entry data.
-		if ( false !== $required_field && '1' !== $conditional_status && ( empty( $field_submit ) && '0' !== $field_submit ) ) {
-			evf()->task->errors[ $form_data['id'] ][ $field_id ] = evf_get_required_label();
+		if ( false !== $required_field && ( empty( $field_submit ) && '0' !== $field_submit ) ) {
+			evf()->task->errors[ $form_data['id'] ][ $field_id ] = $required_message;
 			update_option( 'evf_validation_error', 'yes' );
 		}
 
@@ -2311,6 +2393,33 @@ abstract class EVF_Form_Fields {
 			case 'number':
 				if ( ! empty( $_POST['everest_forms']['form_fields'][ $field_id ] ) && ! is_numeric( $field_submit ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 					$validation_text = get_option( 'evf_' . $field_type . '_validation', esc_html__( 'Please enter a valid number', 'everest-forms' ) );
+				}
+				break;
+			case 'textarea':
+			case 'text':
+				if ( ! empty( $_POST['everest_forms']['form_fields'][ $field_id ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+
+					// Limit Length.
+					if ( isset( $field['limit_enabled'], $field['limit_mode'], $field['limit_count'] ) && '1' === $field['limit_enabled'] && in_array( $field['limit_mode'], array( 'characters', 'words' ), true ) && ! empty( $field['limit_count'] ) ) {
+						if ( 'words' === $field['limit_mode'] && $field['limit_count'] < str_word_count( $field_submit ) ) {
+							/* translators: %s Number of max words. */
+							$validation_text = sprintf( esc_html__( 'This field contains at most %s words', 'everest-forms' ), $field['limit_count'] );
+						} elseif ( 'characters' === $field['limit_mode'] && $field['limit_count'] < mb_strlen( $field_submit ) ) {
+							/* translators: %s Number of max characters. */
+							$validation_text = sprintf( esc_html__( 'This field contains at most %s characters', 'everest-forms' ), $field['limit_count'] );
+						}
+					}
+
+					// Min Length.
+					if ( isset( $field['min_length_enabled'], $field['min_length_mode'], $field['min_length_count'] ) && '1' === $field['min_length_enabled'] && in_array( $field['min_length_mode'], array( 'characters', 'words' ), true ) && ! empty( $field['min_length_count'] ) ) {
+						if ( 'words' === $field['min_length_mode'] && $field['min_length_count'] > str_word_count( $field_submit ) ) {
+							/* translators: %s Number of minimum words. */
+							$validation_text = sprintf( esc_html__( 'This field contains at least %s words', 'everest-forms' ), $field['min_length_count'] );
+						} elseif ( 'characters' === $field['min_length_mode'] && $field['min_length_count'] > mb_strlen( $field_submit ) ) {
+							/* translators: %s Number of minimum characters. */
+							$validation_text = sprintf( esc_html__( 'This field contains at least %s characters', 'everest-forms' ), $field['min_length_count'] );
+						}
+					}
 				}
 				break;
 		}
@@ -2359,7 +2468,7 @@ abstract class EVF_Form_Fields {
 	 */
 	protected function field_is_limit( $field ) {
 		if ( in_array( $field['type'], array( 'text', 'textarea' ), true ) ) {
-			return isset( $field['limit_enabled'] ) && ! empty( $field['limit_count'] );
+			return ( isset( $field['limit_enabled'] ) && ! empty( $field['limit_count'] ) ) || ( isset( $field['min_length_enabled'] ) && ! empty( $field['min_length_count'] ) );
 		}
 	}
 

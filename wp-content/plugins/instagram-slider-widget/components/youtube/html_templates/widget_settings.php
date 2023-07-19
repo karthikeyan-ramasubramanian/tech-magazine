@@ -101,11 +101,11 @@ $instance       = $args['instance'];
         <label for="<?php echo $this->get_field_id('request_by'); ?>"><strong><?php _e('Request videos by:', 'instagram-slider-widget'); ?></strong>
             <select class="widefat" name="<?php echo $this->get_field_name('request_by'); ?>"
                     id="<?php echo $this->get_field_id('request_by'); ?>">
-                <option value="<?= YoutubeApi::orderByRelevance ?>" <?php selected($instance['request_by'], YoutubeApi::orderByRelevance, true); ?>><?php _e('Relevance', 'instagram-slider-widget'); ?></option>
-                <option value="<?= YoutubeApi::orderByDate ?>"      <?php selected($instance['request_by'], YoutubeApi::orderByDate, true); ?>>     <?php _e('Date', 'instagram-slider-widget'); ?></option>
-                <option value="<?= YoutubeApi::orderByRating ?>"    <?php selected($instance['request_by'], YoutubeApi::orderByRating, true); ?>>   <?php _e('Rating', 'instagram-slider-widget'); ?></option>
-                <option value="<?= YoutubeApi::orderByViewCount ?>" <?php selected($instance['request_by'], YoutubeApi::orderByViewCount, true); ?>><?php _e('View count', 'instagram-slider-widget'); ?></option>
-                <option value="<?= YoutubeApi::orderByUnspec ?>"    <?php selected($instance['request_by'], YoutubeApi::orderByUnspec, true); ?>>   <?php _e('Unspecified', 'instagram-slider-widget'); ?></option>
+                <option value="<?php echo YoutubeApi::orderByRelevance ?>" <?php selected($instance['request_by'], YoutubeApi::orderByRelevance, true); ?>><?php _e('Relevance', 'instagram-slider-widget'); ?></option>
+                <option value="<?php echo YoutubeApi::orderByDate ?>"      <?php selected($instance['request_by'], YoutubeApi::orderByDate, true); ?>>     <?php _e('Date', 'instagram-slider-widget'); ?></option>
+                <option value="<?php echo YoutubeApi::orderByRating ?>"    <?php selected($instance['request_by'], YoutubeApi::orderByRating, true); ?>>   <?php _e('Rating', 'instagram-slider-widget'); ?></option>
+                <option value="<?php echo YoutubeApi::orderByViewCount ?>" <?php selected($instance['request_by'], YoutubeApi::orderByViewCount, true); ?>><?php _e('View count', 'instagram-slider-widget'); ?></option>
+                <option value="<?php echo YoutubeApi::orderByUnspec ?>"    <?php selected($instance['request_by'], YoutubeApi::orderByUnspec, true); ?>>   <?php _e('Unspecified', 'instagram-slider-widget'); ?></option>
             </select>
         </label>
     </p>

@@ -11,7 +11,7 @@
 <div class="wisw-container">
     <div class="wisw-social-content">
         <div class="wis-widgets-container">
-            <h2><?= __( 'Recommended widget templates', 'instagram-slider-widget' ); ?></h2>
+            <h2><?php echo __( 'Recommended widget templates', 'instagram-slider-widget' ); ?></h2>
             <div class="wis-demo-widgets">
 				<?php if ( is_array( $insta_widgets ) && ! empty( $insta_widgets ) ): ?>
                     <div class="wis-row">
@@ -31,13 +31,13 @@
                                                     alt=""></p>
                                     </div>
                                     <div class="wis-demo-shortcode">
-                                        <p><?= __( 'Shortcode for this widget', 'instagram-slider-widget' ); ?><span
-                                                    class="<?= $wis_demo_pro; ?>"></span></p>
+                                        <p><?php echo __( 'Shortcode for this widget', 'instagram-slider-widget' ); ?><span
+                                                    class="<?php echo $wis_demo_pro; ?>"></span></p>
                                         <input id="wis_insta_shortcode"
                                                onclick="this.setSelectionRange(0, this.value.length)"
-                                               type="text" class="wis-demo-widefat" value="<?= $shortcode; ?>"
+                                               type="text" class="wis-demo-widefat" value="<?php echo $shortcode; ?>"
                                                readonly="readonly">
-                                        <p><?= $insta_widget['title']; ?></p>
+                                        <p><?php echo $insta_widget['title']; ?></p>
                                     </div>
                                 </div>
 								<?php
@@ -48,13 +48,13 @@
 				<?php
 				$account = $this->get_current_account();
 				if ( ! isset( $demo_id ) && ! empty( $account ) ) { ?>
-                    <a class="button button-primary" href="<?php echo add_query_arg( [ 'do' => 'add_demo' ] ); ?>">Add
+                    <a class="button button-primary" href="<?php echo esc_url_raw(add_query_arg( [ 'do' => 'add_demo' ] )); ?>">Add
                         demo
                         widgets</a>
 				<?php } else if ( ! isset( $demo_id ) && empty( $account ) ) { ?>
                     <a class="button button-primary" disabled="disabled" href="#">Add demo
                         widgets</a>
-                    <div style="display: inline-block; line-height: 30px;"><?= __( 'Add instagram account in plugin settings', 'instagram-slider-widget' ); ?></div>
+                    <div style="display: inline-block; line-height: 30px;"><?php echo __( 'Add instagram account in plugin settings', 'instagram-slider-widget' ); ?></div>
 				<?php } ?>
             </div>
 

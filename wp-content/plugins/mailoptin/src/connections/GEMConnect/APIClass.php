@@ -1,5 +1,5 @@
 <?php
-
+// https://gem.godaddy.com/api/v3/docs
 namespace MailOptin\GEMConnect;
 
 class APIClass

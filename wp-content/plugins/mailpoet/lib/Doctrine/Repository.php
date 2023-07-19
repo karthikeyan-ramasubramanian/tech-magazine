@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Doctrine;
 
@@ -29,7 +29,9 @@ abstract class Repository {
     'created_at',
   ];
 
-  public function __construct(EntityManager $entityManager) {
+  public function __construct(
+    EntityManager $entityManager
+  ) {
     $this->entityManager = $entityManager;
     $this->classMetadata = $entityManager->getClassMetadata($this->getEntityClassName());
     $this->doctrineRepository = new DoctrineEntityRepository($this->entityManager, $this->classMetadata);

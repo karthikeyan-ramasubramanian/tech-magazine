@@ -32,12 +32,9 @@
 
     <%if display_nps_survey %>
       var mailpoet_display_nps_form = true;
-      var mailpoet_premium_active = <%= json_encode(premium_plugin_active) %>;
-      var mailpoet_site_url = "<%= site_url %>";
       var mailpoet_current_wp_user = <%= json_encode(current_wp_user) %>;
       var mailpoet_current_wp_user_firstname = '<%= current_wp_user_firstname %>';
       var mailpoet_review_request_illustration_url = '<%= cdn_url('review-request/review-request-illustration.20190815-1427.svg') %>';
-      var mailpoet_installed_days_ago = <%= installed_days_ago %>;
     <%endif%>
   </script>
 <% endblock %>
@@ -100,6 +97,7 @@
     'placeSlideInFormOnPages': _x('Slide–in', 'This is a text on a widget that leads to settings for form placement - form type is slide in'),
     'placePopupFormOnPages': _x('Pop-up', 'This is a text on a widget that leads to settings for form placement - form type is pop-up, it will be displayed on page in a small modal window'),
     'placeFormOthers': _x('Others (widget)', 'Placement of the form using theme widget'),
+    'formSettingsCorrupted': __('Form settings of "%1$s" form are corrupted. Please [link]reconfigure the form in the editor[/link].'),
   }) %>
 <% endblock %>
 

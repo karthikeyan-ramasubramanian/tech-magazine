@@ -73,9 +73,7 @@ if (ASL_DEMO) $_POST = null;
                 <input type="hidden" name="asl_mnt_msg" value="">
             </form>
         </div>
-        <div id="asl-side-container">
-            <a class="wd-accessible-switch" href="#"><?php echo isset($_COOKIE['asl-accessibility']) ? 'DISABLE ACCESSIBILITY' : 'ENABLE ACCESSIBILITY'; ?></a>
-        </div>
+        <?php include(ASL_PATH . "backend/sidebar.php"); ?>
         <div class="clear"></div>
     </div>
 <?php

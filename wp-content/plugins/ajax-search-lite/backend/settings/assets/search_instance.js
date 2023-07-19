@@ -5,6 +5,10 @@ jQuery(function ($) {
         $('.tabs a[tabid=101]').trigger('click');
     });
 
+    $('.tabs a[tabid=3]').on('click', function () {
+        $('.tabs a[tabid=301]').trigger('click');
+    });
+
     $('.tabs a[tabid=4]').on('click', function () {
         $('.tabs a[tabid=401]').trigger('click');
     });

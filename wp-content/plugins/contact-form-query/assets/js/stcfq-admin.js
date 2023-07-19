@@ -34,9 +34,12 @@
 		});
 
 		var googleRecaptchaV2 = $('.stcfq_google_recaptcha_v2');
+		var cfTurnstile = $('.stcfq_cf_turnstile');
 		var captcha = $('.stcfq input[name="captcha"]:checked').val();
 		if('google_recaptcha_v2' === captcha) {
 			googleRecaptchaV2.show();
+		} else if('cf_turnstile' === captcha) {
+			cfTurnstile.show();
 		}
 
 		$(document).on('change', '.stcfq input[name="captcha"]', function() {
@@ -45,6 +48,8 @@
 			stcfqCaptcha.hide();
 			if('google_recaptcha_v2' === captcha) {
 				googleRecaptchaV2.fadeIn();
+			} else if('cf_turnstile' === captcha) {
+				cfTurnstile.fadeIn();
 			}
 		});
 

@@ -2,8 +2,11 @@
 $show_related = ( $options['author_box_layout'] != 'slim' and !empty( $options['author_box_related_show'] ) and ( !empty( $author['posts'] ) or !empty( $options['author_box_related_show_empty'] ) ) );
 ?>
 
+<?php if ( apply_filters( 'authorship/add_html_comments', true ) ) : ?>
 <!-- MOLONGUI AUTHORSHIP PLUGIN <?php echo MOLONGUI_AUTHORSHIP_VERSION; ?> -->
 <!-- <?php echo MOLONGUI_AUTHORSHIP_WEB; ?> -->
+<?php endif; ?>
+
 <div class="molongui-clearfix"></div>
 <div id="mab-<?php echo $random_id; ?>"
      class="m-a-box <?php echo ( !empty( $options['author_box_custom_css_class'] ) ? $options['author_box_custom_css_class'] : '' ); ?>"

@@ -42,6 +42,12 @@ class WD_ASL_Instances {
      */
     private $refresh = false;
 
+	/**
+	 * The search instances init script JSON data
+	 * @var string[]
+	 */
+	private $script_data = array();
+
     /**
      * Gets the search instance if exists
      *
@@ -127,6 +133,14 @@ class WD_ASL_Instances {
         }
         return $params;
     }
+
+	public function add_script_data( $id, $data ) {
+		$this->script_data[$id] = $data;
+	}
+
+	public function get_script_data( ) {
+		return $this->script_data;
+	}
 
     // ------------------------------------------------------------
     //       ---------------- PRIVATE --------------------

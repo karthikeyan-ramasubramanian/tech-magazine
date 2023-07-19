@@ -76,10 +76,11 @@ class STCFQ_Setting {
 		$classes_consent = isset( $_POST['classes_consent'] ) ? sanitize_text_field( $_POST['classes_consent'] ) : '';
 		$msg_consent     = isset( $_POST['msg_consent'] ) ? sanitize_text_field( $_POST['msg_consent'] ) : '';
 
-		$text_button    = isset( $_POST['text_button'] ) ? sanitize_text_field( $_POST['text_button'] ) : '';
-		$classes_button = isset( $_POST['classes_button'] ) ? sanitize_text_field( $_POST['classes_button'] ) : '';
+		$text_button           = isset( $_POST['text_button'] ) ? sanitize_text_field( $_POST['text_button'] ) : '';
+		$parent_classes_button = isset( $_POST['parent_classes_button'] ) ? sanitize_text_field( $_POST['parent_classes_button'] ) : '';
+		$classes_button        = isset( $_POST['classes_button'] ) ? sanitize_text_field( $_POST['classes_button'] ) : '';
 
-		$order = isset( $_POST['order'] ) && is_array( $_POST['order'] ) ? $_POST['order'] : array();
+		$order = ( isset( $_POST['order'] ) && is_array( $_POST['order'] ) ) ? array_map( 'sanitize_text_field', $_POST['order'] ) : array();
 
 		$success_message = isset( $_POST['success_message'] ) ? sanitize_text_field( $_POST['success_message'] ) : '';
 
@@ -140,8 +141,9 @@ class STCFQ_Setting {
 		update_option( 'stcfq_consent_field', $consent_field, true );
 
 		$submit_button = array(
-			'text'    => $text_button,
-			'classes' => $classes_button,
+			'text'           => $text_button,
+			'parent_classes' => $parent_classes_button,
+			'classes'        => $classes_button,
 		);
 
 		update_option( 'stcfq_submit_button', $submit_button, true );
@@ -214,6 +216,12 @@ class STCFQ_Setting {
 		$google_recaptcha_v2_secret_key = isset( $_POST['google_recaptcha_v2_secret_key'] ) ? sanitize_text_field( $_POST['google_recaptcha_v2_secret_key'] ) : '';
 		$google_recaptcha_v2_theme      = isset( $_POST['google_recaptcha_v2_theme'] ) ? sanitize_text_field( $_POST['google_recaptcha_v2_theme'] ) : 'light';
 
+		$cf_turnstile_site_key   = isset( $_POST['cf_turnstile_site_key'] ) ? sanitize_text_field( $_POST['cf_turnstile_site_key'] ) : '';
+		$cf_turnstile_secret_key = isset( $_POST['cf_turnstile_secret_key'] ) ? sanitize_text_field( $_POST['cf_turnstile_secret_key'] ) : '';
+		$cf_turnstile_theme      = isset( $_POST['cf_turnstile_theme'] ) ? sanitize_text_field( $_POST['cf_turnstile_theme'] ) : 'light';
+
+		$block_keywords = isset( $_POST['block_keywords'] ) ? sanitize_textarea_field( $_POST['block_keywords'] ) : '';
+
 		if ( ! in_array( $captcha, array_keys( STCFQ_Helper::captcha_list() ) ) ) {
 			$captcha = '';
 		}
@@ -231,6 +239,16 @@ class STCFQ_Setting {
 		);
 
 		update_option( 'stcfq_google_recaptcha_v2', $google_recaptcha_v2, true );
+
+		$cf_turnstile = array(
+			'site_key'   => $cf_turnstile_site_key,
+			'secret_key' => $cf_turnstile_secret_key,
+			'theme'      => $cf_turnstile_theme,
+		);
+
+		update_option( 'stcfq_cf_turnstile', $cf_turnstile, true );
+
+		update_option( 'stcfq_block_keywords', $block_keywords );
 
 		wp_send_json_success( array( 'message' => esc_html__( 'Setting saved.', 'contact-form-query' ) ) );
 	}

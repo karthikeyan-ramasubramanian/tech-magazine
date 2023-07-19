@@ -16,12 +16,15 @@ use MailPoet\Segments\DynamicSegments\Filters\MailPoetCustomFields;
 use MailPoet\Segments\DynamicSegments\Filters\SubscriberScore;
 use MailPoet\Segments\DynamicSegments\Filters\SubscriberSegment;
 use MailPoet\Segments\DynamicSegments\Filters\SubscriberSubscribedDate;
+use MailPoet\Segments\DynamicSegments\Filters\SubscriberTag;
 use MailPoet\Segments\DynamicSegments\Filters\UserRole;
 use MailPoet\Segments\DynamicSegments\Filters\WooCommerceCategory;
 use MailPoet\Segments\DynamicSegments\Filters\WooCommerceCountry;
 use MailPoet\Segments\DynamicSegments\Filters\WooCommerceMembership;
 use MailPoet\Segments\DynamicSegments\Filters\WooCommerceNumberOfOrders;
 use MailPoet\Segments\DynamicSegments\Filters\WooCommerceProduct;
+use MailPoet\Segments\DynamicSegments\Filters\WooCommercePurchaseDate;
+use MailPoet\Segments\DynamicSegments\Filters\WooCommerceSingleOrderValue;
 use MailPoet\Segments\DynamicSegments\Filters\WooCommerceSubscription;
 use MailPoet\Segments\DynamicSegments\Filters\WooCommerceTotalSpent;
 
@@ -43,6 +46,12 @@ class FilterFactory {
 
   /** @var WooCommerceNumberOfOrders */
   private $wooCommerceNumberOfOrders;
+
+  /** @var WooCommercePurchaseDate */
+  private $wooCommercePurchaseDate;
+
+  /** @var WooCommerceSingleOrderValue */
+  private $wooCommerceSingleOrderValue;
 
   /** @var WooCommerceTotalSpent */
   private $wooCommerceTotalSpent;
@@ -68,6 +77,9 @@ class FilterFactory {
   /** @var SubscriberSegment */
   private $subscriberSegment;
 
+  /** @var SubscriberTag */
+  private $subscriberTag;
+
   /** @var EmailActionClickAny */
   private $emailActionClickAny;
 
@@ -83,10 +95,13 @@ class FilterFactory {
     WooCommerceNumberOfOrders $wooCommerceNumberOfOrders,
     WooCommerceTotalSpent $wooCommerceTotalSpent,
     WooCommerceMembership $wooCommerceMembership,
+    WooCommercePurchaseDate $wooCommercePurchaseDate,
     WooCommerceSubscription $wooCommerceSubscription,
     SubscriberSubscribedDate $subscriberSubscribedDate,
     SubscriberScore $subscriberScore,
-    SubscriberSegment $subscriberSegment
+    SubscriberTag $subscriberTag,
+    SubscriberSegment $subscriberSegment,
+    WooCommerceSingleOrderValue $wooCommerceSingleOrderValue
   ) {
     $this->emailAction = $emailAction;
     $this->userRole = $userRole;
@@ -95,14 +110,17 @@ class FilterFactory {
     $this->wooCommerceCountry = $wooCommerceCountry;
     $this->wooCommerceNumberOfOrders = $wooCommerceNumberOfOrders;
     $this->wooCommerceMembership = $wooCommerceMembership;
+    $this->wooCommercePurchaseDate = $wooCommercePurchaseDate;
     $this->wooCommerceSubscription = $wooCommerceSubscription;
     $this->emailOpensAbsoluteCount = $emailOpensAbsoluteCount;
     $this->wooCommerceTotalSpent = $wooCommerceTotalSpent;
     $this->subscriberSubscribedDate = $subscriberSubscribedDate;
     $this->subscriberScore = $subscriberScore;
+    $this->subscriberTag = $subscriberTag;
     $this->mailPoetCustomFields = $mailPoetCustomFields;
     $this->subscriberSegment = $subscriberSegment;
     $this->emailActionClickAny = $emailActionClickAny;
+    $this->wooCommerceSingleOrderValue = $wooCommerceSingleOrderValue;
   }
 
   public function getFilterForFilterEntity(DynamicSegmentFilterEntity $filter): Filter {
@@ -127,7 +145,7 @@ class FilterFactory {
 
   /**
    * @param ?string $action
-   * @return MailPoetCustomFields|SubscriberScore|SubscriberSegment|SubscriberSubscribedDate|UserRole
+   * @return MailPoetCustomFields|SubscriberScore|SubscriberSegment|SubscriberSubscribedDate|UserRole|SubscriberTag
    */
   private function userRole(?string $action) {
     if ($action === SubscriberSubscribedDate::TYPE) {
@@ -138,6 +156,8 @@ class FilterFactory {
       return $this->mailPoetCustomFields;
     } elseif ($action === SubscriberSegment::TYPE) {
       return $this->subscriberSegment;
+    } elseif ($action === SubscriberTag::TYPE) {
+      return $this->subscriberTag;
     }
     return $this->userRole;
   }
@@ -177,6 +197,10 @@ class FilterFactory {
       return $this->wooCommerceTotalSpent;
     } elseif ($action === WooCommerceCountry::ACTION_CUSTOMER_COUNTRY) {
       return $this->wooCommerceCountry;
+    } elseif ($action === WooCommerceSingleOrderValue::ACTION_SINGLE_ORDER_VALUE) {
+      return $this->wooCommerceSingleOrderValue;
+    } elseif ($action === WooCommercePurchaseDate::ACTION) {
+      return $this->wooCommercePurchaseDate;
     }
     return $this->wooCommerceCategory;
   }

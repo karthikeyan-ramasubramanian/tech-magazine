@@ -1,15 +1,19 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Subscribers;
 
 if (!defined('ABSPATH')) exit;
 
 
+use MailPoet\Config\SubscriberChangesNotifier;
 use MailPoet\Doctrine\Repository;
 use MailPoet\Entities\SegmentEntity;
+use MailPoet\Entities\StatisticsUnsubscribeEntity;
 use MailPoet\Entities\SubscriberCustomFieldEntity;
 use MailPoet\Entities\SubscriberEntity;
 use MailPoet\Entities\SubscriberSegmentEntity;
+use MailPoet\Entities\SubscriberTagEntity;
+use MailPoet\Util\License\Features\Subscribers;
 use MailPoet\WP\Functions as WPFunctions;
 use MailPoetVendor\Carbon\Carbon;
 use MailPoetVendor\Carbon\CarbonImmutable;
@@ -32,34 +36,44 @@ class SubscribersRepository extends Repository {
     'last_subscribed_at',
   ];
 
+  /** @var SubscriberChangesNotifier */
+  private $changesNotifier;
+
   public function __construct(
     EntityManager $entityManager,
+    SubscriberChangesNotifier $changesNotifier,
     WPFunctions $wp
   ) {
     $this->wp = $wp;
     parent::__construct($entityManager);
+    $this->changesNotifier = $changesNotifier;
   }
 
   protected function getEntityClassName() {
     return SubscriberEntity::class;
   }
 
-  /**
-   * @return int
-   */
-  public function getTotalSubscribers() {
+  public function getTotalSubscribers(): int {
+    return $this->getCountOfSubscribersForStates([
+      SubscriberEntity::STATUS_SUBSCRIBED,
+      SubscriberEntity::STATUS_UNCONFIRMED,
+      SubscriberEntity::STATUS_INACTIVE,
+    ]);
+  }
+
+  public function getCountOfSubscribersForStates(array $states): int {
     $query = $this->entityManager
       ->createQueryBuilder()
       ->select('count(n.id)')
       ->from(SubscriberEntity::class, 'n')
       ->where('n.deletedAt IS NULL AND n.status IN (:statuses)')
-      ->setParameter('statuses', [
-        SubscriberEntity::STATUS_SUBSCRIBED,
-        SubscriberEntity::STATUS_UNCONFIRMED,
-        SubscriberEntity::STATUS_INACTIVE,
-      ])
+      ->setParameter('statuses', $states)
       ->getQuery();
-    return (int)$query->getSingleScalarResult();
+    return intval($query->getSingleScalarResult());
+  }
+
+  public function invalidateTotalSubscribersCache(): void {
+    $this->wp->deleteTransient(Subscribers::SUBSCRIBERS_COUNT_CACHE_KEY);
   }
 
   public function findBySegment(int $segmentId): array {
@@ -86,6 +100,24 @@ class SubscribersRepository extends Repository {
       ->getQuery()->getResult();
   }
 
+  public function getWooCommerceSegmentSubscriber(string $email): ?SubscriberEntity {
+    $subscriber = $this->doctrineRepository->createQueryBuilder('s')
+      ->join('s.subscriberSegments', 'ss')
+      ->join('ss.segment', 'sg', Join::WITH, 'sg.type = :typeWcUsers')
+      ->where('s.isWoocommerceUser = 1')
+      ->andWhere('s.status IN (:subscribed, :unconfirmed)')
+      ->andWhere('ss.status = :subscribed')
+      ->andWhere('s.email = :email')
+      ->setParameter('typeWcUsers', SegmentEntity::TYPE_WC_USERS)
+      ->setParameter('subscribed', SubscriberEntity::STATUS_SUBSCRIBED)
+      ->setParameter('unconfirmed', SubscriberEntity::STATUS_UNCONFIRMED)
+      ->setParameter('email', $email)
+      ->setMaxResults(1)
+      ->getQuery()
+      ->getOneOrNullResult();
+    return $subscriber instanceof SubscriberEntity ? $subscriber : null;
+  }
+
   /**
    * @return int - number of processed ids
    */
@@ -101,6 +133,8 @@ class SubscribersRepository extends Repository {
       ->setParameter('ids', $ids)
       ->getQuery()->execute();
 
+    $this->changesNotifier->subscribersUpdated($ids);
+    $this->invalidateTotalSubscribersCache();
     return count($ids);
   }
 
@@ -120,6 +154,8 @@ class SubscribersRepository extends Repository {
       ->setParameter('ids', $ids)
       ->getQuery()->execute();
 
+    $this->changesNotifier->subscribersUpdated($ids);
+    $this->invalidateTotalSubscribersCache();
     return count($ids);
   }
 
@@ -134,7 +170,7 @@ class SubscribersRepository extends Repository {
     $count = 0;
     $this->entityManager->transactional(function (EntityManager $entityManager) use ($ids, &$count) {
       // Delete subscriber segments
-      $this->bulkRemoveFromAllSegments($ids);
+      $this->removeSubscribersFromAllSegments($ids);
 
       // Delete subscriber custom fields
       $subscriberCustomFieldTable = $entityManager->getClassMetadata(SubscriberCustomFieldEntity::class)->getTableName();
@@ -143,6 +179,16 @@ class SubscribersRepository extends Repository {
          DELETE scs FROM $subscriberCustomFieldTable scs
          JOIN $subscriberTable s ON s.`id` = scs.`subscriber_id`
          WHERE scs.`subscriber_id` IN (:ids)
+         AND s.`is_woocommerce_user` = false
+         AND s.`wp_user_id` IS NULL
+      ", ['ids' => $ids], ['ids' => Connection::PARAM_INT_ARRAY]);
+
+      // Delete subscriber tags
+      $subscriberTagTable = $entityManager->getClassMetadata(SubscriberTagEntity::class)->getTableName();
+      $entityManager->getConnection()->executeStatement("
+         DELETE st FROM $subscriberTagTable st
+         JOIN $subscriberTable s ON s.`id` = st.`subscriber_id`
+         WHERE st.`subscriber_id` IN (:ids)
          AND s.`is_woocommerce_user` = false
          AND s.`wp_user_id` IS NULL
       ", ['ids' => $ids], ['ids' => Connection::PARAM_INT_ARRAY]);
@@ -156,6 +202,8 @@ class SubscribersRepository extends Repository {
         ->getQuery()->execute();
     });
 
+    $this->changesNotifier->subscribersDeleted($ids);
+    $this->invalidateTotalSubscribersCache();
     return $count;
   }
 
@@ -174,6 +222,7 @@ class SubscribersRepository extends Repository {
        AND ss.`segment_id` = :segment_id
     ", ['ids' => $ids, 'segment_id' => $segment->getId()], ['ids' => Connection::PARAM_INT_ARRAY]);
 
+    $this->changesNotifier->subscribersUpdated($ids);
     return $count;
   }
 
@@ -181,21 +230,8 @@ class SubscribersRepository extends Repository {
    * @return int - number of processed ids
    */
   public function bulkRemoveFromAllSegments(array $ids): int {
-    if (empty($ids)) {
-      return 0;
-    }
-
-    $subscriberSegmentsTable = $this->entityManager->getClassMetadata(SubscriberSegmentEntity::class)->getTableName();
-    $segmentsTable = $this->entityManager->getClassMetadata(SegmentEntity::class)->getTableName();
-    $count = (int)$this->entityManager->getConnection()->executeStatement("
-       DELETE ss FROM $subscriberSegmentsTable ss
-       JOIN $segmentsTable s ON s.id = ss.segment_id AND s.`type` = :typeDefault
-       WHERE ss.`subscriber_id` IN (:ids)
-    ", [
-      'ids' => $ids,
-      'typeDefault' => SegmentEntity::TYPE_DEFAULT,
-    ], ['ids' => Connection::PARAM_INT_ARRAY]);
-
+    $count = $this->removeSubscribersFromAllSegments($ids);
+    $this->changesNotifier->subscribersUpdated($ids);
     return $count;
   }
 
@@ -203,30 +239,9 @@ class SubscribersRepository extends Repository {
    * @return int - number of processed ids
    */
   public function bulkAddToSegment(SegmentEntity $segment, array $ids): int {
-    if (empty($ids)) {
-      return 0;
-    }
-
-    $subscribers = $this->entityManager
-      ->createQueryBuilder()
-      ->select('s')
-      ->from(SubscriberEntity::class, 's')
-      ->leftJoin('s.subscriberSegments', 'ss', Join::WITH, 'ss.segment = :segment')
-      ->where('s.id IN (:ids)')
-      ->andWhere('ss.segment IS NULL')
-      ->setParameter('ids', $ids)
-      ->setParameter('segment', $segment)
-      ->getQuery()->execute();
-
-    $this->entityManager->transactional(function (EntityManager $entityManager) use ($subscribers, $segment) {
-      foreach ($subscribers as $subscriber) {
-        $subscriberSegment = new SubscriberSegmentEntity($segment, $subscriber, SubscriberEntity::STATUS_SUBSCRIBED);
-        $this->entityManager->persist($subscriberSegment);
-      }
-      $this->entityManager->flush();
-    });
-
-    return count($subscribers);
+    $count = $this->addSubscribersToSegment($segment, $ids);
+    $this->changesNotifier->subscribersUpdated($ids);
+    return $count;
   }
 
   public function woocommerceUserExists(): bool {
@@ -254,8 +269,11 @@ class SubscribersRepository extends Repository {
       return 0;
     }
 
-    $this->bulkRemoveFromAllSegments($ids);
-    return $this->bulkAddToSegment($segment, $ids);
+    $this->removeSubscribersFromAllSegments($ids);
+    $count = $this->addSubscribersToSegment($segment, $ids);
+
+    $this->changesNotifier->subscribersUpdated($ids);
+    return $count;
   }
 
   public function bulkUnsubscribe(array $ids): int {
@@ -267,6 +285,8 @@ class SubscribersRepository extends Repository {
       ->setParameter('ids', $ids)
       ->getQuery()->execute();
 
+    $this->changesNotifier->subscribersUpdated($ids);
+    $this->invalidateTotalSubscribersCache();
     return count($ids);
   }
 
@@ -346,5 +366,142 @@ class SubscribersRepository extends Repository {
       ->setParameter('ids', $ids)
       ->getQuery()
       ->getArrayResult();
+  }
+
+  public function getMaxSubscriberId(): int {
+    $maxSubscriberId = $this->entityManager->createQueryBuilder()
+      ->select('MAX(s.id)')
+      ->from(SubscriberEntity::class, 's')
+      ->getQuery()
+      ->getSingleScalarResult();
+
+    return intval($maxSubscriberId);
+  }
+
+  /**
+   * Returns count of subscribers who subscribed after given date regardless of their current status.
+   * @return int
+   */
+  public function getCountOfLastSubscribedAfter(\DateTimeInterface $subscribedAfter): int {
+    $result = $this->entityManager->createQueryBuilder()
+      ->select('COUNT(s.id)')
+      ->from(SubscriberEntity::class, 's')
+      ->where('s.lastSubscribedAt > :lastSubscribedAt')
+      ->andWhere('s.deletedAt IS NULL')
+      ->setParameter('lastSubscribedAt', $subscribedAfter)
+      ->getQuery()
+      ->getSingleScalarResult();
+    return intval($result);
+  }
+
+  /**
+   * Returns count of subscribers who unsubscribed after given date regardless of their current status.
+   * @return int
+   */
+  public function getCountOfUnsubscribedAfter(\DateTimeInterface $unsubscribedAfter): int {
+    $result = $this->entityManager->createQueryBuilder()
+      ->select('COUNT(DISTINCT s.id)')
+      ->from(StatisticsUnsubscribeEntity::class, 'su')
+      ->join('su.subscriber', 's')
+      ->andWhere('su.createdAt > :unsubscribedAfter')
+      ->andWhere('s.deletedAt IS NULL')
+      ->setParameter('unsubscribedAfter', $unsubscribedAfter)
+      ->getQuery()
+      ->getSingleScalarResult();
+    return intval($result);
+  }
+
+  /**
+   * Returns count of subscribers who subscribed to a list after given date regardless of their current global status.
+   */
+  public function getListLevelCountsOfSubscribedAfter(\DateTimeInterface $date): array {
+    $data = $this->entityManager->createQueryBuilder()
+      ->select('seg.id, seg.name, seg.type, seg.averageEngagementScore, COUNT(ss.id) as count')
+      ->from(SubscriberSegmentEntity::class, 'ss')
+      ->join('ss.subscriber', 's')
+      ->join('ss.segment', 'seg')
+      ->where('ss.updatedAt > :date')
+      ->andWhere('ss.status = :segment_status')
+      ->andWhere('s.lastSubscribedAt > :date') // subscriber subscribed at some point after the date
+      ->andWhere('s.deletedAt IS NULL')
+      ->andWhere('seg.deletedAt IS NULL') // no trashed lists and disabled WP Users list
+      ->setParameter('date', $date)
+      ->setParameter('segment_status', SubscriberEntity::STATUS_SUBSCRIBED)
+      ->groupBy('ss.segment')
+      ->getQuery()
+      ->getArrayResult();
+    return $data;
+  }
+
+  /**
+   * Returns count of subscribers who unsubscribed from a list after given date regardless of their current global status.
+   */
+  public function getListLevelCountsOfUnsubscribedAfter(\DateTimeInterface $date): array {
+    return $this->entityManager->createQueryBuilder()
+      ->select('seg.id, seg.name, seg.type, seg.averageEngagementScore, COUNT(ss.id) as count')
+      ->from(SubscriberSegmentEntity::class, 'ss')
+      ->join('ss.subscriber', 's')
+      ->join('ss.segment', 'seg')
+      ->where('ss.updatedAt > :date')
+      ->andWhere('ss.status = :segment_status')
+      ->andWhere('s.deletedAt IS NULL')
+      ->andWhere('seg.deletedAt IS NULL') // no trashed lists and disabled WP Users list
+      ->setParameter('date', $date)
+      ->setParameter('segment_status', SubscriberEntity::STATUS_UNSUBSCRIBED)
+      ->groupBy('ss.segment')
+      ->getQuery()
+      ->getArrayResult();
+  }
+
+  /**
+   * @return int - number of processed ids
+   */
+  private function removeSubscribersFromAllSegments(array $ids): int {
+    if (empty($ids)) {
+      return 0;
+    }
+
+    $subscriberSegmentsTable = $this->entityManager->getClassMetadata(SubscriberSegmentEntity::class)->getTableName();
+    $segmentsTable = $this->entityManager->getClassMetadata(SegmentEntity::class)->getTableName();
+    $count = (int)$this->entityManager->getConnection()->executeStatement("
+       DELETE ss FROM $subscriberSegmentsTable ss
+       JOIN $segmentsTable s ON s.id = ss.segment_id AND s.`type` = :typeDefault
+       WHERE ss.`subscriber_id` IN (:ids)
+    ", [
+      'ids' => $ids,
+      'typeDefault' => SegmentEntity::TYPE_DEFAULT,
+    ], ['ids' => Connection::PARAM_INT_ARRAY]);
+
+    return $count;
+  }
+
+  /**
+   * @return int - number of processed ids
+   */
+  private function addSubscribersToSegment(SegmentEntity $segment, array $ids): int {
+    if (empty($ids)) {
+      return 0;
+    }
+
+    $subscribers = $this->entityManager
+      ->createQueryBuilder()
+      ->select('s')
+      ->from(SubscriberEntity::class, 's')
+      ->leftJoin('s.subscriberSegments', 'ss', Join::WITH, 'ss.segment = :segment')
+      ->where('s.id IN (:ids)')
+      ->andWhere('ss.segment IS NULL')
+      ->setParameter('ids', $ids)
+      ->setParameter('segment', $segment)
+      ->getQuery()->execute();
+
+    $this->entityManager->transactional(function (EntityManager $entityManager) use ($subscribers, $segment) {
+      foreach ($subscribers as $subscriber) {
+        $subscriberSegment = new SubscriberSegmentEntity($segment, $subscriber, SubscriberEntity::STATUS_SUBSCRIBED);
+        $this->entityManager->persist($subscriberSegment);
+      }
+      $this->entityManager->flush();
+    });
+
+    return count($subscribers);
   }
 }

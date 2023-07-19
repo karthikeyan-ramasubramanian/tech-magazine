@@ -3,276 +3,275 @@
 namespace CreativeMail\Modules\Contacts\Services;
 
 use CreativeMail\CreativeMail;
+use CreativeMail\Exceptions\CreativeMailException;
 use CreativeMail\Helpers\EnvironmentHelper;
 use CreativeMail\Helpers\OptionsHelper;
-use CreativeMail\Helpers\ValidationHelper;
-use CreativeMail\Managers\RaygunManager;
+use CreativeMail\Managers\Logs\DatadogManager;
 use CreativeMail\Modules\Api\Models\ApiRequestItem;
 use CreativeMail\Modules\Contacts\Models\ContactModel;
 use Exception;
 use stdClass;
 
-class ContactsSyncService
-{
-    const FAST_LANE_LIMIT = 250;
-    const CSV_FILE_MAX_MEMORY_SIZE = 1024 * 1024 * 5; // 5MB
+class ContactsSyncService {
 
-    private function validate_email_address($emailAddress)
-    {
-        if (!isset($emailAddress) && empty($emailAddress)) {
-            throw new Exception('No valid email address provided');
-        }
-    }
+	const FAST_LANE_LIMIT          = 250;
+	const CSV_FILE_MAX_MEMORY_SIZE = 1024 * 1024 * 5; // 5MB
 
-    private function ensure_event_type($eventType)
-    {
-        // DEV: For now, we only support WordPress.
-        if (isset($eventType) && !empty($eventType)) {
-            return $eventType;
-        }
+	private function validate_email_address( $emailAddress ) {
+		if ( ! isset($emailAddress) && empty($emailAddress) ) {
+			throw new Exception('No valid email address provided');
+		}
+	}
 
-        return 'WordPress';
-    }
+	private function ensure_event_type( $eventType ) {
+		// DEV: For now, we only support WordPress.
+		if ( isset($eventType) && ! empty($eventType) ) {
+			return $eventType;
+		}
 
-    private function build_payload($contactModels)
-    {
-        $contacts = array();
-        foreach ($contactModels as $model) {
-            array_push($contacts, $model->toArray());
-        }
+		return 'WordPress';
+	}
 
-        $data = array(
-            "contacts" => $contacts
-        );
+	private function build_payload( $contactModels ) {
+		$contacts = array();
+		foreach ( $contactModels as $model ) {
+			array_push($contacts, $model->toArray());
+		}
 
-        return wp_json_encode($data);
-    }
+		$data = array(
+			'contacts' => $contacts,
+		);
 
-    public function upsertContact(ContactModel $contactModel)
-    {
-        if(!isset($contactModel)) {
-            return false;
-        }
+		return wp_json_encode($data);
+	}
 
-        $this->validate_email_address($contactModel->getEmail());
-        $contactModel->setEventType($this->ensure_event_type($contactModel->getEventType()));
+	public function upsertContact( ContactModel $contactModel ) {
+		if ( null == $contactModel ) {
+			return false;
+		}
 
-        $jsonData = $this->build_payload(array($contactModel));
+		$this->validate_email_address($contactModel->getEmail());
+		$contactModel->setEventType($this->ensure_event_type($contactModel->getEventType()));
 
-        $creativ_email = CreativeMail::get_instance();
+		$jsonData = $this->build_payload(array( $contactModel ));
 
+		$creativ_email = CreativeMail::get_instance();
 
-        $creativ_email->get_api_manager()->get_api_background_process()->push_to_queue(
-                new ApiRequestItem(
-                    'POST',
-                    'application/json',
-                    '/v1.0/contacts',
-                    $jsonData
-                )
-            );
+		$creativ_email->get_api_manager()->get_api_background_process()->push_to_queue(
+			new ApiRequestItem(
+				'POST',
+				'application/json',
+				'/v1.0/contacts',
+				$jsonData
+			)
+		);
 
-        // Start the queue.
-        $creativ_email->get_api_manager()->get_api_background_process()->save()->dispatch();
+		// Start the queue.
+		$creativ_email->get_api_manager()->get_api_background_process()->save()->dispatch();
+		return true;
+	}
 
-        return true;
-    }
+	public function upsertContacts( $contactModels ) {
+		try {
+			if ( empty($contactModels) ) {
+				$exception = new CreativeMailException('No contacts provided or empty Contact Model');
+				DatadogManager::get_instance()->exception_handler($exception);
+			}
 
-    public function upsertContacts($contactModels)
-    {
-        try {
-            if (ValidationHelper::is_null_or_empty($contactModels)) {
-                // todo throw exception
-            }
+			if ( count($contactModels) > self::FAST_LANE_LIMIT ) {
+				$this->fast_lane_contacts_sync(array_slice($contactModels, 0, self::FAST_LANE_LIMIT));
+				$this->slow_lane_contacts_sync(array_slice($contactModels, self::FAST_LANE_LIMIT, count($contactModels) - self::FAST_LANE_LIMIT));
 
-            if (count($contactModels) > self::FAST_LANE_LIMIT) {
-                $this->fast_lane_contacts_sync(array_slice($contactModels, 0, self::FAST_LANE_LIMIT));
-                $this->slow_lane_contacts_sync(array_slice($contactModels, self::FAST_LANE_LIMIT, count($contactModels) - self::FAST_LANE_LIMIT));
+			} else {
+				$this->fast_lane_contacts_sync($contactModels);
+			}
+		} catch ( Exception $exception ) {
+			DatadogManager::get_instance()->exception_handler($exception);
+		}
 
-            } else {
-                $this->fast_lane_contacts_sync($contactModels);
-            }
-        } catch (Exception $exception) {
-            RaygunManager::get_instance()->exception_handler($exception);
-        }
+		return true;
+	}
 
-        return true;
-    }
+	private function fast_lane_contacts_sync( $contactModels ) {
+		if ( empty( $contactModels ) ) {
+			$exception = new CreativeMailException('No contacts provided or empty Contact Model');
+			DatadogManager::get_instance()->exception_handler($exception);
+		}
 
-    private function fast_lane_contacts_sync($contactModels)
-    {
-        if (ValidationHelper::is_null_or_empty($contactModels)) {
-            // todo throw exception
-        }
+		$url = EnvironmentHelper::get_app_gateway_url('wordpress/v1.0/contacts');
 
-        $url = EnvironmentHelper::get_app_gateway_url('wordpress') . '/v1.0/contacts';
+		$jsonData = $this->build_payload($contactModels);
 
-        $jsonData = $this->build_payload($contactModels);
+		$args = array(
+			'headers' => array(
+				'x-api-key'    => OptionsHelper::get_instance_api_key(),
+				'x-account-id' => OptionsHelper::get_connected_account_id(),
+				'content-type' => 'application/json',
+			),
+			'body'    => $jsonData,
+		);
 
-        $args = [
-            'headers' => [
-                'x-api-key'     => OptionsHelper::get_instance_api_key(),
-                'x-account-id'  => OptionsHelper::get_connected_account_id(),
-                'content-type'  => 'application/json'
-            ],
-            'body' => $jsonData
-        ];
+		wp_remote_post($url, $args);
+	}
 
-        wp_remote_post($url, $args);
-    }
+	private function slow_lane_contacts_sync( $contactModels ) {
+		if ( empty($contactModels) ) {
+			$exception = new CreativeMailException('No contacts provided or empty Contact Model');
+			DatadogManager::get_instance()->exception_handler($exception);
+		}
 
-    private function slow_lane_contacts_sync($contactModels)
-    {
-        if (ValidationHelper::is_null_or_empty($contactModels)) {
-            // todo throw exception
-        }
+		// 1. Convert to csv file.
+		$csv_file = $this->create_csv_file($contactModels);
+		// 2. Request sas model (with url and uuid).
+		$sas_request_model = $this->request_sas_model();
+		// 3. Upload csv file using sas url.
+		$this->upload_csv_file($csv_file, $sas_request_model->url);
+		// 4. Call endpoint to start import (using uuid).
+		$this->start_import_for_uuid($sas_request_model->uuid);
 
-        // 1. convert to csv file
-        $csv_file = $this->create_csv_file($contactModels);
-        // 2. request sas model (with url and uuid)
-        $sas_request_model = $this->request_sas_model();
-        // 3. upload csv file using sas url
-        $this->upload_csv_file($csv_file, $sas_request_model->url);
-        // 4. call endpoint to start import (using uuid)
-        $this->start_import_for_uuid($sas_request_model->uuid);
+	}
 
-    }
+	private function create_csv_file( $contactModels ) {
+		$csv_content = '';
+		if ( empty($contactModels) ) {
+			$exception = new CreativeMailException('Error trying to create the CSV to get the contacts data');
+			DatadogManager::get_instance()->exception_handler($exception);
+		}
 
-    private function create_csv_file($contactModels)
-    {
-        if (ValidationHelper::is_null_or_empty($contactModels)) {
-            // todo throw exception
-        }
+		$fd = fopen('php://temp/maxmemory:' . self::CSV_FILE_MAX_MEMORY_SIZE, 'w');
+		if ( false === $fd ) {
+			$exception = new CreativeMailException('No contacts provided or empty Contact Model');
+			DatadogManager::get_instance()->exception_handler($exception);
+		}
 
-        $fd = fopen('php://temp/maxmemory:' . self::CSV_FILE_MAX_MEMORY_SIZE, 'w');
-        if ($fd === false) {
-            // todo throw exception
-        }
+		foreach ( $contactModels as $contactModel ) {
+			$contact_fields_array = $this->convert_contact_to_csv_array($contactModel);
+			if ( ! empty($contact_fields_array) ) {
+				if ( false !== $fd ) {
+					fputcsv($fd, $contact_fields_array);
+				}
+			}
+		}
 
-        foreach($contactModels as $contactModel) {
-            $contact_fields_array = $this->convert_contact_to_csv_array($contactModel);
-            if (!ValidationHelper::is_null_or_empty($contact_fields_array)) {
-                fputcsv($fd, $contact_fields_array);
-            }
-        }
+		if ( false !== $fd ) {
+			rewind($fd);
+			$csv_content = stream_get_contents($fd);
+			fclose($fd);
+		}
 
-        rewind($fd);
-        $csv_content = stream_get_contents($fd);
-        fclose($fd);
+		return $csv_content;
+	}
 
-        return $csv_content;
-    }
+	private function request_sas_model() {
+		$url      = EnvironmentHelper::get_app_gateway_url('wordpress/v1.0/contacts/request-import-sas-url');
+		$args     = array(
+			'headers' => array(
+				'x-api-key'    => OptionsHelper::get_instance_api_key(),
+				'x-account-id' => OptionsHelper::get_connected_account_id(),
+			),
+		);
+		$response = wp_remote_get($url, $args);
 
-    private function request_sas_model()
-    {
-        $url = EnvironmentHelper::get_app_gateway_url('wordpress') . '/v1.0/contacts/request-import-sas-url';
-        $args = [
-            'headers' => [
-                'x-api-key'     => OptionsHelper::get_instance_api_key(),
-                'x-account-id'  => OptionsHelper::get_connected_account_id()
-            ]
-        ];
-        $response = wp_remote_get($url,
-            $args);
+		if ( is_wp_error($response) ) {
+			$exception = new CreativeMailException('No contacts provided or empty Contact Model');
+			DatadogManager::get_instance()->exception_handler($exception);
+		}
+		if ( ! $this->is_success_response($response) ) {
+			$exception = new CreativeMailException('No contacts provided or empty Contact Model');
+			DatadogManager::get_instance()->exception_handler($exception);
+		}
 
-        if (is_wp_error($response)) {
-            // todo throw error
-        }
+		$json = json_decode(is_array($response) ? $response['body'] : '');
 
-        if (!$this->is_success_response($response)) {
-            // todo throw error
-        }
+		$request_sas_model       = new stdClass();
+		$request_sas_model->url  = $json->url;
+		$request_sas_model->uuid = $json->uuid;
 
-        $json = json_decode($response['body']);
+		return $request_sas_model;
+	}
 
-        $request_sas_model = new stdClass();
-        $request_sas_model->url = $json->url;
-        $request_sas_model->uuid = $json->uuid;
+	private function upload_csv_file( $csv_file, $upload_url ) {
+		$args = array(
+			'headers' => array(
+				'x-ms-blob-type' => 'BlockBlob',
+				'content-type'   => 'text/plain',
+			),
+			'body'    => $csv_file,
+			'method'  => 'PUT',
+		);
 
-        return $request_sas_model;
-    }
+		$response = wp_remote_request($upload_url, $args);
 
-    private function upload_csv_file($csv_file, $upload_url)
-    {
-        $args = array(
-            'headers'   => array(
-                'x-ms-blob-type'    => 'BlockBlob',
-                'content-type'      => 'text/plain'
-            ),
-            'body'      => $csv_file,
-            'method'    => 'PUT'
-        );
+		if ( is_wp_error($response) ) {
+			$exception = new CreativeMailException('No contacts provided or empty Contact Model');
+			DatadogManager::get_instance()->exception_handler($exception);
+		}
 
-        $response = wp_remote_request($upload_url, $args);
+		if ( ! $this->is_success_response($response) ) {
+			$exception = new CreativeMailException('No contacts provided or empty Contact Model');
+			DatadogManager::get_instance()->exception_handler($exception);
+		}
+	}
 
-        if (is_wp_error($response)) {
-            // todo throw exception
-        }
+	private function start_import_for_uuid( $uuid ) {
+		$url = EnvironmentHelper::get_app_gateway_url('wordpress/v1.0/contacts/import');
 
-        if (!$this->is_success_response($response)) {
-            // todo throw exception
-        }
-    }
+		$data = array(
+			'uuid' => $uuid,
+		);
 
-    private function start_import_for_uuid($uuid)
-    {
-        $url = EnvironmentHelper::get_app_gateway_url('wordpress') . '/v1.0/contacts/import';
+		$args = array(
+			'headers' => array(
+				'x-api-key'    => OptionsHelper::get_instance_api_key(),
+				'x-account-id' => OptionsHelper::get_connected_account_id(),
+				'content-type' => 'application/json',
+			),
+			'body'    => wp_json_encode($data),
+			'method'  => 'POST',
+		);
 
-        $data = array (
-            'uuid' => $uuid
-        );
+		$response = wp_remote_post($url,
+			$args);
 
-        $args = [
-            'headers' => [
-                'x-api-key'     => OptionsHelper::get_instance_api_key(),
-                'x-account-id'  => OptionsHelper::get_connected_account_id(),
-                'content-type'  => 'application/json'
-            ],
-            'body' => wp_json_encode($data),
-            'method' => 'POST'
-        ];
+		if ( is_wp_error($response) ) {
+			$exception = new CreativeMailException('There was a WP_ERROR while trying to start import');
+			DatadogManager::get_instance()->exception_handler($exception);
+		}
 
-        $response = wp_remote_post($url,
-            $args);
+		if ( ! $this->is_success_response($response) ) {
+			$exception = new CreativeMailException('There was an error at the response.');
+			DatadogManager::get_instance()->exception_handler($exception);
+		}
+	}
 
-        if (is_wp_error($response)) {
-            // todo throw exception
-        }
+	private function convert_contact_to_csv_array( ContactModel $contactModel ) {
+		if ( empty($contactModel) ) {
+			return null;
+		}
 
-        if(!$this->is_success_response($response)) {
-            // todo throw exception
-        }
-    }
+		$contact_fields = array(
+			strval($contactModel->getEmail()),
+			strval($contactModel->getFirstName()),
+			strval($contactModel->getLastName()),
+		);
 
-    private function convert_contact_to_csv_array(ContactModel $contactModel)
-    {
-        if (ValidationHelper::is_null_or_empty($contactModel)) {
-            return null;
-        }
+		$contactAddressModel = $contactModel->getContactAddress();
 
-        $contact_fields = array(
-            strval($contactModel->getEmail()),
-            strval($contactModel->getFirstName()),
-            strval($contactModel->getLastName()));
+		if ( empty($contactAddressModel) ) {
+			array_push($contact_fields, '', '', '', '', '');
+		} else {
+			array_push($contact_fields, strval($contactAddressModel->getAddress()), strval($contactAddressModel->getCity()), strval($contactAddressModel->getPostalCode()),
+				strval($contactAddressModel->getCountryCode()), strval($contactAddressModel->getState()));
+		}
 
+		// Job Title.
+		array_push($contact_fields, strval($contactModel->getPhone()), strval($contactModel->getBirthday()), strval($contactModel->getCompanyName()), '',
+			strval($contactModel->getOptIn()), strval($contactModel->getOptOut()), strval($contactModel->getEventType()));
+		return $contact_fields;
+	}
 
-        $contactAddressModel = $contactModel->getContactAddress();
-
-        if (ValidationHelper::is_null_or_empty($contactAddressModel)) {
-            array_push($contact_fields, '','', '', '', '');
-        } else {
-            array_push($contact_fields, strval($contactAddressModel->getAddress()), strval($contactAddressModel->getCity()), strval($contactAddressModel->getPostalCode()),
-                strval($contactAddressModel->getCountryCode()), strval($contactAddressModel->getState()));
-        }
-
-        array_push($contact_fields, strval($contactModel->getPhone()), strval($contactModel->getBirthday()), strval($contactModel->getCompanyName()), '', // JobTitle
-            strval($contactModel->getOptIn()), strval($contactModel->getOptOut()), strval($contactModel->getEventType()));
-        return $contact_fields;
-    }
-
-    private function is_success_response($response)
-    {
-        $response_code = wp_remote_retrieve_response_code($response);
-
-        return $response_code >= 200 && $response_code <= 299;
-    }
+	private function is_success_response( $response ) {
+		$response_code = wp_remote_retrieve_response_code($response);
+		return $response_code >= 200 && $response_code <= 299;
+	}
 }

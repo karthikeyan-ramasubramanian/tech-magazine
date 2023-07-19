@@ -7,12 +7,14 @@ if ( apply_filters( 'authorship/plugin_compatibility', authorship_is_feature_ena
 
     $path = MOLONGUI_AUTHORSHIP_DIR . 'includes/compat/plugins/';
 
+    if ( is_plugin_active( 'advanced-access-manager/aam.php' ) ) require_once $path . 'advanced-access-manager.php';
     if ( is_plugin_active( 'anywhere-elementor/anywhere-elementor.php' ) or
          is_plugin_active( 'anywhere-elementor-pro/anywhere-elementor-pro.php' ) ) require_once $path . 'anywhere-elementor.php';
     if ( is_plugin_active( 'author-avatars/author-avatars.php' ) ) require_once $path . 'author-avatars.php';
     if ( is_plugin_active( 'authors-list/authors-list.php' ) ) require_once $path . 'authors-list.php';
     if ( is_plugin_active( 'bb-plugin/fl-builder.php' ) ) require_once $path . 'beaver-builder.php';
     if ( is_plugin_active( 'bb-theme-builder/bb-theme-builder.php' ) ) require_once $path . 'beaver-builder-theme-builder.php';
+    if ( is_plugin_active( 'blog-designer/blog-designer.php' ) ) require_once $path . 'blog-designer.php';
     if ( is_plugin_active( 'buddyboss-platform/bp-loader.php' ) ) require_once $path . 'buddyboss-platform.php';
     if ( class_exists( 'BuddyPress' ) ) require_once $path . 'buddypress.php';
     if ( is_plugin_active( 'dp-divi-filtergrid/dp-divi-filtergrid.php' ) ) require_once $path . 'dp-divi-filtergrid.php';
@@ -27,12 +29,14 @@ if ( apply_filters( 'authorship/plugin_compatibility', authorship_is_feature_ena
     if ( is_plugin_active( 'nimble-builder/nimble-builder.php' ) ) require_once $path . 'nimble-builder.php';
     if ( is_plugin_active( 'polylang/polylang.php' ) ) require_once $path . 'polylang.php';
     if ( is_plugin_active( 'post-grid/post-grid.php' ) ) require_once $path . 'post-grid.php';
+    if ( is_plugin_active( 'premium-addons-for-elementor/premium-addons-for-elementor.php' ) ) require_once $path . 'premium-addons-for-elementor.php';
     if ( is_plugin_active( 'seo-by-rank-math/rank-math.php' ) ) require_once $path . 'rank-math-seo.php';
     if ( is_plugin_active( 'schema/schema.php' ) or
          is_plugin_active( 'schema-premium/schema-premium.php' ) ) require_once $path . 'schema.php';
     if ( is_plugin_active( 'schema-and-structured-data-for-wp/structured-data-for-wp.php' ) ) require_once $path . 'schema-and-structured-data-for-wp.php';
     if ( is_plugin_active( 'shortcodes-indep/init.php' ) ) require_once $path . 'shortcodes-indep.php';
-    if ( is_plugin_active( 'td-cloud-library/td-cloud-library.php' ) ) require_once $path . 'tagdiv-cloud-library.php';
+    if ( is_plugin_active( 'td-cloud-library/td-cloud-library.php' ) ) require_once $path . 'td-cloud-library.php';
+    if ( is_plugin_active( 'td-composer/td-composer.php' ) ) require_once $path . 'td-composer.php';
     if ( is_plugin_active( 'autodescription/autodescription.php' ) ) require_once $path . 'the-seo-framework.php';
     if ( is_plugin_active( 'ultimate-member/ultimate-member.php' ) ) require_once $path . 'ultimate-member.php';
     if ( is_plugin_active( 'userswp/userswp.php' ) ) require_once $path . 'userswp.php';

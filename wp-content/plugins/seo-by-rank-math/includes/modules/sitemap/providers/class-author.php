@@ -43,7 +43,7 @@ class Author implements Provider {
 	 * @return boolean
 	 */
 	public function handles_type( $type ) {
-		return 'author' === $type;
+		return 'author' === $type && Helper::get_settings( 'sitemap.authors_sitemap' );
 	}
 
 	/**
@@ -53,6 +53,10 @@ class Author implements Provider {
 	 * @return array
 	 */
 	public function get_index_links( $max_entries ) {
+		if ( ! Helper::get_settings( 'sitemap.authors_sitemap' ) ) {
+			return [];
+		}
+
 		$users = $this->get_users();
 
 		if ( empty( $users ) ) {
@@ -146,7 +150,7 @@ class Author implements Provider {
 	 * @param  array $args Arguments to add.
 	 * @return array
 	 */
-	protected function get_users( $args = [] ) {
+	public function get_users( $args = [] ) {
 		$defaults = [
 			'orderby'    => 'meta_value_num',
 			'order'      => 'DESC',

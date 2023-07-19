@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Newsletter;
 
@@ -77,6 +77,9 @@ class NewsletterSaveController {
   /** @var Scheduler */
   private $scheduler;
 
+  /*** @var NewsletterCoupon */
+  private $newsletterCoupon;
+  
   public function __construct(
     AuthorizedEmailsController $authorizedEmailsController,
     Emoji $emoji,
@@ -92,7 +95,8 @@ class NewsletterSaveController {
     Security $security,
     WPFunctions $wp,
     ApiDataSanitizer $dataSanitizer,
-    Scheduler $scheduler
+    Scheduler $scheduler,
+    NewsletterCoupon $newsletterCoupon
   ) {
     $this->authorizedEmailsController = $authorizedEmailsController;
     $this->emoji = $emoji;
@@ -109,6 +113,7 @@ class NewsletterSaveController {
     $this->wp = $wp;
     $this->dataSanitizer = $dataSanitizer;
     $this->scheduler = $scheduler;
+    $this->newsletterCoupon = $newsletterCoupon;
   }
 
   public function save(array $data = []): NewsletterEntity {
@@ -125,6 +130,7 @@ class NewsletterSaveController {
     }
 
     $newsletter = isset($data['id']) ? $this->getNewsletter($data) : $this->createNewsletter($data);
+    $data = $this->sanitizeAutomationEmailData($data, $newsletter);
     $oldSenderAddress = $newsletter->getSenderAddress();
 
     $this->updateNewsletter($newsletter, $data);
@@ -156,6 +162,14 @@ class NewsletterSaveController {
     return $newsletter;
   }
 
+  private function sanitizeAutomationEmailData(array $data, NewsletterEntity $newsletter): array {
+    if ($newsletter->getType() !== NewsletterEntity::TYPE_AUTOMATION) {
+      return $data;
+    }
+    $data['segments'] = [];
+    return $data;
+  }
+
   public function duplicate(NewsletterEntity $newsletter): NewsletterEntity {
     $duplicate = clone $newsletter;
 
@@ -165,6 +179,7 @@ class NewsletterSaveController {
     $duplicate->setUpdatedAt($createdAt);
     $duplicate->setDeletedAt(null);
 
+    // translators: %s is the subject of the mail which has been copied.
     $duplicate->setSubject(sprintf(__('Copy of %s', 'mailpoet'), $newsletter->getSubject()));
     // generate new unsubscribe token
     $duplicate->setUnsubscribeToken($this->security->generateUnsubscribeTokenByEntity($duplicate));
@@ -175,6 +190,10 @@ class NewsletterSaveController {
     // reset sent at date
     $duplicate->setSentAt(null);
 
+    $body = $duplicate->getBody();
+    if ($body) {
+      $duplicate->setBody($this->newsletterCoupon->cleanupBodySensitiveData($body));
+    }
     $this->newslettersRepository->persist($duplicate);
     $this->newslettersRepository->flush();
 
@@ -282,6 +301,10 @@ class NewsletterSaveController {
 
     if (array_key_exists('reply_to_address', $data)) {
       $newsletter->setReplyToAddress($data['reply_to_address'] ?? '');
+    }
+
+    if ($newsletter->getStatus() === NewsletterEntity::STATUS_CORRUPT) {
+      $newsletter->setStatus(NewsletterEntity::STATUS_SENDING);
     }
   }
 
@@ -396,7 +419,7 @@ class NewsletterSaveController {
       $queueModel->newsletterRenderedBody = null;
 
       $newsletterQueueTask = new NewsletterQueueTask();
-      $newsletterQueueTask->preProcessNewsletter($newsletterModel, $queueModel);
+      $newsletterQueueTask->preProcessNewsletter($newsletter, $queueModel);
 
       // 'preProcessNewsletter' modifies queue by old model - let's reload it
       $this->entityManager->refresh($queue);

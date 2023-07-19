@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Segments;
 
@@ -10,6 +10,7 @@ use MailPoet\ConflictException;
 use MailPoet\Doctrine\Repository;
 use MailPoet\Entities\DynamicSegmentFilterData;
 use MailPoet\Entities\DynamicSegmentFilterEntity;
+use MailPoet\Entities\NewsletterSegmentEntity;
 use MailPoet\Entities\SegmentEntity;
 use MailPoet\Entities\SubscriberSegmentEntity;
 use MailPoet\Form\FormsRepository;
@@ -52,7 +53,21 @@ class SegmentsRepository extends Repository {
   }
 
   public function getWPUsersSegment(): ?SegmentEntity {
-    return $this->findOneBy(['type' => SegmentEntity::TYPE_WP_USERS]);
+    $segment = $this->findOneBy(['type' => SegmentEntity::TYPE_WP_USERS]);
+
+    if (!$segment) {
+      // create the wp users segment
+      $segment = new SegmentEntity(
+        __('WordPress Users', 'mailpoet'),
+        SegmentEntity::TYPE_WP_USERS,
+        __('This list contains all of your WordPress users.', 'mailpoet')
+      );
+
+      $this->entityManager->persist($segment);
+      $this->entityManager->flush();
+    }
+
+    return $segment;
   }
 
   public function getWooCommerceSegment(): SegmentEntity {
@@ -60,9 +75,9 @@ class SegmentsRepository extends Repository {
     if (!$segment) {
       // create the WooCommerce customers segment
       $segment = new SegmentEntity(
-        WPFunctions::get()->__('WooCommerce Customers', 'mailpoet'),
+        __('WooCommerce Customers', 'mailpoet'),
         SegmentEntity::TYPE_WC_USERS,
-        WPFunctions::get()->__('This list contains all of your WooCommerce customers.', 'mailpoet')
+        __('This list contains all of your WooCommerce customers.', 'mailpoet')
       );
       $this->entityManager->persist($segment);
       $this->entityManager->flush();
@@ -122,8 +137,11 @@ class SegmentsRepository extends Repository {
     string $description = '',
     string $type = SegmentEntity::TYPE_DEFAULT,
     array $filtersData = [],
-    ?int $id = null
+    ?int $id = null,
+    bool $displayInManageSubscriptionPage = true
   ): SegmentEntity {
+    $displayInManageSubPage = $type === SegmentEntity::TYPE_DEFAULT ? $displayInManageSubscriptionPage : false;
+
     if ($id) {
       $segment = $this->findOneById($id);
       if (!$segment instanceof SegmentEntity) {
@@ -134,9 +152,11 @@ class SegmentsRepository extends Repository {
         $segment->setName($name);
       }
       $segment->setDescription($description);
+      $segment->setDisplayInManageSubscriptionPage($displayInManageSubPage);
     } else {
       $this->verifyNameIsUnique($name, $id);
       $segment = new SegmentEntity($name, $type, $description);
+      $segment->setDisplayInManageSubscriptionPage($displayInManageSubPage);
       $this->persist($segment);
     }
 
@@ -209,6 +229,12 @@ class SegmentsRepository extends Repository {
         ->andWhere('s.type = :type')
         ->setParameter('ids', $ids, Connection::PARAM_INT_ARRAY)
         ->setParameter('type', $type, \PDO::PARAM_STR)
+        ->getQuery()->execute();
+
+      $queryBuilder = $entityManager->createQueryBuilder();
+      $queryBuilder->delete(NewsletterSegmentEntity::class, 'ns')
+        ->where('ns.segment IN (:ids)')
+        ->setParameter('ids', $ids, Connection::PARAM_INT_ARRAY)
         ->getQuery()->execute();
     });
     return $count;

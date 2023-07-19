@@ -63,9 +63,7 @@ class Connect extends AbstractConvertKitConnect implements ConnectionInterface
 
         try {
 
-            $cache_key = 'converkit_sequences';
-
-            $sequence_array = get_transient($cache_key);
+            $sequence_array = [];
 
             if (empty($result) || false === $result) {
 
@@ -78,13 +76,9 @@ class Connect extends AbstractConvertKitConnect implements ConnectionInterface
 
                 $sequences = $response['body']->courses;
 
-                $sequence_array = [];
-
                 foreach ($sequences as $sequence) {
                     $sequence_array[$sequence->id] = $sequence->name;
                 }
-
-                set_transient($cache_key, $sequence_array, 5 * MINUTE_IN_SECONDS);
             }
 
             return $sequence_array;

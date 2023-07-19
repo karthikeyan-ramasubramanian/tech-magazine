@@ -16,7 +16,7 @@ class AbstractFacebookCustomAudienceConnect extends AbstractConnect
     /** @var Connections */
     protected $connections_settings;
 
-    public static $api_version = '11.0';
+    public static $api_version = '15.0';
 
     public function __construct()
     {

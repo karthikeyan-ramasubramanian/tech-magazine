@@ -11,11 +11,11 @@ if ( ! $value ) {
 	die();
 }
 
-$subject = stripslashes( $value->subject );
-$message = stripslashes( $value->message );
-$name    = stripslashes( $value->name );
-$email   = stripslashes( $value->email );
-$note    = stripslashes( $value->note );
+$subject = isset( $value->subject ) ? stripslashes( $value->subject ) : '';
+$message = isset( $value->message ) ? stripslashes( $value->message ) : '';
+$name    = isset( $value->name ) ? stripslashes( $value->name ) : '';
+$email   = isset( $value->email ) ? stripslashes( $value->email ) : '';
+$note    = isset( $value->note ) ? stripslashes( $value->note ) : '';
 ?>
 
 <div class="wrap stcfq stcfq-list-view">

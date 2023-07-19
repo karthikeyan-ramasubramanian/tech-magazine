@@ -17,12 +17,12 @@
 			<li>Post types, Taxonomy terms, Attachments, Users, BuddyPress Groups and PeepSo content as results</li>
 			<li>Vertical, Horizontal, Isotopic and Polaroid layouts</li><li>Post type, Generic, Content type, Taxonomy, Custom field and Date filters</li><li>100+ Themes, fully customizable</li>
 			<li>Taxonomy, Tag, User, Date, ID and other result exclusion and inclusion methods</li>
-			<li>..and many other features, check the <a href="https://ajaxsearchpro.com/features/" target="_blank">full features list</a>.</li>
+			<li>..and many other features, check the <a href="https://ajaxsearchpro.com/features/?utm_source=ajax-search-lite&utm_content=gopro" target="_blank">full features list</a>.</li>
 		</ul>
 	</div>
 	<div class="asl-gopro-bottom">
 		<p>The Lite and the Pro version are two separate plugins, thus you can switch from Pro to Lite and vice-versa at any time, without loosing your settings.</p>
-		<a class="gopro" href="https://wp-dreams.com/go/?to=asp_demo_gopro" target="_blank">See the Pro version live demo!</a>
+		<a class="gopro" href="https://ajaxsearchpro.com/?utm_source=ajax-search-lite&utm_content=gopro" target="_blank">See the Pro version live demo!</a>
 	</div>
 </div>
 <?php

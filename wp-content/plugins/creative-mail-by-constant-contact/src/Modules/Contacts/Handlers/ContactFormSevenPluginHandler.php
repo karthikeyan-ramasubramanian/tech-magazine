@@ -4,189 +4,218 @@ namespace CreativeMail\Modules\Contacts\Handlers;
 
 define('CE4WP_CF7_EVENTTYPE', 'WordPress - Contact Form 7');
 
-use CreativeMail\Managers\RaygunManager;
+use CreativeMail\Managers\Logs\DatadogManager;
 use CreativeMail\Modules\Contacts\Models\ContactFormSevenSubmission;
 use CreativeMail\Modules\Contacts\Models\ContactModel;
+use CreativeMail\Modules\Contacts\Models\ContactAddressModel;
 use CreativeMail\Modules\Contacts\Models\OptActionBy;
+use Exception;
 
-class ContactFormSevenPluginHandler extends BaseContactFormPluginHandler
-{
-    private function findValue($data, $fieldOptions)
-    {
-        foreach ($fieldOptions as $fieldOption) {
-            $value = $data->get_posted_data($fieldOption);
-            if (isset($value) && !empty($value)) {
-                return $value;
-            }
-        }
+class ContactFormSevenPluginHandler extends BaseContactFormPluginHandler {
 
-        return null;
-    }
+	private function findValue( $data, $fieldOptions ) {
+		foreach ( $fieldOptions as $fieldOption ) {
+			$value = $data->get_posted_data($fieldOption);
+			if ( isset($value) && ! empty($value) ) {
+				return $value;
+			}
+		}
 
-    private function findValueFromDb($formData, $fieldOptions)
-    {
-        foreach ($fieldOptions as $fieldOption) {
-            if (array_key_exists($fieldOption, $formData)) {
-                $value = $formData[$fieldOption];
-                if (!empty($value)) {
-                    return $value;
-                }
-            }
-        }
-        return null;
-    }
+		return null;
+	}
 
-    public function convertToContactModel($contactForm)
-    {
-        $contactForm = ContactFormSevenSubmission::get_instance(null, array('skip_mail' => true));
+	private function findValueFromDb( $formData, $fieldOptions ) {
+		foreach ( $fieldOptions as $fieldOption ) {
+			if ( array_key_exists($fieldOption, $formData) ) {
+				$value = $formData[ $fieldOption ];
+				if ( ! empty($value) ) {
+					return $value;
+				}
+			}
+		}
+		return null;
+	}
 
-        // convert
-        $contactModel = new ContactModel();
-        $email = $this->findValue($contactForm, $this->emailFields);
-        if (!empty($email)) {
-            $contactModel->setEmail($email);
-        }
+	public function convertToContactModel( $contactForm ) {
+		$contactForm = ContactFormSevenSubmission::get_instance(null, array( 'skip_mail' => true ));
 
-        $firstName = $this->findValue($contactForm, $this->firstnameFields);
-        if (!empty($firstName)) {
-            $contactModel->setFirstName($firstName);
-        }
+		// Convert.
+		$contactModel = new ContactModel();
+		$email        = $this->findValue($contactForm, $this->emailFields);
+		if ( ! empty($email) ) {
+			$contactModel->setEmail($email);
+		}
 
-        $lastName = $this->findValue($contactForm, $this->lastnameFields);
-        if (!empty($lastName)) {
-            $contactModel->setLastName($lastName);
-        }
+		$firstName = $this->findValue($contactForm, $this->firstnameFields);
+		if ( ! empty($firstName) ) {
+			$contactModel->setFirstName($firstName);
+		}
 
-        $phone = $this->findValue($contactForm, $this->phoneFields);
-        if (empty($phone)) {
-            $phone = $this->GetValueBySubstring($contactForm->get_posted_data(), $this->phoneFields);
-        }
-        if (!empty($phone)) {
-            $contactModel->setPhone($phone);
-        }
+		$lastName = $this->findValue($contactForm, $this->lastnameFields);
+		if ( ! empty($lastName) ) {
+			$contactModel->setLastName($lastName);
+		}
 
-        $birthday = $this->findValue($contactForm, $this->birthdayFields);
-        if (!empty($birthday)) {
-            $contactModel->setBirthday($birthday);
-        }
+		$phone = $this->findValue($contactForm, $this->phoneFields);
+		if ( empty($phone) ) {
+			$phone = $this->GetValueBySubstring($contactForm->get_posted_data(), $this->phoneFields);
+		}
+		if ( ! empty($phone) ) {
+			$contactModel->setPhone($phone);
+		}
 
-        $consent = $this->GetValueBySubstring($contactForm->get_posted_data(), $this->consentFields);
-        if ($consent === "1") {
-            $contactModel->setOptIn(true);
-            $contactModel->setOptOut(false);
-            $contactModel->setOptActionBy(OptActionBy::Visitor);
-        }
-        $contactModel->setEventType(CE4WP_CF7_EVENTTYPE);
+		$birthday = $this->findValue($contactForm, $this->birthdayFields);
+		if ( ! empty($birthday) ) {
+			$contactModel->setBirthday($birthday);
+		}
 
-        return $contactModel;
-    }
+		$consent = $this->GetValueBySubstring($contactForm->get_posted_data(), $this->consentFields);
+		if ( '1' === $consent ) {
+			$contactModel->setOptIn(true);
+			$contactModel->setOptOut(false);
+			$contactModel->setOptActionBy(OptActionBy::VISITOR);
+		}
 
-    public function registerHooks()
-    {
-        add_action('wpcf7_mail_sent', array($this, 'ceHandleContactFormSevenSubmit'));
-    }
+		$contactAddress = $this->getContactAddressFromForm($contactForm);
 
-    public function unregisterHooks()
-    {
-        remove_action('wpcf7_mail_sent', array($this, 'ceHandleContactFormSevenSubmit'));
-    }
+		if ( ! empty($contactAddress) ) {
+			$contactModel->setContactAddress($contactAddress);
+		}
 
-    public function get_contacts($limit = null)
-    {
-        if (!is_int($limit) || $limit <= 0) {
-            $limit = null;
-        }
+		$contactModel->setEventType(CE4WP_CF7_EVENTTYPE);
 
-        // Relies on plugin => Contact Form CFDB7
-        if (in_array('contact-form-cfdb7/contact-form-cfdb-7.php', apply_filters('active_plugins', get_option('active_plugins')))) {
-            global $wpdb;
+		return $contactModel;
+	}
 
-            $cfdb = apply_filters('cfdb7_database', $wpdb);
-            $cfdbtable = $cfdb->prefix . 'db7_forms';
-            $cfdbQuery = "SELECT form_id, form_post_id, form_value FROM $cfdbtable";
+	public function getContactAddressFromForm( $contactForm ) {
+		$contactAddress = new ContactAddressModel();
 
-            // Do we need to limit the number of results
-            if ($limit != null) {
-                $cfdbQuery .= " LIMIT %d";
-                $cfdbQuery = $cfdb->prepare($cfdbQuery, $limit);
-            } else {
-                $cfdbQuery = $cfdb->prepare($cfdbQuery);
-            }
+		if ( isset($contactForm) ) {
+			$city = $this->findValue($contactForm, $this->cityFields);
+			if ( ! empty($city) ) {
+				$contactAddress->setCity($city);
+			}
 
-            $results = $cfdb->get_results($cfdbQuery, OBJECT);
-            $contactsArray = array();
+			$zip = $this->findValue($contactForm, $this->zipFields);
+			if ( ! empty($zip) ) {
+				$contactAddress->setPostalCode($zip);
+			}
 
-            foreach ($results as $formSubmission) {
-                $form_data = unserialize($formSubmission->form_value);
-                $contactModel = new ContactModel();
-                $contactModel->setOptIn(true);
-                $contactModel->setOptOut(false);
-                $contactModel->setOptActionBy(OptActionBy::Owner);
+			$state = $this->findValue($contactForm, $this->stateFields);
+			if ( ! empty($state) && ! empty($state[0]) ) {
+				$contactAddress->setStateCode($state[0]);
+			}
 
-                try {
-                    $email = $this->findValueFromDb($form_data, $this->emailFields);
-                    if (!empty($email)) {
-                        $contactModel->setEmail($email);
-                    }
-                    $firstname = $this->findValueFromDb($form_data, $this->firstnameFields);
-                    if (!empty($firstname)) {
-                        $contactModel->setFirstName($firstname);
-                    }
-                    $lastname = $this->findValueFromDb($form_data, $this->lastnameFields);
-                    if (!empty($lastname)) {
-                        $contactModel->setLastName($lastname);
-                    }
-                    $phone = $this->findValueFromDb($form_data, $this->phoneFields);
-                    if (!empty($phone)) {
-                        $contactModel->setPhone($phone);
-                    }
-                    $birthday = $this->findValueFromDb($form_data, $this->birthdayFields);
-                    if (!empty($birthday)) {
-                        $contactModel->setBirthday($birthday);
-                    }
-                } catch (\Exception $exception) {
-                    RaygunManager::get_instance()->exception_handler($exception);
-                    continue;
-                }
+			$country = $this->findValue($contactForm, $this->countryFields);
+			if ( ! empty($country) && ! empty($country[0]) ) {
+				$contactAddress->setCountryCode($country[0]);
+			}
+		}
+		return $contactAddress;
+	}
 
-                if (!empty($contactModel->getEmail())) {
-                    $contactModel->setEventType(CE4WP_CF7_EVENTTYPE);
-                    array_push($contactsArray, $contactModel);
-                }
-            }
+	public function registerHooks() {
+		add_action('wpcf7_mail_sent', array( $this, 'ceHandleContactFormSevenSubmit' ));
+	}
 
-            if (!empty($contactsArray)) {
-                return $contactsArray;
-            }
-        }
+	public function unregisterHooks() {
+		remove_action('wpcf7_mail_sent', array( $this, 'ceHandleContactFormSevenSubmit' ));
+	}
 
-        return null;
-    }
+	public function get_contacts( $limit = null ) {
+		if ( ! is_int($limit) || $limit <= 0 ) {
+			$limit = null;
+		}
 
-    function ceHandleContactFormSevenSubmit($contact_form)
-    {
-        try {
-            $this->upsertContact($this->convertToContactModel($contact_form));
-        } catch (\Exception $exception) {
-            RaygunManager::get_instance()->exception_handler($exception);
-        }
-    }
+		// Relies on plugin => Contact Form CFDB7.
+		if ( in_array('contact-form-cfdb7/contact-form-cfdb-7.php',
+			apply_filters('active_plugins', get_option('active_plugins')),
+			true)
+		) {
+			global $wpdb;
 
-    function __construct()
-    {
-        parent::__construct();
-    }
+			$cfdb      = apply_filters('cfdb7_database', $wpdb);
+			$cfdbtable = $cfdb->prefix . 'db7_forms';
+			$cfdbQuery = "SELECT form_id, form_post_id, form_value FROM $cfdbtable";
 
-    private function GetValueBySubstring($form_values, $possible_values)
-    {
-        foreach ($form_values as $form_key => $form_value) {
-            foreach ($possible_values as $possible_value) {
-                // If the name of the form_key contains the possible_value then we return its value
-                if (mb_strpos(strtolower($form_key), $possible_value) !== false)
-                {
-                    return $form_value;
-                }
-            }
-        }
-    }
+			// Do we need to limit the number of results?
+			if ( null != $limit ) {
+				$cfdbQuery .= ' LIMIT %d';
+				$cfdbQuery  = $cfdb->prepare($cfdbQuery, $limit);
+			} else {
+				$cfdbQuery = $cfdb->prepare($cfdbQuery);
+			}
+
+			$results       = $cfdb->get_results($cfdbQuery, OBJECT);
+			$contactsArray = array();
+
+			foreach ( $results as $formSubmission ) {
+				$form_data    = unserialize($formSubmission->form_value);
+				$contactModel = new ContactModel();
+				$contactModel->setOptIn(true);
+				$contactModel->setOptOut(false);
+				$contactModel->setOptActionBy(OptActionBy::OWNER);
+
+				try {
+					$email = $this->findValueFromDb($form_data, $this->emailFields);
+					if ( ! empty($email) ) {
+						$contactModel->setEmail($email);
+					}
+					$firstname = $this->findValueFromDb($form_data, $this->firstnameFields);
+					if ( ! empty($firstname) ) {
+						$contactModel->setFirstName($firstname);
+					}
+					$lastname = $this->findValueFromDb($form_data, $this->lastnameFields);
+					if ( ! empty($lastname) ) {
+						$contactModel->setLastName($lastname);
+					}
+					$phone = $this->findValueFromDb($form_data, $this->phoneFields);
+					if ( ! empty($phone) ) {
+						$contactModel->setPhone($phone);
+					}
+					$birthday = $this->findValueFromDb($form_data, $this->birthdayFields);
+					if ( ! empty($birthday) ) {
+						$contactModel->setBirthday($birthday);
+					}
+				} catch ( Exception $exception ) {
+					DatadogManager::get_instance()->exception_handler($exception);
+					continue;
+				}
+
+				if ( ! empty($contactModel->getEmail()) ) {
+					$contactModel->setEventType(CE4WP_CF7_EVENTTYPE);
+					array_push($contactsArray, $contactModel);
+				}
+			}
+
+			if ( ! empty($contactsArray) ) {
+				return $contactsArray;
+			}
+		}
+
+		return null;
+	}
+
+	public function ceHandleContactFormSevenSubmit( $contact_form ) {
+		try {
+			$this->upsertContact($this->convertToContactModel($contact_form));
+		} catch ( Exception $exception ) {
+			DatadogManager::get_instance()->exception_handler($exception);
+		}
+	}
+
+	public function __construct() {
+		parent::__construct();
+	}
+
+	private function GetValueBySubstring( $form_values, $possible_values ) {
+		foreach ( $form_values as $form_key => $form_value ) {
+			foreach ( $possible_values as $possible_value ) {
+				// If the name of the form_key contains the possible_value then we return its value.
+				if ( mb_strpos(strtolower($form_key), $possible_value) !== false ) {
+					return $form_value;
+				}
+			}
+		}
+	}
 }

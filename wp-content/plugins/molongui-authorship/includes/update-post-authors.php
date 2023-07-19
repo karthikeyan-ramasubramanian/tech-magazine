@@ -14,7 +14,7 @@ class Update_Post_Authors
     }
     public function run( $post_types = array() )
     {
-        if ( \defined( 'DISABLE_WP_CRON' ) and DISABLE_WP_CRON ) return false;
+        if ( \apply_filters( 'authorship/check_wp_cron', true ) and ( \defined( 'DISABLE_WP_CRON' ) and DISABLE_WP_CRON ) ) return false;
         $post_ids = \get_posts( array
         (
             'numberposts'      => -1,
@@ -22,7 +22,7 @@ class Update_Post_Authors
             'meta_compare'     => 'NOT EXISTS',
             'post_type'        => $post_types,
             'suppress_filters' => true,
-            'post_status' => authorship_post_status( $post_types ),
+            'post_status' => \authorship_post_status( $post_types ),
             'fields' => 'ids',
         ));
         if ( !empty( $post_ids ) )

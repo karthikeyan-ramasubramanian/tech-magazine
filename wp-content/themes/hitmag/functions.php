@@ -286,49 +286,7 @@ add_action( 'widgets_init', 'hitmag_widgets_init' );
  * Load Google Fonts
  */
 function hitmag_fonts_url() {
-    $fonts_url = '';
- 
-    /* Translators: If there are characters in your language that are not
-    * supported by Lato, translate this to 'off'. Do not translate
-    * into your own language.
-    */
-    $lato = _x( 'on', 'Lato font: on or off', 'hitmag' );
-
-    /* Translators: If there are characters in your language that are not
-    * supported by Ubuntu, translate this to 'off'. Do not translate
-    * into your own language.
-    */
-    $ubuntu = _x( 'on', 'Ubuntu font: on or off', 'hitmag' );
- 
-    /* Translators: If there are characters in your language that are not
-    * supported by Lora, translate this to 'off'. Do not translate
-    * into your own language.
-    */
-    $open_sans = _x( 'on', 'Open Sans font: on or off', 'hitmag' );
- 
-    if ( 'off' !== $lato || 'off' !== $ubuntu || 'off' !== $open_sans ) {
-        $font_families = array();
- 
-        if ( 'off' !== $ubuntu ) {
-            $font_families[] = 'Ubuntu:400,500,700';
-        }
-
-        if ( 'off' !== $lato ) {
-            $font_families[] = 'Lato:400,700,400italic,700italic';
-        }
- 
-        if ( 'off' !== $open_sans ) {
-            $font_families[] = 'Open Sans:400,400italic,700';
-        }
- 
-        $query_args = array(
-            'family' => urlencode( implode( '|', $font_families ) ),
-            'subset' => urlencode( 'latin,latin-ext' ),
-        );
- 
-        $fonts_url = add_query_arg( $query_args, 'https://fonts.googleapis.com/css' );
-    }
- 
+    $fonts_url = get_theme_file_uri( '/css/fonts.css' );
     return $fonts_url;
 }
 /**
@@ -356,7 +314,7 @@ function hitmag_scripts() {
 		wp_enqueue_script( 'comment-reply' );
 	}
 
-	if ( ! is_home() && is_front_page() && ( true == get_theme_mod( 'show_slider', true ) ) ) {
+	if ( is_page_template( 'template-magazine.php' ) && ( true == get_theme_mod( 'show_slider', true ) ) ) {
 		wp_enqueue_script( 'jquery-flexslider', get_template_directory_uri() . '/js/jquery.flexslider-min.js', array('jquery'), '', true );
 		wp_enqueue_style( 'jquery-flexslider', get_template_directory_uri() . '/css/flexslider.css', '', '', 'screen' );
 	}

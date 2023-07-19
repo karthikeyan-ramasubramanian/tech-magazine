@@ -7,6 +7,7 @@
   <script type="text/javascript">
     var systemInfoData = <%= json_encode(systemInfoData) %>;
     var systemStatusData = <%= json_encode(systemStatusData) %>;
+    var actionSchedulerData = <%= json_encode(actionSchedulerData) %>;
   </script>
 
   <div id="help_container"></div>
@@ -21,7 +22,7 @@
   'tabSystemStatusTitle': __('System Status'),
   'tabYourPrivacyTitle': __('Your Privacy'),
   'systemStatusIntroCron': __('For the plugin to work, it must be able to establish connection with the task scheduler.'),
-  'systemStatusIntroCronMSS': __('For the plugin to work, it must be able to establish connection with the task scheduler and the key activation/MailPoet sending service.'),
+  'systemStatusIntroCronMSS': __('For the plugin to work, it must be able to establish connection with the task scheduler and the key activation/MailPoet Sending Service.'),
   'systemStatusCronTitle': __('Task Scheduler'),
   'systemStatusMSSTitle': __('Connection to the MailPoet Sending Service'),
   'systemStatusConnectionSuccessful': __('Connection successful.'),
@@ -34,6 +35,9 @@
   'knowledgeBaseButton': __('Visit our Knowledge Base for more articles'),
   'systemInfoIntro': __('The information below is useful when you need to get in touch with our support. Just copy all the text below and paste it into a message to us.'),
   'systemInfoDataError': __('Sorry, there was an error, please try again later.'),
+  'copyToClipboard': __('Copy to clipboard'),
+  'copyToClipboardSuccess': __('Copied to clipboard.'),
+  'copyToClipboardFailure': __('Could not copy to clipboard.'),
   'systemStatusCronStatusTitle': __('Cron'),
   'systemStatusQueueTitle': __('Sending Queue'),
   'yourPrivacyContent1': __('MailPoet respects your privacy. We don’t track any information about your website or yourself without your explicit consent.'),
@@ -73,6 +77,12 @@
   'updatedAt': __('Updated At'),
   'nothingToShow': __('Nothing to show.'),
   'preview': _x('Preview', 'Text of a link to email preview page.'),
+  'actionSchedulerStatus': __('WP Cron / Action Scheduler Status'),
+  'version': __('Version'),
+  'storage': __('Storage type'),
+  'latestActionSchedulerTrigger': _x('Next trigger run', 'Label for the next date and time of background job trigger run.'),
+  'latestActionSchedulerCompletedTrigger': _x('Last trigger run', 'Label for the last date and time of background job trigger run.'),
+  'latestActionSchedulerCompletedRun': _x('Last worker run', 'Label for the last date and time of background job worker run.'),
 }) %>
 <% endblock %>
 

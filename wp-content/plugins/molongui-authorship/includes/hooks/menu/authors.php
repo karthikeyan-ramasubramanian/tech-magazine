@@ -107,9 +107,11 @@ function authorship_add_authors_screen_options()
     );
     add_screen_option( 'per_page', $arguments );
 }
-function authorship_set_authors_screen_options( $status, $option, $value )
+function authorship_set_authors_screen_options( $screen_option, $option, $value )
 {
     if ( 'authors_per_page' == $option ) return $value;
+
+    return $screen_option;
 }
 add_filter( 'set-screen-option', 'authorship_set_authors_screen_options', 10, 3 );
 function authorship_render_authors_screen()

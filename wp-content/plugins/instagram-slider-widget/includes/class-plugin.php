@@ -13,11 +13,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @copyright (c) 2019 Webraftic Ltd
  * @version       1.0
  */
-class WIS_Plugin extends \Wbcr_Factory453_Plugin {
+class WIS_Plugin extends \Wbcr_Factory458_Plugin {
 
 	/**
 	 * @see self::app()
-	 * @var \Wbcr_Factory453_Plugin
+	 * @var \Wbcr_Factory458_Plugin
 	 */
 	private static $app;
 
@@ -35,7 +35,7 @@ class WIS_Plugin extends \Wbcr_Factory453_Plugin {
 	 * Используется для получения настроек плагина, информации о плагине, для доступа к вспомогательным
 	 * классам.
 	 *
-	 * @return \Wbcr_Factory453_Plugin
+	 * @return \Wbcr_Factory458_Plugin
 	 */
 	public static function app() {
 		return self::$app;
@@ -49,7 +49,7 @@ class WIS_Plugin extends \Wbcr_Factory453_Plugin {
 	 * @return $class
 	 */
 	public static function social( $class ) {
-		return new $class;
+		return new $class();
 	}
 
 	/**
@@ -76,7 +76,7 @@ class WIS_Plugin extends \Wbcr_Factory453_Plugin {
 			$this->admin_scripts();
 
 			//Подключение файла проверки лицензии
-			require( WIS_PLUGIN_DIR . '/admin/ajax/check-license.php' );
+			require WIS_PLUGIN_DIR . '/admin/ajax/check-license.php';
 		} else {
 			$this->front_scripts();
 		}
@@ -85,18 +85,18 @@ class WIS_Plugin extends \Wbcr_Factory453_Plugin {
 	}
 
 	protected function init_activation() {
-		include_once( WIS_PLUGIN_DIR . '/admin/class-wis-activation.php' );
+		include_once WIS_PLUGIN_DIR . '/admin/class-wis-activation.php';
 		$this->registerActivation( 'WIS_Activation' );
 	}
 
 	public function load_components() {
 		$components = scandir( WIS_COMPONENTS_DIR );
 		foreach ( $components as $key => $value ) {
-			if ( ! in_array( $value, [ ".", ".." ] ) ) {
-				$comp = WIS_COMPONENTS_DIR . "/" . $value;
+			if ( ! in_array( $value, [ '.', '..' ] ) ) {
+				$comp = WIS_COMPONENTS_DIR . '/' . $value;
 				if ( is_dir( $comp ) ) {
-					if ( file_exists( $comp . "/load.php" ) ) {
-						require_once $comp . "/load.php";
+					if ( file_exists( $comp . '/load.php' ) ) {
+						require_once $comp . '/load.php';
 					}
 				}
 			}
@@ -120,7 +120,7 @@ class WIS_Plugin extends \Wbcr_Factory453_Plugin {
 	}
 
 	/**
-	 * Выполняет php сценарии, когда все Wordpress плагины будут загружены
+	 * Выполняет php сценарии, когда все WordPress плагины будут загружены
 	 *
 	 * @throws \Exception
 	 * @since  1.0.0
@@ -213,8 +213,8 @@ class WIS_Plugin extends \Wbcr_Factory453_Plugin {
 		$result   = [];
 		foreach ( $settings as $key => $widget ) {
 			$result[] = [
-				'title' => $widget['title'],
-				'id'    => $key,
+					'title' => $widget['title'],
+					'id'    => $key,
 			];
 		}
 
@@ -223,50 +223,48 @@ class WIS_Plugin extends \Wbcr_Factory453_Plugin {
 
 	/**
 	 * Выводит нотис о том, что изменилось в новой версии
-	 *
 	 */
 	public function new_api_admin_notice() {
-		$text     = "";
+		$text     = '';
 		$accounts = $this->getOption( WIG_PROFILES_OPTION, [] );
 		if ( count( $accounts ) ) {
 			foreach ( $accounts as $account ) {
 				if ( strlen( $account['token'] ) < 55 ) {
-					$text .= "<p><b>@" . $account['username'] . "</b></p>";
+					$text .= '<p><b>@' . $account['username'] . '</b></p>';
 				}
 			}
 		}
 		if ( ! empty( $text ) ) {
 			?>
-            <div class="notice notice-info is-dismissible">
-                <p>
-                    <b>Social Slider Feed:</b><br>
-                    The plugin has moved to the new Instagram Basic Display API.<br>
-                    To make your widgets work again, reconnect your instagram accounts in the plugin settings.
-                    <a href="https://cm-wp.com/important-update-social-slider-widget/" class="">Read more about the
-                        changes</a>
-                </p>
-            </div>
+			<div class="notice notice-info is-dismissible">
+				<p>
+					<b>Social Slider Feed:</b><br>
+					The plugin has moved to the new Instagram Basic Display API.<br>
+					To make your widgets work again, reconnect your instagram accounts in the plugin settings.
+					<a href="https://cm-wp.com/important-update-social-slider-widget/" class="">Read more about the
+						changes</a>
+				</p>
+			</div>
 			<?php
 		}
 	}
 
 	/**
 	 * Выводит нотис о том, что нужно обновить токены
-	 *
 	 */
 	public function check_token_admin_notice() {
-		$text     = "";
+		$text     = '';
 		$accounts = $this->getOption( WIG_PROFILES_OPTION, [] );
 		if ( count( $accounts ) ) {
 			foreach ( $accounts as $account ) {
 				if ( strlen( $account['token'] ) < 55 ) {
-					$text .= "<p><b>@" . $account['username'] . "</b></p>";
+					$text .= '<p><b>@' . $account['username'] . '</b></p>';
 				}
 			}
 		}
 		if ( ! empty( $text ) ) {
 			echo '<div class="notice notice-warning">
-					<p><b>Social Slider Feed:</b><br>You need to reconnect this accounts in the <a href="' . admin_url( "admin.php?page=settings-wisw&tab=instagram" ) . '">plugin settings</a>' . $text . '</p>
+					<p><b>Social Slider Feed:</b><br>You need to reconnect this accounts in the <a href="' . admin_url( 'admin.php?page=settings-wisw&tab=instagram' ) . '">plugin settings</a>' . $text . '</p>
 				  </div>';
 		}
 	}

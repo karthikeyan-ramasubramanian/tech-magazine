@@ -204,7 +204,6 @@ function authorship_set_defaults()
         'author_name_action' => 'filter',
         'enable_cache' => true,
         'assets_cdn'   => true,
-        'enable_byline_template_tags' => false,
         'enable_theme_compat'  => true,
         'enable_plugin_compat' => true,
     );

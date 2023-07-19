@@ -37,8 +37,6 @@ class Connect extends AbstractZohoCampaignsConnect implements ConnectionInterfac
     }
 
     /**
-     * Register Constant Contact Connection.
-     *
      * @param array $connections
      *
      * @return array
@@ -128,19 +126,32 @@ class Connect extends AbstractZohoCampaignsConnect implements ConnectionInterfac
     {
         try {
 
-            $response = $this->zcInstance()->apiRequest('getmailinglists?resfmt=JSON');
+            $offset = 0;
+            $loop   = true;
 
-            $lists_array = array();
+            $lists_array = [];
 
-            if (isset($response->list_of_details) && is_array($response->list_of_details) && ! empty($response->list_of_details)) {
-                foreach ($response->list_of_details as $list) {
-                    $lists_array[$list->listkey] = $list->listname;
+            while ($loop === true) {
+
+                $response = $this->zcInstance()->apiRequest('getmailinglists?resfmt=JSON', 'GET', ['range' => 1000, 'fromindex' => $offset]);
+
+                if (isset($response->list_of_details) && is_array($response->list_of_details) && ! empty($response->list_of_details)) {
+
+                    foreach ($response->list_of_details as $list) {
+                        $lists_array[$list->listkey] = $list->listname;
+                    }
+
+                    if (count($response->list_of_details) < 1000) {
+                        $loop = false;
+                    }
+
+                    $offset += 1000;
+                } else {
+                    $loop = false;
+
+                    self::save_optin_error_log(json_encode($response), 'zohocampaigns');
                 }
-
-                return $lists_array;
             }
-
-            self::save_optin_error_log(json_encode($response), 'zohocampaigns');
 
             return $lists_array;
 

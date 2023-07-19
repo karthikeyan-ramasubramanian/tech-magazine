@@ -13,6 +13,7 @@ namespace RankMath\Sitemap;
 use RankMath\Helper;
 use RankMath\Helpers\Sitepress;
 use RankMath\Traits\Hooker;
+use RankMath\Sitemap\Html\Sitemap as Html_Sitemap;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -43,9 +44,10 @@ class Sitemap {
 		$this->index = new Sitemap_Index();
 		$this->index->hooks();
 		new Redirect_Core_Sitemaps();
+		new Html_Sitemap();
 
 		add_action( 'rank_math/sitemap/hit_index', [ __CLASS__, 'hit_index' ] );
-		add_action( 'rank_math/sitemap/ping_search_engines', [ __CLASS__, 'ping_google_bing' ] );
+		add_action( 'rank_math/sitemap/ping_search_engines', [ __CLASS__, 'ping_google' ] );
 
 		$this->filter( 'rank_math/admin/notice/new_post_type', 'new_post_type_notice', 10, 2 );
 
@@ -149,7 +151,7 @@ class Sitemap {
 	 *
 	 * @param string|null $url Optional sitemap URL. Falls back to sitemap index URL.
 	 */
-	public static function ping_google_bing( $url = null ) {
+	public static function ping_google( $url = null ) {
 		if ( ! self::can_ping() ) {
 			return;
 		}
@@ -159,11 +161,6 @@ class Sitemap {
 		}
 
 		wp_remote_get( 'http://www.google.com/webmasters/tools/ping?sitemap=' . $url, [ 'blocking' => false ] );
-
-		if ( Router::get_base_url( 'geo-sitemap.xml' ) !== $url ) {
-			wp_remote_get( 'http://www.google.com/ping?sitemap=' . $url, [ 'blocking' => false ] );
-			wp_remote_get( 'http://www.bing.com/ping?sitemap=' . $url, [ 'blocking' => false ] );
-		}
 	}
 
 	/**

@@ -986,16 +986,20 @@ jQuery(function($){
             helper: "clone",
             items: "> li"
         };
-        if ( r.length > 0 ) {
-            $.each(r, function(i, v) {
-                html += '<li class="ui-state-default" cf_name="'+v.meta_key+'">'+v.meta_key+'<a class="deleteIcon"></a></li>';
-            });
-            $drg.html(html);
-            $("#sortable" + id + " li").draggable(drag_opts).disableSelection();
-            $("#sortable" + id + " li").trigger('sortupdate');
-            $("#sortable_conn" + id).trigger('sortupdate');
+        if ( typeof r == 'object' ) {
+            if ( r.length > 0 ) {
+                $.each(r, function(i, v) {
+                    html += '<li class="ui-state-default" cf_name="'+v.meta_key+'">'+v.meta_key+'<a class="deleteIcon"></a></li>';
+                });
+                $drg.html(html);
+                $("#sortable" + id + " li").draggable(drag_opts).disableSelection();
+                $("#sortable" + id + " li").trigger('sortupdate');
+                $("#sortable_conn" + id).trigger('sortupdate');
+            } else {
+                $drg.html('No results for this phrase.');
+            }
         } else {
-            $drg.html('No results for this phrase.');
+            $drg.html(r);
         }
     }
     $('div.wpdreamsCustomFields').each(function(){
@@ -1284,13 +1288,19 @@ jQuery(function($){
                     'action': 'wd_search_cf',
                     'wd_phrase': $this.val(),
                     'wd_required': 1,
-                    'wd_args': $("input.wd_args", parent).val()
+                    'wd_args': $("input.wd_args", parent).val(),
+                    'asl_cf_search_nonce': $("input[name=asl_cf_search_nonce]", parent).val()
                 };
                 $.post(ajaxurl, data, function (response) {
                     var o = JSON.parse(Base64.decode($("input.wd_args", parent).val()));
                     var reg = new RegExp(o.delimiter +'(.*[\s\S]*)'+ o.delimiter);
                     var data_r = response.match(reg);
-                    data_r = JSON.parse(data_r[1]);
+                    try {
+                        data_r = JSON.parse(data_r[1]);
+                    } catch (e) {
+                        data_r = data_r[1];
+                    }
+
                     if ( typeof o.callback != 'undefined' && o.callback != '' ) {
                         if ( typeof window[o.callback] != 'undefined' )
                             window[o.callback].apply(null, [data_r, $this, o, parent, id]);
@@ -1303,17 +1313,18 @@ jQuery(function($){
                             $('.wd_cf_search_res', parent).html('<ul>' + html + '</ul>');
                         else
                             $('.wd_cf_search_res', parent).html('<p>No results :(</p>');
-                        $('.wd_cf_search_res', parent).css({
-                            left: $this.position().left,
-                            top: $this.position().top + $this.outerHeight(true) + 10,
-                            display: 'block',
-                            minWidth: $this.width()
-                        });
-                        $('.wd_cf_search_res li', parent).on('click', function(e){
-                            $this.val($(this).attr('key'));
-                            $('.wd_cf_search_res', parent).css({display: 'none'});
-                        });
                     }
+
+                    $('.wd_cf_search_res', parent).css({
+                        left: $this.position().left,
+                        top: $this.position().top + $this.outerHeight(true) + 10,
+                        display: 'block',
+                        minWidth: $this.width()
+                    });
+                    $('.wd_cf_search_res li', parent).on('click', function(e){
+                        $this.val($(this).attr('key'));
+                        $('.wd_cf_search_res', parent).css({display: 'none'});
+                    });
                     $('.loading-small', parent).addClass("hiddend");
                     $('.wd_ts_close', parent).removeClass("hiddend");
                 }, "text");

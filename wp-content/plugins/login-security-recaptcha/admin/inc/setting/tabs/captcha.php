@@ -4,92 +4,85 @@ require_once STLSR_PLUGIN_DIR_PATH . 'includes/class-stlsr-helper.php';
 
 $captcha_list = STLSR_Helper::captcha_list();
 
-$steps_url = STLSR_Helper::get_steps_url();
+$steps_url_grecaptcha   = STLSR_Helper::steps_url_grecaptcha();
+$steps_url_cf_turnstile = STLSR_Helper::steps_url_cf_turnstile();
 
-$google_recaptcha_v2_themes = STLSR_Helper::google_recaptcha_v2_themes();
+$grecaptcha_v2_themes = STLSR_Helper::grecaptcha_v2_themes();
+$grecaptcha_v3_scores = STLSR_Helper::grecaptcha_v3_scores();
+$grecaptcha_v3_badges = STLSR_Helper::grecaptcha_v3_badges();
+$cf_turnstile_themes  = STLSR_Helper::cf_turnstile_themes();
+$cf_turnstile_sizes   = STLSR_Helper::cf_turnstile_sizes();
 
-$google_recaptcha_v3_scores = STLSR_Helper::google_recaptcha_v3_scores();
+$grecaptcha_v2 = STLSR_Helper::grecaptcha_v2();
+$grecaptcha_v3 = STLSR_Helper::grecaptcha_v3();
+$cf_turnstile  = STLSR_Helper::cf_turnstile();
 
-$google_recaptcha_v3_badges = STLSR_Helper::google_recaptcha_v3_badges();
+$capt_login        = STLSR_Helper::capt_login();
+$capt_lostpassword = STLSR_Helper::capt_lostpassword();
+$capt_register     = STLSR_Helper::capt_register();
+$capt_comment      = STLSR_Helper::capt_comment();
 
-$google_recaptcha_v2 = get_option( 'stlsr_google_recaptcha_v2' );
+$grecaptcha_v2_enable = false;
+$grecaptcha_v3_enable = false;
+$cf_turnstile_enable  = false;
 
-$google_recaptcha_v2      = get_option( 'stlsr_google_recaptcha_v2' );
-$grecaptcha_v2_site_key   = isset( $google_recaptcha_v2['site_key'] ) ? esc_attr( $google_recaptcha_v2['site_key'] ) : '';
-$grecaptcha_v2_secret_key = isset( $google_recaptcha_v2['secret_key'] ) ? esc_attr( $google_recaptcha_v2['secret_key'] ) : '';
-$grecaptcha_v2_theme      = isset( $google_recaptcha_v2['theme'] ) ? esc_attr( $google_recaptcha_v2['theme'] ) : 'light';
-
-$google_recaptcha_v3      = get_option( 'stlsr_google_recaptcha_v3' );
-$grecaptcha_v3_site_key   = isset( $google_recaptcha_v3['site_key'] ) ? esc_attr( $google_recaptcha_v3['site_key'] ) : '';
-$grecaptcha_v3_secret_key = isset( $google_recaptcha_v3['secret_key'] ) ? esc_attr( $google_recaptcha_v3['secret_key'] ) : '';
-$grecaptcha_v3_score      = isset( $google_recaptcha_v3['score'] ) ? esc_attr( $google_recaptcha_v3['score'] ) : '0.3';
-$grecaptcha_v3_badge      = isset( $google_recaptcha_v3['badge'] ) ? esc_attr( $google_recaptcha_v3['badge'] ) : 'bottomright';
-
-$login_captcha        = get_option( 'stlsr_login_captcha' );
-$login_captcha_enable = isset( $login_captcha['enable'] ) ? (bool) $login_captcha['enable'] : false;
-$login_captcha        = isset( $login_captcha['captcha'] ) ? esc_attr( $login_captcha['captcha'] ) : '';
-
-$lostpassword_captcha        = get_option( 'stlsr_lostpassword_captcha' );
-$lostpassword_captcha_enable = isset( $lostpassword_captcha['enable'] ) ? (bool) $lostpassword_captcha['enable'] : false;
-$lostpassword_captcha        = isset( $lostpassword_captcha['captcha'] ) ? esc_attr( $lostpassword_captcha['captcha'] ) : '';
-
-$register_captcha        = get_option( 'stlsr_register_captcha' );
-$register_captcha_enable = isset( $register_captcha['enable'] ) ? (bool) $register_captcha['enable'] : false;
-$register_captcha        = isset( $register_captcha['captcha'] ) ? esc_attr( $register_captcha['captcha'] ) : '';
-
-$comment_captcha           = get_option( 'stlsr_comment_captcha' );
-$comment_captcha_logged_in = isset( $comment_captcha['logged_in'] ) ? (bool) $comment_captcha['logged_in'] : false;
-$comment_captcha_enable    = isset( $comment_captcha['enable'] ) ? (bool) $comment_captcha['enable'] : false;
-$comment_captcha           = isset( $comment_captcha['captcha'] ) ? esc_attr( $comment_captcha['captcha'] ) : '';
-
-$google_recaptcha_v2_enable = false;
-$google_recaptcha_v3_enable = false;
-
-if ( $login_captcha_enable ) {
-	if ( 'google_recaptcha_v2' === $login_captcha ) {
-		$google_recaptcha_v2_enable = true;
+if ( $capt_login['enable'] ) {
+	if ( 'google_recaptcha_v2' === $capt_login['captcha'] ) {
+		$grecaptcha_v2_enable = true;
 	}
-	if ( 'google_recaptcha_v3' === $login_captcha ) {
-		$google_recaptcha_v3_enable = true;
+	if ( 'google_recaptcha_v3' === $capt_login['captcha'] ) {
+		$grecaptcha_v3_enable = true;
+	}
+	if ( 'cf_turnstile' === $capt_login['captcha'] ) {
+		$cf_turnstile_enable = true;
 	}
 }
 
-if ( $lostpassword_captcha_enable ) {
-	if ( ! $google_recaptcha_v2_enable && ( 'google_recaptcha_v2' === $lostpassword_captcha ) ) {
-		$google_recaptcha_v2_enable = true;
+if ( $capt_lostpassword['enable'] ) {
+	if ( ! $grecaptcha_v2_enable && ( 'google_recaptcha_v2' === $capt_lostpassword['captcha'] ) ) {
+		$grecaptcha_v2_enable = true;
 	}
-	if ( ! $google_recaptcha_v3_enable && ( 'google_recaptcha_v3' === $lostpassword_captcha ) ) {
-		$google_recaptcha_v3_enable = true;
+	if ( ! $grecaptcha_v3_enable && ( 'google_recaptcha_v3' === $capt_lostpassword['captcha'] ) ) {
+		$grecaptcha_v3_enable = true;
 	}
-}
-
-if ( $register_captcha_enable ) {
-	if ( ! $google_recaptcha_v2_enable && ( 'google_recaptcha_v2' === $register_captcha ) ) {
-		$google_recaptcha_v2_enable = true;
-	}
-	if ( ! $google_recaptcha_v3_enable && ( 'google_recaptcha_v3' === $register_captcha ) ) {
-		$google_recaptcha_v3_enable = true;
+	if ( ! $cf_turnstile_enable && ( 'cf_turnstile' === $capt_lostpassword['captcha'] ) ) {
+		$cf_turnstile_enable = true;
 	}
 }
 
-if ( $comment_captcha_enable ) {
-	if ( ! $google_recaptcha_v2_enable && ( 'google_recaptcha_v2' === $comment_captcha ) ) {
-		$google_recaptcha_v2_enable = true;
+if ( $capt_register['enable'] ) {
+	if ( ! $grecaptcha_v2_enable && ( 'google_recaptcha_v2' === $capt_register['captcha'] ) ) {
+		$grecaptcha_v2_enable = true;
 	}
-	if ( ! $google_recaptcha_v3_enable && ( 'google_recaptcha_v3' === $comment_captcha ) ) {
-		$google_recaptcha_v3_enable = true;
+	if ( ! $grecaptcha_v3_enable && ( 'google_recaptcha_v3' === $capt_register['captcha'] ) ) {
+		$grecaptcha_v3_enable = true;
+	}
+	if ( ! $cf_turnstile_enable && ( 'cf_turnstile' === $capt_register['captcha'] ) ) {
+		$cf_turnstile_enable = true;
 	}
 }
 
-if ( $google_recaptcha_v2_enable ) {
-	if ( empty( $grecaptcha_v2_site_key ) ) {
+if ( $capt_comment['enable'] ) {
+	if ( ! $grecaptcha_v2_enable && ( 'google_recaptcha_v2' === $capt_comment['captcha'] ) ) {
+		$grecaptcha_v2_enable = true;
+	}
+	if ( ! $grecaptcha_v3_enable && ( 'google_recaptcha_v3' === $capt_comment['captcha'] ) ) {
+		$grecaptcha_v3_enable = true;
+	}
+	if ( ! $cf_turnstile_enable && ( 'cf_turnstile' === $capt_comment['captcha'] ) ) {
+		$cf_turnstile_enable = true;
+	}
+}
+
+if ( $grecaptcha_v2_enable ) {
+	if ( empty( $grecaptcha_v2['site_key'] ) ) {
 		?>
 	<div class="st-alert-box notice notice-warning is-dismissible">
 		<p><?php esc_html_e( 'Please set the the "Site Key" for "Google reCAPTCHA Version 2".', 'login-security-recaptcha' ); ?></p>
 	</div>
 		<?php
 	}
-	if ( empty( $grecaptcha_v2_secret_key ) ) {
+	if ( empty( $grecaptcha_v2['secret_key'] ) ) {
 		?>
 	<div class="st-alert-box notice notice-warning is-dismissible">
 		<p><?php esc_html_e( 'Please set the the "Secret Key" for "Google reCAPTCHA Version 2".', 'login-security-recaptcha' ); ?></p>
@@ -98,15 +91,15 @@ if ( $google_recaptcha_v2_enable ) {
 	}
 }
 
-if ( $google_recaptcha_v3_enable ) {
-	if ( empty( $grecaptcha_v3_site_key ) ) {
+if ( $grecaptcha_v3_enable ) {
+	if ( empty( $grecaptcha_v3['site_key'] ) ) {
 		?>
 	<div class="st-alert-box notice notice-warning is-dismissible">
 		<p><?php esc_html_e( 'Please set the the "Site Key" for "Google reCAPTCHA Version 3".', 'login-security-recaptcha' ); ?></p>
 	</div>
 		<?php
 	}
-	if ( empty( $grecaptcha_v3_secret_key ) ) {
+	if ( empty( $grecaptcha_v3['secret_key'] ) ) {
 		?>
 	<div class="st-alert-box notice notice-warning is-dismissible">
 		<p><?php esc_html_e( 'Please set the the "Secret Key" for "Google reCAPTCHA Version 3".', 'login-security-recaptcha' ); ?></p>
@@ -114,272 +107,390 @@ if ( $google_recaptcha_v3_enable ) {
 		<?php
 	}
 }
+
+if ( $cf_turnstile_enable ) {
+	if ( empty( $cf_turnstile['site_key'] ) ) {
+		?>
+	<div class="st-alert-box notice notice-warning is-dismissible">
+		<p><?php esc_html_e( 'Please set the the "Site Key" for "Cloudflare Turnstile".', 'login-security-recaptcha' ); ?></p>
+	</div>
+		<?php
+	}
+	if ( empty( $cf_turnstile['secret_key'] ) ) {
+		?>
+	<div class="st-alert-box notice notice-warning is-dismissible">
+		<p><?php esc_html_e( 'Please set the the "Secret Key" for "Cloudflare Turnstile".', 'login-security-recaptcha' ); ?></p>
+	</div>
+		<?php
+	}
+}
 ?>
 
-<div class="stlsr-side-by-side">
-	<form action="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>" method="post" id="stlsr-save-captcha-form">
+<form action="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>" method="post" id="stlsr-save-captcha-form">
+	<div class="stlsr-side-by-side">
 
-		<?php $nonce = wp_create_nonce( 'save-captcha' ); ?>
-		<input type="hidden" name="save-captcha" value="<?php echo esc_attr( $nonce ); ?>">
+		<div class="stlsr-form">
 
-		<input type="hidden" name="action" value="stlsr-save-captcha">
+			<?php $nonce = wp_create_nonce( 'save-captcha' ); ?>
+			<input type="hidden" name="save-captcha" value="<?php echo esc_attr( $nonce ); ?>">
 
-		<table class="form-table">
-			<tbody>
+			<input type="hidden" name="action" value="stlsr-save-captcha">
 
-				<tr>
-					<th scope="row"><?php esc_html_e( 'Enable Captcha', 'login-security-recaptcha' ); ?></th>
-					<td>
-						<fieldset>
-							<legend class="screen-reader-text">
-								<span><?php esc_html_e( 'Enable Captcha at Login Form', 'login-security-recaptcha' ); ?></span>
-							</legend>
-							<label for="stlsr_login_captcha_enable">
-								<input <?php checked( $login_captcha_enable, true, true ); ?> name="login_captcha_enable" type="checkbox" id="stlsr_login_captcha_enable" value="1">
-								<?php esc_html_e( 'Enable at Login Form', 'login-security-recaptcha' ); ?>
-							</label>
-						</fieldset>
-						<div class="stlsr_login_captcha">
-							<select name="login_captcha">
-								<?php foreach ( $captcha_list as $key => $value ) { ?>
-								<option <?php selected( $login_captcha, $key, true ); ?> value="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $value ); ?></option>
-								<?php } ?>
-							</select>
-							<hr>
-						</div>
+			<table class="form-table">
+				<tbody>
 
-						<fieldset>
-							<legend class="screen-reader-text">
-								<span><?php esc_html_e( 'Enable Captcha at Lost Password Form', 'login-security-recaptcha' ); ?></span>
-							</legend>
-							<label for="stlsr_lostpassword_captcha_enable">
-								<input <?php checked( $lostpassword_captcha_enable, true, true ); ?> name="lostpassword_captcha_enable" type="checkbox" id="stlsr_lostpassword_captcha_enable" value="1">
-								<?php esc_html_e( 'Enable at Lost Password Form', 'login-security-recaptcha' ); ?>
-							</label>
-						</fieldset>
-						<div class="stlsr_lostpassword_captcha">
-							<select name="lostpassword_captcha">
-								<?php foreach ( $captcha_list as $key => $value ) { ?>
-								<option <?php selected( $lostpassword_captcha, $key, true ); ?> value="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $value ); ?></option>
-								<?php } ?>
-							</select>
-							<hr>
-						</div>
+					<tr>
+						<th scope="row"><?php esc_html_e( 'Enable Captcha', 'login-security-recaptcha' ); ?></th>
+						<td>
+							<fieldset>
+								<legend class="screen-reader-text">
+									<span><?php esc_html_e( 'Enable Captcha at Login Form', 'login-security-recaptcha' ); ?></span>
+								</legend>
+								<label for="stls_capt_login_enable">
+									<input <?php checked( $capt_login['enable'], true, true ); ?> name="capt_login_enable" type="checkbox" id="stls_capt_login_enable" value="1">
+									<?php esc_html_e( 'Enable at Login Form', 'login-security-recaptcha' ); ?>
+								</label>
+							</fieldset>
+							<div class="stls_capt_login">
+								<select name="capt_login" class="stls_sub_field">
+									<?php foreach ( $captcha_list as $key => $value ) { ?>
+									<option <?php selected( $capt_login['captcha'], $key, true ); ?> value="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $value ); ?></option>
+									<?php } ?>
+								</select>
+								<hr>
+							</div>
 
-						<fieldset>
-							<legend class="screen-reader-text">
-								<span><?php esc_html_e( 'Enable Captcha at Registration Form', 'login-security-recaptcha' ); ?></span>
-							</legend>
-							<label for="stlsr_register_captcha_enable">
-								<input <?php checked( $register_captcha_enable, true, true ); ?> name="register_captcha_enable" type="checkbox" id="stlsr_register_captcha_enable" value="1">
-								<?php esc_html_e( 'Enable at Registration Form', 'login-security-recaptcha' ); ?>
-							</label>
-						</fieldset>
-						<div class="stlsr_register_captcha">
-							<select name="register_captcha" class="stlsr_register_captcha">
-								<?php foreach ( $captcha_list as $key => $value ) { ?>
-								<option <?php selected( $register_captcha, $key, true ); ?> value="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $value ); ?></option>
-								<?php } ?>
-							</select>
-							<hr>
-						</div>
+							<fieldset>
+								<legend class="screen-reader-text">
+									<span><?php esc_html_e( 'Enable Captcha at Lost Password Form', 'login-security-recaptcha' ); ?></span>
+								</legend>
+								<label for="stls_capt_lostpassword_enable">
+									<input <?php checked( $capt_lostpassword['enable'], true, true ); ?> name="capt_lostpassword_enable" type="checkbox" id="stls_capt_lostpassword_enable" value="1">
+									<?php esc_html_e( 'Enable at Lost Password Form', 'login-security-recaptcha' ); ?>
+								</label>
+							</fieldset>
+							<div class="stls_capt_lostpassword">
+								<select name="capt_lostpassword" class="stls_sub_field">
+									<?php foreach ( $captcha_list as $key => $value ) { ?>
+									<option <?php selected( $capt_lostpassword['captcha'], $key, true ); ?> value="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $value ); ?></option>
+									<?php } ?>
+								</select>
+								<hr>
+							</div>
 
-						<fieldset>
-							<legend class="screen-reader-text">
-								<span><?php esc_html_e( 'Enable Captcha at Comment Form', 'login-security-recaptcha' ); ?></span>
-							</legend>
-							<label for="stlsr_comment_captcha_enable">
-								<input <?php checked( $comment_captcha_enable, true, true ); ?> name="comment_captcha_enable" type="checkbox" id="stlsr_comment_captcha_enable" value="1">
-								<?php esc_html_e( 'Enable at Comment Form', 'login-security-recaptcha' ); ?>
-							</label>
-						</fieldset>
-						<div class="stlsr_comment_captcha">
-							<p class="description"><?php esc_html_e( 'Only when user is not logged in.', 'login-security-recaptcha' ); ?></p>
-							<select name="comment_captcha">
-								<?php foreach ( $captcha_list as $key => $value ) { ?>
-								<option <?php selected( $comment_captcha, $key, true ); ?> value="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $value ); ?></option>
-								<?php } ?>
-							</select>
-							<hr>
-							<label for="stlsr_comment_captcha_logged_in">
-								<input <?php checked( $comment_captcha_logged_in, true, true ); ?> name="comment_captcha_logged_in" type="checkbox" id="stlsr_comment_captcha_logged_in" value="1">
-								<?php esc_html_e( 'Include logged in users.', 'login-security-recaptcha' ); ?>
-							</label>
-							<hr>
-						</div>
-					</td>
-				</tr>
+							<fieldset>
+								<legend class="screen-reader-text">
+									<span><?php esc_html_e( 'Enable Captcha at Registration Form', 'login-security-recaptcha' ); ?></span>
+								</legend>
+								<label for="stls_capt_register_enable">
+									<input <?php checked( $capt_register['enable'], true, true ); ?> name="capt_register_enable" type="checkbox" id="stls_capt_register_enable" value="1">
+									<?php esc_html_e( 'Enable at Registration Form', 'login-security-recaptcha' ); ?>
+								</label>
+							</fieldset>
+							<div class="stls_capt_register">
+								<select name="capt_register" class="stls_sub_field">
+									<?php foreach ( $captcha_list as $key => $value ) { ?>
+									<option <?php selected( $capt_register['captcha'], $key, true ); ?> value="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $value ); ?></option>
+									<?php } ?>
+								</select>
+								<hr>
+							</div>
 
-				<tr>
-					<th scope="row"><?php esc_html_e( 'Captcha Settings', 'login-security-recaptcha' ); ?></th>
-					<td>
-						<fieldset>
-							<legend class="screen-reader-text">
-								<span><?php esc_html_e( 'Set Captcha Settings', 'login-security-recaptcha' ); ?></span>
-							</legend>
-							<?php
-							foreach ( $captcha_list as $key => $value ) {
-								?>
-							<label>
-								<?php reset( $captcha_list ); ?>
-								<input <?php checked( ( key( $captcha_list ) === $key ), true, true ); ?> type="radio" name="captcha" value="<?php echo esc_attr( $key ); ?>">
-								<span><?php echo esc_html( $value ); ?></span>
-							</label>
+							<fieldset>
+								<legend class="screen-reader-text">
+									<span><?php esc_html_e( 'Enable Captcha at Comment Form', 'login-security-recaptcha' ); ?></span>
+								</legend>
+								<label for="stls_capt_comment_enable">
+									<input <?php checked( $capt_comment['enable'], true, true ); ?> name="capt_comment_enable" type="checkbox" id="stls_capt_comment_enable" value="1">
+									<?php esc_html_e( 'Enable at Comment Form', 'login-security-recaptcha' ); ?>
+								</label>
+							</fieldset>
+							<div class="stls_capt_comment">
+								<p class="description"><?php esc_html_e( 'Only when user is not logged in.', 'login-security-recaptcha' ); ?></p>
+								<select name="capt_comment" class="stls_sub_field stls_sub_field_mr">
+									<?php foreach ( $captcha_list as $key => $value ) { ?>
+									<option <?php selected( $capt_comment['captcha'], $key, true ); ?> value="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $value ); ?></option>
+									<?php } ?>
+								</select>
+								<label for="stls_capt_comment_logged_in" class="stls_sub_field">
+									<input <?php checked( $capt_comment['logged_in'], true, true ); ?> name="capt_comment_logged_in" type="checkbox" id="stls_capt_comment_logged_in" value="1">
+									<?php esc_html_e( 'Include logged in users.', 'login-security-recaptcha' ); ?>
+								</label>
+								<hr>
+							</div>
+						</td>
+					</tr>
+
+					<tr>
+						<th scope="row"><?php esc_html_e( 'Captcha Settings', 'login-security-recaptcha' ); ?></th>
+						<td>
+							<fieldset>
+								<legend class="screen-reader-text">
+									<span><?php esc_html_e( 'Set Captcha Settings', 'login-security-recaptcha' ); ?></span>
+								</legend>
 								<?php
-								end( $captcha_list );
-								if ( key( $captcha_list ) !== $key ) {
-									echo '<br>';
+								foreach ( $captcha_list as $key => $value ) {
+									?>
+								<span class="stls-mr">
+									<label>
+										<?php reset( $captcha_list ); ?>
+										<input <?php checked( ( key( $captcha_list ) === $key ), true, true ); ?> type="radio" name="captcha" value="<?php echo esc_attr( $key ); ?>">
+										<span><?php echo esc_html( $value ); ?></span>
+									</label>
+								</span>
+									<?php
 								}
-							}
-							?>
-						</fieldset>
-					</td>
-				</tr>
-
-				<tr class="stlsr_captcha stlsr_google_recaptcha_v2">
-					<th scope="row">
-						<label for="stlsr_google_recaptcha_v2_site_key"><?php esc_html_e( 'Site Key', 'login-security-recaptcha' ); ?></label>
-					</th>
-					<td>
-						<input name="google_recaptcha_v2_site_key" type="text" id="stlsr_google_recaptcha_v2_site_key" value="<?php echo esc_attr( $grecaptcha_v2_site_key ); ?>" class="regular-text">
-						<p class="description">
-							<?php esc_html_e( 'Enter Google reCAPTCHA v2 Site Key.', 'login-security-recaptcha' ); ?>&nbsp;
-							<a target="_blank" href="<?php echo esc_url( $steps_url ); ?>"><?php esc_html_e( 'Click Here', 'login-security-recaptcha' ); ?></a>
-						</p>
-					</td>
-				</tr>
-
-				<tr class="stlsr_captcha stlsr_google_recaptcha_v2">
-					<th scope="row">
-						<label for="stlsr_google_recaptcha_v2_secret_key"><?php esc_html_e( 'Secret Key', 'login-security-recaptcha' ); ?></label>
-					</th>
-					<td>
-						<input name="google_recaptcha_v2_secret_key" type="text" id="stlsr_google_recaptcha_v2_secret_key" value="<?php echo esc_attr( $grecaptcha_v2_secret_key ); ?>" class="regular-text">
-						<p class="description">
-							<?php esc_html_e( 'Enter Google reCAPTCHA v2 Secret Key.', 'login-security-recaptcha' ); ?>&nbsp;
-							<a target="_blank" href="<?php echo esc_url( $steps_url ); ?>"><?php esc_html_e( 'Click Here', 'login-security-recaptcha' ); ?></a>
-						</p>
-					</td>
-				</tr>
-
-				<tr class="stlsr_captcha stlsr_google_recaptcha_v2">
-					<th scope="row">
-						<label for="stlsr_google_recaptcha_v2_theme"><?php esc_html_e( 'Theme', 'login-security-recaptcha' ); ?></label>
-					</th>
-					<td>
-						<fieldset>
-							<legend class="screen-reader-text">
-								<span><?php esc_html_e( 'Select Google reCAPTCHA Version 2 Theme.', 'login-security-recaptcha' ); ?></span>
-							</legend>
-							<?php
-							foreach ( $google_recaptcha_v2_themes as $key => $value ) {
 								?>
-							<label>
-								<input <?php checked( $grecaptcha_v2_theme, $key, true ); ?> type="radio" name="google_recaptcha_v2_theme" value="<?php echo esc_attr( $key ); ?>">
-								<span><?php echo esc_html( $value ); ?></span>
-							</label>
+							</fieldset>
+						</td>
+					</tr>
+
+					<tr class="stls_capt stls_grecaptcha_v2">
+						<th scope="row">
+							<label for="stls_grecaptcha_v2_site_key"><?php esc_html_e( 'Site Key', 'login-security-recaptcha' ); ?></label>
+						</th>
+						<td>
+							<input name="grecaptcha_v2_site_key" type="text" id="stls_grecaptcha_v2_site_key" value="<?php echo esc_attr( $grecaptcha_v2['site_key'] ); ?>" class="regular-text">
+							<p class="description">
+								<?php esc_html_e( 'Enter Google reCAPTCHA v2 Site Key.', 'login-security-recaptcha' ); ?>&nbsp;
+								<a target="_blank" href="<?php echo esc_url( $steps_url_grecaptcha ); ?>"><?php esc_html_e( 'Click Here', 'login-security-recaptcha' ); ?></a>
+							</p>
+						</td>
+					</tr>
+
+					<tr class="stls_capt stls_grecaptcha_v2">
+						<th scope="row">
+							<label for="stls_grecaptcha_v2_secret_key"><?php esc_html_e( 'Secret Key', 'login-security-recaptcha' ); ?></label>
+						</th>
+						<td>
+							<input name="grecaptcha_v2_secret_key" type="text" id="stls_grecaptcha_v2_secret_key" value="<?php echo esc_attr( $grecaptcha_v2['secret_key'] ); ?>" class="regular-text">
+							<p class="description">
+								<?php esc_html_e( 'Enter Google reCAPTCHA v2 Secret Key.', 'login-security-recaptcha' ); ?>&nbsp;
+								<a target="_blank" href="<?php echo esc_url( $steps_url_grecaptcha ); ?>"><?php esc_html_e( 'Click Here', 'login-security-recaptcha' ); ?></a>
+							</p>
+						</td>
+					</tr>
+
+					<tr class="stls_capt stls_grecaptcha_v2">
+						<th scope="row">
+							<label for="stls_grecaptcha_v2_theme"><?php esc_html_e( 'Theme', 'login-security-recaptcha' ); ?></label>
+						</th>
+						<td>
+							<fieldset>
+								<legend class="screen-reader-text">
+									<span><?php esc_html_e( 'Select Google reCAPTCHA Version 2 Theme.', 'login-security-recaptcha' ); ?></span>
+								</legend>
 								<?php
-								end( $google_recaptcha_v2_themes );
-								if ( key( $google_recaptcha_v2_themes ) !== $key ) {
-									echo '<br>';
+								foreach ( $grecaptcha_v2_themes as $key => $value ) {
+									?>
+								<label>
+									<input <?php checked( $grecaptcha_v2['theme'], $key, true ); ?> type="radio" name="grecaptcha_v2_theme" value="<?php echo esc_attr( $key ); ?>">
+									<span><?php echo esc_html( $value ); ?></span>
+								</label>
+									<?php
+									end( $grecaptcha_v2_themes );
+									if ( key( $grecaptcha_v2_themes ) !== $key ) {
+										echo '<br>';
+									}
 								}
-							}
-							?>
-						</fieldset>
-						<p class="description"><?php esc_html_e( 'Select Google reCAPTCHA Version 2 Theme.', 'login-security-recaptcha' ); ?></p>
-					</td>
-				</tr>
-
-				<tr class="stlsr_captcha stlsr_google_recaptcha_v3">
-					<th scope="row">
-						<label for="stlsr_google_recaptcha_v3_site_key"><?php esc_html_e( 'Site Key', 'login-security-recaptcha' ); ?></label>
-					</th>
-					<td>
-						<input name="google_recaptcha_v3_site_key" type="text" id="stlsr_google_recaptcha_v3_site_key" value="<?php echo esc_attr( $grecaptcha_v3_site_key ); ?>" class="regular-text">
-						<p class="description">
-							<?php esc_html_e( 'Enter Google reCAPTCHA v3 Site Key.', 'login-security-recaptcha' ); ?>&nbsp;
-							<a target="_blank" href="<?php echo esc_url( $steps_url ); ?>"><?php esc_html_e( 'Click Here', 'login-security-recaptcha' ); ?></a>
-						</p>
-					</td>
-				</tr>
-
-				<tr class="stlsr_captcha stlsr_google_recaptcha_v3">
-					<th scope="row">
-						<label for="stlsr_google_recaptcha_v3_secret_key"><?php esc_html_e( 'Secret Key', 'login-security-recaptcha' ); ?></label>
-					</th>
-					<td>
-						<input name="google_recaptcha_v3_secret_key" type="text" id="stlsr_google_recaptcha_v3_secret_key" value="<?php echo esc_attr( $grecaptcha_v3_secret_key ); ?>" class="regular-text">
-						<p class="description">
-							<?php esc_html_e( 'Enter Google reCAPTCHA v3 Secret Key.', 'login-security-recaptcha' ); ?>&nbsp;
-							<a target="_blank" href="<?php echo esc_url( $steps_url ); ?>"><?php esc_html_e( 'Click Here', 'login-security-recaptcha' ); ?></a>
-						</p>
-					</td>
-				</tr>
-
-				<tr class="stlsr_captcha stlsr_google_recaptcha_v3">
-					<th scope="row">
-						<label for="stlsr_google_recaptcha_v3_score"><?php esc_html_e( 'Score', 'login-security-recaptcha' ); ?></label>
-					</th>
-					<td>
-						<fieldset>
-							<legend class="screen-reader-text">
-								<span><?php esc_html_e( 'Select Google reCAPTCHA Version 3 Score.', 'login-security-recaptcha' ); ?></span>
-							</legend>
-							<?php
-							foreach ( $google_recaptcha_v3_scores as $key => $value ) {
 								?>
-							<label>
-								<input <?php checked( $grecaptcha_v3_score, $key, true ); ?> type="radio" name="google_recaptcha_v3_score" value="<?php echo esc_attr( $key ); ?>">
-								<span><?php echo esc_html( $value ); ?></span>
-							</label>
-								<?php
-								end( $google_recaptcha_v3_scores );
-								if ( key( $google_recaptcha_v3_scores ) !== $key ) {
-									echo '&nbsp;&nbsp;';
-								}
-							}
-							?>
-						</fieldset>
-						<p class="description"><?php esc_html_e( 'reCAPTCHA v3 returns a score (0.0 is very likely a bot). Select Google reCAPTCHA Version 3 Score.', 'login-security-recaptcha' ); ?></p>
-					</td>
-				</tr>
+							</fieldset>
+							<p class="description"><?php esc_html_e( 'Select Google reCAPTCHA Version 2 Theme.', 'login-security-recaptcha' ); ?></p>
+						</td>
+					</tr>
 
-				<tr class="stlsr_captcha stlsr_google_recaptcha_v3">
-					<th scope="row">
-						<label for="stlsr_google_recaptcha_v3_badge"><?php esc_html_e( 'Badge Position', 'login-security-recaptcha' ); ?></label>
-					</th>
-					<td>
-						<fieldset>
-							<legend class="screen-reader-text">
-								<span><?php esc_html_e( 'Select Badge Position for reCAPTCHA Version 3.', 'login-security-recaptcha' ); ?></span>
-							</legend>
-							<?php
-							foreach ( $google_recaptcha_v3_badges as $key => $value ) {
+					<tr class="stls_capt stls_cf_turnstile">
+						<th scope="row">
+							<label for="stls_cf_turnstile_site_key"><?php esc_html_e( 'Site Key', 'login-security-recaptcha' ); ?></label>
+						</th>
+						<td>
+							<input name="cf_turnstile_site_key" type="text" id="stls_cf_turnstile_site_key" value="<?php echo esc_attr( $cf_turnstile['site_key'] ); ?>" class="regular-text">
+							<p class="description">
+								<?php esc_html_e( 'Enter Cloudflare Turnstile Site Key.', 'login-security-recaptcha' ); ?>&nbsp;
+								<a target="_blank" href="<?php echo esc_url( $steps_url_cf_turnstile ); ?>"><?php esc_html_e( 'Click Here', 'login-security-recaptcha' ); ?></a>
+							</p>
+						</td>
+					</tr>
+
+					<tr class="stls_capt stls_cf_turnstile">
+						<th scope="row">
+							<label for="stls_cf_turnstile_secret_key"><?php esc_html_e( 'Secret Key', 'login-security-recaptcha' ); ?></label>
+						</th>
+						<td>
+							<input name="cf_turnstile_secret_key" type="text" id="stls_cf_turnstile_secret_key" value="<?php echo esc_attr( $cf_turnstile['secret_key'] ); ?>" class="regular-text">
+							<p class="description">
+								<?php esc_html_e( 'Enter Cloudflare Turnstile Secret Key.', 'login-security-recaptcha' ); ?>&nbsp;
+								<a target="_blank" href="<?php echo esc_url( $steps_url_cf_turnstile ); ?>"><?php esc_html_e( 'Click Here', 'login-security-recaptcha' ); ?></a>
+							</p>
+						</td>
+					</tr>
+
+					<tr class="stls_capt stls_cf_turnstile">
+						<th scope="row">
+							<label for="stls_cf_turnstile_theme"><?php esc_html_e( 'Theme', 'login-security-recaptcha' ); ?></label>
+						</th>
+						<td>
+							<fieldset>
+								<legend class="screen-reader-text">
+									<span><?php esc_html_e( 'Select Cloudflare Turnstile Theme.', 'login-security-recaptcha' ); ?></span>
+								</legend>
+								<?php
+								foreach ( $cf_turnstile_themes as $key => $value ) {
+									?>
+								<label>
+									<input <?php checked( $cf_turnstile['theme'], $key, true ); ?> type="radio" name="cf_turnstile_theme" value="<?php echo esc_attr( $key ); ?>">
+									<span><?php echo esc_html( $value ); ?></span>
+								</label>
+									<?php
+									end( $cf_turnstile_themes );
+									if ( key( $cf_turnstile_themes ) !== $key ) {
+										echo '<br>';
+									}
+								}
 								?>
-							<label>
-								<input <?php checked( $grecaptcha_v3_badge, $key, true ); ?> type="radio" name="google_recaptcha_v3_badge" value="<?php echo esc_attr( $key ); ?>">
-								<span><?php echo esc_html( $value ); ?></span>
-							</label>
+							</fieldset>
+							<p class="description"><?php esc_html_e( 'Select Cloudflare Turnstile Theme.', 'login-security-recaptcha' ); ?></p>
+						</td>
+					</tr>
+
+					<tr class="stls_capt stls_cf_turnstile">
+						<th scope="row">
+							<label for="stls_cf_turnstile_size"><?php esc_html_e( 'Size', 'login-security-recaptcha' ); ?></label>
+						</th>
+						<td>
+							<fieldset>
+								<legend class="screen-reader-text">
+									<span><?php esc_html_e( 'Select Cloudflare Turnstile Size.', 'login-security-recaptcha' ); ?></span>
+								</legend>
 								<?php
-								end( $google_recaptcha_v3_badges );
-								if ( key( $google_recaptcha_v3_badges ) !== $key ) {
-									echo '&nbsp;&nbsp;';
+								foreach ( $cf_turnstile_sizes as $key => $value ) {
+									?>
+								<label>
+									<input <?php checked( $cf_turnstile['size'], $key, true ); ?> type="radio" name="cf_turnstile_size" value="<?php echo esc_attr( $key ); ?>">
+									<span><?php echo esc_html( $value ); ?></span>
+								</label>
+									<?php
+									end( $cf_turnstile_sizes );
+									if ( key( $cf_turnstile_sizes ) !== $key ) {
+										echo '<br>';
+									}
 								}
-							}
-							?>
-						</fieldset>
-					</td>
-				</tr>
+								?>
+							</fieldset>
+							<p class="description"><?php esc_html_e( 'Select Cloudflare Turnstile Size.', 'login-security-recaptcha' ); ?></p>
+						</td>
+					</tr>
 
-			</tbody>
-		</table>
+					<tr class="stls_capt stls_cf_turnstile">
+						<th scope="row">
+							<label for="stls_cf_turnstile_disable_btn"><?php esc_html_e( 'Disable Submit Button', 'login-security-recaptcha' ); ?></label>
+						</th>
+						<td>
+							<fieldset>
+								<legend class="screen-reader-text">
+									<span><?php esc_html_e( 'Disable Submit Button', 'login-security-recaptcha' ); ?></span>
+								</legend>
+								<label for="stls_cf_turnstile_disable_btn">
+									<input <?php checked( $cf_turnstile['disable_btn'], true, true ); ?> name="cf_turnstile_disable_btn" type="checkbox" id="stls_cf_turnstile_disable_btn" value="1">
+									<?php esc_html_e( 'Disable Submit Button', 'login-security-recaptcha' ); ?>
+								</label>
+							</fieldset>
+							<p class="description"><?php esc_html_e( 'The user will not be able to click on the submit button until the Turnstile challenge is completed.', 'login-security-recaptcha' ); ?></p>
+						</td>
+					</tr>
 
-		<button type="submit" class="button button-primary" id="stlsr-save-captcha-btn"><?php esc_html_e( 'Save Changes', 'login-security-recaptcha' ); ?></button>
+					<tr class="stls_capt stls_grecaptcha_v3">
+						<th scope="row">
+							<label for="stls_grecaptcha_v3_site_key"><?php esc_html_e( 'Site Key', 'login-security-recaptcha' ); ?></label>
+						</th>
+						<td>
+							<input name="grecaptcha_v3_site_key" type="text" id="stls_grecaptcha_v3_site_key" value="<?php echo esc_attr( $grecaptcha_v3['site_key'] ); ?>" class="regular-text">
+							<p class="description">
+								<?php esc_html_e( 'Enter Google reCAPTCHA v3 Site Key.', 'login-security-recaptcha' ); ?>&nbsp;
+								<a target="_blank" href="<?php echo esc_url( $steps_url_grecaptcha ); ?>"><?php esc_html_e( 'Click Here', 'login-security-recaptcha' ); ?></a>
+							</p>
+						</td>
+					</tr>
 
-	</form>
+					<tr class="stls_capt stls_grecaptcha_v3">
+						<th scope="row">
+							<label for="stls_grecaptcha_v3_secret_key"><?php esc_html_e( 'Secret Key', 'login-security-recaptcha' ); ?></label>
+						</th>
+						<td>
+							<input name="grecaptcha_v3_secret_key" type="text" id="stls_grecaptcha_v3_secret_key" value="<?php echo esc_attr( $grecaptcha_v3['secret_key'] ); ?>" class="regular-text">
+							<p class="description">
+								<?php esc_html_e( 'Enter Google reCAPTCHA v3 Secret Key.', 'login-security-recaptcha' ); ?>&nbsp;
+								<a target="_blank" href="<?php echo esc_url( $steps_url_grecaptcha ); ?>"><?php esc_html_e( 'Click Here', 'login-security-recaptcha' ); ?></a>
+							</p>
+						</td>
+					</tr>
 
-	<?php require_once STLSR_PLUGIN_DIR_PATH . 'admin/inc/partials/pro.php'; ?>
-</div>
+					<tr class="stls_capt stls_grecaptcha_v3">
+						<th scope="row">
+							<label for="stls_grecaptcha_v3_score"><?php esc_html_e( 'Score', 'login-security-recaptcha' ); ?></label>
+						</th>
+						<td>
+							<fieldset>
+								<legend class="screen-reader-text">
+									<span><?php esc_html_e( 'Select Google reCAPTCHA Version 3 Score.', 'login-security-recaptcha' ); ?></span>
+								</legend>
+								<?php
+								foreach ( $grecaptcha_v3_scores as $key => $value ) {
+									?>
+								<label>
+									<input <?php checked( $grecaptcha_v3['score'], $key, true ); ?> type="radio" name="grecaptcha_v3_score" value="<?php echo esc_attr( $key ); ?>">
+									<span><?php echo esc_html( $value ); ?></span>
+								</label>
+									<?php
+									end( $grecaptcha_v3_scores );
+									if ( key( $grecaptcha_v3_scores ) !== $key ) {
+										echo '&nbsp;&nbsp;';
+									}
+								}
+								?>
+							</fieldset>
+							<p class="description"><?php esc_html_e( 'reCAPTCHA v3 returns a score (0.0 is very likely a bot). Select Google reCAPTCHA Version 3 Score.', 'login-security-recaptcha' ); ?></p>
+						</td>
+					</tr>
+
+					<tr class="stls_capt stls_grecaptcha_v3">
+						<th scope="row">
+							<label for="stls_grecaptcha_v3_badge"><?php esc_html_e( 'Badge Position', 'login-security-recaptcha' ); ?></label>
+						</th>
+						<td>
+							<fieldset>
+								<legend class="screen-reader-text">
+									<span><?php esc_html_e( 'Select Badge Position for reCAPTCHA Version 3.', 'login-security-recaptcha' ); ?></span>
+								</legend>
+								<?php
+								foreach ( $grecaptcha_v3_badges as $key => $value ) {
+									?>
+								<label>
+									<input <?php checked( $grecaptcha_v3['badge'], $key, true ); ?> type="radio" name="grecaptcha_v3_badge" value="<?php echo esc_attr( $key ); ?>">
+									<span><?php echo esc_html( $value ); ?></span>
+								</label>
+									<?php
+									end( $grecaptcha_v3_badges );
+									if ( key( $grecaptcha_v3_badges ) !== $key ) {
+										echo '&nbsp;&nbsp;';
+									}
+								}
+								?>
+							</fieldset>
+						</td>
+					</tr>
+
+				</tbody>
+			</table>
+
+			<button type="submit" class="button button-primary" id="stlsr-save-captcha-btn"><?php esc_html_e( 'Save Changes', 'login-security-recaptcha' ); ?></button>
+
+		</div>
+
+		<?php require_once STLSR_PLUGIN_DIR_PATH . 'admin/inc/partials/pro.php'; ?>
+
+	</div>
+</form>
 
 <div class="stlsr-review">
 	<div class="stlsr-review-us">

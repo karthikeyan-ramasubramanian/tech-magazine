@@ -2,70 +2,75 @@
 	'use strict';
 	$(document).ready(function() {
 
-		var googleRecaptchaV2 = $('.stlsr_google_recaptcha_v2');
-		var googleRecaptchaV3 = $('.stlsr_google_recaptcha_v3');
+		var grecaptchaV2 = $('.stls_grecaptcha_v2');
+		var grecaptchaV3 = $('.stls_grecaptcha_v3');
+		var cfturnstile = $('.stls_cf_turnstile');
 		var captcha = $('.stlsr input[name="captcha"]:checked').val();
 		if('google_recaptcha_v2' === captcha) {
-			googleRecaptchaV2.show();
+			grecaptchaV2.show();
 		} else if('google_recaptcha_v3' === captcha) {
-			googleRecaptchaV3.show();
+			grecaptchaV3.show();
+		} else if('cf_turnstile' === captcha) {
+			cfturnstile.show();
 		}
 
 		$(document).on('change', '.stlsr input[name="captcha"]', function() {
 			var captcha = this.value;
-			var stlsrCaptcha = $('.stlsr_captcha');
-			stlsrCaptcha.hide();
+			var stlsCapt = $('.stls_capt');
+			stlsCapt.hide();
 			if('google_recaptcha_v2' === captcha) {
-				googleRecaptchaV2.fadeIn();
+				grecaptchaV2.fadeIn();
 			} else if('google_recaptcha_v3' === captcha) {
-				googleRecaptchaV3.fadeIn();
+				grecaptchaV3.fadeIn();
+			} else if('cf_turnstile' === captcha) {
+				cfturnstile.fadeIn();
 			}
 		});
 
-		var loginRecaptcha = $('.stlsr_login_captcha');
-		var lostPasswordRecaptcha = $('.stlsr_lostpassword_captcha');
-		var registerRecaptcha = $('.stlsr_register_captcha');
-		var commentRecaptcha = $('.stlsr_comment_captcha');
+		var loginCapt = $('.stls_capt_login');
+		var lostPasswordCapt = $('.stls_capt_lostpassword');
+		var registerCapt = $('.stls_capt_register');
+		var commentCapt = $('.stls_capt_comment');
 
-		if($('#stlsr_login_captcha_enable').is(':checked')) {
-			loginRecaptcha.show();
+		if($('#stls_capt_login_enable').is(':checked')) {
+			loginCapt.show();
 		}
-		if($('#stlsr_lostpassword_captcha_enable').is(':checked')) {
-			lostPasswordRecaptcha.show();
+		if($('#stls_capt_lostpassword_enable').is(':checked')) {
+			lostPasswordCapt.show();
 		}
-		if($('#stlsr_register_captcha_enable').is(':checked')) {
-			registerRecaptcha.show();
+		if($('#stls_capt_register_enable').is(':checked')) {
+			registerCapt.show();
 		}
-		if($('#stlsr_comment_captcha_enable').is(':checked')) {
-			commentRecaptcha.show();
+		if($('#stls_capt_comment_enable').is(':checked')) {
+			commentCapt.show();
 		}
 
-		$(document).on('change', '#stlsr_login_captcha_enable', function() {
+		$(document).on('change', '#stls_capt_login_enable', function() {
 			if($(this).is(':checked')) {
-				loginRecaptcha.fadeIn();
+				loginCapt.fadeIn();
 			} else {
-				loginRecaptcha.hide();
+				loginCapt.hide();
 			}
 		});
-		$(document).on('change', '#stlsr_lostpassword_captcha_enable', function() {
+		$(document).on('change', '#stls_capt_lostpassword_enable', function() {
 			if($(this).is(':checked')) {
-				lostPasswordRecaptcha.fadeIn();
+				lostPasswordCapt.fadeIn();
 			} else {
-				lostPasswordRecaptcha.hide();
+				lostPasswordCapt.hide();
 			}
 		});
-		$(document).on('change', '#stlsr_register_captcha_enable', function() {
+		$(document).on('change', '#stls_capt_register_enable', function() {
 			if($(this).is(':checked')) {
-				registerRecaptcha.fadeIn();
+				registerCapt.fadeIn();
 			} else {
-				registerRecaptcha.hide();
+				registerCapt.hide();
 			}
 		});
-		$(document).on('change', '#stlsr_comment_captcha_enable', function() {
+		$(document).on('change', '#stls_capt_comment_enable', function() {
 			if($(this).is(':checked')) {
-				commentRecaptcha.fadeIn();
+				commentCapt.fadeIn();
 			} else {
-				commentRecaptcha.hide();
+				commentCapt.hide();
 			}
 		});
 

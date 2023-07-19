@@ -18,18 +18,9 @@ function authorship_filter_guest_posts( $wp_query )
     (
         array
         (
-            'relation' => 'AND',
-            array
-            (
-                'key'     => '_molongui_author',
-                'compare' => 'EXISTS',
-            ),
-            array
-            (
-                'key'     => '_molongui_author',
-                'value'   => 'guest-'.$qv['guest'],
-                'compare' => '==',
-            ),
+            'key'     => '_molongui_author',
+            'value'   => 'guest-'.$qv['guest'],
+            'compare' => '==',
         ),
     );
     $wp_query->set( 'meta_query', $meta_query );

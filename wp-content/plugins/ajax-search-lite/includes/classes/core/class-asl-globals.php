@@ -54,13 +54,6 @@ class WD_ASL_Globals {
 	 */
 	public $scripts;
 
-	/**
-	 * Instance of the legacy scripts manager
-	 *
-	 * @var WD_ASL_Scripts_Legacy
-	 */
-	public $scripts_legacy;
-
     /**
      * Instance of the manager
      *

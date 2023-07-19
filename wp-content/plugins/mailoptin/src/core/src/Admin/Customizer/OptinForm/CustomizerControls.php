@@ -1002,7 +1002,7 @@ class CustomizerControls
                             'label'       => __('Remove MailOptin Branding', 'mailoptin'),
                             'description' => sprintf(
                                 __('%sSet your affiliate link%s and make money with branding.', 'mailoptin'),
-                                '<a href="' . MAILOPTIN_SETTINGS_SETTINGS_PAGE . '#mailoptin_affiliate_url_row" target="_blank">',
+                                '<a href="' . MAILOPTIN_SETTINGS_SETTINGS_GENERAL_PAGE . '#general_settings?mailoptin_affiliate_url_row" target="_blank">',
                                 '</a>'
                             ),
                             'section'     => $this->customizerClassInstance->configuration_section_id,
@@ -1464,9 +1464,6 @@ class CustomizerControls
     /**
      * Page filter display rule.
      *
-     * @param \WP_Customize_Manager $wp_customize
-     * @param string $option_prefix
-     * @param Customizer $customizerClassInstance
      */
     public function query_filter_display_rule_controls()
     {

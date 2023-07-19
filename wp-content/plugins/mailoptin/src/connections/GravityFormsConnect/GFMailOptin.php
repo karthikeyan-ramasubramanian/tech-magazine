@@ -358,7 +358,7 @@ class GFMailOptin extends \GFFeedAddOn
 
             $tags     = [];
             $instance = ConnectionFactory::make($saved_integration);
-            if (method_exists($instance, 'get_tags')) {
+            if (is_object($instance) && method_exists($instance, 'get_tags')) {
                 $tags = $instance->get_tags();
             }
 
@@ -568,7 +568,7 @@ class GFMailOptin extends \GFFeedAddOn
         $optin_data->payload             = $payload;
         $optin_data->name                = Init::return_name($name, $first_name, $last_name);
         $optin_data->email               = $email;
-        $optin_data->optin_campaign_type = esc_html__('Gravity Forms', 'mailoptin');
+        $optin_data->optin_campaign_type = 'Gravity Forms';
 
         $optin_data->connection_service    = $connection_service;
         $optin_data->connection_email_list = rgars($feed, 'meta/mailoptinSelectList');

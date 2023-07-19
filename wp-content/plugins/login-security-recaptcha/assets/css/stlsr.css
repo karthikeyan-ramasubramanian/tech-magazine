@@ -1,8 +1,11 @@
-.g-recaptcha {
+.stls-grecaptcha2,
+.stls-cfturnstile-normal {
 	display: inline-block;
-	-webkit-transform: scale(.9);
-	        transform: scale(.9);
-	-webkit-transform-origin: 0 0;
-	        transform-origin: 0 0;
-	margin-bottom: .3rem;
+	transform: scale(.9);
+	transform-origin: 0 0;
+	margin-bottom: .5rem;
+}
+
+.stls-cfturnstile-compact {
+	margin-bottom: .8rem;
 }

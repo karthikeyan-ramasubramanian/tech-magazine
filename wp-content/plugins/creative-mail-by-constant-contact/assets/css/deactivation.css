@@ -12,37 +12,37 @@
   background: rgba(0,0,0,0.8);
 }
 .ce4wp-deactivate-survey-wrap {
-    display: table-cell;
-    vertical-align: middle;
+	display: table-cell;
+	vertical-align: middle;
 }
 .ce4wp-deactivate-survey {
-    background-color: #f1f1f1;
-    border: 0 solid #ccc;
-    border-radius: 3px;
-    margin: 0 auto;
-    padding: 12px;
-    width: 340px;
-    direction: ltr;
+	background-color: #f1f1f1;
+	border: 0 solid #ccc;
+	border-radius: 3px;
+	margin: 0 auto;
+	padding: 12px;
+	width: 340px;
+	direction: ltr;
 }
 
 .ce4wp-deactivate-survey fieldset {
-    margin:25px;
+	margin:25px;
 }
 
 .ce4wp-deactivate-survey span {
-    float: left;
-    margin: 5px;
+	float: left;
+	margin: 5px;
 }
 
 .ce4wp-deactivate-survey span input {
-    padding-right: 5px;
+	padding-right: 5px;
 }
 
 .ce4wp-deactivate-survey a.button {
-    white-space: normal;
-    height: auto;
+	white-space: normal;
+	height: auto;
 }
 
 #ce4wp-deactivate-survey-form-success {
-    display: none;
+	display: none;
 }

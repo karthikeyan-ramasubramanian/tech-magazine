@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 /**
  * @author Niels A.D.
  * @author Todd Burry <todd@vanillaforums.com>
@@ -392,7 +392,7 @@ class HtmlSelector {
 			$error
 		));
 
-		trigger_error($error);
+		trigger_error(esc_html($error));
 	}
 
 	/**

@@ -50,6 +50,18 @@ class Connect extends AbstractNewsmanConnect implements ConnectionInterface
      */
     public function replace_placeholder_tags($content, $type = 'html')
     {
+        $search = [
+            '{{webversion}}',
+            '{{unsubscribe}}'
+        ];
+
+        $replace = [
+            '##NEWSMAN:view_online##',
+            '##NEWSMAN:list_unsubscribe##'
+        ];
+
+        $content = str_replace($search, $replace, $content);
+
         return $this->replace_footer_placeholder_tags($content);
     }
 

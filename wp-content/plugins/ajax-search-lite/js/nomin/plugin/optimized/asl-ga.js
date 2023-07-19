@@ -25,17 +25,23 @@
                 if ( _gtag !== false ) {
                     if ( tracking_id !== false ) {
                         // noinspection JSUnresolvedVariable
-                        _gtag('config', tracking_id, {'page_path': url + ASL.analytics.string.replace("{asl_term}", term)});
+                        tracking_id.forEach(function(id) {
+                            _gtag('config', id, {'page_path': url + ASL.analytics.string.replace("{asl_term}", term)});
+                        });
                     }
                 } else if ( _ga !== false ) {
-                    if ( tracking_id !== false ) {
-                        _ga('create', tracking_id, 'auto');
-                    }
-                    // noinspection JSUnresolvedVariable
-                    _ga('send', 'pageview', {
+                    let params = {
                         'page': url + ASL.analytics.string.replace("{asl_term}", term),
                         'title': 'Ajax Search'
-                    });
+                    };
+                    if ( tracking_id !== false ) {
+                        tracking_id.forEach(function(id) {
+                            _ga('create', id, 'auto');
+                            _ga('send', 'pageview', params);
+                        });
+                    } else {
+                        _ga('send', 'pageview', params);
+                    }
                 }
             }
         },
@@ -53,7 +59,7 @@
             let _ga = typeof window.__gaTracker == "function" ? window.__gaTracker :
                 (typeof window.ga == "function" ? window.ga : false);
 
-            if ( _gtag === false && _ga === false )
+            if ( _gtag === false && _ga === false && typeof window.dataLayer == 'undefined'  )
                 return false;
 
             // noinspection JSUnresolvedVariable
@@ -64,7 +70,7 @@
                 let def_data = {
                     "search_id": $this.o.id,
                     "search_name": $this.o.name,
-                    "phrase": $this.n.text.val(),
+                    "phrase": $this.n('text').val(),
                     "option_name": '',
                     "option_value": '',
                     "result_title": '',
@@ -86,7 +92,8 @@
                         event[kk] = event[kk].replace(regex, v);
                     });
                 });
-                if ( _gtag === false ) {
+
+                if ( _ga !== false ) {
                     if ( tracking_id !== false ) {
                         tracking_id.forEach(function(id){
                             _ga('create', id, 'auto');
@@ -107,7 +114,7 @@
                             event.value
                         );
                     }
-                } else {
+                } else if ( _gtag !== false ) {
                     if ( tracking_id !== false ) {
                         tracking_id.forEach(function(id){
                             event.send_to = id;
@@ -118,6 +125,13 @@
                         // noinspection JSUnresolvedVariable
                         _gtag('event', ASL.analytics.event[which].action, event);
                     }
+                } else if ( typeof window.dataLayer.push != 'undefined' ) {
+                    window.dataLayer.push({
+                        'event': 'gaEvent',
+                        'eventCategory': event.event_category,
+                        'eventAction': ASL.analytics.event[which].action,
+                        'eventLabel': event.event_label
+                    });
                 }
             }
         },

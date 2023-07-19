@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Newsletter;
 
@@ -66,6 +66,61 @@ class NewslettersRepository extends Repository {
       ->orderBy('n.subject')
       ->getQuery()
       ->getResult();
+  }
+
+  public function getCountForStatusAndTypes(string $status, array $types): int {
+    return intval($this->entityManager
+      ->createQueryBuilder()
+      ->select('COUNT(n.id)')
+      ->from(NewsletterEntity::class, 'n')
+      ->where('n.status = :status')
+      ->andWhere('n.deletedAt is null')
+      ->andWhere('n.type IN (:types)')
+      ->setParameter('status', $status)
+      ->setParameter('types', $types)
+      ->getQuery()
+      ->getSingleScalarResult());
+  }
+
+  public function getCountOfActiveAutomaticEmailsForEvent(string $event): int {
+    return intval($this->entityManager->createQueryBuilder()
+      ->select('COUNT(n.id)')
+      ->from(NewsletterEntity::class, 'n')
+      ->where('n.status = :status')
+      ->andWhere('n.deletedAt IS NULL')
+      ->andWhere('n.type = :type')
+      ->join('n.options', 'o', Join::WITH, 'o.value = :event')
+      ->join('o.optionField', 'f', Join::WITH, 'f.name = :nameEvent AND f.newsletterType = :type')
+      ->setParameter('status', NewsletterEntity::STATUS_ACTIVE)
+      ->setParameter('nameEvent', NewsletterOptionFieldEntity::NAME_EVENT)
+      ->setParameter('type', NewsletterEntity::TYPE_AUTOMATIC)
+      ->setParameter('event', $event)
+      ->getQuery()
+      ->getSingleScalarResult());
+  }
+
+  /**
+   * @return NewsletterEntity[]
+   */
+  public function findActiveByTypeAndGroup(string $type, ?string $group): array {
+    $qb = $this->entityManager
+      ->createQueryBuilder()
+      ->select('n')
+      ->from(NewsletterEntity::class, 'n')
+      ->where('n.status = :status')
+      ->setParameter(':status', NewsletterEntity::STATUS_ACTIVE)
+      ->andWhere('n.deletedAt IS NULL')
+      ->andWhere('n.type = :type')
+      ->setParameter('type', $type);
+
+    if ($group) {
+      $qb->join('n.options', 'o', Join::WITH, 'o.value = :group')
+        ->join('o.optionField', 'f', Join::WITH, 'f.name = :nameGroup AND f.newsletterType = :type')
+        ->setParameter('nameGroup', NewsletterOptionFieldEntity::NAME_GROUP)
+        ->setParameter('group', $group);
+    }
+
+    return $qb->getQuery()->getResult();
   }
 
   /**
@@ -137,10 +192,12 @@ class NewslettersRepository extends Repository {
       }
     }
 
-    return [
+    $data = [
       'welcome_newsletters_count' => $analyticsMap[NewsletterEntity::TYPE_WELCOME] ?? 0,
       'notifications_count' => $analyticsMap[NewsletterEntity::TYPE_NOTIFICATION] ?? 0,
       'automatic_emails_count' => array_sum($analyticsMap[NewsletterEntity::TYPE_AUTOMATIC] ?? []),
+      'automation_emails_count' => $analyticsMap[NewsletterEntity::TYPE_AUTOMATION] ?? 0,
+      're-engagement_emails_count' => $analyticsMap[NewsletterEntity::TYPE_RE_ENGAGEMENT] ?? 0,
       'sent_newsletters_count' => $analyticsMap[NewsletterEntity::TYPE_STANDARD] ?? 0,
       'sent_newsletters_3_months' => $this->getStandardNewsletterSentCount(Carbon::now()->subMonths(3)),
       'sent_newsletters_30_days' => $this->getStandardNewsletterSentCount(Carbon::now()->subDays(30)),
@@ -149,6 +206,12 @@ class NewslettersRepository extends Repository {
       'product_purchased_in_category_emails_count' => $analyticsMap[NewsletterEntity::TYPE_AUTOMATIC][PurchasedInCategory::SLUG] ?? 0,
       'abandoned_cart_emails_count' => $analyticsMap[NewsletterEntity::TYPE_AUTOMATIC][AbandonedCart::SLUG] ?? 0,
     ];
+    // Count all campaigns
+    $analyticsMap[NewsletterEntity::TYPE_AUTOMATIC] = array_sum($analyticsMap[NewsletterEntity::TYPE_AUTOMATIC] ?? []);
+    // Post notification history is not a campaign, we count only the parent notification
+    unset($analyticsMap[NewsletterEntity::TYPE_NOTIFICATION_HISTORY]);
+    $data['campaigns_count'] = array_sum($analyticsMap);
+    return $data;
   }
 
   /**
@@ -383,8 +446,8 @@ class NewslettersRepository extends Repository {
   /**
    * @return NewsletterEntity[]
    */
-  public function findSendigNotificationHistoryWithPausedTask(NewsletterEntity $newsletter): array {
-    $result = $this->entityManager->createQueryBuilder()
+  public function findSendingNotificationHistoryWithoutPausedTask(NewsletterEntity $newsletter): array {
+    return $this->entityManager->createQueryBuilder()
       ->select('n')
       ->from(NewsletterEntity::class, 'n')
       ->join('n.queues', 'q')
@@ -392,13 +455,31 @@ class NewslettersRepository extends Repository {
       ->where('n.parent = :parent')
       ->andWhere('n.type = :type')
       ->andWhere('n.status = :status')
+      ->andWhere('n.deletedAt IS NULL')
       ->andWhere('t.status != :taskStatus')
       ->setParameter('parent', $newsletter)
       ->setParameter('type', NewsletterEntity::TYPE_NOTIFICATION_HISTORY)
       ->setParameter('status', NewsletterEntity::STATUS_SENDING)
       ->setParameter('taskStatus', ScheduledTaskEntity::STATUS_PAUSED)
-      ->getQuery()->execute();
-    return $result;
+      ->getQuery()->getResult();
+  }
+
+  /**
+   * Returns standard newsletters ordered by sentAt
+   * @return NewsletterEntity[]
+   */
+  public function getStandardNewsletterList(): array {
+    return $this->entityManager->createQueryBuilder()
+      ->select('PARTIAL n.{id,subject,sentAt}')
+      ->addSelect('CASE WHEN n.sentAt IS NULL THEN 1 ELSE 0 END as HIDDEN sent_at_is_null')
+      ->from(NewsletterEntity::class, 'n')
+      ->where('n.type = :typeStandard')
+      ->andWhere('n.deletedAt IS NULL')
+      ->orderBy('sent_at_is_null', 'DESC')
+      ->addOrderBy('n.sentAt', 'DESC')
+      ->setParameter('typeStandard', NewsletterEntity::TYPE_STANDARD)
+      ->getQuery()
+      ->getResult();
   }
 
   public function prefetchOptions(array $newsletters) {
@@ -423,6 +504,52 @@ class NewslettersRepository extends Repository {
       ->setParameter('newsletters', $newsletters)
       ->getQuery()
       ->getResult();
+  }
+
+  /**
+   * Returns a list of emails that are either scheduled standard emails
+   * or active automatic emails of the provided types.
+   *
+   * @param array $automaticEmailTypes
+   *
+   * @return array
+   */
+  public function getScheduledStandardEmailsAndActiveAutomaticEmails(array $automaticEmailTypes): array {
+    $queryBuilder = $this->entityManager->createQueryBuilder();
+
+    $newsletters = $queryBuilder
+      ->select('n')
+      ->from(NewsletterEntity::class, 'n')
+      ->orWhere(
+        $queryBuilder->expr()->andX(
+          $queryBuilder->expr()->eq('n.type', ':typeStandard'),
+          $queryBuilder->expr()->eq('n.status', ':statusScheduled')
+        )
+      )
+      ->orWhere(
+        $queryBuilder->expr()->andX(
+          $queryBuilder->expr()->in('n.type', ':automaticEmailTypes'),
+          $queryBuilder->expr()->eq('n.status', ':statusActive')
+        )
+      )
+      ->setParameter('typeStandard', NewsletterEntity::TYPE_STANDARD)
+      ->setParameter('statusScheduled', NewsletterEntity::STATUS_SCHEDULED)
+      ->setParameter('automaticEmailTypes', $automaticEmailTypes)
+      ->setParameter('statusActive', NewsletterEntity::STATUS_ACTIVE)
+      ->getQuery()
+      ->getResult();
+
+    return $newsletters;
+  }
+
+  public function getCorruptNewsletters(): array {
+    return $this->findBy(['status' => NewsletterEntity::STATUS_CORRUPT, 'deletedAt' => null]);
+  }
+
+  public function setAsCorrupt(NewsletterEntity $entity): void {
+    $entity->setStatus(NewsletterEntity::STATUS_CORRUPT);
+    $this->persist($entity);
+    $this->flush();
   }
 
   private function fetchChildrenIds(array $parentIds) {

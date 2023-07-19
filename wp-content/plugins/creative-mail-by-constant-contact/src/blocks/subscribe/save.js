@@ -33,7 +33,7 @@ export default function save({ attributes, className }) {
               tagName="h2"
               value={attributes.title}
             />
-            <p className="subTitle">{__(attributes.onSubmission, "cewp4")}</p>
+            <p className="subTitle">{attributes.onSubmission}</p>
           </div>
         )}
         {attributes.onSubmissionSetting === ON_SUBMIT_SETTING.SUMMARY && (
@@ -150,8 +150,8 @@ export default function save({ attributes, className }) {
               type="tel"
               pattern="[+]?[0-9\(\)\s+-]{5,20}"
               oninvalid={`setCustomValidity('${__(
-                "Please enter a valid phone number",
-                "cewp4"
+                'Please enter a valid phone number',
+                'creative-mail-by-constant-contact'
               )}')`}
               oninput="setCustomValidity('')"
               required={attributes.displayTelephone === FIELD_SETTING.REQUIRED}
@@ -171,8 +171,8 @@ export default function save({ attributes, className }) {
             name="email"
             type="email"
             oninvalid={`setCustomValidity('${__(
-              "Please enter a valid email address",
-              "cewp4"
+              'Please enter a valid email address',
+              'creative-mail-by-constant-contact'
             )}')`}
             oninput="setCustomValidity('')"
             required
@@ -206,7 +206,7 @@ export default function save({ attributes, className }) {
           </div>
         )}
         <button className="wp-block-button__link submit-button" type="submit">
-          {__("Subscribe", "cewp4")}
+          {__('Subscribe', 'creative-mail-by-constant-contact')}
         </button>
       </form>
     </div>

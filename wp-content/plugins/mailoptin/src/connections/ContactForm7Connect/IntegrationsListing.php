@@ -33,7 +33,7 @@ class IntegrationsListing extends \WPCF7_Service
                 esc_html(__('The MailOptin integration allows you to send contact data collected through your contact forms to any email marketing software and CRM including Mailchimp, AWeber, Campaign Monitor, MailerLite, Drip, ConvertKit, Zoho, ActiveCampaign, HubSpot, Sendinblue, Sendy, GetResponse and more. %sFor details, see %s.', 'mailoptin')),
                 '<br>',
                 wpcf7_link(
-                    'https://mailoptin.io/?p=25086&utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=cf7_integration_listing',
+                    'https://mailoptin.io/article/contact-form-7-mailchimp-aweber-more/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=cf7_integration_listing',
                     __('MailOptin Integration', 'mailoptin')
                 )
             ) . '</p>';

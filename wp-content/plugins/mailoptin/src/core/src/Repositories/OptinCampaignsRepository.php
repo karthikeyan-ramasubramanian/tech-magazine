@@ -5,6 +5,7 @@ namespace MailOptin\Core\Repositories;
 
 use MailOptin\Core\Admin\Customizer\OptinForm\AbstractCustomizer;
 use MailOptin\Core\PluginSettings\Settings;
+use MailOptin\HubspotConnect\ConnectSettingsPage;
 use function MailOptin\Core\cache_transform;
 
 class OptinCampaignsRepository extends AbstractRepository
@@ -575,13 +576,18 @@ class OptinCampaignsRepository extends AbstractRepository
      */
     public static function get_custom_field_type_by_id($cid, $optin_campaign_id)
     {
+        $val = '';
+
         $fields = self::form_custom_fields($optin_campaign_id);
 
         foreach ($fields as $field) {
             if ($field['cid'] == $cid) {
-                return $field['field_type'];
+                $val = $field['field_type'];
+                break;
             }
         }
+
+        return apply_filters('mailoptin_get_custom_field_type_by_id', $val, $cid, $optin_campaign_id);
     }
 
     /**
@@ -854,6 +860,22 @@ class OptinCampaignsRepository extends AbstractRepository
         foreach ($optin_ids as $optin_id) {
             self::burst_cache($optin_id);
         }
+
+        global $wpdb;
+
+        $wpdb->query("DELETE FROM {$wpdb->options} WHERE option_name LIKE '%mo_connection_email%'");
+        $wpdb->query("DELETE FROM {$wpdb->options} WHERE option_name LIKE '%ctctv3_get_optin_fields%'");
+
+        ConnectSettingsPage::get_instance()->clear_connection_cache();
+
+        delete_transient('ctctv3_tags');
+        delete_transient('ctctv3_tags');
+        delete_transient('emma_forms');
+        delete_transient('getresponse_tags');
+        delete_transient('ontraport_tags');
+
+        delete_transient('mo_zohocrm_users');
+        $wpdb->query("DELETE FROM {$wpdb->options} WHERE option_name LIKE '%mo_zohocrm_lead_sources%'");
     }
 
     /**

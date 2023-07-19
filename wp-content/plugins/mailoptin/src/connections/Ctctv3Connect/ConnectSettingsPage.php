@@ -50,8 +50,8 @@ class ConnectSettingsPage extends AbstractCtctv3Connect
         $html .= '</ol>';
 
         $settingsArg = array(
-            'section_title_without_status' => __('Constant Contact (v3)', 'mailoptin'),
-            'section_title'                => __('Constant Contact (v3) Connection', 'mailoptin') . " $status",
+            'section_title_without_status' => __('Constant Contact', 'mailoptin'),
+            'section_title'                => __('Constant Contact Connection', 'mailoptin') . " $status",
             'type'                         => self::EMAIL_MARKETING_TYPE,
             'ctctv3_auth'                  => array(
                 'type' => 'arbitrary',

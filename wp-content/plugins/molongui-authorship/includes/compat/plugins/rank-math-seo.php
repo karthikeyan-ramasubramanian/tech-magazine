@@ -1,19 +1,18 @@
 <?php
 defined( 'ABSPATH' ) or exit;
-
-add_filter( '_authorship/get_user_by/guest/archive/loop', function( $byline, $args )
+add_filter( '_authorship/get_user_by/aim', function( $aim, $user, $args )
 {
     if ( is_author() or is_guest_author() )
     {
         $fn = 'generate_postdata';
         if ( $key = array_search( $fn, array_column( $args['dbt'], 'function' ) ) )
         {
-            $byline = false;
+            $aim = 'info';
         }
     }
 
-    return $byline;
-}, 10, 2 );
+    return $aim;
+}, 10, 3 );
 add_filter( 'authorship/author_link', function( $url, $args )
 {
     if ( '#molongui-disabled-link' !== $args['url'] ) return $url;

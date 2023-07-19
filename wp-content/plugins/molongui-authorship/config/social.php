@@ -830,4 +830,11 @@ return array
         'color'    => '#1e5397',
         'premium'  => false,
     ),
+    'mastodon' => array
+    (
+        'name'     => 'Mastodon',
+        'url'      => 'https://mastodon.social/@username/',
+        'color'    => '#6364ff',
+        'premium'  => false,
+    ),
 );

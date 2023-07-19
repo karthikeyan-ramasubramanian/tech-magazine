@@ -8,7 +8,7 @@ if ( count( $error_logs ) ) {
 	<div class="stlsr-tab-header">
 		<form action="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>" method="post" id="stlsr-clear-error-logs-form">
 
-			<h2 class="stlsr-tab-heading"><?php esc_html_e( 'Last 20 Error Logs', 'login-security-recaptcha' ); ?></h2>
+			<div class="stlsr-tab-heading"><?php esc_html_e( 'Last 20 Error Logs', 'login-security-recaptcha' ); ?></div>
 
 			<?php $nonce = wp_create_nonce( 'clear-error-logs' ); ?>
 			<input type="hidden" name="clear-error-logs" value="<?php echo esc_attr( $nonce ); ?>">

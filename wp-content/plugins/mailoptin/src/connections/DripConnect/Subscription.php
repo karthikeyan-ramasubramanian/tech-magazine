@@ -34,7 +34,7 @@ class Subscription extends AbstractDripConnect
         $setting = $this->get_integration_data('DripConnect_enable_double_optin');
 
         //external forms
-        if($optin_campaign_id == 0) {
+        if ($optin_campaign_id == 0) {
             $setting = $this->extras['is_double_optin'];
         }
 
@@ -110,12 +110,12 @@ class Subscription extends AbstractDripConnect
                 }
             }
 
-            self::save_optin_error_log($response->error . ': ' . $response->message, 'drip', $this->extras['optin_campaign_id']);
+            self::save_optin_error_log($response->error . ': ' . $response->message, 'drip', $this->extras['optin_campaign_id'], $this->extras['optin_campaign_type']);
 
             return parent::ajax_failure(__('There was an error saving your contact. Please try again.', 'mailoptin'));
 
         } catch (\Exception $e) {
-            self::save_optin_error_log($e->getCode() . ': ' . $e->getMessage(), 'drip', $this->extras['optin_campaign_id']);
+            self::save_optin_error_log($e->getCode() . ': ' . $e->getMessage(), 'drip', $this->extras['optin_campaign_id'], $this->extras['optin_campaign_type']);
 
             return parent::ajax_failure(__('There was an error saving your contact. Please try again.', 'mailoptin'));
         }

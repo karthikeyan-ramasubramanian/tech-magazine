@@ -4,7 +4,9 @@ function authorship_post_quick_edit_remove_author()
 {
     global $pagenow, $post_type;
 
-    if ( 'edit.php' == $pagenow and authorship_byline_takeover() and molongui_is_post_type_enabled( MOLONGUI_AUTHORSHIP_PREFIX, $post_type, molongui_enabled_post_screens( MOLONGUI_AUTHORSHIP_PREFIX, 'all' ) ) )
+    $post_types = molongui_enabled_post_screens( MOLONGUI_AUTHORSHIP_PREFIX, 'all' );
+
+    if ( 'edit.php' == $pagenow and authorship_byline_takeover() and in_array( $post_type, $post_types ) )
     {
         remove_post_type_support( $post_type, 'author' );
     }
@@ -13,7 +15,8 @@ add_action( 'admin_head', 'authorship_post_quick_edit_remove_author' );
 function authorship_post_quick_edit_add_fields( $column_name, $post_type )
 {
     if ( !authorship_byline_takeover() ) return;
-    if ( !molongui_is_post_type_enabled( MOLONGUI_AUTHORSHIP_PREFIX, $post_type, molongui_enabled_post_screens( MOLONGUI_AUTHORSHIP_PREFIX, 'all' ) ) ) return;
+    $post_types = molongui_enabled_post_screens( MOLONGUI_AUTHORSHIP_PREFIX, 'all' );
+    if ( !in_array( $post_type, $post_types ) ) return;
     if ( $column_name == 'molongui-author' )
     {
         wp_nonce_field( 'molongui_authorship_quick_edit_nonce', 'molongui_authorship_quick_edit_nonce' );

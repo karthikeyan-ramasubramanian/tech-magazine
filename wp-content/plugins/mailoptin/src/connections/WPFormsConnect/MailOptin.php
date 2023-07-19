@@ -445,7 +445,7 @@ class MailOptin extends \WPForms_Provider
     {
         $this->api_connect($account_id);
 
-        if (method_exists($this->api, 'get_tags')) {
+        if (is_object($this->api) && method_exists($this->api, 'get_tags')) {
 
             $tags = $this->api->get_tags();
 

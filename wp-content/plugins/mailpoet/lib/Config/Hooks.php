@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Config;
 
@@ -16,6 +16,7 @@ use MailPoet\Subscription\Form;
 use MailPoet\Subscription\Manage;
 use MailPoet\Subscription\Registration;
 use MailPoet\WP\Functions as WPFunctions;
+use MailPoet\WPCOM\DotcomLicenseProvisioner;
 
 class Hooks {
   /** @var Form */
@@ -54,6 +55,12 @@ class Hooks {
   /** @var HooksWooCommerce */
   private $hooksWooCommerce;
 
+  /** @var SubscriberChangesNotifier */
+  private $subscriberChangesNotifier;
+
+  /** @var DotcomLicenseProvisioner */
+  private $dotcomLicenseProvisioner;
+
   public function __construct(
     Form $subscriptionForm,
     Comment $subscriptionComment,
@@ -66,7 +73,9 @@ class Hooks {
     DisplayFormInWPContent $displayFormInWPContent,
     HooksWooCommerce $hooksWooCommerce,
     SubscriberHandler $subscriberHandler,
-    WP $wpSegment
+    SubscriberChangesNotifier $subscriberChangesNotifier,
+    WP $wpSegment,
+    DotcomLicenseProvisioner $dotcomLicenseProvisioner
   ) {
     $this->subscriptionForm = $subscriptionForm;
     $this->subscriptionComment = $subscriptionComment;
@@ -80,6 +89,8 @@ class Hooks {
     $this->wpSegment = $wpSegment;
     $this->subscriberHandler = $subscriberHandler;
     $this->hooksWooCommerce = $hooksWooCommerce;
+    $this->subscriberChangesNotifier = $subscriberChangesNotifier;
+    $this->dotcomLicenseProvisioner = $dotcomLicenseProvisioner;
   }
 
   public function init() {
@@ -87,6 +98,7 @@ class Hooks {
     $this->setupWooCommerceUsers();
     $this->setupWooCommercePurchases();
     $this->setupWooCommerceSubscriberEngagement();
+    $this->setupWooCommerceTracking();
     $this->setupImageSize();
     $this->setupListing();
     $this->setupSubscriptionEvents();
@@ -94,6 +106,9 @@ class Hooks {
     $this->setupPostNotifications();
     $this->setupWooCommerceSettings();
     $this->setupFooter();
+    $this->setupSettingsLinkInPluginPage();
+    $this->setupChangeNotifications();
+    $this->setupLicenseProvisioning();
   }
 
   public function initEarlyHooks() {
@@ -202,7 +217,11 @@ class Hooks {
     );
     $this->wp->addFilter(
       'the_content',
-      [$this->displayFormInWPContent, 'display']
+      [$this->displayFormInWPContent, 'contentDisplay']
+    );
+    $this->wp->addFilter(
+      'woocommerce_product_loop_end',
+      [$this->displayFormInWPContent, 'wooProductListDisplay']
     );
   }
 
@@ -304,6 +323,16 @@ class Hooks {
       $this->hooksWooCommerce,
       'disableWooCommerceSettings',
     ]);
+
+    $this->wp->addAction('before_woocommerce_init', [
+      $this->hooksWooCommerce,
+      'declareHposCompatibility',
+    ]);
+
+    $this->wp->addAction('init', [
+      $this->hooksWooCommerce,
+      'addMailPoetTaskToWooHomePage',
+    ]);
   }
 
   public function setupWooCommerceUsers() {
@@ -366,6 +395,14 @@ class Hooks {
     );
   }
 
+  public function setupWooCommerceTracking() {
+    $this->wp->addFilter(
+      'woocommerce_tracker_data',
+      [$this->hooksWooCommerce, 'addTrackingData'],
+      10
+    );
+  }
+
   public function setupImageSize() {
     $this->wp->addFilter(
       'image_size_names_choose',
@@ -376,7 +413,7 @@ class Hooks {
 
   public function appendImageSize($sizes) {
     return array_merge($sizes, [
-      'mailpoet_newsletter_max' => WPFunctions::get()->__('MailPoet Newsletter', 'mailpoet'),
+      'mailpoet_newsletter_max' => __('MailPoet Newsletter', 'mailpoet'),
     ]);
   }
 
@@ -415,7 +452,46 @@ class Hooks {
     );
   }
 
-  public function setFooter($text) {
-    return '<a href="https://feedback.mailpoet.com/" rel="noopener noreferrer" target="_blank">Give feedback</a>';
+  public function setFooter(): string {
+
+    if (Menu::isOnMailPoetAutomationPage()) {
+      return '';
+    }
+    return '<a href="https://feedback.mailpoet.com/" rel="noopener noreferrer" target="_blank">' . esc_html__('Give feedback', 'mailpoet') . '</a>';
+  }
+
+  public function setupSettingsLinkInPluginPage() {
+    $this->wp->addFilter(
+      'plugin_action_links_' . Env::$pluginPath,
+      [$this, 'setSettingsLinkInPluginPage']
+    );
+  }
+
+  /**
+   * @param array<string, string> $actionLinks
+   * @return array<string, string>
+   */
+  public function setSettingsLinkInPluginPage(array $actionLinks): array {
+    $customLinks = [
+      'settings' => '<a href="' . $this->wp->adminUrl('admin.php?page=mailpoet-settings') . '" aria-label="' . $this->wp->escAttr(__('View MailPoet settings', 'mailpoet')) . '">' . $this->wp->escHtml(__('Settings', 'mailpoet')) . '</a>',
+    ];
+
+    return array_merge($customLinks, $actionLinks);
+  }
+
+  public function setupChangeNotifications(): void {
+    $this->wp->addAction(
+      'shutdown',
+      [$this->subscriberChangesNotifier, 'notify']
+    );
+  }
+
+  public function setupLicenseProvisioning(): void {
+    $this->wp->addFilter(
+      'wpcom_marketplace_webhook_response_mailpoet-business',
+      [$this->dotcomLicenseProvisioner, 'provisionLicense'],
+      10,
+      3
+    );
   }
 }

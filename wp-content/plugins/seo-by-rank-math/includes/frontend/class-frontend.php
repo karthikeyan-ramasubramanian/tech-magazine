@@ -62,8 +62,8 @@ class Frontend {
 			add_filter( 'bbp_get_breadcrumb', '__return_false' );
 		}
 
-		new Link_Attributes();
-		new Comments();
+		rank_math()->link_attributes = new Link_Attributes();
+		rank_math()->comments        = new Comments();
 	}
 
 	/**
@@ -96,7 +96,7 @@ class Frontend {
 	 */
 	public function integrations() {
 		$type = get_query_var( 'sitemap' );
-		if ( ! empty( $type ) || is_customize_preview() ) {
+		if ( $this->do_filter( 'frontend/disable_integration', ! empty( $type ) || is_customize_preview() ) ) {
 			return;
 		}
 

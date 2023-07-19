@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Util\Notices;
 
@@ -49,16 +49,17 @@ class UnauthorizedEmailInNewslettersNotice {
   }
 
   private function getMessageText() {
-    $message = $this->wp->__('<b>Your automatic emails have been paused</b> because some email addresses haven’t been authorized yet.', 'mailpoet');
+    $message = __('<b>Your automatic emails have been paused</b> because some email addresses haven’t been authorized yet.', 'mailpoet');
     return "<p>$message</p>";
   }
 
   private function getNewslettersLinks($validationError) {
     $links = '';
     foreach ($validationError['invalid_senders_in_newsletters'] as $error) {
-      $linkText = $this->wp->_x('Update the from address of %s', '%s will be replaced by a newsletter subject', 'mailpoet');
+      // translators: %s is the newsletter subject.
+      $linkText = _x('Update the from address of %s', '%s will be replaced by a newsletter subject', 'mailpoet');
       $linkText = str_replace('%s', EscapeHelper::escapeHtmlText($error['subject']), $linkText);
-      $linkUrl = $this->wp->adminUrl('admin.php?page=' . Menu::MAIN_PAGE_SLUG . '#/send/' . $error['newsletter_id']);
+      $linkUrl = $this->wp->adminUrl('admin.php?page=' . Menu::EMAILS_PAGE_SLUG . '#/send/' . $error['newsletter_id']);
       $link = Helpers::replaceLinkTags("[link]{$linkText}[/link]", $linkUrl, ['target' => '_blank']);
       $links .= "<p>$link</p>";
     }
@@ -66,7 +67,7 @@ class UnauthorizedEmailInNewslettersNotice {
   }
 
   private function getFixThisButton() {
-    $button = '<button class="button button-primary mailpoet-js-button-fix-this">' . $this->wp->__('Fix this!', 'mailpoet') . '</button>';
+    $button = '<button class="button button-primary mailpoet-js-button-fix-this">' . __('Fix this!', 'mailpoet') . '</button>';
     return "<p>$button</p>";
   }
 }

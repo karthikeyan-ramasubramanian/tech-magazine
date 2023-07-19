@@ -36,6 +36,9 @@ class AbstractZohoCampaignsConnect extends AbstractConnect
             case 'cn':
                 $location = 'com.cn';
                 break;
+            case 'jp':
+                $location = 'jp';
+                break;
         }
 
         return $location;

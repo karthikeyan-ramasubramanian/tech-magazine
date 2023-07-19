@@ -48,6 +48,12 @@ abstract class Exception extends \Exception {
     return $this;
   }
 
+  /** @return static */
+  public function withError(string $id, string $error) {
+    $this->errors[$id] = $error;
+    return $this;
+  }
+
   public function getErrors(): array {
     return $this->errors;
   }
@@ -110,3 +116,5 @@ class ConflictException extends UnexpectedValueException implements HttpAwareExc
  * API: 500 Server Error (not HTTP-aware)
  */
 class InvalidStateException extends RuntimeException {}
+
+class NewsletterProcessingException extends Exception {}

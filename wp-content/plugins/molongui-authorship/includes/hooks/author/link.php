@@ -6,7 +6,7 @@ if ( !authorship_byline_takeover() ) return;
 function authorship_filter_author_link( $link, $author_id, $author_nicename )
 {
     if ( molongui_is_request( 'admin' ) ) return $link;
-    $dbt = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS );
+    $dbt = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 10 );
     if ( empty( $dbt ) ) return $link;
     $args = array( 'link' => &$link, 'author_id' => $author_id, 'author_nicename' => $author_nicename, 'dbt' => $dbt );
     if ( apply_filters_ref_array( 'authorship/filter_author_link', array( false, &$args ) ) ) return $link;

@@ -5,11 +5,8 @@
 
     window.WPD = typeof window.WPD !== 'undefined' ? window.WPD : {};
 
-    // Newer version added?
     if ( typeof WPD.dom != "undefined" ) {
-        if ( WPD.dom.version > version ) {
-            return false;	// Terminate
-        }
+        return false;	// Terminate
     }
 
     WPD.dom = function() {
@@ -425,6 +422,14 @@
                             parseInt( this.css('marginBottom') )
                         );
                 },
+                innerWidth: function() {
+                    let el = this.get(0);
+                    if ( el != null ) {
+                        let cs = window.getComputedStyle(el);
+                        return this.outerWidth() - parseFloat(cs.borderLeftWidth) - parseFloat(cs.borderRightWidth);
+                    }
+                    return 0;
+                },
                 width: function() {
                     return this.outerWidth();
                 },
@@ -433,7 +438,7 @@
                 },
                 on: function() {
                     let args = arguments,
-                        func1 = function(args, e) {
+                        func = function(args, e) {
                             let $el;
                             if ( e.type == 'mouseenter' || e.type == 'mouseleave' || e.type == 'hover' ) {
                                 let el = document.elementFromPoint(e.clientX, e.clientY);
@@ -460,16 +465,6 @@
                                 }
                                 args[2].apply($el.get(0), argd);
                             }
-                        },
-                        func2 = function(args, e) {
-                            let argd = [];
-                            argd.push(e);
-                            if ( typeof args[3] != 'undefined' ) {
-                                for (let i=3; i<args.length; i++) {
-                                    argd.push(args[i]);
-                                }
-                            }
-                            args[1].apply(this, argd);
                         };
                     let events = args[0].split(' ');
                     for (let i=0;i<events.length;i++) {
@@ -477,7 +472,7 @@
                         if ( typeof args[1] == "string" ) {
                             this.forEach(function(el){
                                 if ( !WPD.dom._fn.hasEventListener(el, type, args[2]) ) {
-                                    let f = func1.bind(el, args);
+                                    let f = func.bind(el, args);
                                     el.addEventListener(type, f, args[3]);
                                     // Store the trigger in the selected elements, not the parent node
                                     el._wpd_el = typeof el._wpd_el == "undefined" ? [] : el._wpd_el;
@@ -491,19 +486,21 @@
                                 }
                             });
                         } else {
-                            this.forEach(function (el) {
-                                if ( !WPD.dom._fn.hasEventListener(el, type, args[1]) ) {
-                                    let f = func2.bind(el, args);
-                                    el.addEventListener(type, f, args[2]);
-                                    el._wpd_el = typeof el._wpd_el == "undefined" ? [] : el._wpd_el;
-                                    el._wpd_el.push({
-                                        'type': type,
-                                        'func': f,
-                                        'trigger': args[1],
-                                        'args': args[2]
-                                    });
-                                }
-                            });
+                            for (let i=0;i<events.length;i++) {
+                                let type = events[i];
+                                this.forEach(function (el) {
+                                    if ( !WPD.dom._fn.hasEventListener(el, type, args[1]) ) {
+                                        el.addEventListener(type, args[1], args[2]);
+                                        el._wpd_el = typeof el._wpd_el == "undefined" ? [] : el._wpd_el;
+                                        el._wpd_el.push({
+                                            'type': type,
+                                            'func': args[1],
+                                            'trigger': args[1],
+                                            'args': args[2]
+                                        });
+                                    }
+                                });
+                            }
                         }
                     }
                     return this;
@@ -699,18 +696,28 @@
                 }
             }
             WPD.dom._fn = {
-                bodyTransformY: function() {
+                bodyTransform: function() {
+                    let x = 0, y = 0;
                     if ( typeof WebKitCSSMatrix !== 'undefined' ) {
                         let style = window.getComputedStyle(document.body);
                         if ( typeof style.transform != 'undefined' ) {
                             let matrix = new WebKitCSSMatrix(style.transform);
+                            if ( matrix.m41 != 'undefined' ) {
+                                x = matrix.m41;
+                            }
                             if ( matrix.m42 != 'undefined' ) {
-                                return matrix.m42;
+                                y = matrix.m42;
                             }
                         }
                     }
 
-                    return 0;
+                    return {x: x, y: y};
+                },
+                bodyTransformY: function() {
+                    return this.bodyTransform().y;
+                },
+                bodyTransformX: function() {
+                    return this.bodyTransform().x;
                 },
                 hasFixedParent: function(el) {
                     /**
@@ -727,6 +734,7 @@
                     } while( el = el.parentElement );
                     return false;
                 },
+
                 hasEventListener: function(el, type, trigger) {
                     if (typeof el._wpd_el == "undefined") {
                         return false;
@@ -800,6 +808,10 @@
     WPD.dom();
     document.dispatchEvent(new Event('wpd-dom-core-loaded'));
 }());(function() {
+    // Prevent duplicate loading
+    if ( typeof WPD.dom.fn.animate != "undefined" ) {
+        return false;	// Terminate
+    }
     WPD.dom.fn._animate = {
         "easing": {
             "linear": function(x) { return x; },
@@ -870,7 +882,7 @@
     };
     document.dispatchEvent(new Event('wpd-dom-animate-loaded'));
 }());/*
- * jQuery Highlight plugin
+ * WPD.dom Highlight plugin
  *
  * Based on highlight v3 by Johann Burkard
  * http://johannburkard.de/blog/programming/javascript/highlight-javascript-text-higlighting-jquery-plugin.html
@@ -882,9 +894,14 @@
 (function() {
     let $ = WPD.dom;
 
+    // Prevent duplicate loading
+    if ( typeof WPD.dom.fn.unhighlight != "undefined" ) {
+        return false;	// Terminate
+    }
+
     WPD.dom.fn.unhighlight = function (options) {
         let settings = {className: 'highlight', element: 'span'};
-        $.extend(settings, options);
+        $.fn.extend(settings, options);
 
         return this.find(settings.element + "." + settings.className).each(function () {
             let parent = this.parentNode;
@@ -910,7 +927,7 @@
             return el != '';
         });
         words.forEach(function(w, i, o){
-            o[i].replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            o[i] = w.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
         });
 
         if (words.length == 0) {
@@ -923,7 +940,6 @@
             pattern = "(?:,|^|\\s)" + pattern + "(?:,|$|\\s)";
         }
         let re = new RegExp(pattern, flag);
-
         function highlight(node, re, nodeName, className, excludeParents) {
             excludeParents = excludeParents == '' ? '.exhghttt' : excludeParents;
             if (node.nodeType === 3) {
@@ -960,6 +976,10 @@
         });
     };
 }());(function() {
+    // Prevent duplicate loading
+    if ( typeof WPD.dom.fn.serialize != "undefined" ) {
+        return false;	// Terminate
+    }
     WPD.dom.fn.serialize = function() {
         let form = this.get(0);
         if ( !form || form.nodeName !== "FORM" ) {
@@ -1037,6 +1057,10 @@
     };
     document.dispatchEvent(new Event('wpd-dom-serialize-loaded'));
 }());(function() {
+    // Prevent duplicate loading
+    if ( typeof WPD.dom.fn.inViewPort != "undefined" ) {
+        return false;	// Terminate
+    }
     WPD.dom.fn.inViewPort = function (tolerance, viewport) {
         "use strict";
         let element = this.get(0), vw, vh;
@@ -1082,6 +1106,10 @@
     };
     document.dispatchEvent(new Event('wpd-dom-viewport-loaded'));
 }());(function() {
+    // Prevent duplicate loading
+    if ( typeof WPD.dom.fn.ajax != "undefined" ) {
+        return false;	// Terminate
+    }
     WPD.dom.fn.ajax = function(args) {
         let defaults = {
             'url': '',
@@ -1310,6 +1338,18 @@ window.WPD.Base64 = {
             args.splice(0, 2);
             filters.forEach( function( hooks ) {
                 hooks.forEach( function( obj ) {
+                    /**
+                     * WARNING!
+                     * If, this function is called with a referanced parameter like OBJECT or ARRAY argument
+                     * as the first argument - then the callback function MUST return that value, otherwise
+                     * it is overwritten with NULL!
+                     * Ex.:
+                     * Hooks.applyFilters('my_filter', object);
+                     * Hooks.addFilter('my_filter', function(obj){
+                     *     do things..
+                     *     return obj; <--- IMPORTANT IN EVERY CASE
+                     * });
+                     */
                     value = obj.callback.apply( obj.scope, [value].concat(args) );
                 } );
             } );

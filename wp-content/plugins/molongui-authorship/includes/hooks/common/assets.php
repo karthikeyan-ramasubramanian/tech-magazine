@@ -77,18 +77,21 @@ if ( !function_exists( 'molongui_register_element_queries' ) )
     {
         $version = '1.2.2'; //'1.2.3';
 
-        if ( apply_filters( 'authorship/assets/load_remote', true ) )
+        if ( apply_filters( 'authorship/load_element_queries', true ) )
         {
-            $resizesensor_js_url   = 'https://cdn.jsdelivr.net/npm/css-element-queries@'.$version.'/src/ResizeSensor.min.js';
-            $elementqueries_js_url = 'https://cdn.jsdelivr.net/npm/css-element-queries@'.$version.'/src/ElementQueries.min.js';
+            if ( apply_filters( 'authorship/assets/load_remote', true ) )
+            {
+                $resizesensor_js_url   = 'https://cdn.jsdelivr.net/npm/css-element-queries@'.$version.'/src/ResizeSensor.min.js';
+                $elementqueries_js_url = 'https://cdn.jsdelivr.net/npm/css-element-queries@'.$version.'/src/ElementQueries.min.js';
+            }
+            else
+            {
+                $resizesensor_js_url   = MOLONGUI_AUTHORSHIP_URL . 'assets/vendor/element-queries/ResizeSensor.min.js';
+                $elementqueries_js_url = MOLONGUI_AUTHORSHIP_URL . 'assets/vendor/element-queries/ElementQueries.min.js';
+            }
+            wp_register_script( 'molongui-resizesensor',   $resizesensor_js_url,   array( 'jquery' ), $version, true );
+            wp_register_script( 'molongui-elementqueries', $elementqueries_js_url, array( 'jquery' ), $version, true );
         }
-        else
-        {
-            $resizesensor_js_url   = MOLONGUI_AUTHORSHIP_URL . 'assets/vendor/element-queries/ResizeSensor.min.js';
-            $elementqueries_js_url = MOLONGUI_AUTHORSHIP_URL . 'assets/vendor/element-queries/ElementQueries.min.js';
-        }
-        wp_register_script( 'molongui-resizesensor',   $resizesensor_js_url,   array( 'jquery' ), $version, true );
-        wp_register_script( 'molongui-elementqueries', $elementqueries_js_url, array( 'jquery' ), $version, true );
     }
     add_action( 'init', 'molongui_register_element_queries' );
 }

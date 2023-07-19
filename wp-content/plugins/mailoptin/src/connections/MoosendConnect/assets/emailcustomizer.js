@@ -38,7 +38,6 @@
                 function (response) {
                     if (_.isObject(response) && 'success' in response && 'data' in response) {
                         var moosend_segments_choosen = $("select[data-customize-setting-link*='MoosendConnect_segments']");
-                        console.log(moosend_segments_choosen);
 
                         moosend_segments_choosen.html(response.data);
 

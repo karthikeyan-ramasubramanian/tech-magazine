@@ -4,14 +4,14 @@
   Plugin URI: https://underconstructionpage.com/
   Description: Put your site behind a great looking under construction, coming soon, maintenance mode or landing page.
   Author: WebFactory Ltd
-  Version: 3.93
+  Version: 3.97
   Requires at least: 4.0
   Requires PHP: 5.2
-  Tested up to: 5.8
+  Tested up to: 6.2
   Author URI: https://www.webfactoryltd.com/
   Text Domain: under-construction-page
 
-  Copyright 2015 - 2022  WebFactory Ltd  (email: ucp@webfactoryltd.com)
+  Copyright 2015 - 2023  WebFactory Ltd  (email: ucp@webfactoryltd.com)
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License, version 2, as
@@ -346,7 +346,7 @@ class UCP
             'is_activated' => UCP_license::is_activated(),
             'dialog_upsell_title' => '<img alt="' . esc_attr__('UnderConstructionPage PRO', 'under-construction-page') . '" title="' . esc_attr__('UnderConstructionPage PRO', 'under-construction-page') . '" src="' . UCP_PLUGIN_URL . 'images/ucp_pro_logo_white.png' . '">',
             'weglot_dialog_upsell_title' => '<img alt="' . esc_attr__('Weglot', 'under-construction-page') . '" title="' . esc_attr__('Weglot', 'under-construction-page') . '" src="' . UCP_PLUGIN_URL . 'images/weglot-logo-white.png' . '">',
-            'weglot_install_url' => add_query_arg(array('action' => 'install_weglot'), admin_url('admin.php')),
+            'weglot_install_url' => add_query_arg(array('action' => 'install_weglot', '_wpnonce' => wp_create_nonce('install_weglot')), admin_url('admin.php')),
             'nonce_dismiss_survey' => wp_create_nonce('ucp_dismiss_survey'),
             'nonce_submit_survey' => wp_create_nonce('ucp_submit_survey'),
             'nonce_submit_support_message' => wp_create_nonce('ucp_submit_support_message'),
@@ -379,6 +379,9 @@ class UCP
             wp_dequeue_style('file-manager__jquery-ui-css-theme');
             wp_dequeue_style('wpmegmaps-jqueryui');
             wp_dequeue_style('wp-botwatch-css');
+            wp_dequeue_style('uap_main_admin_style');
+            wp_dequeue_style('uap_font_awesome');
+            wp_dequeue_style('uap_jquery-ui.min.css');
         }
 
         if ($pointers) {
@@ -773,7 +776,7 @@ class UCP
     {
         $notices = get_option(UCP_NOTICES_KEY);
         $dismiss_url = add_query_arg(array('action' => 'ucp_dismiss_notice', 'notice' => 'whitelisted', 'redirect' => urlencode($_SERVER['REQUEST_URI'])), admin_url('admin.php'));
-
+        $dismiss_url = wp_nonce_url($dismiss_url, 'ucp_dismiss_notice');
         if (
             empty($notices['dismiss_whitelisted']) &&
             is_user_logged_in() &&
@@ -822,8 +825,9 @@ class UCP
             false && empty($notices['dismiss_rate']) &&
             (time() - $meta['first_install']) > (DAY_IN_SECONDS * 1.0)
         ) {
-            $rate_url = 'https://wordpress.org/support/plugin/under-construction-page/reviews/?filter=5&rate=5#new-post';
+            $rate_url = 'https://wordpress.org/support/plugin/under-construction-page/reviews/#new-post';
             $dismiss_url = add_query_arg(array('action' => 'ucp_dismiss_notice', 'notice' => 'rate', 'redirect' => urlencode($_SERVER['REQUEST_URI'])), admin_url('admin.php'));
+            $dismiss_url = wp_nonce_url($dismiss_url, 'ucp_dismiss_notice');
 
             echo '<div id="ucp_rate_notice" class="notice-info notice"><p>Hi' . esc_html($name) . '!<br>We saw you\'ve been using the <b class="ucp-logo" style="font-weight: bold;">UnderConstructionPage</b> plugin for a few days (that\'s awesome!) and wanted to ask for your help to <b>make the plugin better</b>.<br>We just need a minute of your time to rate the plugin. It helps us out a lot!';
 
@@ -849,6 +853,7 @@ class UCP
         ) {
             $translate_url = self::generate_web_link('translate-notification', 'translate-the-plugin/');
             $dismiss_url = add_query_arg(array('action' => 'ucp_dismiss_notice', 'notice' => 'translate', 'redirect' => urlencode($_SERVER['REQUEST_URI'])), admin_url('admin.php'));
+            $dismiss_url = wp_nonce_url($dismiss_url, 'ucp_dismiss_notice');
 
             echo '<div id="ucp_rate_notice" class="notice-info notice"><p>Hi' . esc_html($name) . ',<br>Help us translate UCP into your language and <b>get a PRO license for free</b>!<br>We want to make <b class="ucp-logo" style="font-weight: bold;">UnderConstructionPage</b> accessible to as many users as possible by translating it into their language. And we need your help!';
 
@@ -865,6 +870,7 @@ class UCP
             !$shown && $promo == 'welcome'
         ) {
             $dismiss_url = add_query_arg(array('action' => 'ucp_dismiss_notice', 'notice' => 'welcome', 'redirect' => urlencode($_SERVER['REQUEST_URI'])), admin_url('admin.php'));
+            $dismiss_url = wp_nonce_url($dismiss_url, 'ucp_dismiss_notice');
 
             echo '<div id="ucp_rate_notice" class="notice-info notice"><p>Hi' . esc_html($name) . ',<br>';
             echo 'We have a <a class="open-ucp-upsell" data-pro-ad="notification-welcome-text" href="#">special time-sensitive offer</a> available just for another <b class="ucp-countdown">59min</b>! A <b>20% DISCOUNT</b> on our most popular lifetime licenses!<br>No nonsense! Pay once and use the plugin forever. <a class="open-ucp-upsell" data-pro-ad="notification-welcome-text2" href="#">Get</a> more than 50+ extra features, 250+ premium themes and over two million professional images.</p>';
@@ -882,6 +888,7 @@ class UCP
             !$shown && $promo == 'olduser'
         ) {
             $dismiss_url = add_query_arg(array('action' => 'ucp_dismiss_notice', 'notice' => 'olduser', 'redirect' => urlencode($_SERVER['REQUEST_URI'])), admin_url('admin.php'));
+            $dismiss_url = wp_nonce_url($dismiss_url, 'ucp_dismiss_notice');
 
             echo '<div id="ucp_rate_notice" class="notice-info notice"><p>Hi' . esc_html($name) . ',<br>';
             echo 'We have a <a class="open-ucp-upsell" data-pro-ad="notification-olduser-text" href="#">special offer</a> only for <b>users like you</b> who\'ve been using the UnderConstructionPage for a longer period of time: a <b>special DISCOUNT</b> on our most popular lifetime licenses!<br>No nonsense! Pay once and use the plugin forever.<br><a class="open-ucp-upsell" data-pro-ad="notification-olduser-text" href="#">Upgrade now</a> to <b>PRO</b> &amp; get more than 50+ extra features, 220+ premium themes and over two million HD images.</p>';
@@ -897,6 +904,8 @@ class UCP
     // handle dismiss button for notices
     static function dismiss_notice()
     {
+        check_admin_referer( 'ucp_dismiss_notice' );
+        
         if (empty($_GET['notice'])) {
             wp_safe_redirect(admin_url());
             exit;
@@ -1614,7 +1623,7 @@ class UCP
         echo '<option value="" selected="selected">Theme Default</option>';
         echo '<option class="ucp-promo" value="-1">ABeeZee</option><option class="ucp-promo" value="-1">Abel</option><option class="ucp-promo" value="-1">Abril Fatface</option><option class="ucp-promo" value="-1">Aclonica</option><option class="ucp-promo" value="-1">Acme</option><option class="ucp-promo" value="-1">Actor</option><option class="ucp-promo" value="-1">Adamina</option><option class="ucp-promo" value="-1">Advent Pro</option><option class="ucp-promo" value="-1">Aguafina Script</option><option class="ucp-promo" value="-1">Akronim</option><option class="ucp-promo" value="-1">Aladin</option><option class="ucp-promo" value="-1">Aldrich</option><option class="ucp-promo" value="-1">Alef</option><option class="ucp-promo" value="-1">Alegreya</option><option class="ucp-promo" value="-1">Alegreya SC</option><option class="ucp-promo" value="-1">Alegreya Sans</option><option class="ucp-promo" value="-1">Alegreya Sans SC</option><option class="ucp-promo" value="-1">Alex Brush</option><option class="ucp-promo" value="-1">Alfa Slab One</option><option class="ucp-promo" value="-1">Alice</option><option class="ucp-promo" value="-1">Alike</option><option class="ucp-promo" value="-1">Alike Angular</option><option class="ucp-promo" value="-1">Allan</option><option class="ucp-promo" value="-1">Allerta</option><option class="ucp-promo" value="-1">Allerta Stencil</option><option class="ucp-promo" value="-1">Allura</option><option class="ucp-promo" value="-1">Almendra</option><option class="ucp-promo" value="-1">Almendra Display</option><option class="ucp-promo" value="-1">Almendra SC</option><option class="ucp-promo" value="-1">Amarante</option><option class="ucp-promo" value="-1">Amaranth</option><option class="ucp-promo" value="-1">Amatic SC</option><option class="ucp-promo" value="-1">Amethysta</option><option class="ucp-promo" value="-1">Anaheim</option><option class="ucp-promo" value="-1">Andada</option><option class="ucp-promo" value="-1">Andika</option><option class="ucp-promo" value="-1">Angkor</option><option class="ucp-promo" value="-1">Annie Use Your Telescope</option><option class="ucp-promo" value="-1">Anonymous Pro</option><option class="ucp-promo" value="-1">Antic</option><option class="ucp-promo" value="-1">Antic Didone</option><option class="ucp-promo" value="-1">Antic Slab</option><option class="ucp-promo" value="-1">Anton</option><option class="ucp-promo" value="-1">Arapey</option><option class="ucp-promo" value="-1">Arbutus</option><option class="ucp-promo" value="-1">Arbutus Slab</option><option class="ucp-promo" value="-1">Architects Daughter</option><option class="ucp-promo" value="-1">Archivo Black</option><option class="ucp-promo" value="-1">Archivo Narrow</option><option class="ucp-promo" value="-1">Arimo</option><option class="ucp-promo" value="-1">Arizonia</option><option class="ucp-promo" value="-1">Armata</option><option class="ucp-promo" value="-1">Artifika</option><option class="ucp-promo" value="-1">Arvo</option><option class="ucp-promo" value="-1">Asap</option><option class="ucp-promo" value="-1">Asset</option><option class="ucp-promo" value="-1">Astloch</option><option class="ucp-promo" value="-1">Asul</option><option class="ucp-promo" value="-1">Atomic Age</option><option class="ucp-promo" value="-1">Aubrey</option><option class="ucp-promo" value="-1">Audiowide</option><option class="ucp-promo" value="-1">Autour One</option><option class="ucp-promo" value="-1">Average</option><option class="ucp-promo" value="-1">Average Sans</option><option class="ucp-promo" value="-1">Averia Gruesa Libre</option><option class="ucp-promo" value="-1">Averia Libre</option><option class="ucp-promo" value="-1">Averia Sans Libre</option><option class="ucp-promo" value="-1">Averia Serif Libre</option><option class="ucp-promo" value="-1">Bad Script</option><option class="ucp-promo" value="-1">Balthazar</option><option class="ucp-promo" value="-1">Bangers</option><option class="ucp-promo" value="-1">Basic</option><option class="ucp-promo" value="-1">Battambang</option><option class="ucp-promo" value="-1">Baumans</option><option class="ucp-promo" value="-1">Bayon</option><option class="ucp-promo" value="-1">Belgrano</option><option class="ucp-promo" value="-1">Belleza</option><option class="ucp-promo" value="-1">BenchNine</option><option class="ucp-promo" value="-1">Bentham</option><option class="ucp-promo" value="-1">Berkshire Swash</option><option class="ucp-promo" value="-1">Bevan</option><option class="ucp-promo" value="-1">Bigelow Rules</option><option class="ucp-promo" value="-1">Bigshot One</option><option class="ucp-promo" value="-1">Bilbo</option><option class="ucp-promo" value="-1">Bilbo Swash Caps</option><option class="ucp-promo" value="-1">Bitter</option><option class="ucp-promo" value="-1">Black Ops One</option><option class="ucp-promo" value="-1">Bokor</option><option class="ucp-promo" value="-1">Bonbon</option><option class="ucp-promo" value="-1">Boogaloo</option><option class="ucp-promo" value="-1">Bowlby One</option><option class="ucp-promo" value="-1">Bowlby One SC</option><option class="ucp-promo" value="-1">Brawler</option><option class="ucp-promo" value="-1">Bree Serif</option><option class="ucp-promo" value="-1">Bubblegum Sans</option><option class="ucp-promo" value="-1">Bubbler One</option><option class="ucp-promo" value="-1">Buda</option><option class="ucp-promo" value="-1">Buenard</option><option class="ucp-promo" value="-1">Butcherman</option><option class="ucp-promo" value="-1">Butterfly Kids</option><option class="ucp-promo" value="-1">Cabin</option><option class="ucp-promo" value="-1">Cabin Condensed</option><option class="ucp-promo" value="-1">Cabin Sketch</option><option class="ucp-promo" value="-1">Caesar Dressing</option><option class="ucp-promo" value="-1">Cagliostro</option><option class="ucp-promo" value="-1">Calligraffitti</option><option class="ucp-promo" value="-1">Cambo</option><option class="ucp-promo" value="-1">Candal</option><option class="ucp-promo" value="-1">Cantarell</option><option class="ucp-promo" value="-1">Cantata One</option><option class="ucp-promo" value="-1">Cantora One</option><option class="ucp-promo" value="-1">Capriola</option><option class="ucp-promo" value="-1">Cardo</option><option class="ucp-promo" value="-1">Carme</option><option class="ucp-promo" value="-1">Carrois Gothic</option><option class="ucp-promo" value="-1">Carrois Gothic SC</option><option class="ucp-promo" value="-1">Carter One</option><option class="ucp-promo" value="-1">Caudex</option><option class="ucp-promo" value="-1">Cedarville Cursive</option><option class="ucp-promo" value="-1">Ceviche One</option><option class="ucp-promo" value="-1">Changa One</option><option class="ucp-promo" value="-1">Chango</option><option class="ucp-promo" value="-1">Chau Philomene One</option><option class="ucp-promo" value="-1">Chela One</option><option class="ucp-promo" value="-1">Chelsea Market</option><option class="ucp-promo" value="-1">Chenla</option><option class="ucp-promo" value="-1">Cherry Cream Soda</option><option class="ucp-promo" value="-1">Cherry Swash</option><option class="ucp-promo" value="-1">Chewy</option><option class="ucp-promo" value="-1">Chicle</option><option class="ucp-promo" value="-1">Chivo</option><option class="ucp-promo" value="-1">Cinzel</option><option class="ucp-promo" value="-1">Cinzel Decorative</option><option class="ucp-promo" value="-1">Clicker Script</option><option class="ucp-promo" value="-1">Coda</option><option class="ucp-promo" value="-1">Coda Caption</option><option class="ucp-promo" value="-1">Codystar</option><option class="ucp-promo" value="-1">Combo</option><option class="ucp-promo" value="-1">Comfortaa</option><option class="ucp-promo" value="-1">Coming Soon</option><option class="ucp-promo" value="-1">Concert One</option><option class="ucp-promo" value="-1">Condiment</option><option class="ucp-promo" value="-1">Content</option><option class="ucp-promo" value="-1">Contrail One</option><option class="ucp-promo" value="-1">Convergence</option><option class="ucp-promo" value="-1">Cookie</option><option class="ucp-promo" value="-1">Copse</option><option class="ucp-promo" value="-1">Corben</option><option class="ucp-promo" value="-1">Courgette</option><option class="ucp-promo" value="-1">Cousine</option><option class="ucp-promo" value="-1">Coustard</option><option class="ucp-promo" value="-1">Covered By Your Grace</option><option class="ucp-promo" value="-1">Crafty Girls</option><option class="ucp-promo" value="-1">Creepster</option><option class="ucp-promo" value="-1">Crete Round</option><option class="ucp-promo" value="-1">Crimson Text</option><option class="ucp-promo" value="-1">Croissant One</option><option class="ucp-promo" value="-1">Crushed</option><option class="ucp-promo" value="-1">Cuprum</option><option class="ucp-promo" value="-1">Cutive</option><option class="ucp-promo" value="-1">Cutive Mono</option><option class="ucp-promo" value="-1">Damion</option><option class="ucp-promo" value="-1">Dancing Script</option><option class="ucp-promo" value="-1">Dangrek</option><option class="ucp-promo" value="-1">Dawning of a New Day</option><option class="ucp-promo" value="-1">Days One</option><option class="ucp-promo" value="-1">Delius</option><option class="ucp-promo" value="-1">Delius Swash Caps</option><option class="ucp-promo" value="-1">Delius Unicase</option><option class="ucp-promo" value="-1">Della Respira</option><option class="ucp-promo" value="-1">Denk One</option><option class="ucp-promo" value="-1">Devonshire</option><option class="ucp-promo" value="-1">Didact Gothic</option><option class="ucp-promo" value="-1">Diplomata</option><option class="ucp-promo" value="-1">Diplomata SC</option><option class="ucp-promo" value="-1">Domine</option><option class="ucp-promo" value="-1">Donegal One</option><option class="ucp-promo" value="-1">Doppio One</option><option class="ucp-promo" value="-1">Dorsa</option><option class="ucp-promo" value="-1">Dosis</option><option class="ucp-promo" value="-1">Dr Sugiyama</option><option class="ucp-promo" value="-1">Droid Sans</option><option class="ucp-promo" value="-1">Droid Sans Mono</option><option class="ucp-promo" value="-1">Droid Serif</option><option class="ucp-promo" value="-1">Duru Sans</option><option class="ucp-promo" value="-1">Dynalight</option><option class="ucp-promo" value="-1">EB Garamond</option><option class="ucp-promo" value="-1">Eagle Lake</option><option class="ucp-promo" value="-1">Eater</option><option class="ucp-promo" value="-1">Economica</option><option class="ucp-promo" value="-1">Ek Mukta</option><option class="ucp-promo" value="-1">Electrolize</option><option class="ucp-promo" value="-1">Elsie</option><option class="ucp-promo" value="-1">Elsie Swash Caps</option><option class="ucp-promo" value="-1">Emblema One</option><option class="ucp-promo" value="-1">Emilys Candy</option><option class="ucp-promo" value="-1">Engagement</option><option class="ucp-promo" value="-1">Englebert</option><option class="ucp-promo" value="-1">Enriqueta</option><option class="ucp-promo" value="-1">Erica One</option><option class="ucp-promo" value="-1">Esteban</option><option class="ucp-promo" value="-1">Euphoria Script</option><option class="ucp-promo" value="-1">Ewert</option><option class="ucp-promo" value="-1">Exo</option><option class="ucp-promo" value="-1">Exo 2</option><option class="ucp-promo" value="-1">Expletus Sans</option><option class="ucp-promo" value="-1">Fanwood Text</option><option class="ucp-promo" value="-1">Fascinate</option><option class="ucp-promo" value="-1">Fascinate Inline</option><option class="ucp-promo" value="-1">Faster One</option><option class="ucp-promo" value="-1">Fasthand</option><option class="ucp-promo" value="-1">Fauna One</option><option class="ucp-promo" value="-1">Federant</option><option class="ucp-promo" value="-1">Federo</option><option class="ucp-promo" value="-1">Felipa</option><option class="ucp-promo" value="-1">Fenix</option><option class="ucp-promo" value="-1">Finger Paint</option><option class="ucp-promo" value="-1">Fira Mono</option><option class="ucp-promo" value="-1">Fira Sans</option><option class="ucp-promo" value="-1">Fjalla One</option><option class="ucp-promo" value="-1">Fjord One</option><option class="ucp-promo" value="-1">Flamenco</option><option class="ucp-promo" value="-1">Flavors</option><option class="ucp-promo" value="-1">Fondamento</option><option class="ucp-promo" value="-1">Fontdiner Swanky</option><option class="ucp-promo" value="-1">Forum</option><option class="ucp-promo" value="-1">Francois One</option><option class="ucp-promo" value="-1">Freckle Face</option><option class="ucp-promo" value="-1">Fredericka the Great</option><option class="ucp-promo" value="-1">Fredoka One</option><option class="ucp-promo" value="-1">Freehand</option><option class="ucp-promo" value="-1">Fresca</option><option class="ucp-promo" value="-1">Frijole</option><option class="ucp-promo" value="-1">Fruktur</option><option class="ucp-promo" value="-1">Fugaz One</option><option class="ucp-promo" value="-1">GFS Didot</option><option class="ucp-promo" value="-1">GFS Neohellenic</option><option class="ucp-promo" value="-1">Gabriela</option><option class="ucp-promo" value="-1">Gafata</option><option class="ucp-promo" value="-1">Galdeano</option><option class="ucp-promo" value="-1">Galindo</option><option class="ucp-promo" value="-1">Gentium Basic</option><option class="ucp-promo" value="-1">Gentium Book Basic</option><option class="ucp-promo" value="-1">Geo</option><option class="ucp-promo" value="-1">Geostar</option><option class="ucp-promo" value="-1">Geostar Fill</option><option class="ucp-promo" value="-1">Germania One</option><option class="ucp-promo" value="-1">Gilda Display</option><option class="ucp-promo" value="-1">Give You Glory</option><option class="ucp-promo" value="-1">Glass Antiqua</option><option class="ucp-promo" value="-1">Glegoo</option><option class="ucp-promo" value="-1">Gloria Hallelujah</option><option class="ucp-promo" value="-1">Goblin One</option><option class="ucp-promo" value="-1">Gochi Hand</option><option class="ucp-promo" value="-1">Gorditas</option><option class="ucp-promo" value="-1">Goudy Bookletter 1911</option><option class="ucp-promo" value="-1">Graduate</option><option class="ucp-promo" value="-1">Grand Hotel</option><option class="ucp-promo" value="-1">Gravitas One</option><option class="ucp-promo" value="-1">Great Vibes</option><option class="ucp-promo" value="-1">Griffy</option><option class="ucp-promo" value="-1">Gruppo</option><option class="ucp-promo" value="-1">Gudea</option><option class="ucp-promo" value="-1">Habibi</option><option class="ucp-promo" value="-1">Hammersmith One</option><option class="ucp-promo" value="-1">Hanalei</option><option class="ucp-promo" value="-1">Hanalei Fill</option><option class="ucp-promo" value="-1">Handlee</option><option class="ucp-promo" value="-1">Hanuman</option><option class="ucp-promo" value="-1">Happy Monkey</option><option class="ucp-promo" value="-1">Headland One</option><option class="ucp-promo" value="-1">Henny Penny</option><option class="ucp-promo" value="-1">Herr Von Muellerhoff</option><option class="ucp-promo" value="-1">Hind</option><option class="ucp-promo" value="-1">Holtwood One SC</option><option class="ucp-promo" value="-1">Homemade Apple</option><option class="ucp-promo" value="-1">Homenaje</option><option class="ucp-promo" value="-1">IM Fell DW Pica</option><option class="ucp-promo" value="-1">IM Fell DW Pica SC</option><option class="ucp-promo" value="-1">IM Fell Double Pica</option><option class="ucp-promo" value="-1">IM Fell Double Pica SC</option><option class="ucp-promo" value="-1">IM Fell English</option><option class="ucp-promo" value="-1">IM Fell English SC</option><option class="ucp-promo" value="-1">IM Fell French Canon</option><option class="ucp-promo" value="-1">IM Fell French Canon SC</option><option class="ucp-promo" value="-1">IM Fell Great Primer</option><option class="ucp-promo" value="-1">IM Fell Great Primer SC</option><option class="ucp-promo" value="-1">Iceberg</option><option class="ucp-promo" value="-1">Iceland</option><option class="ucp-promo" value="-1">Imprima</option><option class="ucp-promo" value="-1">Inconsolata</option><option class="ucp-promo" value="-1">Inder</option><option class="ucp-promo" value="-1">Indie Flower</option><option class="ucp-promo" value="-1">Inika</option><option class="ucp-promo" value="-1">Irish Grover</option><option class="ucp-promo" value="-1">Istok Web</option><option class="ucp-promo" value="-1">Italiana</option><option class="ucp-promo" value="-1">Italianno</option><option class="ucp-promo" value="-1">Jacques Francois</option><option class="ucp-promo" value="-1">Jacques Francois Shadow</option><option class="ucp-promo" value="-1">Jim Nightshade</option><option class="ucp-promo" value="-1">Jockey One</option><option class="ucp-promo" value="-1">Jolly Lodger</option><option class="ucp-promo" value="-1">Josefin Sans</option><option class="ucp-promo" value="-1">Josefin Slab</option><option class="ucp-promo" value="-1">Joti One</option><option class="ucp-promo" value="-1">Judson</option><option class="ucp-promo" value="-1">Julee</option><option class="ucp-promo" value="-1">Julius Sans One</option><option class="ucp-promo" value="-1">Junge</option><option class="ucp-promo" value="-1">Jura</option><option class="ucp-promo" value="-1">Just Another Hand</option><option class="ucp-promo" value="-1">Just Me Again Down Here</option><option class="ucp-promo" value="-1">Kalam</option><option class="ucp-promo" value="-1">Kameron</option><option class="ucp-promo" value="-1">Kantumruy</option><option class="ucp-promo" value="-1">Karla</option><option class="ucp-promo" value="-1">Karma</option><option class="ucp-promo" value="-1">Kaushan Script</option><option class="ucp-promo" value="-1">Kavoon</option><option class="ucp-promo" value="-1">Kdam Thmor</option><option class="ucp-promo" value="-1">Keania One</option><option class="ucp-promo" value="-1">Kelly Slab</option><option class="ucp-promo" value="-1">Kenia</option><option class="ucp-promo" value="-1">Khmer</option><option class="ucp-promo" value="-1">Kite One</option><option class="ucp-promo" value="-1">Knewave</option><option class="ucp-promo" value="-1">Kotta One</option><option class="ucp-promo" value="-1">Koulen</option><option class="ucp-promo" value="-1">Kranky</option><option class="ucp-promo" value="-1">Kreon</option><option class="ucp-promo" value="-1">Kristi</option><option class="ucp-promo" value="-1">Krona One</option><option class="ucp-promo" value="-1">La Belle Aurore</option><option class="ucp-promo" value="-1">Lancelot</option><option class="ucp-promo" value="-1">Lato</option><option class="ucp-promo" value="-1">League Script</option><option class="ucp-promo" value="-1">Leckerli One</option><option class="ucp-promo" value="-1">Ledger</option><option class="ucp-promo" value="-1">Lekton</option><option class="ucp-promo" value="-1">Lemon</option><option class="ucp-promo" value="-1">Libre Baskerville</option><option class="ucp-promo" value="-1">Life Savers</option><option class="ucp-promo" value="-1">Lilita One</option><option class="ucp-promo" value="-1">Lily Script One</option><option class="ucp-promo" value="-1">Limelight</option><option class="ucp-promo" value="-1">Linden Hill</option><option class="ucp-promo" value="-1">Lobster</option><option class="ucp-promo" value="-1">Lobster Two</option><option class="ucp-promo" value="-1">Londrina Outline</option><option class="ucp-promo" value="-1">Londrina Shadow</option><option class="ucp-promo" value="-1">Londrina Sketch</option><option class="ucp-promo" value="-1">Londrina Solid</option><option class="ucp-promo" value="-1">Lora</option><option class="ucp-promo" value="-1">Love Ya Like A Sister</option><option class="ucp-promo" value="-1">Loved by the King</option><option class="ucp-promo" value="-1">Lovers Quarrel</option><option class="ucp-promo" value="-1">Luckiest Guy</option><option class="ucp-promo" value="-1">Lusitana</option><option class="ucp-promo" value="-1">Lustria</option><option class="ucp-promo" value="-1">Macondo</option><option class="ucp-promo" value="-1">Macondo Swash Caps</option><option class="ucp-promo" value="-1">Magra</option><option class="ucp-promo" value="-1">Maiden Orange</option><option class="ucp-promo" value="-1">Mako</option><option class="ucp-promo" value="-1">Marcellus</option><option class="ucp-promo" value="-1">Marcellus SC</option><option class="ucp-promo" value="-1">Marck Script</option><option class="ucp-promo" value="-1">Margarine</option><option class="ucp-promo" value="-1">Marko One</option><option class="ucp-promo" value="-1">Marmelad</option><option class="ucp-promo" value="-1">Marvel</option><option class="ucp-promo" value="-1">Mate</option><option class="ucp-promo" value="-1">Mate SC</option><option class="ucp-promo" value="-1">Maven Pro</option><option class="ucp-promo" value="-1">McLaren</option><option class="ucp-promo" value="-1">Meddon</option><option class="ucp-promo" value="-1">MedievalSharp</option><option class="ucp-promo" value="-1">Medula One</option><option class="ucp-promo" value="-1">Megrim</option><option class="ucp-promo" value="-1">Meie Script</option><option class="ucp-promo" value="-1">Merienda</option><option class="ucp-promo" value="-1">Merienda One</option><option class="ucp-promo" value="-1">Merriweather</option><option class="ucp-promo" value="-1">Merriweather Sans</option><option class="ucp-promo" value="-1">Metal</option><option class="ucp-promo" value="-1">Metal Mania</option><option class="ucp-promo" value="-1">Metamorphous</option><option class="ucp-promo" value="-1">Metrophobic</option><option class="ucp-promo" value="-1">Michroma</option><option class="ucp-promo" value="-1">Milonga</option><option class="ucp-promo" value="-1">Miltonian</option><option class="ucp-promo" value="-1">Miltonian Tattoo</option><option class="ucp-promo" value="-1">Miniver</option><option class="ucp-promo" value="-1">Miss Fajardose</option><option class="ucp-promo" value="-1">Modern Antiqua</option><option class="ucp-promo" value="-1">Molengo</option><option class="ucp-promo" value="-1">Molle</option><option class="ucp-promo" value="-1">Monda</option><option class="ucp-promo" value="-1">Monofett</option><option class="ucp-promo" value="-1">Monoton</option><option class="ucp-promo" value="-1">Monsieur La Doulaise</option><option class="ucp-promo" value="-1">Montaga</option><option class="ucp-promo" value="-1">Montez</option><option class="ucp-promo" value="-1">Montserrat</option><option class="ucp-promo" value="-1">Montserrat Alternates</option><option class="ucp-promo" value="-1">Montserrat Subrayada</option><option class="ucp-promo" value="-1">Moul</option><option class="ucp-promo" value="-1">Moulpali</option><option class="ucp-promo" value="-1">Mountains of Christmas</option><option class="ucp-promo" value="-1">Mouse Memoirs</option><option class="ucp-promo" value="-1">Mr Bedfort</option><option class="ucp-promo" value="-1">Mr Dafoe</option><option class="ucp-promo" value="-1">Mr De Haviland</option><option class="ucp-promo" value="-1">Mrs Saint Delafield</option><option class="ucp-promo" value="-1">Mrs Sheppards</option><option class="ucp-promo" value="-1">Muli</option><option class="ucp-promo" value="-1">Mystery Quest</option><option class="ucp-promo" value="-1">Neucha</option><option class="ucp-promo" value="-1">Neuton</option><option class="ucp-promo" value="-1">New Rocker</option><option class="ucp-promo" value="-1">News Cycle</option><option class="ucp-promo" value="-1">Niconne</option><option class="ucp-promo" value="-1">Nixie One</option><option class="ucp-promo" value="-1">Nobile</option><option class="ucp-promo" value="-1">Nokora</option><option class="ucp-promo" value="-1">Norican</option><option class="ucp-promo" value="-1">Nosifer</option><option class="ucp-promo" value="-1">Nothing You Could Do</option><option class="ucp-promo" value="-1">Noticia Text</option><option class="ucp-promo" value="-1">Noto Sans</option><option class="ucp-promo" value="-1">Noto Serif</option><option class="ucp-promo" value="-1">Nova Cut</option><option class="ucp-promo" value="-1">Nova Flat</option><option class="ucp-promo" value="-1">Nova Mono</option><option class="ucp-promo" value="-1">Nova Oval</option><option class="ucp-promo" value="-1">Nova Round</option><option class="ucp-promo" value="-1">Nova Script</option><option class="ucp-promo" value="-1">Nova Slim</option><option class="ucp-promo" value="-1">Nova Square</option><option class="ucp-promo" value="-1">Numans</option><option class="ucp-promo" value="-1">Nunito</option><option class="ucp-promo" value="-1">Odor Mean Chey</option><option class="ucp-promo" value="-1">Offside</option><option class="ucp-promo" value="-1">Old Standard TT</option><option class="ucp-promo" value="-1">Oldenburg</option><option class="ucp-promo" value="-1">Oleo Script</option><option class="ucp-promo" value="-1">Oleo Script Swash Caps</option><option class="ucp-promo" value="-1">Open Sans</option><option class="ucp-promo" value="-1">Open Sans Condensed</option><option class="ucp-promo" value="-1">Oranienbaum</option><option class="ucp-promo" value="-1">Orbitron</option><option class="ucp-promo" value="-1">Oregano</option><option class="ucp-promo" value="-1">Orienta</option><option class="ucp-promo" value="-1">Original Surfer</option><option class="ucp-promo" value="-1">Oswald</option><option class="ucp-promo" value="-1">Over the Rainbow</option><option class="ucp-promo" value="-1">Overlock</option><option class="ucp-promo" value="-1">Overlock SC</option><option class="ucp-promo" value="-1">Ovo</option><option class="ucp-promo" value="-1">Oxygen</option><option class="ucp-promo" value="-1">Oxygen Mono</option><option class="ucp-promo" value="-1">PT Mono</option><option class="ucp-promo" value="-1">PT Sans</option><option class="ucp-promo" value="-1">PT Sans Caption</option><option class="ucp-promo" value="-1">PT Sans Narrow</option><option class="ucp-promo" value="-1">PT Serif</option><option class="ucp-promo" value="-1">PT Serif Caption</option><option class="ucp-promo" value="-1">Pacifico</option><option class="ucp-promo" value="-1">Paprika</option><option class="ucp-promo" value="-1">Parisienne</option><option class="ucp-promo" value="-1">Passero One</option><option class="ucp-promo" value="-1">Passion One</option><option class="ucp-promo" value="-1">Pathway Gothic One</option><option class="ucp-promo" value="-1">Patrick Hand</option><option class="ucp-promo" value="-1">Patrick Hand SC</option><option class="ucp-promo" value="-1">Patua One</option><option class="ucp-promo" value="-1">Paytone One</option><option class="ucp-promo" value="-1">Peralta</option><option class="ucp-promo" value="-1">Permanent Marker</option><option class="ucp-promo" value="-1">Petit Formal Script</option><option class="ucp-promo" value="-1">Petrona</option><option class="ucp-promo" value="-1">Philosopher</option><option class="ucp-promo" value="-1">Piedra</option><option class="ucp-promo" value="-1">Pinyon Script</option><option class="ucp-promo" value="-1">Pirata One</option><option class="ucp-promo" value="-1">Plaster</option><option class="ucp-promo" value="-1">Play</option><option class="ucp-promo" value="-1">Playball</option><option class="ucp-promo" value="-1">Playfair Display</option><option class="ucp-promo" value="-1">Playfair Display SC</option><option class="ucp-promo" value="-1">Podkova</option><option class="ucp-promo" value="-1">Poiret One</option><option class="ucp-promo" value="-1">Poller One</option><option class="ucp-promo" value="-1">Poly</option><option class="ucp-promo" value="-1">Pompiere</option><option class="ucp-promo" value="-1">Pontano Sans</option><option class="ucp-promo" value="-1">Port Lligat Sans</option><option class="ucp-promo" value="-1">Port Lligat Slab</option><option class="ucp-promo" value="-1">Prata</option><option class="ucp-promo" value="-1">Preahvihear</option><option class="ucp-promo" value="-1">Press Start 2P</option><option class="ucp-promo" value="-1">Princess Sofia</option><option class="ucp-promo" value="-1">Prociono</option><option class="ucp-promo" value="-1">Prosto One</option><option class="ucp-promo" value="-1">Puritan</option><option class="ucp-promo" value="-1">Purple Purse</option><option class="ucp-promo" value="-1">Quando</option><option class="ucp-promo" value="-1">Quantico</option><option class="ucp-promo" value="-1">Quattrocento</option><option class="ucp-promo" value="-1">Quattrocento Sans</option><option class="ucp-promo" value="-1">Questrial</option><option class="ucp-promo" value="-1">Quicksand</option><option class="ucp-promo" value="-1">Quintessential</option><option class="ucp-promo" value="-1">Qwigley</option><option class="ucp-promo" value="-1">Racing Sans One</option><option class="ucp-promo" value="-1">Radley</option><option class="ucp-promo" value="-1">Rajdhani</option><option class="ucp-promo" value="-1">Raleway</option><option class="ucp-promo" value="-1">Raleway Dots</option><option class="ucp-promo" value="-1">Rambla</option><option class="ucp-promo" value="-1">Rammetto One</option><option class="ucp-promo" value="-1">Ranchers</option><option class="ucp-promo" value="-1">Rancho</option><option class="ucp-promo" value="-1">Rationale</option><option class="ucp-promo" value="-1">Redressed</option><option class="ucp-promo" value="-1">Reenie Beanie</option><option class="ucp-promo" value="-1">Revalia</option><option class="ucp-promo" value="-1">Ribeye</option><option class="ucp-promo" value="-1">Ribeye Marrow</option><option class="ucp-promo" value="-1">Righteous</option><option class="ucp-promo" value="-1">Risque</option><option class="ucp-promo" value="-1">Roboto</option><option class="ucp-promo" value="-1">Roboto Condensed</option><option class="ucp-promo" value="-1">Roboto Slab</option><option class="ucp-promo" value="-1">Rochester</option><option class="ucp-promo" value="-1">Rock Salt</option><option class="ucp-promo" value="-1">Rokkitt</option><option class="ucp-promo" value="-1">Romanesco</option><option class="ucp-promo" value="-1">Ropa Sans</option><option class="ucp-promo" value="-1">Rosario</option><option class="ucp-promo" value="-1">Rosarivo</option><option class="ucp-promo" value="-1">Rouge Script</option><option class="ucp-promo" value="-1">Rubik Mono One</option><option class="ucp-promo" value="-1">Rubik One</option><option class="ucp-promo" value="-1">Ruda</option><option class="ucp-promo" value="-1">Rufina</option><option class="ucp-promo" value="-1">Ruge Boogie</option><option class="ucp-promo" value="-1">Ruluko</option><option class="ucp-promo" value="-1">Rum Raisin</option><option class="ucp-promo" value="-1">Ruslan Display</option><option class="ucp-promo" value="-1">Russo One</option><option class="ucp-promo" value="-1">Ruthie</option><option class="ucp-promo" value="-1">Rye</option><option class="ucp-promo" value="-1">Sacramento</option><option class="ucp-promo" value="-1">Sail</option><option class="ucp-promo" value="-1">Salsa</option><option class="ucp-promo" value="-1">Sanchez</option><option class="ucp-promo" value="-1">Sancreek</option><option class="ucp-promo" value="-1">Sansita One</option><option class="ucp-promo" value="-1">Sarina</option><option class="ucp-promo" value="-1">Satisfy</option><option class="ucp-promo" value="-1">Scada</option><option class="ucp-promo" value="-1">Schoolbell</option><option class="ucp-promo" value="-1">Seaweed Script</option><option class="ucp-promo" value="-1">Sevillana</option><option class="ucp-promo" value="-1">Seymour One</option><option class="ucp-promo" value="-1">Shadows Into Light</option><option class="ucp-promo" value="-1">Shadows Into Light Two</option><option class="ucp-promo" value="-1">Shanti</option><option class="ucp-promo" value="-1">Share</option><option class="ucp-promo" value="-1">Share Tech</option><option class="ucp-promo" value="-1">Share Tech Mono</option><option class="ucp-promo" value="-1">Shojumaru</option><option class="ucp-promo" value="-1">Short Stack</option><option class="ucp-promo" value="-1">Siemreap</option><option class="ucp-promo" value="-1">Sigmar One</option><option class="ucp-promo" value="-1">Signika</option><option class="ucp-promo" value="-1">Signika Negative</option><option class="ucp-promo" value="-1">Simonetta</option><option class="ucp-promo" value="-1">Sintony</option><option class="ucp-promo" value="-1">Sirin Stencil</option><option class="ucp-promo" value="-1">Six Caps</option><option class="ucp-promo" value="-1">Skranji</option><option class="ucp-promo" value="-1">Slabo 13px</option><option class="ucp-promo" value="-1">Slabo 27px</option><option class="ucp-promo" value="-1">Slackey</option><option class="ucp-promo" value="-1">Smokum</option><option class="ucp-promo" value="-1">Smythe</option><option class="ucp-promo" value="-1">Sniglet</option><option class="ucp-promo" value="-1">Snippet</option><option class="ucp-promo" value="-1">Snowburst One</option><option class="ucp-promo" value="-1">Sofadi One</option><option class="ucp-promo" value="-1">Sofia</option><option class="ucp-promo" value="-1">Sonsie One</option><option class="ucp-promo" value="-1">Sorts Mill Goudy</option><option class="ucp-promo" value="-1">Source Code Pro</option><option class="ucp-promo" value="-1">Source Sans Pro</option><option class="ucp-promo" value="-1">Source Serif Pro</option><option class="ucp-promo" value="-1">Special Elite</option><option class="ucp-promo" value="-1">Spicy Rice</option><option class="ucp-promo" value="-1">Spinnaker</option><option class="ucp-promo" value="-1">Spirax</option><option class="ucp-promo" value="-1">Squada One</option><option class="ucp-promo" value="-1">Stalemate</option><option class="ucp-promo" value="-1">Stalinist One</option><option class="ucp-promo" value="-1">Stardos Stencil</option><option class="ucp-promo" value="-1">Stint Ultra Condensed</option><option class="ucp-promo" value="-1">Stint Ultra Expanded</option><option class="ucp-promo" value="-1">Stoke</option><option class="ucp-promo" value="-1">Strait</option><option class="ucp-promo" value="-1">Sue Ellen Francisco</option><option class="ucp-promo" value="-1">Sunshiney</option><option class="ucp-promo" value="-1">Supermercado One</option><option class="ucp-promo" value="-1">Suwannaphum</option><option class="ucp-promo" value="-1">Swanky and Moo Moo</option><option class="ucp-promo" value="-1">Syncopate</option><option class="ucp-promo" value="-1">Tangerine</option><option class="ucp-promo" value="-1">Taprom</option><option class="ucp-promo" value="-1">Tauri</option><option class="ucp-promo" value="-1">Teko</option><option class="ucp-promo" value="-1">Telex</option><option class="ucp-promo" value="-1">Tenor Sans</option><option class="ucp-promo" value="-1">Text Me One</option><option class="ucp-promo" value="-1">The Girl Next Door</option><option class="ucp-promo" value="-1">Tienne</option><option class="ucp-promo" value="-1">Tinos</option><option class="ucp-promo" value="-1">Titan One</option><option class="ucp-promo" value="-1">Titillium Web</option><option class="ucp-promo" value="-1">Trade Winds</option><option class="ucp-promo" value="-1">Trocchi</option><option class="ucp-promo" value="-1">Trochut</option><option class="ucp-promo" value="-1">Trykker</option><option class="ucp-promo" value="-1">Tulpen One</option><option class="ucp-promo" value="-1">Ubuntu</option><option class="ucp-promo" value="-1">Ubuntu Condensed</option><option class="ucp-promo" value="-1">Ubuntu Mono</option><option class="ucp-promo" value="-1">Ultra</option><option class="ucp-promo" value="-1">Uncial Antiqua</option><option class="ucp-promo" value="-1">Underdog</option><option class="ucp-promo" value="-1">Unica One</option><option class="ucp-promo" value="-1">UnifrakturCook</option><option class="ucp-promo" value="-1">UnifrakturMaguntia</option><option class="ucp-promo" value="-1">Unkempt</option><option class="ucp-promo" value="-1">Unlock</option><option class="ucp-promo" value="-1">Unna</option><option class="ucp-promo" value="-1">VT323</option><option class="ucp-promo" value="-1">Vampiro One</option><option class="ucp-promo" value="-1">Varela</option><option class="ucp-promo" value="-1">Varela Round</option><option class="ucp-promo" value="-1">Vast Shadow</option><option class="ucp-promo" value="-1">Vibur</option><option class="ucp-promo" value="-1">Vidaloka</option><option class="ucp-promo" value="-1">Viga</option><option class="ucp-promo" value="-1">Voces</option><option class="ucp-promo" value="-1">Volkhov</option><option class="ucp-promo" value="-1">Vollkorn</option><option class="ucp-promo" value="-1">Voltaire</option><option class="ucp-promo" value="-1">Waiting for the Sunrise</option><option class="ucp-promo" value="-1">Wallpoet</option><option class="ucp-promo" value="-1">Walter Turncoat</option><option class="ucp-promo" value="-1">Warnes</option><option class="ucp-promo" value="-1">Wellfleet</option><option class="ucp-promo" value="-1">Wendy One</option><option class="ucp-promo" value="-1">Wire One</option><option class="ucp-promo" value="-1">Yanone Kaffeesatz</option><option class="ucp-promo" value="-1">Yellowtail</option><option class="ucp-promo" value="-1">Yeseva One</option><option class="ucp-promo" value="-1">Yesteryear</option><option class="ucp-promo" value="-1">Zeyada</option>';
         echo '</select>';
-        echo '<p class="description">Choose one of 600+ beautiful Google fonts or use the default, theme set one. This is a <a href="#" class="open-ucp-upsell" data-pro-ad="content_font">PRO feature</a>.</p>';
+        echo '<p class="description">Choose one of 600+ beautiful Bunny fonts or use the default, theme set one. This is a <a href="#" class="open-ucp-upsell" data-pro-ad="content_font">PRO feature</a>.</p>';
         echo '</td>';
         echo '</tr>';
 
@@ -1829,7 +1838,7 @@ class UCP
 
         echo '<table class="form-table">';
         echo '<tr valign="top">
-    <td colspan="2"><b style="margin-bottom: 10px; display: inline-block;">' . esc_attr__('Theme', 'under-construction-page') . '</b> (<a target="_blank" href="' . esc_url(self::generate_web_link('themes-browse-premium', 'templates')) . '">browse 300+ premium themes</a>)<br>';
+    <td colspan="2"><b style="margin-bottom: 10px; display: inline-block;">' . esc_attr__('Theme', 'under-construction-page') . '</b> (<a target="_blank" href="' . esc_url(self::generate_web_link('themes-browse-premium', 'templates')) . '">browse 350+ premium themes</a>)<br>';
         echo '<input type="hidden" id="theme_id" name="' . esc_attr(UCP_OPTIONS_KEY) . '[theme]" value="' . esc_attr($options['theme']) . '">';
 
         foreach ($themes as $theme_id => $theme_name) {
@@ -2040,7 +2049,6 @@ class UCP
         if (UCP_license::is_activated()) {
             $plugin = plugin_basename(__FILE__);
             $update_url = wp_nonce_url(admin_url('update.php?action=upgrade-plugin&amp;plugin=' . urlencode($plugin)), 'upgrade-plugin_' . $plugin);
-            echo '<p style="text-align: center;"><a href="' . esc_url($update_url) . '" class="button button-primary button-large">Update UnderConstructionPage files to PRO</a><br><br></p>';
         } else {
             echo '<div id="ucp-earlybird"><span>Build <b>landing pages, coming soon pages, maintenance &amp; under construction pages</b> faster &amp; easier!</span>';
             if (self::is_promo_active() == 'welcome') {
@@ -2062,6 +2070,7 @@ class UCP
     <th scope="row"><label for="license_key">' . esc_attr__('License Key', 'under-construction-page') . '</label></th>';
         echo '<td><input type="text" id="license_key" class="regular-text" name="' . esc_attr(UCP_OPTIONS_KEY) . '[license_key]" value="' . esc_attr($options['license_key']) . '" placeholder="12345-12345-12345-12345" />';
         echo '<p class="description">License key is located in the confirmation email you received after purchasing.<br>In case of any problems, please contact <a href="#" data-tab="4" class="change_tab">support</a>. If you don\'t have a PRO license key - <a data-pro-ad="get_key" href="#" class="open-ucp-upsell">get it now</a>.</p>';
+        echo '<p class="description">By attempting to activate a license you agree to share the following data with <a href="https://www.webfactoryltd.com/" target="_blank">WebFactory Ltd</a>: license key, site URL, site IP address, site title, site WP version, and UnderConstructionPage (free) version.</p>';
         echo '</td></tr>';
 
         if (!empty($options['license_key'])) {
@@ -2102,7 +2111,6 @@ class UCP
 
         echo '<p class="submit">';
         self::wp_kses_wf(get_submit_button(esc_attr__('Save &amp; Validate License Key', 'under-construction-page'), 'large secondary', 'license-submit', false));
-        echo '<br><br><small><i>By attempting to activate a license you agree to share the following data with <a href="https://www.webfactoryltd.com/" target="_blank">WebFactory Ltd</a>: license key, site URL, site title, site WP version, and UnderConstructionPage (free) version.</i></small>';
         echo '</p>';
     } // tab_pro
 
@@ -2150,14 +2158,30 @@ class UCP
 
         echo '</form>'; // ucp_tabs
 
-        if (!defined('WPFSSL_OPTIONS_KEY')) {
-            echo '<div id="wpfssl-ad">';
-            echo '<h3 class="textcenter"><b>Problems with SSL certificate?<br>Moving a site from HTTP to HTTPS?<br>Mixed content giving you troubles?</b><br><br><u>Fix all SSL problems with one plugin!</u></h3>';
-            echo '<p class="textcenter"><a href="#" class="textcenter install-wpfssl"><img style="max-width: 90%;" src="' . esc_url(UCP_PLUGIN_URL) . '/images/wp-force-ssl-logo.png" alt="WP Force SSL" title="WP Force SSL"></a></p>';
-            echo '<p class="textcenter"><br><a href="#" class="install-wpfssl button button-primary">Install &amp; activate the free WP Force SSL plugin</a></p><p><a href="https://wordpress.org/plugins/wp-force-ssl/" target="_blank">WP Force SSL</a> is a free WP plugin maintained by the same team as this Maintenance plugin. It has <b>+150,000 users, 5-star rating</b>, and is hosted on the official WP repository.</p>';
-            echo '</div>';
-        }
+        echo '<div id="ucp-sidebar-ads">';
+        echo '<div id="ucp-ad">';
+        echo '<h3 class="textcenter">Upgrade to build landing pages, coming soon pages, maintenance &amp; under construction pages faster &amp; easier!</h3>';
+        echo '<p class="textcenter"><a href="#" class="textcenter open-ucp-upsell" data-pro-ad="sidebar-logo"><img style="max-width: 90%;" src="' . esc_url(UCP_PLUGIN_URL) . '/images/ucp_pro_logo.png" alt="UnderConstructionPage PRO" title="UnderConstructionPage PRO"></a></p>';
+        echo '<ul class="plain-list">
+        <li>350+ templates</li>
+        <li>5+ million searchable HD images</li>
+        <li>Drag &amp; drop builder</li>
+        <li>Email autoresponders integration</li>
+        <li>Affiliate &amp; traffic tracking</li>
+        <li>White-label Mode</li>
+        <li>Friendly email support from plugin developers</li>
+        </ul>';
+        echo '<p class="textcenter"><a href="#" class="button button-primary button-large open-ucp-upsell" data-pro-ad="sidebar-button">Get PRO Now</a></p>';
+        echo '</div>';
 
+        if (!defined('WPFSSL_OPTIONS_KEY')) {
+          echo '<div id="wpfssl-ad">';
+          echo '<h3 class="textcenter"><b>Problems with SSL certificate?<br>Moving a site from HTTP to HTTPS?<br>Mixed content giving you troubles?</b><br><br><u>Fix all SSL problems with one plugin!</u></h3>';
+          echo '<p class="textcenter"><a href="#" class="textcenter install-wpfssl"><img style="max-width: 90%;" src="' . esc_url(UCP_PLUGIN_URL) . '/images/wp-force-ssl-logo.png" alt="WP Force SSL" title="WP Force SSL"></a></p>';
+          echo '<p class="textcenter"><br><a href="#" class="install-wpfssl button button-primary">Install &amp; activate the free WP Force SSL plugin</a></p><p><a href="https://wordpress.org/plugins/wp-force-ssl/" target="_blank">WP Force SSL</a> is a free WP plugin maintained by the same team as this Maintenance plugin. It has <b>+150,000 users, 5-star rating</b>, and is hosted on the official WP repository.</p>';
+          echo '</div>';
+        }
+        echo '</div>';
         echo '</div>'; // wrap
 
         // weglot install dialog
@@ -2178,21 +2202,17 @@ class UCP
 
         $promo = self::is_promo_active();
         if ($promo == 'welcome') {
-            $header = 'A <b>welcoming discount</b> has been applied to selected packages! It\'s <b>time limited</b> and available for only another <b class="ucp-countdown">59min 30sec</b>.';
-            $products['agency'] = array('link' => self::generate_web_link('pricing-table', 'buy/', array('p' => 'agency-lifetime-welcome', 'r' => 'UCP v' . self::$version)), 'price' => 'BUY NOW <u>$51 OFF</u><br><del>$250</del> $199<br><small>Discount ends in <b class="ucp-countdown">59min 30sec</b></small>');
-            $products['pro-lifetime'] = array('link' => self::generate_web_link('pricing-table', 'buy/', array('p' => 'pro-lifetime-welcome', 'r' => 'UCP v' . self::$version)), 'price' => 'BUY NOW <u>20% OFF</u><br><del>$69</del> $55<br><small>Discount ends in <b class="ucp-countdown">59min 30sec</b></small>');
-            $products['pro-yearly'] = array('link' => self::generate_web_link('pricing-table', 'buy/', array('p' => 'pro-monthly', 'r' => 'UCP v' . self::$version)), 'price' => 'BUY NOW<br>$8.99<small>/month</small>');
+          $header = 'A <b>welcoming discount</b> has been applied to selected packages! It\'s <b>time limited</b> and available for only another <b class="ucp-countdown">59min 30sec</b>.';
         } elseif ($promo == 'olduser') {
-            $header = 'A special <b>discount for long-term users</b> has been applied to selected packages!';
-            $products['agency'] = array('link' => self::generate_web_link('pricing-table', 'buy/', array('p' => 'agency-lifetime-olduser', 'r' => 'UCP v' . self::$version)), 'price' => 'BUY NOW <u>$51 OFF</u><br><del>$250</del> $199');
-            $products['pro-lifetime'] = array('link' => self::generate_web_link('pricing-table', 'buy/', array('p' => 'pro-lifetime-olduser', 'r' => 'UCP v' . self::$version)), 'price' => 'BUY NOW <u>20% OFF</u><br><del>$69</del> $55');
-            $products['pro-yearly'] = array('link' => self::generate_web_link('pricing-table', 'buy/', array('p' => 'pro-monthly', 'r' => 'UCP v' . self::$version)), 'price' => 'BUY NOW<br>$8.99<small>/month</small>');
+          $header = 'A special <b>discount for long-term users</b> has been applied to selected packages!';
         } else {
-            $header = '';
-            $products['agency'] = array('link' => self::generate_web_link('pricing-table', 'buy/', array('p' => 'agency-lifetime', 'r' => 'UCP v' . self::$version)), 'price' => 'BUY NOW<br>$250');
-            $products['pro-lifetime'] = array('link' => self::generate_web_link('pricing-table', 'buy/', array('p' => 'pro-lifetime', 'r' => 'UCP v' . self::$version)), 'price' => 'BUY NOW<br>$69');
-            $products['pro-yearly'] = array('link' => self::generate_web_link('pricing-table', 'buy/', array('p' => 'pro-monthly', 'r' => 'UCP v' . self::$version)), 'price' => 'BUY NOW<br>$8.99<small>/month</small>');
+          $header = '';
         }
+
+        $products['agency'] = array('link' => self::generate_web_link('pricing-table', 'buy2/', array('product' => 'agency-welcome')), 'price' => 'BUY NOW <u>$51 OFF</u><br><del>$250</del> $199<br><small>Discount ends in <b class="ucp-countdown">59min 30sec</b></small>');
+        $products['team'] = array('link' => self::generate_web_link('pricing-table', 'buy2/', array('product' => 'team-welcome')), 'price' => 'BUY NOW <u>$30 OFF</u><br><del>$119</del> $89<br><small>Discount ends in <b class="ucp-countdown">59min 30sec</b></small>');
+        $products['personal-monthly'] = array('link' => self::generate_web_link('pricing-table', 'buy2/', array('product' => 'personal-monthly')), 'price' => 'only $8.99<small>/month</small>');
+        $products['personal-yearly'] = array('link' => self::generate_web_link('pricing-table', 'buy2/', array('product' => 'personal-yearly')), 'price' => 'BUY NOW<br>$49<small>/year</small>');
 
         // upsell dialog
         echo '<div id="upsell-dialog" style="display: none;" title="UnderConstructionPage PRO"><span class="ui-helper-hidden-accessible"><input type="text"/></span>';
@@ -2209,12 +2229,12 @@ class UCP
         echo '</div>';
 
         echo '<div class="ucp-pro-feature">';
-        echo '<span>2.5+ Million HD Searchable Images</span>';
+        echo '<span>5+ Million HD Searchable Images</span>';
         echo '<p>There\'s nothing worse than googling for hours just to find that the perfect image you need is either copyrighted or too small. Enjoy a vast library of 4K+ sized images - categorized &amp; copyright free!</p>';
         echo '</div>';
 
         echo '<div class="ucp-pro-feature">';
-        echo '<span>220+ Templates</span>';
+        echo '<span>350+ Templates</span>';
         echo '<p>Building your own page from scratch is fun, but often you don\'t have time to do it! Use one of our purpose-built templates, change a few lines of text and you\'re ready to rock!</p>';
         echo '</div>';
 
@@ -2249,20 +2269,20 @@ class UCP
         <h3>Lifetime<br>Agency License</h3>
       </td>
       <td>
-        <h3>Lifetime<br>PRO License</h3>
+        <h3>Lifetime<br>Team License</h3>
       </td>
       <td>
-        <h3>Personal<br>PRO License</h3>
+        <h3>Personal<br>License</h3>
       </td>
     </tr>
     <tr>
       <td>One Time Payment</td>
       <td>One Time Payment</td>
-      <td>Monthly/Yearly Payment</td>
+      <td>Yearly / Monthly Payment</td>
     </tr>
     <tr>
       <td>100 Client or Personal Sites<br>(licenses are transferable between sites)</td>
-      <td>3 Personal or Client Sites</td>
+      <td>5 Personal or Client Sites</td>
       <td>3 Personal Sites</td>
     </tr>
     <tr>
@@ -2273,26 +2293,26 @@ class UCP
     <tr>
       <td>Lifetime Priority Support &amp; Updates</td>
       <td>Lifetime Support &amp; Updates</td>
-      <td>1 Month/Year of Support &amp; Updates</td>
+      <td>1 Year/Month of Support &amp; Updates</td>
     </tr>
     <tr style="display: none;">
-      <td>3.5 Million+ Hi-Res Images</td>
-      <td>3.5 Million+ Hi-Res Images</td>
-      <td>3.5 Million+ Hi-Res Images</td>
+      <td>5 Million+ Hi-Res Images</td>
+      <td>5 Million+ Hi-Res Images</td>
+      <td>5 Million+ Hi-Res Images</td>
     </tr>
     <tr>
-      <td>Drag&amp;Drop Builder</td>
-      <td>Drag&amp;Drop Builder</td>
-      <td>Drag&amp;Drop Builder</td>
+      <td>Drag &amp; Drop Builder</td>
+      <td>Drag &amp; Drop Builder</td>
+      <td>Drag &amp; Drop Builder</td>
     </tr>
     <tr>
-      <td>140+ PRO Templates</td>
-      <td>140+ PRO Templates</td>
-      <td>140+ PRO Templates</td>
+      <td>150+ PRO Templates</td>
+      <td>150+ PRO Templates</td>
+      <td>150+ PRO Templates</td>
     </tr>
     <tr>
-      <td>130+ Agency Templates</td>
-      <td><span class="dashicons dashicons-no"></td>
+      <td>150+ Agency Templates</td>
+      <td>150+ Agency Templates</td>
       <td><span class="dashicons dashicons-no"></td>
     </tr>
     <tr>
@@ -2307,18 +2327,20 @@ class UCP
         echo '</a>
       </td>
       <td>
-        <a data-href-org="' . esc_url($products['pro-lifetime']['link']) . '" class="promo-button go-to-license-key" href="' . esc_url($products['pro-lifetime']['link']) . '" target="_blank">';
-        self::wp_kses_wf($products['pro-lifetime']['price']);
+        <a data-href-org="' . esc_url($products['team']['link']) . '" class="promo-button go-to-license-key" href="' . esc_url($products['team']['link']) . '" target="_blank">';
+        self::wp_kses_wf($products['team']['price']);
         echo '</a>
       </td>
       <td>
-        <a data-href-org="' . esc_url($products['pro-yearly']['link']) . '" class="promo-button go-to-license-key" href="' . esc_url($products['pro-yearly']['link']) . '" target="_blank">';
-        self::wp_kses_wf($products['pro-yearly']['price']);
+        <a style="margin-bottom: 8px;" data-href-org="' . esc_url($products['personal-yearly']['link']) . '" class="promo-button go-to-license-key" href="' . esc_url($products['personal-yearly']['link']) . '" target="_blank">';
+        self::wp_kses_wf($products['personal-yearly']['price']);
+        echo '</a>or <a target="_blank" class="go-to-license-key promo-link" data-href-org="' . esc_url($products['personal-monthly']['link']) . '" href="' . esc_url($products['personal-monthly']['link']) . '">';
+        self::wp_kses_wf($products['personal-monthly']['price']);
         echo '</a>
       </td>
     </tr>
     <tr class="bb0">
-    <td colspan="3"><span class="instant-download"><span class="dashicons dashicons-yes"></span> Secure payment <span class="dashicons dashicons-yes"></span> Instant activation from WP admin <span class="dashicons dashicons-yes"></span> 100% No-Risk 7 Day Money Back Guarantee</span></td>
+    <td colspan="3"><span class="instant-download"><span class="dashicons dashicons-yes"></span> Secure payment via Paddle <span class="dashicons dashicons-yes"></span> Instant activation from WP admin <span class="dashicons dashicons-yes"></span> 100% No-Risk 7 Day Money Back Guarantee</span></td>
     </tr>
   </tbody>
 </table>';
@@ -2372,6 +2394,8 @@ class UCP
     // auto download / install / activate Weglot plugin
     static function install_weglot()
     {
+        check_ajax_referer('install_weglot');
+        
         if (false === current_user_can('administrator')) {
             wp_die('Sorry, you have to be an admin to run this action.');
         }

@@ -23,11 +23,6 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 				</strong>
 			</p>
 		</div>
-		<div>
-			<?php
-			
-			?>
-		</div>
 		<div class="menu_div" id="tabs">
 			<form id="heateor_sss_form" action="options.php" method="post">
 			<?php settings_fields( 'heateor_sss_options' ); ?>
@@ -368,13 +363,22 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 								</tr>
 
 								<tr>
+									<th>
+										<label for="heateor_sss_responsive_icons"><?php _e( "Responsiveness", 'sassy-social-share' ); ?></label>
+										<img id="heateor_sss_responsive_icons_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
+									</th>
+									<td>
+										<label for="heateor_sss_responsive_icons"><input type="checkbox" disabled value="1" /><a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/" target="_blank"><?php _e( "Responsive icons", 'sassy-social-share' ); ?></a></label>
+									</td>
+								</tr>
+
+								<tr class="heateor_sss_help_content" id="heateor_sss_responsive_icons_help_cont">
 									<td colspan="2">
 									<div>
-									<a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/" target="_blank"><img style="width:100%" src="<?php echo plugins_url( '../../images/unlock/responsive-icons.png', __FILE__ ) ?>" /></a>
+									<?php _e( 'Icons will adjust their width according to the width of device screen', 'sassy-social-share' ) ?>
 									</div>
 									</td>
 								</tr>
-								
 							</table>
 						</div>	
 					</div>
@@ -760,19 +764,31 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 
 						<?php
 						$youtube_username = '';
-						if ( isset( $options['youtube_username'] ) ) {
+						if ( isset( $options['youtube_username'] ) && $options['youtube_username'] ) {
 							$youtube_username = $options['youtube_username'];
 						} elseif ( isset( $options['vertical_youtube_username'] ) ) {
 							$youtube_username = $options['vertical_youtube_username'];
 						}
+						$google_news_url = '';
+						if ( isset( $options['google_news_url'] ) && $options['google_news_url'] ) {
+							$google_news_url = $options['google_news_url'];
+						} elseif ( isset( $options['vertical_google_news_url'] ) ) {
+							$google_news_url = $options['vertical_google_news_url'];
+						}
+						$rutube_username = '';
+						if ( isset( $options['rutube_username'] ) && $options['rutube_username'] ) {
+							$rutube_username = $options['rutube_username'];
+						} elseif ( isset( $options['vertical_rutube_username'] ) ) {
+							$rutube_username = $options['vertical_rutube_username'];
+						}
 						$instagram_username = '';
-						if ( isset( $options['instagram_username'] ) ) {
+						if ( isset( $options['instagram_username'] ) && $options['instagram_username'] ) {
 							$instagram_username = $options['instagram_username'];
 						} elseif ( isset( $options['vertical_instagram_username'] ) ) {
 							$instagram_username = $options['vertical_instagram_username'];
 						}
 						$commentform_container_id = '';
-						if ( isset( $options['comment_container_id'] ) ) {
+						if ( isset( $options['comment_container_id'] ) && $options['comment_container_id'] ) {
 							$commentform_container_id = $options['comment_container_id'];
 						} elseif ( isset( $options['vertical_comment_container_id'] ) ) {
 							$commentform_container_id = $options['vertical_comment_container_id'];
@@ -818,11 +834,50 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 							<tr class="heateor_sss_help_content" id="heateor_sss_youtube_username_help_cont">
 								<td colspan="2">
 								<div>
-								<?php _e( 'Username of the Youtube account you want to redirect users to, on clicking the icon', 'sassy-social-share' ) ?>
+								<?php _e( 'URL of the Youtube page where you want the website-visitors to get redirected on click of the icon', 'sassy-social-share' ) ?>
 								</div>
 								</td>
 							</tr>
-						</tbody>	
+						</tbody>
+
+						<tbody id="heateor_sss_rutube_options" <?php echo ! isset( $options['horizontal_re_providers'] ) || ! in_array( 'rutube', $options['horizontal_re_providers'] ) ? 'style="display: none"' : '';?> >
+							<tr>
+								<th>
+								<label for="heateor_sss_rutube_username"><?php _e( "Rutube URL", 'sassy-social-share' ); ?></label>
+								<img id="heateor_sss_rutube_username_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
+								</th>
+								<td>
+								<input id="heateor_sss_rutube_username" name="heateor_sss[rutube_username]" type="text" value="<?php echo esc_attr( $rutube_username ) ?>" />
+								</td>
+							</tr>
+							
+							<tr class="heateor_sss_help_content" id="heateor_sss_rutube_username_help_cont">
+								<td colspan="2">
+								<div>
+								<?php _e( 'URL of the Rutube page where you want the website-visitors to get redirected on click of the icon', 'sassy-social-share' ) ?>
+								</div>
+								</td>
+							</tr>
+						</tbody>
+
+						<tbody id="heateor_sss_google_news_options" <?php echo ! in_array( 'Google_News', $options['horizontal_re_providers'] ) ? 'style="display:none"' : '';?>>
+							<tr>
+								<th>
+								<label for="heateor_sss_google_news_url"><?php _e( "Google News URL", 'sassy-social-share' ); ?></label>
+								<img id="heateor_sss_google_news_url_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
+								</th>
+								<td>
+								<input id="heateor_sss_google_news_url" name="heateor_sss[google_news_url]" type="text" value="<?php echo esc_attr( $google_news_url ) ?>" />
+								</td>
+							</tr>
+							<tr class="heateor_sss_help_content" id="heateor_sss_google_news_url_help_cont">
+								<td colspan="2">
+								<div>
+								<?php _e( 'URL of the Google News page where you want the website-visitors to get redirected on click of the icon', 'sassy-social-share' ) ?>
+								</div>
+								</td>
+							</tr>
+						</tbody>
 
 						<tbody id="heateor_sss_comment_options" <?php echo ! isset( $options['horizontal_re_providers'] ) || ! in_array( 'Comment', $options['horizontal_re_providers'] ) ? 'style="display: none"' : '';?> >
 							<tr>
@@ -845,12 +900,212 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 						</tbody>
 						<?php
 						$like_buttons = array( 'facebook_share', 'facebook_like', 'facebook_recommend', 'twitter_tweet', 'linkedin_share', 'pinterest_pin', 'buffer_share', 'xing_share', 'yummly_share', 'reddit_badge' );
-						$sharing_networks = array( 'facebook','gettr', 'gab', 'twitter', 'linkedin', 'print', 'email', 'reddit', 'digg', 'float_it', 'tumblr', 'vkontakte', 'pinterest', 'xing', 'whatsapp', 'instagram', 'yummly', 'buffer', 'parler', 'AIM', 'Amazon_Wish_List', 'AOL_Mail', 'App.net', 'Balatarin', 'BibSonomy', 'Bitty_Browser', 'Blinklist', 'Blogger_Post', 'BlogMarks', 'Bookmarks.fr', 'Box.net', 'BuddyMarks', 'Care2_News', 'Comment', 'Copy_Link', 'Diary.Ru', 'Diaspora', 'Diigo', 'Douban', 'Draugiem', 'Evernote', 'Facebook_Messenger', 'Fark', 'Fintel', 'Flipboard', 'Folkd', 'GentleReader', 'Google_Bookmarks', 'Google_Classroom', 'Google_Gmail', 'Hacker_News', 'Hatena', 'Instapaper', 'Jamespot', 'Kakao', 'Kik', 'Kindle_It', 'Known', 'Line', 'LiveJournal', 'Mail.Ru', 'Mendeley', 'Meneame', 'MeWe', 'mix', 'Mixi', 'MySpace', 'Netvouz', 'Odnoklassniki', 'Outlook.com', 'Papaly', 'Pinboard', 'Plurk', 'Pocket', 'PrintFriendly', 'Protopage_Bookmarks', 'Pusha', 'Qzone', 'Rediff MyPage', 'Refind', 'Renren', 'Sina Weibo', 'SiteJot', 'Skype', 'Slashdot', 'SMS', 'StockTwits', 'Svejo', 'Symbaloo_Feeds', 'Telegram', 'Threema', 'Trello', 'Tuenti', 'Twiddla', 'TypePad_Post', 'Viadeo', 'Viber', 'Webnews', 'WordPress', 'Wykop', 'Yahoo_Mail', 'Yoolink', 'youtube' );
+						$sharing_networks = array( 'facebook','gettr', 'gab', 'twitter', 'linkedin', 'mastodon', 'print', 'email', 'reddit', 'digg', 'float_it', 'tumblr', 'vkontakte', 'pinterest', 'xing', 'whatsapp', 'instagram', 'yummly', 'buffer', 'parler', 'AIM', 'Amazon_Wish_List', 'AOL_Mail', 'App.net', 'Balatarin', 'BibSonomy', 'Bitty_Browser', 'Blinklist', 'Blogger_Post', 'BlogMarks', 'Bookmarks.fr', 'Box.net', 'BuddyMarks', 'Care2_News', 'Comment', 'Copy_Link', 'Diary.Ru', 'Diaspora', 'Diigo', 'Douban', 'Draugiem', 'Evernote', 'Facebook_Messenger', 'Fark', 'Fintel', 'Flipboard', 'Folkd', 'GentleReader', 'Google_Classroom', 'Google_Gmail', 'Hacker_News', 'Hatena', 'Instapaper', 'Jamespot', 'Kakao', 'Kik', 'Kindle_It', 'Known', 'Line', 'LiveJournal', 'Mail.Ru', 'Mendeley', 'Meneame', 'MeWe', 'mix', 'Mixi', 'MySpace', 'Netvouz', 'Odnoklassniki', 'Outlook.com', 'Papaly', 'Pinboard', 'Plurk', 'Pocket', 'PrintFriendly', 'Protopage_Bookmarks', 'Pusha', 'Qzone', 'Rediff MyPage', 'Refind', 'Renren', 'Sina Weibo', 'SiteJot', 'Skype', 'Slashdot', 'SMS', 'StockTwits', 'Svejo', 'Symbaloo_Feeds', 'Telegram', 'Threema', 'Trello', 'Tuenti', 'Twiddla', 'TypePad_Post', 'Viadeo', 'Viber', 'Webnews', 'WordPress', 'Wykop', 'Yahoo_Mail', 'Yoolink', 'youtube', 'rutube', 'Google_News', 'rss', 'truth_social', 'snapchat', 'Goodreads' );
 						?>
 
+						<th colspan="2">
+							<label for="heateor_sss_share_instance_top"><?php _e( "Instance for top of the content", 'sassy-social-share' ); ?> (<a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/" target="_blank"><?php _e( "Unlock multiple instances", 'sassy-social-share' ); ?></a>)</label>
+							<img id="heateor_sss_share_instance_top_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
+							</th>
+						</tr>
 						<tr>
+							<td colspan="2" class="heateor_sss_share_instance_top_td">
+								<div class="heateor_sss_share_instance_div">
+									<div class="heateor_sss_share_instance">
+										<input disabled type="checkbox" value="1">
+										<ul class="heateor_sss_share_instance_ul">
+											<li title="Facebook share"><i style="display:block;width:36px;height:36px;border-radius:999px;" class=" heateorSssFacebookshareBackground"><div class="heateorSssSharingSvg heateorSssFacebookshareSvg" style="border-radius:999px;"></div></i></li>
+											<li title="Linkedin share"><i style="display:block;width:36px;height:36px;border-radius:999px;" class=" heateorSssLinkedinshareBackground"><div class="heateorSssSharingSvg heateorSssLinkedinshareSvg" style="border-radius:999px;"></div></i></li>
+											<li title="Twitter tweet"><i style="display:block;width:36px;height:36px;border-radius:999px;" class=" heateorSssTwittertweetBackground"><div class="heateorSssSharingSvg heateorSssTwittertweetSvg" style="border-radius:999px;"></div></i></li>
+											<li style="padding-top:7px"><label>[Sassy_Social_Share_Premium id="1"]</label></li>
+										</ul>
+									</div>
+									<div style="clear:both"></div>
+									<div class="heateor_sss_share_instance">
+										<input disabled type="checkbox" value="2">
+										<ul class="heateor_sss_share_instance_ul">
+											<li title="Facebook"><i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssFacebookBackground"><div class="heateorSssSharingSvg heateorSssFacebookSvg" style="border-radius:999px;"></div></i></li>
+											<li title="Twitter"><i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssTwitterBackground"><div class="heateorSssSharingSvg heateorSssTwitterSvg" style="border-radius:999px;"></div></i></li>
+											<li title="Sina Weibo"><i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssSinaWeiboBackground"><div class="heateorSssSharingSvg heateorSssSinaWeiboSvg" style="border-radius:999px;"></div></i></li>
+											<li title="Facebook like"><i style="display:block;width:36px;height:36px;border-radius:999px;" class=" heateorSssFacebooklikeBackground"><div class="heateorSssSharingSvg heateorSssFacebooklikeSvg" style="border-radius:999px;"></div></i></li>
+											<li title="Facebook Messenger"><i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssFacebookMessengerBackground"><div class="heateorSssSharingSvg heateorSssFacebookMessengerSvg" style="border-radius:999px;"></div></i></li>
+											<li title="Parler"><i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssParlerBackground"><div class="heateorSssSharingSvg heateorSssParlerSvg" style="border-radius:999px;"></div></i></li>
+											<li title="Gab"><i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssGabBackground"><div class="heateorSssSharingSvg heateorSssGabSvg" style="border-radius:999px;"></div></i></li>
+											<li title="Pinterest"><i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssPinterestBackground"><div class="heateorSssSharingSvg heateorSssPinterestSvg" style="border-radius:999px;"></div></i></li>
+											<li title="Facebook share"><i style="display:block;width:36px;height:36px;border-radius:999px;" class=" heateorSssFacebookshareBackground"><div class="heateorSssSharingSvg heateorSssFacebookshareSvg" style="border-radius:999px;"></div></i></li>
+											<li style="padding-top:7px"><label>[Sassy_Social_Share_Premium id="2"]</label></li>
+										</ul>
+									</div>
+									<div style="clear:both"></div>
+									<div class="heateor_sss_share_instance">
+										<input disabled type="checkbox">
+										<ul class="heateor_sss_share_instance_ul">
+											<li title="Facebook">
+		<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssFacebookBackground"><div class="heateorSssSharingSvg heateorSssFacebookSvg" style="border-radius:999px;"></div></i></li>
+															<li title="Blogger Post">
+		<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssBloggerPostBackground"><div class="heateorSssSharingSvg heateorSssBloggerPostSvg" style="border-radius:999px;"></div></i></li>
+															<li title="Care2 News">
+		<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssCare2NewsBackground"><div class="heateorSssSharingSvg heateorSssCare2NewsSvg" style="border-radius:999px;"></div></i></li>
+															<li title="Diigo">
+		<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssDiigoBackground"><div class="heateorSssSharingSvg heateorSssDiigoSvg" style="border-radius:999px;"></div></i></li>
+															<li title="Email">
+		<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssEmailBackground"><div class="heateorSssSharingSvg heateorSssEmailSvg" style="border-radius:999px;"></div></i></li>
+													<li style="padding-top:7px"><label>[Sassy_Social_Share_Premium id="3"]</label></li>
+</ul>
+</div>
+<div style="clear:both"></div>
+											<div class="heateor_sss_share_instance">
+<input disabled type="checkbox">
+<ul class="heateor_sss_share_instance_ul">
+													<li title="Email">
+		<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssEmailBackground"><div class="heateorSssSharingSvg heateorSssEmailSvg" style="border-radius:999px;"></div></i></li>
+															<li title="SMS">
+		<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssSMSBackground"><div class="heateorSssSharingSvg heateorSssSMSSvg" style="border-radius:999px;"></div></i></li>
+															<li title="Gettr">
+		<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssGettrBackground"><div class="heateorSssSharingSvg heateorSssGettrSvg" style="border-radius:999px;"></div></i></li>
+															<li title="Copy Link">
+		<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssCopyLinkBackground"><div class="heateorSssSharingSvg heateorSssCopyLinkSvg" style="border-radius:999px;"></div></i></li>
+															<li title="Vkontakte">
+		<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssVkontakteBackground"><div class="heateorSssSharingSvg heateorSssVkontakteSvg" style="border-radius:999px;"></div></i></li>
+															<li title="Mastodon">
+		<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssMastodonBackground"><div class="heateorSssSharingSvg heateorSssMastodonSvg" style="border-radius:999px;"></div></i></li>
+															<li title="Facebook like">
+		<i style="display:block;width:36px;height:36px;border-radius:999px;" class=" heateorSssFacebooklikeBackground"><div class="heateorSssSharingSvg heateorSssFacebooklikeSvg" style="border-radius:999px;"></div></i></li>
+															<li title="Rutube">
+		<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssRutubeBackground"><div class="heateorSssSharingSvg heateorSssRutubeSvg" style="border-radius:999px;"></div></i></li>
+															<li title="Facebook">
+		<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssFacebookBackground"><div class="heateorSssSharingSvg heateorSssFacebookSvg" style="border-radius:999px;"></div></i></li>
+															<li title="Evernote">
+		<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssEvernoteBackground"><div class="heateorSssSharingSvg heateorSssEvernoteSvg" style="border-radius:999px;"></div></i></li>
+															<li title="Pocket">
+		<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssPocketBackground"><div class="heateorSssSharingSvg heateorSssPocketSvg" style="border-radius:999px;"></div></i></li>
+															<li title="Parler">
+		<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssParlerBackground"><div class="heateorSssSharingSvg heateorSssParlerSvg" style="border-radius:999px;"></div></i></li>
+															<li title="Google Gmail">
+		<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssGoogleGmailBackground"><div class="heateorSssSharingSvg heateorSssGoogleGmailSvg" style="border-radius:999px;"></div></i></li>
+															<li title="Outlook.com">
+		<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssOutlookcomBackground"><div class="heateorSssSharingSvg heateorSssOutlookcomSvg" style="border-radius:999px;"></div></i></li>
+															<li title="Truth social">
+		<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssTruthsocialBackground"><div class="heateorSssSharingSvg heateorSssTruthsocialSvg" style="border-radius:999px;"></div></i></li>
+															<li title="Whatsapp">
+		<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssWhatsappBackground"><div class="heateorSssSharingSvg heateorSssWhatsappSvg" style="border-radius:999px;"></div></i></li>
+															<li title="Twitter">
+		<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssTwitterBackground"><div class="heateorSssSharingSvg heateorSssTwitterSvg" style="border-radius:999px;"></div></i></li>
+													<li style="padding-top:7px"><label>[Sassy_Social_Share_Premium id="4"]</label></li>
+</ul>
+</div>
+<div style="clear:both"></div></div>
+							</td>
+						</tr>
+
+						<tr class="heateor_sss_help_content" id="heateor_sss_share_instance_top_help_cont">
 							<td colspan="2">
-								<a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/" target="_blank"><img style="width:99%" src="<?php echo plugins_url( '../../images/unlock/multiple-instances.png', __FILE__ ) ?>" /></a>
+							<div>
+							<?php _e( 'Choose the instance(s) of standard share bar you want to place at bottom of the content of your webpages. After each instance their shortcode is given with the ID of instance.' , 'sassy-social-share' ) ?>
+							</div>
+							</td>
+						</tr>
+
+						<tr>
+							<th colspan="2">
+							<label for="heateor_sss_share_instance_bottom"><?php _e( "Instance for bottom of the content", 'sassy-social-share' ); ?> (<a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/" target="_blank"><?php _e( "Unlock multiple instances", 'sassy-social-share' ); ?></a>)</label>
+							<img id="heateor_sss_share_instance_bottom_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
+							</th>
+						</tr>
+						<tr>
+							<td colspan="2" class="heateor_sss_share_instance_top_td">
+								<div class="heateor_sss_share_instance_div">
+									<div class="heateor_sss_share_instance">
+										<input disabled type="checkbox" value="1">
+										<ul class="heateor_sss_share_instance_ul">
+											<li title="Facebook share"><i style="display:block;width:36px;height:36px;border-radius:999px;" class=" heateorSssFacebookshareBackground"><div class="heateorSssSharingSvg heateorSssFacebookshareSvg" style="border-radius:999px;"></div></i></li>
+											<li title="Linkedin share"><i style="display:block;width:36px;height:36px;border-radius:999px;" class=" heateorSssLinkedinshareBackground"><div class="heateorSssSharingSvg heateorSssLinkedinshareSvg" style="border-radius:999px;"></div></i></li>
+											<li title="Twitter tweet"><i style="display:block;width:36px;height:36px;border-radius:999px;" class=" heateorSssTwittertweetBackground"><div class="heateorSssSharingSvg heateorSssTwittertweetSvg" style="border-radius:999px;"></div></i></li>
+											<li style="padding-top:7px"><label>[Sassy_Social_Share_Premium id="1"]</label></li>
+										</ul>
+									</div>
+									<div style="clear:both"></div>
+									<div class="heateor_sss_share_instance">
+										<input disabled type="checkbox" value="2">
+										<ul class="heateor_sss_share_instance_ul">
+											<li title="Facebook"><i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssFacebookBackground"><div class="heateorSssSharingSvg heateorSssFacebookSvg" style="border-radius:999px;"></div></i></li>
+											<li title="Twitter"><i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssTwitterBackground"><div class="heateorSssSharingSvg heateorSssTwitterSvg" style="border-radius:999px;"></div></i></li>
+											<li title="Sina Weibo"><i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssSinaWeiboBackground"><div class="heateorSssSharingSvg heateorSssSinaWeiboSvg" style="border-radius:999px;"></div></i></li>
+											<li title="Facebook like"><i style="display:block;width:36px;height:36px;border-radius:999px;" class=" heateorSssFacebooklikeBackground"><div class="heateorSssSharingSvg heateorSssFacebooklikeSvg" style="border-radius:999px;"></div></i></li>
+											<li title="Facebook Messenger"><i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssFacebookMessengerBackground"><div class="heateorSssSharingSvg heateorSssFacebookMessengerSvg" style="border-radius:999px;"></div></i></li>
+											<li title="Parler"><i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssParlerBackground"><div class="heateorSssSharingSvg heateorSssParlerSvg" style="border-radius:999px;"></div></i></li>
+											<li title="Gab"><i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssGabBackground"><div class="heateorSssSharingSvg heateorSssGabSvg" style="border-radius:999px;"></div></i></li>
+											<li title="Pinterest"><i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssPinterestBackground"><div class="heateorSssSharingSvg heateorSssPinterestSvg" style="border-radius:999px;"></div></i></li>
+											<li title="Facebook share"><i style="display:block;width:36px;height:36px;border-radius:999px;" class=" heateorSssFacebookshareBackground"><div class="heateorSssSharingSvg heateorSssFacebookshareSvg" style="border-radius:999px;"></div></i></li>
+											<li style="padding-top:7px"><label>[Sassy_Social_Share_Premium id="2"]</label></li>
+										</ul>
+									</div>
+									<div style="clear:both"></div>
+									<div class="heateor_sss_share_instance">
+										<input disabled type="checkbox">
+										<ul class="heateor_sss_share_instance_ul">
+											<li title="Facebook">
+											<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssFacebookBackground"><div class="heateorSssSharingSvg heateorSssFacebookSvg" style="border-radius:999px;"></div></i></li>
+																								<li title="Blogger Post">
+											<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssBloggerPostBackground"><div class="heateorSssSharingSvg heateorSssBloggerPostSvg" style="border-radius:999px;"></div></i></li>
+																								<li title="Care2 News">
+											<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssCare2NewsBackground"><div class="heateorSssSharingSvg heateorSssCare2NewsSvg" style="border-radius:999px;"></div></i></li>
+																								<li title="Diigo">
+											<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssDiigoBackground"><div class="heateorSssSharingSvg heateorSssDiigoSvg" style="border-radius:999px;"></div></i></li>
+																								<li title="Email">
+											<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssEmailBackground"><div class="heateorSssSharingSvg heateorSssEmailSvg" style="border-radius:999px;"></div></i></li>
+																						<li style="padding-top:7px"><label>[Sassy_Social_Share_Premium id="3"]</label></li>
+									</ul>
+									</div>
+									<div style="clear:both"></div>
+																				<div class="heateor_sss_share_instance">
+									<input disabled type="checkbox">
+									<ul class="heateor_sss_share_instance_ul">
+																						<li title="Email">
+											<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssEmailBackground"><div class="heateorSssSharingSvg heateorSssEmailSvg" style="border-radius:999px;"></div></i></li>
+																								<li title="SMS">
+											<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssSMSBackground"><div class="heateorSssSharingSvg heateorSssSMSSvg" style="border-radius:999px;"></div></i></li>
+																								<li title="Gettr">
+											<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssGettrBackground"><div class="heateorSssSharingSvg heateorSssGettrSvg" style="border-radius:999px;"></div></i></li>
+																								<li title="Copy Link">
+											<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssCopyLinkBackground"><div class="heateorSssSharingSvg heateorSssCopyLinkSvg" style="border-radius:999px;"></div></i></li>
+																								<li title="Vkontakte">
+											<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssVkontakteBackground"><div class="heateorSssSharingSvg heateorSssVkontakteSvg" style="border-radius:999px;"></div></i></li>
+																								<li title="Mastodon">
+											<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssMastodonBackground"><div class="heateorSssSharingSvg heateorSssMastodonSvg" style="border-radius:999px;"></div></i></li>
+																								<li title="Facebook like">
+											<i style="display:block;width:36px;height:36px;border-radius:999px;" class=" heateorSssFacebooklikeBackground"><div class="heateorSssSharingSvg heateorSssFacebooklikeSvg" style="border-radius:999px;"></div></i></li>
+																								<li title="Rutube">
+											<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssRutubeBackground"><div class="heateorSssSharingSvg heateorSssRutubeSvg" style="border-radius:999px;"></div></i></li>
+																								<li title="Facebook">
+											<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssFacebookBackground"><div class="heateorSssSharingSvg heateorSssFacebookSvg" style="border-radius:999px;"></div></i></li>
+																								<li title="Evernote">
+											<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssEvernoteBackground"><div class="heateorSssSharingSvg heateorSssEvernoteSvg" style="border-radius:999px;"></div></i></li>
+																								<li title="Pocket">
+											<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssPocketBackground"><div class="heateorSssSharingSvg heateorSssPocketSvg" style="border-radius:999px;"></div></i></li>
+																								<li title="Parler">
+											<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssParlerBackground"><div class="heateorSssSharingSvg heateorSssParlerSvg" style="border-radius:999px;"></div></i></li>
+																								<li title="Google Gmail">
+											<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssGoogleGmailBackground"><div class="heateorSssSharingSvg heateorSssGoogleGmailSvg" style="border-radius:999px;"></div></i></li>
+																								<li title="Outlook.com">
+											<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssOutlookcomBackground"><div class="heateorSssSharingSvg heateorSssOutlookcomSvg" style="border-radius:999px;"></div></i></li>
+																								<li title="Truth social">
+											<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssTruthsocialBackground"><div class="heateorSssSharingSvg heateorSssTruthsocialSvg" style="border-radius:999px;"></div></i></li>
+																								<li title="Whatsapp">
+											<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssWhatsappBackground"><div class="heateorSssSharingSvg heateorSssWhatsappSvg" style="border-radius:999px;"></div></i></li>
+																								<li title="Twitter">
+											<i style="display:block;width:36px;height:36px;border-radius:999px;" class="heateorSssSharingBackground heateorSssTwitterBackground"><div class="heateorSssSharingSvg heateorSssTwitterSvg" style="border-radius:999px;"></div></i></li>
+																						<li style="padding-top:7px"><label>[Sassy_Social_Share_Premium id="4"]</label></li>
+									</ul>
+									</div>
+									<div style="clear:both"></div></div>
+																</td>
+						</tr>
+						<tr class="heateor_sss_help_content" id="heateor_sss_share_instance_bottom_help_cont">
+							<td colspan="2">
+							<div>
+							<?php _e( 'Choose the instance(s) of standard share bar you want to place at bottom of the content of your webpages. After each instance their shortcode is given with the ID of instance.' , 'sassy-social-share' ) ?>
+							</div>
 							</td>
 						</tr>
 
@@ -965,9 +1220,9 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 							foreach( $sharing_networks as $sharing_network ) {
 								?>
 								<div class="heateorSssHorizontalSharingProviderContainer">
-								<input id="heateor_sss_<?php echo esc_attr( $sharing_network ) ?>" type="checkbox" <?php echo isset( $options['horizontal_re_providers'] ) && in_array( $sharing_network, $options['horizontal_re_providers'] ) ? 'checked = "checked"' : '';?> value="<?php echo esc_attr( $sharing_network ) ?>" />
+								<input id="heateor_sss_<?php echo esc_attr( $sharing_network ) ?>" type="checkbox" <?php echo isset( $options['horizontal_re_providers'] ) && in_array( $sharing_network, $options['horizontal_re_providers'] ) ? 'checked = "checked"' : '';?> <?php echo in_array( $sharing_network, array( 'truth_social', 'snapchat', 'Goodreads' ) ) ? 'disabled' : ''; ?> value="<?php echo esc_attr( $sharing_network ) ?>" />
 								<label for="heateor_sss_<?php echo esc_attr( $sharing_network ) ?>"><i style="display:block;width:18px;height:18px;" class="heateorSssSharing heateorSss<?php echo esc_attr( str_replace( array( '_', '.', ' ' ), '', ucfirst( $sharing_network ) ) ) ?>Background"><ss style="display:block;" class="heateorSssSharingSvg heateorSss<?php echo esc_attr( str_replace( array( '_', '.', ' ' ), '', ucfirst( $sharing_network) ) ) ?>Svg"></ss></i></label>
-								<label class="lblSocialNetwork" for="heateor_sss_<?php echo esc_attr( $sharing_network ) ?>"><?php echo esc_html( str_replace( '_', ' ', ucfirst( $sharing_network ) ) ) ?></label>
+								<label class="lblSocialNetwork" for="heateor_sss_<?php echo $sharing_network ?>"><?php echo ( in_array( $sharing_network, array( 'truth_social', 'snapchat', 'Goodreads' ) ) ? '<a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/" target="_blank">' : '' ) . esc_html( str_replace( '_', ' ', ucfirst( $sharing_network ) ) ) . ( in_array( $sharing_network, array( 'truth_social', 'snapchat', 'Goodreads' ) ) ? '</a>' : '' ) ?></label>
 								</div>
 								<?php
 							}
@@ -1019,12 +1274,74 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 						</tr>
 
 						<tr>
+							<th>
+							<label for="heateor_sss_popup_share"><a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/" target="_blank"><?php _e( "Enable Social Share PopUp", 'sassy-social-share' ); ?></a></label>
+							<img id="heateor_sss_popup_share_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
+							</th>
+							<td>
+							<input type="checkbox" disabled value="1" />
+							</td>
+						</tr>
+
+						<tr class="heateor_sss_help_content" id="heateor_sss_popup_share_help_cont">
 							<td colspan="2">
 							<div>
-							<a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/" target="_blank"><img style="width:100%" src="<?php echo plugins_url( '../../images/unlock/social-share-popup.png', __FILE__ ) ?>" /></a>
+							<?php _e( 'Show social share icons in a layover popup that gets triggered after a certain time after someone visits your webpage' , 'sassy-social-share' ) ?>
 							</div>
 							</td>
 						</tr>
+						<tbody id="heateor_sss_popup_share_time_option">
+							<tr>
+								<th>
+								<label for="heateor_sss_popup_share_time"><a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/" target="_blank"><?php _e( "Trigger popup", 'sassy-social-share' ); ?></a></label>
+								<img id="heateor_sss_popup_share_time_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
+								</th>
+								<td>
+								<input disabled type="text" style="width:50px" /> <?php _e( 'second(s) after someone visits my website', 'sassy-social-share' ); ?>
+								</td>
+							</tr>
+							<tr class="heateor_sss_help_content" id="heateor_sss_popup_share_time_help_cont">
+								<td colspan="2">
+								<div>
+								<?php _e( 'Time in seconds after which the layover popup containing social share icons will be triggered after someone visits any webpage of your website' , 'sassy-social-share' ) ?>
+								</div>
+								</td>
+							</tr>
+
+							<tr>
+								<th>
+								<label for="heateor_sss_popup_instance_id"><a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/" target="_blank"><?php _e( "Instance ID", 'sassy-social-share' ); ?></a></label>
+								<img id="heateor_sss_popup_instance_id_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
+								</th>
+								<td>
+								<input disabled type="text" style="width:50px" />
+								</td>
+							</tr>
+							<tr class="heateor_sss_help_content" id="heateor_sss_popup_instance_id_help_cont">
+								<td colspan="2">
+								<div>
+								<?php _e( 'ID of the instance of Standard social share bar to show in the popup' , 'sassy-social-share' ) ?>
+								</div>
+								</td>
+							</tr>
+
+							<tr>
+								<th>
+								<label for="heateor_sss_popup_top_offset"><a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/" target="_blank"><?php _e( "Top offset", 'sassy-social-share' ); ?></a></label>
+								<img id="heateor_sss_popup_top_offset_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
+								</th>
+								<td>
+								<input type="text" style="width:50px" disabled />%
+								</td>
+							</tr>
+							<tr class="heateor_sss_help_content" id="heateor_sss_popup_top_offset_help_cont">
+								<td colspan="2">
+								<div>
+								<?php _e( 'Top offset of the popup. Increase in value pushes the popup towards bottom of the webpage', 'sassy-social-share' ) ?>
+								</div>
+								</td>
+							</tr>
+						</tbody>
 						
 						<tr>
 							<th>
@@ -1162,9 +1479,36 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 						</tr>
 
 						<tr>
+							<th>
+							<label for="heateor_sss_hide_hor_mobile_sharing"><a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/" target="_blank"><?php _e( "Hide Standard Share bar", 'sassy-social-share' ); ?></a></label>
+							<img id="heateor_sss_hide_hor_mobile_sharing_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
+							</th>
+							<td>
+							<input type="checkbox" disabled value="1" /><label for="heateor_sss_hide_hor_mobile_sharing"><?php echo sprintf( __( 'Hide Standard share bar for the screen narrower than %s pixels', 'sassy-social-share' ), '<input style="width:46px" disabled type="text" />' ) ?></label>
+							</td>
+						</tr>
+						
+						<tr class="heateor_sss_help_content" id="heateor_sss_hide_hor_mobile_sharing_help_cont">
 							<td colspan="2">
 							<div>
-							<a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/" target="_blank"><img style="width:100%" src="<?php echo plugins_url( '../../images/unlock/hide-standard-share-bar.png', __FILE__ ) ?>" /></a>
+							<?php _e( 'Hide Standard share bar for the screen narrower than the width specified', 'sassy-social-share' ) ?>
+							</div>
+							</td>
+						</tr>
+
+						<tr>
+							<th>
+							<label for="heateor_sss_priority"><a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/" target="_blank"><?php _e( "Priority for Social Share bar to appear at front-end", 'sassy-social-share' ); ?></a></label>
+							<img id="heateor_sss_priority_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
+							</th>
+							<td>
+								<input type="text" disabled />
+							</td>
+						</tr>
+						<tr class="heateor_sss_help_content" id="heateor_sss_priority_help_cont">
+							<td colspan="2">
+							<div>
+							<?php _e( 'Higher number causes Social Share bar to appear below other elements at the webpage', 'sassy-social-share' ) ?>
 							</div>
 							</td>
 						</tr>
@@ -1247,22 +1591,57 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 							</tr>
 						</tbody>
 						<tbody id="heateor_sss_vertical_youtube_options" <?php echo ! in_array( 'youtube', $options['vertical_re_providers'] ) ? 'style="display:none"' : '';?> >
-						<tr>
+							<tr>
 								<th>
 								<label for="heateor_sss_vertical_youtube_username"><?php _e( "Youtube URL", 'sassy-social-share' ); ?></label>
 								<img id="heateor_sss_vertical_youtube_username_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 								</th>
 								<td>
-									
-
 								<input id="heateor_sss_vertical_youtube_username" name="heateor_sss[vertical_youtube_username]" type="text" value="<?php echo esc_attr( $youtube_username ) ?>" />
 								</td>
 							</tr>
-							
-							<tr class="heateor_sss_help_content" id="heateor_sss_vertical_instagram_username_help_cont">
+							<tr class="heateor_sss_help_content" id="heateor_sss_vertical_youtube_username_help_cont">
 								<td colspan="2">
 								<div>
-								<?php _e( 'Username of the Instagram account you want to redirect users to, on clicking the icon', 'sassy-social-share' ) ?>
+								<?php _e( 'URL of the Youtube page where you want the website-visitors to get redirected on click of the icon', 'sassy-social-share' ) ?>
+								</div>
+								</td>
+							</tr>
+						</tbody>
+						<tbody id="heateor_sss_vertical_rutube_options" <?php echo ! in_array( 'rutube', $options['vertical_re_providers'] ) ? 'style="display:none"' : '';?> >
+							<tr>
+								<th>
+								<label for="heateor_sss_vertical_rutube_username"><?php _e( "Rutube URL", 'sassy-social-share' ); ?></label>
+								<img id="heateor_sss_vertical_rutube_username_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
+								</th>
+								<td>
+
+								<input id="heateor_sss_vertical_rutube_username" name="heateor_sss[vertical_rutube_username]" type="text" value="<?php echo esc_attr( $rutube_username ) ?>" />
+								</td>
+							</tr>
+							
+							<tr class="heateor_sss_help_content" id="heateor_sss_vertical_rutube_username_help_cont">
+								<td colspan="2">
+								<div>
+								<?php _e( 'URL of the Rutube page where you want the website-visitors to get redirected on click of the icon', 'sassy-social-share' ) ?>
+								</div>
+								</td>
+							</tr>
+						</tbody>
+						<tbody id="heateor_sss_vertical_google_news_options" <?php echo ! in_array( 'Google_News', $options['vertical_re_providers'] ) ? 'style="display:none"' : '';?>>
+							<tr>
+								<th>
+								<label for="heateor_sss_vertical_google_news_url"><?php _e( "Google News URL", 'sassy-social-share' ); ?></label>
+								<img id="heateor_sss_vertical_google_news_url_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
+								</th>
+								<td>
+								<input id="heateor_sss_vertical_google_news_url" name="heateor_sss[vertical_google_news_url]" type="text" value="<?php echo esc_attr( $google_news_url ) ?>" />
+								</td>
+							</tr>
+							<tr class="heateor_sss_help_content" id="heateor_sss_vertical_google_news_url_help_cont">
+								<td colspan="2">
+								<div>
+								<?php _e( 'URL of the Google News page where you want the website-visitors to get redirected on click of the icon', 'sassy-social-share' ) ?>
 								</div>
 								</td>
 							</tr>
@@ -1393,12 +1772,12 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 							<div style="width:100%; margin: 10px 0"><input type="text" onkeyup="heateorSssSearchSharingNetworks(this.value.trim())" placeholder="<?php _e( 'Search social network', 'sassy-social-share' ) ?>" class="search" /></div>
 							<div style="clear:both"></div>
 							<?php
-							foreach( $sharing_networks as $sharing_network) {
+							foreach( $sharing_networks as $sharing_network ) {
 								?>
 								<div class="heateorSssVerticalSharingProviderContainer">
-								<input id="heateor_sss_vertical_sharing_<?php echo esc_attr( $sharing_network ) ?>" type="checkbox" <?php echo isset( $options['vertical_re_providers'] ) && in_array( $sharing_network, $options['vertical_re_providers'] ) ? 'checked = "checked"' : '';?> value="<?php echo esc_attr( $sharing_network ) ?>" />
+								<input id="heateor_sss_vertical_sharing_<?php echo esc_attr( $sharing_network ) ?>" type="checkbox" <?php echo isset( $options['vertical_re_providers'] ) && in_array( $sharing_network, $options['vertical_re_providers'] ) ? 'checked = "checked"' : ''; ?> <?php echo in_array( $sharing_network, array( 'truth_social', 'snapchat', 'Goodreads' ) ) ? 'disabled' : ''; ?> value="<?php echo esc_attr( $sharing_network ) ?>" />
 								<label for="heateor_sss_vertical_sharing_<?php echo esc_attr( $sharing_network ) ?>"><i style="display:block;width:18px;height:18px;" class="heateorSssSharing heateorSss<?php echo esc_attr( str_replace( array( '_', '.', ' ' ), '', ucfirst( $sharing_network ) ) ) ?>Background"><ss style="display:block;" class="heateorSssSharingSvg heateorSss<?php echo esc_attr( str_replace( array( '_', '.', ' ' ), '', ucfirst( $sharing_network ) ) ) ?>Svg"></ss></i></label>
-								<label class="lblSocialNetwork" for="heateor_sss_' . $sharing_network . '"><?php echo esc_html( str_replace( '_', ' ', ucfirst( $sharing_network ) ) ) ?></label>
+								<label class="lblSocialNetwork" for="heateor_sss_vertical_sharing_<?php echo $sharing_network ?>"><?php echo ( in_array( $sharing_network, array( 'truth_social', 'snapchat', 'Goodreads' ) ) ? '<a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/" target="_blank">' : '' ) . esc_html( str_replace( '_', ' ', ucfirst( $sharing_network ) ) ) . ( in_array( $sharing_network, array( 'truth_social', 'snapchat', 'Goodreads' ) ) ? '</a>' : '' ) ?></label>
 								</div>
 								<?php
 							}
@@ -1638,6 +2017,13 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 						</tr>
 
 						<tr>
+							<th colspan="2">
+							<input type="checkbox" value="1" disabled />
+							<label><?php _e( 'Show floating bar after scrolling ', 'sassy-social-share' ) ?></label><input style="width:49px" type="text" disabled /><label><?php _e( ' pixels from the top and hide ', 'sassy-social-share' ) ?><input style="width:49px" type="text" disabled /><?php _e( ' pixels before reaching the footer', 'sassy-social-share' ) ?> <a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/" target="_blank">(<?php _e( 'Unlock', 'sassy-social-share' ) ?>)</a></label>
+							</th>
+						</tr>
+
+						<tr>
 							<th>
 							<img id="heateor_sss_mobile_sharing_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
 							<label for="heateor_sss_mobile_sharing"><?php _e("Vertical floating bar responsiveness", 'sassy-social-share' ); ?></label>
@@ -1708,8 +2094,153 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 				<div class="clear"></div>
 				<div class="heateor_sss_left_column">
 
-				<div>
-					<a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/" target="_blank"><img style="margin-bottom:14px;width:100%" src="<?php echo plugins_url( '../../images/unlock/track-shares.png', __FILE__ ) ?>" /></a>
+				<div class="stuffbox">
+					<h3><label><?php _e( 'Share Counts', 'sassy-social-share' ) ?> <a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/" target="_blank">(<?php _e( 'Unlock', 'sassy-social-share' ) ?>)</a></label></h3>
+					<div class="inside">
+						<table width="100%" border="0" cellspacing="0" cellpadding="0" class="form-table editcomment menu_content_table">
+							<tr>
+								<th>
+								<label for="heateor_sss_save_share_count"><?php _e( "Save Share Counts locally", 'sassy-social-share' ) ?></label>
+								<img id="heateor_sss_save_share_count_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
+								</th>
+								<td>
+								<input disabled type="checkbox" value="1" />
+								</td>
+							</tr>
+
+							<tr class="heateor_sss_help_content" id="heateor_sss_save_share_count_help_cont">
+								<td colspan="2">
+								<div>
+								<?php _e( 'Save share counts in the database of this website instead of fetching it from the social networks.', 'sassy-social-share' ); ?>
+								</div>
+								</td>
+							</tr>
+
+							<tr>
+								<th>
+								<label for="heateor_sss_starting_share_count"><?php _e( "Use Starting share counts saved in the free version if any", 'sassy-social-share' ) ?></label>
+								<img id="heateor_sss_starting_share_count_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
+								</th>
+								<td>
+								<input disabled type="checkbox" value="1" />
+								</td>
+							</tr>
+
+							<tr class="heateor_sss_help_content" id="heateor_sss_starting_share_count_help_cont">
+								<td colspan="2">
+								<div>
+								<?php _e( 'Use starting share counts saved in the free version of the plugin if any while displaying the share counts with the social share icons', 'sassy-social-share' ); ?>
+								</div>
+								</td>
+							</tr>
+
+							<tr>
+								<th colspan="2">
+								<label for="heateor_sss_total_count_visible_check"><input disabled type="checkbox" value="1" /><?php _e( "Don't show shares before the total share count reaches ", 'sassy-social-share' ) ?></label><input disabled type="text" style="width:30%;" />
+								</th>
+							</tr>
+						</table>
+					</div>
+				</div>
+
+				<div class="stuffbox" id="heateor_sss_custom_share_text_options">
+					<h3><label><?php _e( 'Custom Text to Share', 'sassy-social-share' ) ?> <a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/" target="_blank">(<?php _e( 'Unlock', 'sassy-social-share' ) ?>)</a></label></h3>
+					<div class="inside">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="form-table editcomment menu_content_table">
+						<tbody>
+							<tr>
+								<th>
+								<label><?php _e( "Custom text to share", 'sassy-social-share' ); ?></label>
+								<img id="heateor_sss_custom_share_text_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
+								</th>
+								<td>
+								<textarea rows="3" cols="63" disabled></textarea>
+								<br/>
+								<small><?php _e( 'Use placeholders <b>post_title</b>, <b>site_title</b>, <b>site_url</b> and <b>post_url</b> for the title of the article being shared, title of the website, URL of the website and the URL of the article being shared, respectively.', 'sassy-social-share' ); ?></small>
+								<br/>
+								<small><?php _e( 'Use placeholder <b>{field_name}</b> to use the value of any of the custom fields created by the Advanced Custom Fields PRO plugin, of the post being shared. Replace <b>field_name</b> with the name of the field whose value should be used. Nested fields can be pulled using nested braces like <b>{parent_field_name{child_field_name}}</b>', 'sassy-social-share' ); ?></small>
+								</td>
+							</tr>
+							
+							<tr class="heateor_sss_help_content" id="heateor_sss_custom_share_text_help_cont">
+								<td colspan="2">
+								<div>
+								<?php _e( 'Custom text you want to be shared along with the url. Applies to Twitter, Whatsapp, Reddit, Digg, Float It, Email, Tumblr, Yummly and Buffer share', 'sassy-social-share' ); ?>
+								</div>
+								</td>
+							</tr>
+
+							<tr>
+								<th>
+								<label for="heateor_sss_horizontal_target_url"><?php _e( 'Placement of the custom text to share', 'sassy-social-share' ) ?></label>
+								<img id="heateor_sss_custom_text_position_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
+								</th>
+								<td>
+								<input type="radio" disabled />
+								<label><?php _e( 'Replace default text (other than the url)', 'sassy-social-share' ) ?></label><br/>
+								<input type="radio" disabled />
+								<label><?php _e( 'Before the text (other than the url)', 'sassy-social-share' ) ?></label><br/>
+								<input type="radio" disabled />
+								<label><?php _e( 'After the text (other than the url)', 'sassy-social-share' ) ?></label>
+								</td>
+							</tr>
+							<tr class="heateor_sss_help_content" id="heateor_sss_custom_text_position_help_cont">
+								<td colspan="2">
+								<div>
+								<?php _e( 'Decide where you want to place the custom text to share', 'sassy-social-share' ) ?>
+								</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					</div>
+				</div>
+
+				<div class="stuffbox">
+					<h3><label><?php _e( 'Email Share Customization', 'sassy-social-share' ) ?> <a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/" target="_blank">(<?php _e( 'Unlock', 'sassy-social-share' ) ?>)</a></label></h3>
+					<div class="inside">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="form-table editcomment menu_content_table">
+						<tr>
+							<th>
+							<label><?php _e( "Email subject", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_email_subject_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
+							</th>
+							<td>
+							<input disabled type="text" /><br/>
+							<small><?php _e( 'Use placeholders <b>post_title</b> and <b>site_title</b> for the title of the article being shared and the title of the website, respectively', 'sassy-social-share' ); ?></small>
+							</td>
+						</tr>
+						
+						<tr class="heateor_sss_help_content" id="heateor_sss_email_subject_help_cont">
+							<td colspan="2">
+							<div>
+							<?php _e( 'Subject of the email share', 'sassy-social-share' ); ?>
+							</div>
+							</td>
+						</tr>
+
+						<tr>
+							<th>
+							<label><?php _e( "Email body", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_email_body_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
+							</th>
+							<td>
+							<textarea rows="7" cols="63" disabled></textarea><br/>
+							<small><?php _e( 'Use placeholders <b>post_title</b>, <b>site_title</b>, <b>site_url</b> and <b>post_url</b> for the title of the article being shared, title of the website, URL of the website and the URL of the article being shared, respectively.', 'sassy-social-share' ); ?></small>
+							<br/>
+							<small><?php _e( 'Use placeholder <b>{field_name}</b> to use the value of any of the custom fields created by the Advanced Custom Fields PRO plugin, of the post being shared. Replace <b>field_name</b> with the name of the field whose value should be used. Nested fields can be pulled using nested braces like <b>{parent_field_name{child_field_name}}</b>', 'sassy-social-share' ); ?></small>
+							</td>
+						</tr>
+						
+						<tr class="heateor_sss_help_content" id="heateor_sss_email_body_help_cont">
+							<td colspan="2">
+							<div>
+							<?php _e( 'Body of the email share', 'sassy-social-share' ); ?>
+							</div>
+							</td>
+						</tr>
+					</table>
+					</div>
 				</div>
 
 				<div class="stuffbox">
@@ -1969,24 +2500,6 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 							</div>
 							</td>
 						</tr>
-
-						<tr>
-							<th>
-							<label for="heateor_sss_buffer_username"><?php _e("Buffer username (without @)", 'sassy-social-share' ); ?></label>
-							<img id="heateor_sss_buffer_username_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
-							</th>
-							<td>
-							<input id="heateor_sss_buffer_username" name="heateor_sss[buffer_username]" type="text" value="<?php echo isset( $options['buffer_username'] ) ? esc_attr( $options['buffer_username'] ) : '' ?>" />
-							</td>
-						</tr>
-						
-						<tr class="heateor_sss_help_content" id="heateor_sss_buffer_username_help_cont">
-							<td colspan="2">
-							<div>
-							<?php _e( 'Provided username will be appended after the content being shared as "via @USERNAME". Leave empty if you do not want any username in the content being shared.', 'sassy-social-share' ) ?>
-							</div>
-							</td>
-						</tr>
 					</table>
 					</div>
 				</div>
@@ -2003,7 +2516,6 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 							<img src="<?php echo plugins_url( '../../images/ajax_loader.gif', __FILE__ ) ?>" id="export_config_loading" style="display:none;margin-top:5px" />
 							</td>
 						</tr>
-						
 						<tr class="heateor_sss_help_content" id="heateor_sss_export_config_help_cont">
 							<td colspan="2">
 							<div>
@@ -2011,7 +2523,6 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 							</div>
 							</td>
 						</tr>
-
 						<tr>
 							<td colspan="2">
 							<textarea id="heateor_sss_exported_config" rows="5" cols="50"></textarea>
@@ -2098,8 +2609,91 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 					</div>
 				</div>
 
-				<div>
-					<a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/" target="_blank"><img style="width:100%" src="<?php echo plugins_url( '../../images/unlock/custom-icon-url.png', __FILE__ ) ?>" /></a>
+				<div class="stuffbox">
+					<h3><label><?php _e( 'Custom Icon Url', 'sassy-social-share' );?> <a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/" target="_blank">(<?php _e( 'Unlock', 'sassy-social-share' ) ?>)</a></label></h3>
+					<div class="inside">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="form-table editcomment menu_content_table">
+						<tr>
+							<th>
+							<label for="heateor_sss_custom_icon"><?php _e( "Use custom icons from the URL", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_custom_icon_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
+							</th>
+							<td>
+							<input disabled type="text" />
+							</td>
+						</tr>
+						
+						<tr class="heateor_sss_help_content" id="heateor_sss_custom_icon_help_cont">
+							<td colspan="2">
+							<div>
+							<?php _e( 'Save full url of the folder where custom share icons are located. Dimensions of these icons must be same as specified in Theme Selection section. Name of custom icons should be in small letters.', 'sassy-social-share' ) ?>
+							</div>
+							</td>
+						</tr>
+
+						<tr>
+							<th>
+							<label for="heateor_sss_custom_icon_extension"><?php _e( "Custom icon extension", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_custom_icon_extension_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
+							</th>
+							<td>
+							<input type="text" disabled />
+							</td>
+						</tr>
+						
+						<tr class="heateor_sss_help_content" id="heateor_sss_custom_icon_extension_help_cont">
+							<td colspan="2">
+							<div>
+							<?php _e( 'Extension (png, jpg etc.) of custom share icons located at the custom path specified in previous option', 'sassy-social-share' ) ?>
+							</div>
+							</td>
+						</tr>
+
+						<tr>
+							<th>
+							<label for="heateor_sss_image_pinterest_hover"><?php _e( "Show Pinterest button on hover of images", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_image_pinterest_hover_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
+							</th>
+							<td>
+							<input disabled type="checkbox" />
+							</td>
+						</tr>
+						<tr class="heateor_sss_help_content" id="heateor_sss_image_pinterest_hover_help_cont">
+							<td colspan="2">
+							<div>
+							<?php _e( 'Show Pinterest share on hover of images', 'sassy-social-share' ) ?>
+							</div>
+							</td>
+						</tr>
+						
+						<tbody id="heateor_sss_image_pinterest_hover_options">
+							<tr>
+								<th>								
+									<input disabled type="checkbox" />
+									<label><?php _e( "Round button", 'sassy-social-share' ) ?></label><br>
+									<input disabled type="checkbox" />		
+									<label><?php _e( "Large button", 'sassy-social-share' ) ?></label>
+								</th>
+							</tr>
+						</tbody>
+						<tr>
+							<th>
+							<label><?php _e( "Don't add Reaction Count and Comment Count in the Facebook shares", 'sassy-social-share' ); ?></label>
+							<img id="heateor_sss_only_share_count_help" class="heateor_sss_help_bubble" src="<?php echo plugins_url( '../../images/info.png', __FILE__ ) ?>" />
+							</th>
+							<td>
+							<input disabled type="checkbox" />
+							</td>
+						</tr>
+						<tr class="heateor_sss_help_content" id="heateor_sss_only_share_count_help_cont">
+							<td colspan="2">
+							<div>
+							<?php _e( 'Facebook shares displayed with the Facebook share icon is sum of Share Count, Reaction Count and Comment Count tracked by Facebook for that webpage. Enabling this checkbox will not add Reaction Count and Comment Count in the Facebook shares.', 'sassy-social-share' ) ?>
+							</div>
+							</td>
+						</tr>
+					</table>
+					</div>
 				</div>
 							
 				</div>
@@ -2141,9 +2735,9 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 				<div class="stuffbox">
 					<h3><label><?php _e( 'Shortcode & Widget', 'sassy-social-share' );?></label></h3>
 					<div class="inside" style="padding-left:7px">
-						<p><a style="text-decoration:none" href="http://support.heateor.com/sassy-social-share-shortcode-and-widget" target="_blank"><?php _e( 'Social Share Shortcode & Widget', 'sassy-social-share' ) ?></a></p>
-						<p><a style="text-decoration:none" href="http://support.heateor.com/sassy-follow-icons-shortcode" target="_blank"><?php _e( 'Follow Icons Shortcode & Widget', 'sassy-social-share' ) ?></a></p>
-						<p><a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/" target="_blank"><img style="width:98%" src="<?php echo plugins_url( '../../images/unlock/click-to-tweet-shortcode.png', __FILE__ ) ?>" /></a></p>
+						<p><a href="http://support.heateor.com/sassy-social-share-shortcode-and-widget" target="_blank"><?php _e( 'Social Share Shortcode & Widget', 'sassy-social-share' ) ?></a></p>
+						<p><a href="http://support.heateor.com/sassy-follow-icons-shortcode" target="_blank"><?php _e( 'Follow Icons Shortcode & Widget', 'sassy-social-share' ) ?></a></p>
+						<p><a href="https://support.heateor.com/click-to-tweet-shortcode/" target="_blank"><?php _e( 'Shortcode for Click to Tweet snippet', 'sassy-social-share' ) ?></a>  <a href="https://www.heateor.com/comparison-between-sassy-social-share-pro-and-premium/" target="_blank">(<?php _e( 'Unlock', 'sassy-social-share' ) ?>)</a></p>
 					</div>
 				</div>
 				</div>
@@ -2154,13 +2748,14 @@ defined( 'ABSPATH' ) or die( "Cheating........Uh!!" );
 				<div class="clear"></div>
 				<div class="heateor_sss_left_column">
 				<div class="stuffbox">
-					<h3><label><?php _e( 'Facebook Sharing Troubleshooter', 'sassy-social-share' );?></label></h3>
+					<h3><label><?php _e( 'Troubleshooter', 'sassy-social-share' );?></label></h3>
 					<div class="inside" style="padding-left:1px">
 					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="form-table editcomment menu_content_table">
 						<tr>
 							<td>
-							<?php _e( 'If Facebook sharing is not working fine, click at the following link and enter the problematic url (where Facebook sharing is not working properly) of your website in the text field. Click "Fetch New Scrape Information" button.', 'sassy-social-share' ) ?><br/>
-							<a style="text-decoration: none" target="_blank" href="https://developers.facebook.com/tools/debug/">https://developers.facebook.com/tools/debug/</a>
+								<?php _e( 'If image and other meta content is not appearing in the Facebook sharer, visit <a target="_blank" href="https://developers.facebook.com/tools/debug/">this</a> link and debug the problematic URL that is giving you problem', 'sassy-social-share' ) ?>
+								<br/><br/>
+								<?php _e( 'If image is not appearing in the tweet posted to the Twitter stream, navigate to <a href="https://cards-dev.twitter.com/validator" target="_blank">this</a> link, enter the URL of the web page that is giving you problems and click "Preview card" button', 'sassy-social-share' ) ?>
 							</td>
 						</tr>
 					</table>

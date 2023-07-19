@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Subscribers;
 
@@ -6,8 +6,6 @@ if (!defined('ABSPATH')) exit;
 
 
 use MailPoet\Entities\SubscriberEntity;
-use MailPoet\Models\Segment;
-use MailPoet\Models\Subscriber;
 use MailPoet\Newsletter\Scheduler\WelcomeScheduler;
 use MailPoet\Segments\SegmentsRepository;
 use MailPoet\Settings\SettingsController;
@@ -59,7 +57,11 @@ class SubscriberActions {
     $this->segmentsRepository = $segmentsRepository;
   }
 
-  public function subscribe($subscriberData = [], $segmentIds = []): SubscriberEntity {
+  /**
+   * Returns SubscriberEntity and associative array with some metadata related to the subscription (e.g. ['confirmationEmailResult' => $exception])
+   * @return array{0: SubscriberEntity, 1: array{confirmationEmailResult: bool|\Exception}}
+   */
+  public function subscribe($subscriberData = [], $segmentIds = []): array {
     // filter out keys from the subscriber_data array
     // that should not be editable when subscribing
     $subscriberData = $this->subscriberSaveController->filterOutReservedColumns($subscriberData);
@@ -103,21 +105,21 @@ class SubscriberActions {
     }
 
     $this->subscribersRepository->flush();
+
+    $metaData = ['confirmationEmailResult' => false];
     // link subscriber to segments
     $segments = $this->segmentsRepository->findBy(['id' => $segmentIds]);
     $this->subscriberSegmentRepository->subscribeToSegments($subscriber, $segments);
 
     try {
-      $this->confirmationEmailMailer->sendConfirmationEmailOnce($subscriber);
+      $metaData['confirmationEmailResult'] = $this->confirmationEmailMailer->sendConfirmationEmailOnce($subscriber);
     } catch (\Exception $e) {
-      // ignore errors
+      $metaData['confirmationEmailResult'] = $e;
     }
 
-    $subscriberModel = Subscriber::findOne($subscriber->getId());
-
     // We want to send the notification on subscribe only when signupConfirmation is disabled
-    if ($signupConfirmationEnabled === false && $subscriber->getStatus() === SubscriberEntity::STATUS_SUBSCRIBED && $subscriberModel) {
-      $this->newSubscriberNotificationMailer->send($subscriberModel, Segment::whereIn('id', $segmentIds)->findMany());
+    if ($signupConfirmationEnabled === false && $subscriber->getStatus() === SubscriberEntity::STATUS_SUBSCRIBED) {
+      $this->newSubscriberNotificationMailer->send($subscriber, $this->segmentsRepository->findBy(['id' => $segmentIds]));
 
       $this->welcomeScheduler->scheduleSubscriberWelcomeNotification(
         $subscriber->getId(),
@@ -125,6 +127,6 @@ class SubscriberActions {
       );
     }
 
-    return $subscriber;
+    return [$subscriber, $metaData];
   }
 }

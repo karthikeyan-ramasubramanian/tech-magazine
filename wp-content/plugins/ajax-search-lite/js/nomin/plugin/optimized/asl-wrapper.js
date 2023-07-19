@@ -85,68 +85,88 @@ window._ASL_load = function () {
     };
 
     window.ASL.initialized = false;
-    window.ASL.initializeById = function (id, ignoreViewport) {
-        let selector = ".asl_init_data";
-        ignoreViewport = typeof ignoreViewport == 'undefined' ? false : ignoreViewport;
-        if (typeof id !== 'undefined' && typeof id != 'object')
-            selector = "div[id*=asl_init_id_" + id + "]";
-
-        /**
-         * Getting around inline script declarations with this solution.
-         * So these new, invisible divs contains a JSON object with the parameters.
-         * Parse all of them and do the declaration.
-         */
+    window.ASL.initializeSearchByID = function (id) {
+        let instances = ASL.getInstances();
+        if (typeof id !== 'undefined' && typeof id != 'object' ) {
+            if ( typeof instances[id] !== 'undefined' ) {
+                let ni = [];
+                ni[id] = instances[id];
+                instances = ni;
+            } else {
+                return false;
+            }
+        }
         let initialized = 0;
-        $(selector).forEach(function (el) {
+        instances.forEach(function (data, i) {
             // noinspection JSUnusedAssignment
-            let $asl = $(el).closest('.asl_w_container').find('.asl_m');
-            // $asl.length == 0 -> when fixed compact layout mode is enabled
-            if ( $asl.length == 0 || typeof $asl.get(0).hasAsl != 'undefined') {
+            $('.asl_m_' + i).forEach(function(el){
+                let $el = $(el);
+                if ( typeof $el.get(0).hasAsl != 'undefined') {
+                    ++initialized;
+                    return true;
+                }
+                el.hasAsl = true;
                 ++initialized;
-                return true;
-            }
-
-            if (!ignoreViewport && !$asl.inViewPort(-100)) {
-                return true;
-            }
-
-            let jsonData = $(el).data("asldata");
-            if (typeof jsonData === "undefined") return true;   // Do not return false, it breaks the loop!
-
-            jsonData = WPD.Base64.decode(jsonData);
-            if (typeof jsonData === "undefined" || jsonData == "") return true; // Do not return false, it breaks the loop!
-
-            let args = JSON.parse(jsonData);
-            $asl.get(0).hasAsl = true;
-            ++initialized;
-            return $asl.ajaxsearchlite(args);
+                return $el.ajaxsearchlite(data);
+            });
         });
+    }
 
-        if ($(selector).length == initialized) {
-            document.removeEventListener('scroll', ASL.initializeById);
-            document.removeEventListener('resize', ASL.initializeById);
+    window.ASL.getInstances = function() {
+        // noinspection JSUnresolvedVariable
+        if ( typeof window.ASL_INSTANCES !== 'undefined' ) {
+            // noinspection JSUnresolvedVariable
+            return window.ASL_INSTANCES;
+        } else {
+            let instances = [];
+            $('.asl_init_data').forEach(function (el) {
+                if (typeof el.dataset['asldata'] === "undefined") return true;   // Do not return false, it breaks the loop!
+                let data = WPD.Base64.decode(el.dataset['asldata']);
+                if (typeof data === "undefined" || data == "") return true;
+
+                instances[el.dataset['aslId']] = JSON.parse(data);
+            });
+            return instances;
         }
     }
 
-// Call this function if you need to initialize an instance that is printed after an AJAX call
-// Calling without an argument initializes all instances found.
     window.ASL.initialize = function (id) {
-        // this here is either window.ASL or window._ASL
-        let _this = this;
-
         // Some weird ajax loader problem prevention
-        if (typeof _this.version == 'undefined')
+        if (typeof ASL.version == 'undefined')
             return false;
 
-        // noinspection JSUnresolvedVariable
-        if ( ASL.script_async_load ) {
-            document.addEventListener('scroll', ASL.initializeById, {passive: true});
-            document.addEventListener('resize', ASL.initializeById, {passive: true});
-            ASL.initializeById(id);
+        if( !!window.IntersectionObserver ){
+            if ( ASL.script_async_load || ASL.init_only_in_viewport ) {
+                let searches = document.querySelectorAll('.asl_w_container');
+                if ( searches.length ) {
+                    let observer = new IntersectionObserver(function(entries){
+                        entries.forEach(function(entry){
+                            if ( entry.isIntersecting ) {
+                                ASL.initializeSearchByID(entry.target.dataset.id);
+                                observer.unobserve(entry.target);
+                            }
+                        });
+                    });
+                    searches.forEach(function(search){
+                        observer.observe(search);
+                    });
+                }
+            } else {
+                ASL.initializeSearchByID(id);
+            }
         } else {
-            ASL.initializeById(id, true);
+            ASL.initializeSearchByID(id);
         }
 
+        ASL.initializeMutateDetector();
+        ASL.initializeHighlight();
+        ASL.initializeOtherEvents();
+
+        ASL.initialized = true;
+    };
+
+    window.ASL.initializeHighlight = function() {
+        let _this = this;
         if (_this.highlight.enabled) {
             let data = localStorage.getItem('asl_phrase_highlight');
             localStorage.removeItem('asl_phrase_highlight');
@@ -180,56 +200,10 @@ window._ASL_load = function () {
                 });
             }
         }
-
-        _this.initialized = true;
     };
 
-    window.ASL.ready = function () {
-        let _this = this,
-            $body = $('body'),
-            t, tt, ttt, ts;
-
-        /**
-         * This function is triggered right after the script stack is loaded, when using the async loader.
-         * The DOMContentLoaded is already fired, so we need to force the init.
-         */
-        if ( ASL.script_async_load ) {
-            _this.initialize();
-        }
-
-        $(document).on('DOMContentLoaded', function() {
-            _this.initialize();
-        });
-
-        // DOM tree modification detection to re-initialize automatically if enabled
-        // noinspection JSUnresolvedVariable
-        if (typeof ASL.detect_ajax != "undefined" && ASL.detect_ajax == 1) {
-            let observer = new MutationObserver(function() {
-                clearTimeout(t);
-                t = setTimeout(function () {
-                    _this.initialize();
-                }, 500);
-            });
-            function addObserverIfDesiredNodeAvailable() {
-                let db = document.querySelector("body");
-                if( !db ) {
-                    //The node we need does not exist yet.
-                    //Wait 500ms and try again
-                    window.setTimeout(addObserverIfDesiredNodeAvailable,500);
-                    return;
-                }
-                observer.observe(db, {subtree: true, childList: true});
-            }
-            addObserverIfDesiredNodeAvailable();
-        }
-
-        $(window).on('resize', function () {
-            clearTimeout(tt);
-            tt = setTimeout(function () {
-                _this.initializeById();
-            }, 200);
-        });
-
+    window.ASL.initializeOtherEvents = function() {
+        let ttt, ts, $body = $('body'), _this = this;
         // Known slide-out and other type of menus to initialize on click
         ts = '#menu-item-search, .fa-search, .fa, .fas';
         // Avada theme
@@ -258,7 +232,7 @@ window._ASL_load = function () {
         $body.on('click touchend', ts, function () {
             clearTimeout(ttt);
             ttt = setTimeout(function () {
-                _this.initializeById({}, true);
+                _this.initializeSearchByID();
             }, 300);
         });
 
@@ -266,9 +240,33 @@ window._ASL_load = function () {
         if ( typeof jQuery != 'undefined' ) {
             jQuery(document).on('elementor/popup/show', function(){
                 setTimeout(function () {
-                    _this.initializeById({}, true);
+                    _this.initializeSearchByID();
                 }, 10);
             });
+        }
+    };
+
+    window.ASL.initializeMutateDetector = function() {
+        let t;
+        if ( typeof ASL.detect_ajax != "undefined" && ASL.detect_ajax == 1 ) {
+            let o = new MutationObserver(function() {
+                clearTimeout(t);
+                t = setTimeout(function () {
+                    ASL.initializeSearchByID();
+                }, 500);
+            });
+            o.observe(document.querySelector("body"), {subtree: true, childList: true});
+        }
+    };
+
+    window.ASL.ready = function () {
+        let _this = this;
+
+        if (document.readyState === "complete" || document.readyState === "loaded"  || document.readyState === "interactive") {
+            // document is already ready to go
+            _this.initialize();
+        } else {
+            $(document).on('DOMContentLoaded', _this.initialize);
         }
     };
 
@@ -300,15 +298,9 @@ window._ASL_load = function () {
         }
     };
 
-    // noinspection JSUnresolvedVariable
-    if (
-        !window.ASL.css_async ||
-        typeof window.ASL.css_loaded != 'undefined' // CSS loader finished, but this script was not ready yet
-    ) {
-        window.WPD.intervalUntilExecute(window.ASL.init, function() {
-            return typeof window.ASL.version != 'undefined' && $.fn.ajaxsearchlite != 'undefined'
-        });
-    }
+    window.WPD.intervalUntilExecute(window.ASL.init, function() {
+        return typeof window.ASL.version != 'undefined' && $.fn.ajaxsearchlite != 'undefined'
+    });
 };
 // Run on document ready
 (function() {

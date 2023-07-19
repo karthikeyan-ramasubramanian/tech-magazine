@@ -24,7 +24,13 @@ class AdminNotices
             add_action('admin_notices', array($this, 'optin_branding_added_by_default'));
             add_action('admin_notices', array($this, 'review_plugin_notice'));
             add_action('admin_notices', array($this, 'show_woocommerce_features'));
-            add_action('admin_notices', array($this, 'learndash_woocommerce_features'));
+            add_action('admin_notices', array($this, 'show_edd_features'));
+            add_action('admin_notices', array($this, 'show_learndash_features'));
+            add_action('admin_notices', array($this, 'show_givewp_features'));
+            add_action('admin_notices', array($this, 'show_lifterlms_features'));
+            add_action('admin_notices', array($this, 'show_memberpress_features'));
+            add_action('admin_notices', array($this, 'show_restrict_content_pro_features'));
+            add_action('admin_notices', array($this, 'show_pmpro_features'));
             add_action('admin_notices', array($this, 'show_wpforms_features'));
             add_action('admin_notices', array($this, 'show_cf7_features'));
             add_action('admin_notices', array($this, 'show_forminator_features'));
@@ -162,6 +168,8 @@ class AdminNotices
      */
     public function review_plugin_notice()
     {
+        if ( ! current_user_can('manage_options')) return;
+
         if ( ! PAnD::is_admin_notice_active('review-plugin-notice-forever')) return;
 
         if (get_option('mo_dismiss_leave_review_forever', false)) return;
@@ -230,7 +238,7 @@ class AdminNotices
         if ( ! class_exists('WooCommerce')) return;
 
         $upgrade_url = 'https://mailoptin.io/integrations/woocommerce/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=woo_admin_notice';
-        $notice      = sprintf(__('Did you know you can display targeted message & optin forms across your WooCommerce store, add customers to your email list after their purchase, and automatically send email alert of new products? %sLearn more%s', 'mailoptin'),
+        $notice      = sprintf(__('Did you know you can display targeted message & optin forms across your WooCommerce store, add customers to your email list after their purchase, automatically send email of new products and send newsletters to active subscribers and members in WooCommerce Memberships and Subscriptions plugins? %sLearn more%s', 'mailoptin'),
             '<a href="' . $upgrade_url . '" target="_blank">', '</a>'
         );
         echo '<div data-dismissible="show_woocommerce_features-forever" class="notice notice-info is-dismissible">';
@@ -238,7 +246,26 @@ class AdminNotices
         echo '</div>';
     }
 
-    public function learndash_woocommerce_features()
+    public function show_edd_features()
+    {
+        if ( ! $this->is_admin_notice_show()) return;
+
+        if ( ! PAnD::is_admin_notice_active('show_edd_features-forever')) {
+            return;
+        }
+
+        if ( ! class_exists('\Easy_Digital_Downloads')) return;
+
+        $upgrade_url = 'https://mailoptin.io/integrations/easy-digital-downloads/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=edd_admin_notice';
+        $notice      = sprintf(__('Did you know you can add Easy Digital Downloads customers to your email list after they purchase any product or based on their purchased product, send newsletters and automated email of new downloads? %sLearn more%s', 'mailoptin'),
+            '<a href="' . $upgrade_url . '" target="_blank">', '</a>'
+        );
+        echo '<div data-dismissible="show_edd_features-forever" class="notice notice-info is-dismissible">';
+        echo "<p>$notice</p>";
+        echo '</div>';
+    }
+
+    public function show_learndash_features()
     {
         if ( ! $this->is_admin_notice_show()) return;
 
@@ -248,11 +275,115 @@ class AdminNotices
 
         if ( ! class_exists('\SFWD_LMS')) return;
 
-        $upgrade_url = 'https://mailoptin.io/?p=33850&utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=learndash_admin_notice';
+        $upgrade_url = 'https://mailoptin.io/article/learndash-mailchimp-aweber-more/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=learndash_admin_notice';
         $notice      = sprintf(__('Did you know you can add LearnDash students to your email list after they enroll to any course or based on the group or course they are enrolled in? %sLearn more%s', 'mailoptin'),
             '<a href="' . $upgrade_url . '" target="_blank">', '</a>'
         );
         echo '<div data-dismissible="show_learndash_features-forever" class="notice notice-info is-dismissible">';
+        echo "<p>$notice</p>";
+        echo '</div>';
+    }
+
+    public function show_givewp_features()
+    {
+        if ( ! $this->is_admin_notice_show()) return;
+
+        if ( ! PAnD::is_admin_notice_active('show_givewp_features-forever')) {
+            return;
+        }
+
+        if ( ! class_exists('\Give')) return;
+
+        $notice = sprintf(__('Did you know you can %1$sadd GiveWP donors to your email list%2$s after they have donated or based on the donation form they donated through %3$sand send emails to donors%2$s at anytime? %4$sLearn more%2$s', 'mailoptin'),
+            '<a href="https://mailoptin.io/article/givewp-mailchimp-aweber-more/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=givewp_admin_notice" target="_blank">',
+            '</a>',
+            '<a href="https://mailoptin.io/article/send-emails-givewp-donors-wordpress/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=givewp_admin_notice" target="_blank">',
+            '<a href="https://mailoptin.io/integrations/givewp/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=givewp_admin_notice" target="_blank">'
+        );
+        echo '<div data-dismissible="show_givewp_features-forever" class="notice notice-info is-dismissible">';
+        echo "<p>$notice</p>";
+        echo '</div>';
+    }
+
+    public function show_lifterlms_features()
+    {
+        if ( ! $this->is_admin_notice_show()) return;
+
+        if ( ! PAnD::is_admin_notice_active('show_lifterlms_features-forever')) {
+            return;
+        }
+
+        if ( ! function_exists('llms')) return;
+
+        $upgrade_url = 'https://mailoptin.io/article/lifterlms-mailchimp-aweber-more/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=lifterlms_admin_notice';
+        $notice      = sprintf(__('Did you know you can %1$sadd LifterLMS students to your email list%2$s after enrollment or based on the membership/course they are enrolled %3$sand send emails to students%2$s at anytime? %4$sLearn more%2$s', 'mailoptin'),
+            '<a href="' . $upgrade_url . '" target="_blank">',
+            '</a>',
+            '<a href="https://mailoptin.io/article/send-wordpress-emails-lifterlms-students/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=lifterlms_admin_notice" target="_blank">',
+            '<a href="https://mailoptin.io/integrations/lifterlms/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=lifterlms_admin_notice" target="_blank">'
+        );
+        echo '<div data-dismissible="show_lifterlms_features-forever" class="notice notice-info is-dismissible">';
+        echo "<p>$notice</p>";
+        echo '</div>';
+    }
+
+    public function show_memberpress_features()
+    {
+        if ( ! $this->is_admin_notice_show()) return;
+
+        if ( ! PAnD::is_admin_notice_active('show_memberpress_features-forever')) {
+            return;
+        }
+
+        if ( ! class_exists('\MeprAppCtrl')) return;
+
+        $upgrade_url = 'https://mailoptin.io/article/memberpress-mailchimp-aweber-more/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=memberpress_admin_notice';
+        $notice      = sprintf(__('Did you know you can %1$sadd MemberPress members to your email list%2$s after membership subscription %3$sand send emails to members%2$s at anytime? %4$sLearn more%2$s', 'mailoptin'),
+            '<a href="' . $upgrade_url . '" target="_blank">', '</a>',
+            '<a href="https://mailoptin.io/article/send-wordpress-emails-memberpress-members/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=memberpress_admin_notice" target="_blank">',
+            '<a href="https://mailoptin.io/integrations/memberpress/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=memberpress_admin_notice" target="_blank">'
+        );
+        echo '<div data-dismissible="show_memberpress_features-forever" class="notice notice-info is-dismissible">';
+        echo "<p>$notice</p>";
+        echo '</div>';
+    }
+
+    public function show_restrict_content_pro_features()
+    {
+        if ( ! $this->is_admin_notice_show()) return;
+
+        if ( ! PAnD::is_admin_notice_active('show_restrict_content_pro_features-forever')) {
+            return;
+        }
+
+        if ( ! class_exists('\Restrict_Content_Pro')) return;
+
+        $upgrade_url = 'https://mailoptin.io/article/restrict-content-pro-mailchimp-aweber-more/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=restrict_content_pro_admin_notice';
+        $notice      = sprintf(__('Did you know you can %1$sadd Restrict Content Pro members to your email list%2$s after membership subscription %3$sand send emails to members%2$s at anytime? %4$sLearn more%2$s', 'mailoptin'),
+            '<a href="' . $upgrade_url . '" target="_blank">', '</a>',
+            '<a href="https://mailoptin.io/article/send-wordpress-emails-restrict-content-pro-members/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=restrict_content_pro_admin_notice" target="_blank">',
+            '<a href="https://mailoptin.io/integrations/restrict-content-pro/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=restrict_content_pro_admin_notice" target="_blank">'
+        );
+        echo '<div data-dismissible="show_restrict_content_pro_features-forever" class="notice notice-info is-dismissible">';
+        echo "<p>$notice</p>";
+        echo '</div>';
+    }
+
+    public function show_pmpro_features()
+    {
+        if ( ! $this->is_admin_notice_show()) return;
+
+        if ( ! PAnD::is_admin_notice_active('show_pmpro_features-forever')) return;
+
+        if ( ! defined('PMPRO_VERSION')) return;
+
+        $upgrade_url = 'https://mailoptin.io/article/paid-memberships-pro-mailchimp-aweber-more/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=pmpro_admin_notice';
+        $notice      = sprintf(__('Did you know you can %1$sadd Paid Memberships Pro members to your email list%2$s after membership subscription %3$sand send emails to members%2$s at anytime? %4$sLearn more%2$s', 'mailoptin'),
+            '<a href="' . $upgrade_url . '" target="_blank">', '</a>',
+            '<a href="https://mailoptin.io/article/send-wordpress-emails-paid-memberships-pro-members/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=pmpro_admin_notice" target="_blank">',
+            '<a href="https://mailoptin.io/integrations/paid-memberships-pro/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=pmpro_admin_notice" target="_blank">'
+        );
+        echo '<div data-dismissible="show_pmpro_features-forever" class="notice notice-info is-dismissible">';
         echo "<p>$notice</p>";
         echo '</div>';
     }

@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Doctrine\EventListeners;
 
@@ -13,7 +13,9 @@ class EmojiEncodingListener {
   /** @var Emoji */
   private $emoji;
 
-  public function __construct(Emoji $emoji) {
+  public function __construct(
+    Emoji $emoji
+  ) {
     $this->emoji = $emoji;
   }
 

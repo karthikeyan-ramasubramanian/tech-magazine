@@ -61,9 +61,9 @@ class Activator
     }
     public static function run_background_tasks()
     {
-        if ( \defined( 'DISABLE_WP_CRON' ) and DISABLE_WP_CRON ) return;
+        if ( \apply_filters( 'authorship/check_wp_cron', true ) and ( \defined( 'DISABLE_WP_CRON' ) and DISABLE_WP_CRON ) ) return false;
 
-        $options = authorship_get_options();
+        $options = \authorship_get_options();
 
         if ( $options['guest_authors'] or $options['enable_multi_authors'] )
         {

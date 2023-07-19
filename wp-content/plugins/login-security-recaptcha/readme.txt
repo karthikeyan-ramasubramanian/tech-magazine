@@ -1,25 +1,31 @@
-=== Login Security reCAPTCHA ===
+=== Login Security Captcha ===
 Contributors: scriptstown
-Tags: login, security, recaptcha, google, spam, anti spam, monitor, log
+Tags: antispam, captcha, cloudflare, spam, recaptcha, turnstile, login, comment, anti-spam, monitor, log
 Donate link: https://scriptstown.com/
 Requires at least: 5.0
-Tested up to: 6.0
+Tested up to: 6.2
 Requires PHP: 5.6
-Stable tag: 1.3.9
+Stable tag: 1.5.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Secure WordPress login, registration, and comment form with Google reCAPTCHA. Monitor error logs. Prevent Brute-force attacks and more.
+Secure WordPress login, registration, and comment form with Google reCAPTCHA or Cloudflare Turnstile. Prevent Brute-force attacks and more.
 
 == Description ==
 
-**Login Security reCAPTCHA** is a security plugin for WordPress which can add Google reCAPTCHA to WordPress login, registration, lost password, and comment form. This is a very lightweight plugin to prevent spam comments and attacks like Brute-force. This plugin supports Google reCAPTCHA Version 2 as well as Version 3. Also, you can monitor failed login attempts and error logs.
+**Login Security Captcha** is a security plugin for WordPress to quickly add CAPTCHA or CAPTCHA-free services like Cloudflare **Turnstile** and Google **reCAPTCHA** to the WordPress login, registration, lost password, and comment form. This is a fast and very **lightweight** security plugin to place captcha on standard WordPress forms with minimal footprints to prevent spam comments and protect against Brute-force attacks.
 
-### Login Security reCAPTCHA Features
+It supports **Cloudflare Turnstile**, Google **reCAPTCHA** Version 2, and Version 3 with multiple options. This is the best WordPress captcha plugin for antispam protection to secure comment form and WordPress login page. You can even make use of different versions of reCAPTCHA and also Turnstile on different forms at the same time. The plugin comes with a set of simple options to quickly set up captcha validation on the forms. Also, you can monitor error logs.
 
+Using this plugin, you can change the captcha theme to light or dark for Cloudflare Turnstile and Google reCAPTCHA. You can configure the score value for reCAPTCHA version 3. Also, you can adjust the captcha size to normal or compact for Cloudflare **Turnstile**.
+
+### Login Security Captcha Features
+
+* Cloudflare **Turnstile**
 * Google reCAPTCHA v2
 * Google reCAPTCHA v3
 * Set reCAPTCHA v3 Position
+* Captcha Theme and Size
 * Secure Login Form
 * Secure Registration Form
 * Secure Lost Password Form
@@ -34,14 +40,17 @@ Secure WordPress login, registration, and comment form with Google reCAPTCHA. Mo
 * **Limit Login Attempts** by IP Address
 * Check and Monitor **Last Login**
 * Check Login History by Username
-* Google reCAPTCHA v2 and v3
-* Redirect after Login
+* Recent Login Dashboard Widget
+* Cloudflare **Turnstile** Support
+* Google **reCAPTCHA** v2 and v3
+* Redirect after Login or Logout
 * **Role-Based Redirection**
 * Secure Login and Registration Form
 * Secure Lost Password Form
-* Protect Comment Spam
-* Secure **WooCommerce** Login Form
-* Secure **WooCommerce** Registration Form
+* Easy to Protect Comment Spam
+* Login Form - **WooCommerce**
+* Lost Password Form - **WooCommerce**
+* Registration Form - **WooCommerce**
 * Secure **WooCommerce** Checkout Form
 * Advanced Security and Much More
 
@@ -49,17 +58,22 @@ Secure WordPress login, registration, and comment form with Google reCAPTCHA. Mo
 
 == Installation ==
 
-**Login Security reCAPTCHA [Installation Guide]**
+**Login Security Captcha [Installation Guide]**
 
 1. You can:
  * Upload the entire `login-security-recaptcha` folder to the `/wp-content/plugins/` directory via FTP.
  * Upload the zip file of plugin via *Plugins -> Add New -> Upload* in your WordPress Admin Panel.
- * Search **Login Security reCAPTCHA** in the search engine available on *Plugins -> Add New* and press *Install Now* button.
+ * Search **Login Security Captcha** in the search engine available on *Plugins -> Add New* and press *Install Now* button.
 2. Activate the plugin through *Plugins* menu in WordPress Admin Panel.
 3. Click on *Login Security* under *Settings* menu to configure the plugin.
 4. Ready, now you can use it.
 
 == Frequently Asked Questions ==
+
+= How to get Cloudflare Turnstile Site Key and Secret Key? =
+1. To get the **Site Key** and **Secret Key**, signup for the Cloudflare account and navigate to **Cloudflare Turnstile dashboard**.
+2. Next, provide your domain to generate **Site Key** and **Secret Key** for Turnstile.
+3. You may also read our guide on **[How to Get Site Key and Secret Key for Cloudflare Turnstile](https://scriptstown.com/how-to-get-site-and-secret-key-for-cloudflare-turnstile/)**.
 
 = How to get Google reCAPTCHA Site Key and Secret Key? =
 1. To get the **Site Key** and **Secret Key**, go to **Google reCAPTCHA Admin Console**.
@@ -70,16 +84,54 @@ Secure WordPress login, registration, and comment form with Google reCAPTCHA. Mo
 
 == Screenshots ==
 
-1. Login Form - Google reCAPTCHA v2 Dark Theme
-2. Login Form - Google reCAPTCHA v3
-3. Lost Password Form - Google reCAPTCHA v2 Light Theme
-4. Registration Form - Google reCAPTCHA v2 Light Theme
-5. Comment Form - Google reCAPTCHA v2 Dark Theme
-6. Google reCAPTCHA v2 Settings
-7. Google reCAPTCHA v3 Settings
-8. Monitor reCAPTCHA Error Logs
+1. Cloudflare Turnstile Challenge - Login Form
+2. Google reCAPTCHA Version 2 - Login Form
+3. Google reCAPTCHA Version 3 - Login Form
+4. Comment Form - Cloudflare Turnstile Compact Size
+5. Cloudflare Turnstile Settings - Login Security Captcha
+6. Google reCAPTCHA Options - Login Security Captcha
+7. Monitor Captcha Error Logs
 
 == Changelog ==
+
+= 1.5.4 =
+* Readme updated.
+
+= 1.5.3 =
+* Tested up to 6.2.
+
+= 1.5.2 =
+* Tags updated.
+* Readme updated.
+
+= 1.5.1 =
+* Readme updated.
+
+= 1.5.0 =
+* Added: Support for Captcha-free Cloudflare Turnstile.
+* Improvement: Code refactor.
+* Readme updated.
+
+= 1.4.6 =
+* Updated readme.
+
+= 1.4.5 =
+* Improvement: Settings page.
+
+= 1.4.4 =
+* Tested up to 6.1.
+
+= 1.4.3 =
+* Improvement: Settings page.
+
+= 1.4.2 =
+* Updated readme.
+
+= 1.4.1 =
+* Tested up to 6.0.1.
+
+= 1.4.0 =
+* Updated readme.
 
 = 1.3.9 =
 * Tested up to 6.0.

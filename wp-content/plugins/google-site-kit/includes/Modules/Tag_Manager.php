@@ -25,15 +25,18 @@ use Google\Site_Kit\Core\Modules\Module_With_Owner;
 use Google\Site_Kit\Core\Modules\Module_With_Owner_Trait;
 use Google\Site_Kit\Core\Modules\Module_With_Scopes;
 use Google\Site_Kit\Core\Modules\Module_With_Scopes_Trait;
+use Google\Site_Kit\Core\Modules\Module_With_Service_Entity;
 use Google\Site_Kit\Core\Modules\Module_With_Settings;
 use Google\Site_Kit\Core\Modules\Module_With_Settings_Trait;
 use Google\Site_Kit\Core\REST_API\Data_Request;
 use Google\Site_Kit\Core\REST_API\Exception\Invalid_Datapoint_Exception;
-use Google\Site_Kit\Core\Tags\Guards\Tag_Production_Guard;
+use Google\Site_Kit\Core\Tags\Guards\Tag_Environment_Type_Guard;
 use Google\Site_Kit\Core\Tags\Guards\Tag_Verify_Guard;
 use Google\Site_Kit\Core\Util\BC_Functions;
 use Google\Site_Kit\Core\Util\Debug_Data;
 use Google\Site_Kit\Core\Util\Method_Proxy_Trait;
+use Google\Site_Kit\Core\Util\Sort;
+use Google\Site_Kit\Core\Util\URL;
 use Google\Site_Kit\Modules\Tag_Manager\AMP_Tag;
 use Google\Site_Kit\Modules\Tag_Manager\Settings;
 use Google\Site_Kit\Modules\Tag_Manager\Tag_Guard;
@@ -51,7 +54,7 @@ use WP_Error;
  * @ignore
  */
 final class Tag_Manager extends Module
-	implements Module_With_Scopes, Module_With_Settings, Module_With_Assets, Module_With_Debug_Fields, Module_With_Owner, Module_With_Deactivation {
+	implements Module_With_Scopes, Module_With_Settings, Module_With_Assets, Module_With_Debug_Fields, Module_With_Owner, Module_With_Service_Entity, Module_With_Deactivation {
 	use Method_Proxy_Trait;
 	use Module_With_Assets_Trait;
 	use Module_With_Owner_Trait;
@@ -294,7 +297,7 @@ final class Tag_Manager extends Module
 					$container_name = $data['name'];
 				} else {
 					// Use site name for container, fallback to domain of reference URL.
-					$container_name = get_bloginfo( 'name' ) ?: wp_parse_url( $this->context->get_reference_site_url(), PHP_URL_HOST );
+					$container_name = get_bloginfo( 'name' ) ?: URL::parse( $this->context->get_reference_site_url(), PHP_URL_HOST );
 					// Prevent naming conflict (Tag Manager does not allow more than one with same name).
 					if ( self::USAGE_CONTEXT_AMP === $usage_context ) {
 						$container_name .= ' AMP';
@@ -346,7 +349,7 @@ final class Tag_Manager extends Module
 		$restore_defer = $this->with_client_defer( false );
 
 		// Use site name for container, fallback to domain of reference URL.
-		$container_name = get_bloginfo( 'name' ) ?: wp_parse_url( $this->context->get_reference_site_url(), PHP_URL_HOST );
+		$container_name = get_bloginfo( 'name' ) ?: URL::parse( $this->context->get_reference_site_url(), PHP_URL_HOST );
 		// Prevent naming conflict (Tag Manager does not allow more than one with same name).
 		if ( self::USAGE_CONTEXT_AMP === $usage_context ) {
 			$container_name .= ' AMP';
@@ -383,12 +386,19 @@ final class Tag_Manager extends Module
 		switch ( "{$data->method}:{$data->datapoint}" ) {
 			case 'GET:accounts':
 				/* @var Google_Service_TagManager_ListAccountsResponse $response List accounts response. */
-				return $response->getAccount();
+				return Sort::case_insensitive_list_sort(
+					$response->getAccount(),
+					'name'
+				);
 			case 'GET:accounts-containers':
 				/* @var Google_Service_TagManager_ListAccountsResponse $response List accounts response. */
+				$accounts = Sort::case_insensitive_list_sort(
+					$response->getAccount(),
+					'name'
+				);
 				$response = array(
 					// TODO: Parse this response to a regular array.
-					'accounts'   => $response->getAccount(),
+					'accounts'   => $accounts,
 					'containers' => array(),
 				);
 				if ( 0 === count( $response['accounts'] ) ) {
@@ -424,7 +434,10 @@ final class Tag_Manager extends Module
 					}
 				);
 
-				return array_values( $containers );
+				return Sort::case_insensitive_list_sort(
+					array_values( $containers ),
+					'name'
+				);
 		}
 
 		return parent::parse_data_response( $data, $response );
@@ -499,19 +512,29 @@ final class Tag_Manager extends Module
 	protected function setup_assets() {
 		$base_url = $this->context->url( 'dist/assets/' );
 
+		$dependencies = array(
+			'googlesitekit-api',
+			'googlesitekit-data',
+			'googlesitekit-datastore-site',
+			'googlesitekit-modules',
+			'googlesitekit-vendor',
+			'googlesitekit-components',
+		);
+
+		$analytics_exists = apply_filters( 'googlesitekit_module_exists', false, 'analytics' );
+
+		// Note that the Tag Manager bundle will make use of the Analytics bundle if it's available,
+		// but can also function without it, hence the conditional include of the Analytics bundle here.
+		if ( $analytics_exists ) {
+			$dependencies[] = 'googlesitekit-modules-analytics';
+		}
+
 		return array(
 			new Script(
 				'googlesitekit-modules-tagmanager',
 				array(
 					'src'          => $base_url . 'js/googlesitekit-modules-tagmanager.js',
-					'dependencies' => array(
-						'googlesitekit-api',
-						'googlesitekit-data',
-						'googlesitekit-datastore-site',
-						'googlesitekit-modules',
-						'googlesitekit-modules-analytics',
-						'googlesitekit-vendor',
-					),
+					'dependencies' => $dependencies,
 				)
 			),
 		);
@@ -534,7 +557,7 @@ final class Tag_Manager extends Module
 		if ( ! $tag->is_tag_blocked() ) {
 			$tag->use_guard( new Tag_Verify_Guard( $this->context->input() ) );
 			$tag->use_guard( new Tag_Guard( $module_settings, $is_amp ) );
-			$tag->use_guard( new Tag_Production_Guard() );
+			$tag->use_guard( new Tag_Environment_Type_Guard() );
 
 			if ( $tag->can_register() ) {
 				$tag->register();
@@ -608,6 +631,40 @@ final class Tag_Manager extends Module
 		}
 
 		return $allowed;
+	}
+
+	/**
+	 * Checks if the current user has access to the current configured service entity.
+	 *
+	 * @since 1.77.0
+	 *
+	 * @return boolean|WP_Error
+	 */
+	public function check_service_entity_access() {
+		$is_amp_mode = in_array( $this->context->get_amp_mode(), array( Context::AMP_MODE_PRIMARY, Context::AMP_MODE_SECONDARY ), true );
+
+		$settings   = $this->get_settings()->get();
+		$account_id = $settings['accountID'];
+
+		$configured_containers = $is_amp_mode ? array( $settings['containerID'], $settings['ampContainerID'] ) : array( $settings['containerID'] );
+
+		try {
+			$containers = $this->get_tagmanager_service()->accounts_containers->listAccountsContainers( "accounts/{$account_id}" );
+		} catch ( Exception $e ) {
+			if ( $e->getCode() === 403 ) {
+				return false;
+			}
+			return $this->exception_to_error( $e );
+		}
+
+		$all_containers = array_map(
+			function( $container ) {
+				return $container->getPublicId();
+			},
+			$containers->getContainer()
+		);
+
+		return empty( array_diff( $configured_containers, $all_containers ) );
 	}
 
 }

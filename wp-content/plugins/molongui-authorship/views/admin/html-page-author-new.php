@@ -465,7 +465,11 @@ $current_color = molongui_get_admin_color();
                         <?php if ( current_user_can( 'create_users' ) ) : ?>
 
                             <div class="molongui-new-author__checkbox" title="<?php _e( "Check to create a user account for this author. Leave blank to make this author a guest.", 'molongui-authorship' ); ?>">
-                                <input type="checkbox" class="inp-cbx" id="user-account" name="user-account" <?php checked( !empty( $input['user-account'] ) ); echo ( !empty( $force_user_account ) ? 'disabled="disabled"' : '' ); ?> style="display: none;" />
+                                <?php if ( empty( $force_user_account ) ) : ?>
+                                    <input type="checkbox" class="inp-cbx" id="user-account" name="user-account" <?php checked( !empty( $input['user-account'] ) ); ?> style="display: none;" />
+                                <?php else : ?>
+                                    <input type="checkbox" id="user-account" name="user-account" class="inp-cbx" checked="checked" disabled="disabled" style="display: none;" />
+                                <?php endif; ?>
                                 <label class="cbx" for="user-account">
                                     <span>
                                         <svg width="12px" height="9px" viewbox="0 0 12 9">
@@ -488,6 +492,9 @@ $current_color = molongui_get_admin_color();
                                         </p>
                                     </div>
                                 </label>
+                                <?php if ( !empty( $force_user_account ) ) : // Disabled checkboxes are not submitted to $_POST, so we need to recreate it using a hidden input. ?>
+                                    <input type="hidden" id="__user-account" name="user-account" value="on" />
+                                <?php endif; ?>
                             </div>
 
                             <div id="user-fields" class="molongui-new-author__fields">

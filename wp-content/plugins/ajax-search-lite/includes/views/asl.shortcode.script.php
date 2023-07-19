@@ -32,6 +32,7 @@ $scope = "asljQuery";
 	"trigger": {
 		"click": "<?php echo $style['click_action']; ?>",
 		"click_location": "<?php echo $style['click_action_location']; ?>",
+		"update_href": <?php echo $style['trigger_update_href']; ?>,
 		"return": "<?php echo $style['return_action']; ?>",
 		"return_location": "<?php echo $style['return_action_location']; ?>",
 		"facet": <?php echo $style['trigger_on_facet_change']; ?>,
@@ -63,6 +64,11 @@ $scope = "asljQuery";
             "items" : "voidanim"
         }
     },
+	"autop": {
+		"state": "<?php echo $style['auto_populate']; ?>",
+		"phrase": "<?php echo $style['auto_populate_phrase']; ?>",
+		"count": <?php echo $style['auto_populate_count']; ?>
+	},
     "resPage": {
         "useAjax": <?php echo is_search() && $style['res_live_search'] ? 1 : 0; ?>,
         "selector": "<?php echo $style['res_live_selector']; ?>",
@@ -71,6 +77,7 @@ $scope = "asljQuery";
         "trigger_magnifier": <?php echo $style['res_live_trigger_click'] ?>,
         "trigger_return": <?php echo $style['res_live_trigger_return'] ?>
     },
+	"resultsSnapTo": "<?php echo $style['results_snap_to']; ?>",
     "results": {
         "width": "<?php echo $style['results_width']; ?>",
         "width_tablet": "<?php echo $style['results_width_tablet']; ?>",
@@ -81,5 +88,13 @@ $scope = "asljQuery";
 	"overridewpdefault": <?php echo $style['override_default_results']; ?>,
 	"override_method": "<?php echo $style['override_method']; ?>"
 }
-<?php $_asl_script_out = ob_get_clean(); ?>
-<div class="asl_init_data wpdreams_asl_data_ct" style="display:none !important;" id="asl_init_id_<?php echo $id; ?>" data-asldata="<?php echo base64_encode($_asl_script_out); ?>"></div>
+<?php
+$_asl_script_out = ob_get_clean();
+wd_asl()->instances->add_script_data($real_id, json_encode(json_decode($_asl_script_out)));
+?>
+<div class="asl_init_data wpdreams_asl_data_ct"
+	 style="display:none !important;"
+	 id="asl_init_id_<?php echo $id; ?>"
+	 data-asl-id="<?php echo $id;; ?>"
+	 data-asl-instance="1"
+	 data-asldata="<?php echo base64_encode($_asl_script_out); ?>"></div>

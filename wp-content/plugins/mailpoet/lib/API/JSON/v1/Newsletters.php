@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\API\JSON\v1;
 
@@ -159,7 +159,9 @@ class Newsletters extends APIEndpoint {
   public function save($data = []) {
     $data = $this->wp->applyFilters('mailpoet_api_newsletters_save_before', $data);
     $newsletter = $this->newsletterSaveController->save($data);
-    $response = $this->newslettersResponseBuilder->build($newsletter);
+    $response = $this->newslettersResponseBuilder->build($newsletter, [
+      NewslettersResponseBuilder::RELATION_SEGMENTS,
+    ]);
     $previewUrl = $this->getViewInBrowserUrl($newsletter);
     $response = $this->wp->applyFilters('mailpoet_api_newsletters_save_after', $response);
     return $this->successResponse($response, ['preview_url' => $previewUrl]);
@@ -402,13 +404,7 @@ class Newsletters extends APIEndpoint {
 
   private function getViewInBrowserUrl(NewsletterEntity $newsletter): string {
     $this->fixMissingHash([$newsletter]); // Fix for MAILPOET-3275. Remove after May 2021
-    $url = $this->newsletterUrl->getViewInBrowserUrl(
-      (object)[
-        'id' => $newsletter->getId(),
-        'hash' => $newsletter->getHash(),
-      ]
-    );
-
+    $url = $this->newsletterUrl->getViewInBrowserUrl($newsletter);
     // strip protocol to avoid mix content error
     return preg_replace('/^https?:/i', '', $url);
   }

@@ -234,7 +234,7 @@ class Authors_List_Table extends DynamicParent
     }
     public function no_items()
     {
-        _e( "No authors avaliable.", 'molongui-authorship' );
+        _e( "No authors available.", 'molongui-authorship' );
     }
     public function column_default( $item, $column_name )
     {
@@ -304,7 +304,20 @@ class Authors_List_Table extends DynamicParent
             break;
 
             case 'user_roles':
-                $result = ucfirst( implode( ", ", $item[$column_name] ) );
+                global $wp_roles;
+                $user_roles = array();
+                foreach ( $item[$column_name] as $user_role )
+                {
+                    if ( 'Guest author' === $user_role )
+                    {
+                        $user_roles[] = 'Guest author';
+                    }
+                    else
+                    {
+                        $user_roles[] = translate_user_role( $wp_roles->roles[ $user_role ]['name'] );
+                    }
+                }
+                $result = ucwords( implode( ", ", $user_roles ) );
             break;
 
             case 'post_count':

@@ -95,6 +95,10 @@ class STCFQ_Helper {
 	public static function consent_field() {
 		$consent_field = get_option( 'stcfq_consent_field' );
 
+		if ( ! is_array( $consent_field ) ) {
+			$consent_field = array();
+		}
+
 		$consent_field['enable']  = isset( $consent_field['enable'] ) ? (bool) $consent_field['enable'] : false;
 		$consent_field['text']    = isset( $consent_field['text'] ) ? stripcslashes( $consent_field['text'] ) : '';
 		$consent_field['classes'] = isset( $consent_field['classes'] ) ? stripcslashes( $consent_field['classes'] ) : '';
@@ -114,8 +118,13 @@ class STCFQ_Helper {
 	public static function submit_button() {
 		$submit_button = get_option( 'stcfq_submit_button' );
 
-		$submit_button['text']    = isset( $submit_button['text'] ) ? stripcslashes( $submit_button['text'] ) : '';
-		$submit_button['classes'] = isset( $submit_button['classes'] ) ? stripcslashes( $submit_button['classes'] ) : '';
+		if ( ! is_array( $submit_button ) ) {
+			$submit_button = array();
+		}
+
+		$submit_button['text']           = isset( $submit_button['text'] ) ? stripcslashes( $submit_button['text'] ) : '';
+		$submit_button['parent_classes'] = isset( $submit_button['parent_classes'] ) ? stripcslashes( $submit_button['parent_classes'] ) : '';
+		$submit_button['classes']        = isset( $submit_button['classes'] ) ? stripcslashes( $submit_button['classes'] ) : '';
 
 		if ( empty( $submit_button['text'] ) ) {
 			$submit_button['text'] = esc_html__( 'Send Your Message', 'contact-form-query' );
@@ -142,6 +151,7 @@ class STCFQ_Helper {
 		return array(
 			''                    => esc_html__( 'None', 'contact-form-query' ),
 			'google_recaptcha_v2' => esc_html__( 'Google reCAPTCHA Version 2', 'contact-form-query' ),
+			'cf_turnstile'        => esc_html__( 'Cloudflare Turnstile', 'contact-form-query' ),
 		);
 	}
 
@@ -166,8 +176,38 @@ class STCFQ_Helper {
 		return $google_recaptcha_v2;
 	}
 
+	public static function cf_turnstile_themes() {
+		return array(
+			'auto'  => esc_html__( 'Auto', 'contact-form-query' ),
+			'light' => esc_html__( 'Light', 'contact-form-query' ),
+			'dark'  => esc_html__( 'Dark', 'contact-form-query' ),
+		);
+	}
+
+	public static function cf_turnstile() {
+		$cf_turnstile = get_option( 'stcfq_cf_turnstile' );
+
+		if ( ! is_array( $cf_turnstile ) ) {
+			$cf_turnstile = array();
+		}
+
+		$cf_turnstile['site_key']   = isset( $cf_turnstile['site_key'] ) ? $cf_turnstile['site_key'] : '';
+		$cf_turnstile['secret_key'] = isset( $cf_turnstile['secret_key'] ) ? $cf_turnstile['secret_key'] : '';
+		$cf_turnstile['theme']      = isset( $cf_turnstile['theme'] ) ? $cf_turnstile['theme'] : 'light';
+
+		return $cf_turnstile;
+	}
+
+	public static function keyword_found( $keywords, $keyword ) {
+		foreach ( $keywords as $key => $val ) {
+			if ( false !== strpos( $keyword, $val ) ) {
+				return true;
+			}
+		}
+	}
+
 	public static function add_async_defer_attribute( $tag, $handle ) {
-		if ( 'recaptcha-api-v2' === $handle ) {
+		if ( in_array( $handle, array( 'recaptcha-api-v2', 'cf-turnstile' ), true ) ) {
 			return str_replace( ' src', ' async defer src', $tag );
 		}
 
@@ -360,8 +400,12 @@ class STCFQ_Helper {
 		return $email_to_admin;
 	}
 
-	public static function get_steps_url() {
+	public static function steps_url_recaptcha() {
 		return 'https://scriptstown.com/how-to-get-site-and-secret-key-for-google-recaptcha/';
+	}
+
+	public static function steps_url_turnstile() {
+		return 'https://scriptstown.com/how-to-get-site-and-secret-key-for-cloudflare-turnstile/';
 	}
 
 	public static function layout_list() {

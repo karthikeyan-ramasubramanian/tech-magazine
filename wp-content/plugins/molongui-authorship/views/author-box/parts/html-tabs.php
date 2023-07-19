@@ -7,7 +7,7 @@ $box_tabs = array
         'profile' => array
         (
             'id'      => 'mab-tab-profile-'.$random_id,
-            'label'   => ( $options['author_box_profile_title'] ? $options['author_box_profile_title'] : __( "About the author", 'molongui-authorship' ) ),
+            'label'   => apply_filters( 'authorship/box/profile/title', $options['author_box_profile_title'], $author ),//( $options['author_box_profile_title'] ? $options['author_box_profile_title'] : __( "About the author", 'molongui-authorship' ) ),
             'class'   => 'm-a-box-profile-title',//'m-a-box-string-about-the-author',
             'checked' => true,
             'display' => true,
@@ -15,7 +15,7 @@ $box_tabs = array
         'related' => array
         (
             'id'      => 'mab-tab-related-'.$random_id,
-            'label'   => ( $options['author_box_related_title'] ? $options['author_box_related_title'] : __( "Related posts", 'molongui-authorship' ) ),
+            'label'   => apply_filters( 'authorship/box/related/title', $options['author_box_related_title'], $author ),//( $options['author_box_related_title'] ? $options['author_box_related_title'] : __( "Related posts", 'molongui-authorship' ) ),
             'class'   => 'm-a-box-related-title',//'m-a-box-string-related-posts',
             'checked' => false,
             'display' => $show_related,

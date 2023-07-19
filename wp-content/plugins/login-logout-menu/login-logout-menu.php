@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name:    Login Logout Menu
- * Plugin URI:     http://WPBrigade.com/wordpress/plugins/login-logout-menu/
+ * Plugin URI:     https://loginpress.pro/?utm_source=login-logout-menu&utm_medium=plugin-inside&utm_campaign=pro-upgrade&utm_content=plugin_uri
  * Description:    Login Logout Menu is a handy plugin which allows you to add login, logout, register and profile menu items in your selected menu.
- * Version:        1.3.2
+ * Version:        1.4.0
  * Author:         WPBrigade
- * Author URI:     https://WPBrigade.com/
+ * Author URI:     https://WPBrigade.com/?utm_source=login-logout-menu
  * Text Domain:    login-logout-menu
  * Domain Path:    /languages
  *
@@ -24,7 +24,7 @@ if ( ! class_exists( 'Login_Logout_Menu' ) ) :
 		 *
 		 * @since 1.0.0
 		 */
-		public $version = '1.3.2';
+		public $version = '1.4.0';
 
 		/**
 		 * Instance variable.
@@ -90,7 +90,7 @@ if ( ! class_exists( 'Login_Logout_Menu' ) ) :
 			add_action( 'plugins_loaded', array( $this, 'textdomain' ) );
 			add_action( 'admin_head-nav-menus.php', array( $this, 'admin_nav_menu' ) );
 			add_filter( 'plugin_action_links', array( $this, 'login_logout_action_links' ), 10, 2 );
-			add_filter( 'wp_setup_nav_menu_item', array( $this, 'login_logout_setup_menu' ) );
+			add_filter( 'wp_setup_nav_menu_item', array( $this, 'login_logout_setup_menu' ), 100, 1 );
 			add_filter( 'wp_nav_menu_objects', array( $this, 'login_logout_menu_objects' ) );
 		}
 
@@ -242,10 +242,17 @@ if ( ! class_exists( 'Login_Logout_Menu' ) ) :
 		 *
 		 * @param object $item The menu item object.
 		 * @since 1.0.0
-		 * @version 1.3.2
+		 * @version 1.3.4
 		 */
 		public function login_logout_setup_menu( $item ) {
 			global $pagenow;
+
+			/**
+			 * Undefined property: Theme_My_Login_Action break the nav-menu fix.
+			 *
+			 * @since 1.3.4
+			 */
+			$post_title = isset( $item->title ) && empty( $item->title ) ? $item->post_title : $item->title;
 
 			/**
 			 * Filter to manipulate the menu item object.
@@ -254,9 +261,20 @@ if ( ! class_exists( 'Login_Logout_Menu' ) ) :
 			 * This filter works only based on bool outcome.
 			 *
 			 * @since 1.3.2
+			 * @version 1.3.4
 			 */
-			if ( ! (bool) apply_filters( 'before_login_logout_menu_items', $item->post_name ) ) {
+			if ( ! (bool) apply_filters( 'before_login_logout_menu_items', $post_title ) ) {
 				return $item;
+			}
+
+			/**
+			 * Compatibility with OceanWP Walker Nav.
+			 *
+			 * @since 1.3.3
+			 */
+			$is_oceanwp_active = wp_get_theme( 'oceanwp' );
+			if ( $is_oceanwp_active->exists() && ! isset( $item->ID ) ) {
+				$item->ID = '';
 			}
 
 			if ( $pagenow !== 'nav-menus.php' && ! defined( 'DOING_AJAX' ) ) {

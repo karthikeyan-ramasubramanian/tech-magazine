@@ -1,7 +1,7 @@
 <?php
 defined( 'ABSPATH' ) || die();
 
-$menu_tab = ( ! empty( $_GET['tab'] ) ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'form_fields';
+$menu_tab = ( isset( $_GET['tab'] ) && ! empty( $_GET['tab'] ) ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'form_fields';
 
 $menu_tabs = array(
 	'form_fields' => esc_html__( 'Form Fields', 'contact-form-query' ),
@@ -13,10 +13,10 @@ $menu_tabs = array(
 ?>
 <div class="wrap stcfq">
 	<div class="stcfq-header stcfq-header--transparent">
-		<h1 class="stcfq-heading"><?php esc_html_e( 'Contact Form Query', 'contact-form-query' ); ?></h1>
+		<div class="stcfq-heading stcfq-page-heading"><?php esc_html_e( 'Contact Form Query', 'contact-form-query' ); ?></div>
 	</div>
 
-	<h2 class="nav-tab-wrapper">
+	<div class="nav-tab-wrapper">
 		<?php
 		foreach ( $menu_tabs as $key => $value ) {
 			$class = ( $menu_tab === $key ) ? ' nav-tab-active' : '';
@@ -27,7 +27,7 @@ $menu_tabs = array(
 			<?php
 		}
 		?>
-	</h2>
+	</div>
 	<div class="stcfq-section">
 	<?php
 	if ( 'form_fields' === $menu_tab ) {

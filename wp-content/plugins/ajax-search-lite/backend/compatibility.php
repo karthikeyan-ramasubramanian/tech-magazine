@@ -16,10 +16,8 @@ isset($_POST, $_POST['asl_compatibility'], $_POST['asl_compatibility_nonce'])
 			// CSS and JS
 			"js_source" => $_POST['js_source'],
 			"script_loading_method" => $_POST['script_loading_method'],
-			"load_scroll_js" => $_POST['load_scroll_js'],
+			"init_instances_inviewport_only" => $_POST['init_instances_inviewport_only'],
 			"detect_ajax" => $_POST['detect_ajax'],
-			"js_retain_popstate" => $_POST['js_retain_popstate'],
-			'js_fix_duplicates' => $_POST['js_fix_duplicates'],
 			'load_google_fonts' => $_POST['load_google_fonts'],
 			// Query options
 			'query_soft_check' => $_POST['query_soft_check'],
@@ -76,9 +74,7 @@ isset($_POST, $_POST['asl_compatibility'], $_POST['asl_compatibility_nonce'])
             </div>
         </div>
     </div>
-    <div id="asl-side-container">
-        <a class="wd-accessible-switch" href="#"><?php echo isset($_COOKIE['asl-accessibility']) ? 'DISABLE ACCESSIBILITY' : 'ENABLE ACCESSIBILITY'; ?></a>
-    </div>
+    <?php include(ASL_PATH . "backend/sidebar.php"); ?>
     <div class="clear"></div>
 </div>
 <?php

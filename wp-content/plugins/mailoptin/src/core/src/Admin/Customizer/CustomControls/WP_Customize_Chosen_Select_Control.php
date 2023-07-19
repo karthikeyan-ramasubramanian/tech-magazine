@@ -32,7 +32,11 @@ class WP_Customize_Chosen_Select_Control extends WP_Customize_Control
         switch ($this->search_type) {
             case 'exclusive_post_types_posts_load':
                 $options = array_reduce($savedValue, function ($carry, $post_id) {
-                    $post_type_label                   = get_post_type_object(get_post_type($post_id))->label;
+                    $post_type_label      = '';
+                    $get_post_type_object = get_post_type_object(get_post_type($post_id));
+                    if (isset($get_post_type_object->label)) {
+                        $post_type_label = $get_post_type_object->label;
+                    }
                     $carry[$post_type_label][$post_id] = get_the_title($post_id);
 
                     return $carry;
@@ -72,7 +76,19 @@ class WP_Customize_Chosen_Select_Control extends WP_Customize_Control
 
     public function render_content()
     {
-        $choices = $this->choices + $this->prepopulation();
+        $choices = $this->choices;
+
+        $prepopulation = $this->prepopulation();
+
+        if (is_array($prepopulation)) {
+            foreach ($prepopulation as $label => $pre_choice) {
+                if (is_array($pre_choice)) {
+                    foreach ($pre_choice as $post_id => $post_title) {
+                        $choices[$label][$post_id] = $post_title;
+                    }
+                }
+            }
+        }
         ?>
         <label>
             <?php if ( ! empty($this->label)) : ?>

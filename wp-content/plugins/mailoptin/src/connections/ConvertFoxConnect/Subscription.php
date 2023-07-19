@@ -50,7 +50,7 @@ class Subscription extends AbstractConvertFoxConnect
         );
 
         if (parent::is_http_code_not_success($result['status_code'])) {
-            self::save_optin_error_log($this->email . ': ' . json_encode($result['body']->errors), 'convertfox', $this->extras['optin_campaign_id']);
+            self::save_optin_error_log($this->email . ': ' . json_encode($result['body']->errors), 'convertfox', $this->extras['optin_campaign_id'], $this->extras['optin_campaign_type']);
         }
 
         return $result;
@@ -130,12 +130,12 @@ class Subscription extends AbstractConvertFoxConnect
                 return parent::ajax_success();
             }
 
-            self::save_optin_error_log(json_encode($response['body']), 'convertfox', $this->extras['optin_campaign_id']);
+            self::save_optin_error_log(json_encode($response['body']), 'convertfox', $this->extras['optin_campaign_id'], $this->extras['optin_campaign_type']);
 
             return parent::ajax_failure(__('There was an error saving your contact. Please try again.', 'mailoptin'));
 
         } catch (\Exception $e) {
-            self::save_optin_error_log($e->getCode() . ': ' . $e->getMessage(), 'convertfox', $this->extras['optin_campaign_id']);
+            self::save_optin_error_log($e->getCode() . ': ' . $e->getMessage(), 'convertfox', $this->extras['optin_campaign_id'], $this->extras['optin_campaign_type']);
 
             return parent::ajax_failure(__('There was an error saving your contact. Please try again.', 'mailoptin'));
         }

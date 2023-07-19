@@ -175,6 +175,18 @@ class CustomizerControls
                     ]
                 )
             ),
+            'email_campaign_preheader'  => new WP_Customize_Custom_Input_Control(
+                $this->wp_customize,
+                'email_campaign_preheader',
+                apply_filters('mailoptin_customizer_settings_campaign_preheader_args', [
+                        'label'       => __('Preview Text (Preheader)', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_settings_section_id,
+                        'settings'    => $this->option_prefix . '[email_campaign_preheader]',
+                        'description' => __("Think of it as a subtitle for your subject line. Typically displayed after the email subject.", 'mailoptin'),
+                        'priority'    => 22
+                    ]
+                )
+            ),
             'item_number'               => new WP_Customize_Range_Value_Control(
                 $this->wp_customize,
                 $this->option_prefix . '[item_number]',
@@ -427,7 +439,7 @@ class CustomizerControls
         if ( ! apply_filters('mailoptin_enable_email_customizer_connections', false) && ! ER::is_newsletter($this->customizerClassInstance->email_campaign_id)) {
 
             $content2 = sprintf(
-                __('%sUpgrade your MailOptin plan%s to send email campaigns directly to your list in Mailchimp, Campaign Monitor, AWeber, Constant Contact, Drip, MailerLite, ActiveCampaign etc.', 'mailoptin'),
+                __('%sUpgrade your MailOptin plan%s to send email campaigns directly to your list in Mailchimp, Campaign Monitor, AWeber, Constant Contact, Drip, MailerLite, ActiveCampaign etc. and to customers/users in WooCommerce, MemberPress, LearnDash, Paid Memberships Pro, Easy Digital Downloads, GiveWP, LifterLMS, Restrict Content Pro.', 'mailoptin'),
                 '<a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=new_post_campaign_settings2">',
                 '</a>',
                 '<strong>',
@@ -449,6 +461,7 @@ class CustomizerControls
 
         if (ER::is_code_your_own_template($this->customizerClassInstance->email_campaign_id)) {
             unset($campaign_settings_controls['post_content_type']);
+            unset($campaign_settings_controls['email_campaign_preheader']);
         }
 
         if (ER::is_newsletter($this->customizerClassInstance->email_campaign_id)) {
@@ -736,6 +749,17 @@ HTML;
                         'priority' => 130
                     )
                 ),
+                'post_author_avatar_url_shortcode' => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_author_avatar_url_shortcode]',
+                    array(
+                        'label'    => __('Author Profile Picture URL', 'mailoptin'),
+                        'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'  => '<input type="text" value="[post-author-avatar-url]" style="background-color:#fff;" readonly>',
+                        'settings' => $this->option_prefix . '[post_author_avatar_url_shortcode]',
+                        'priority' => 135
+                    )
+                ),
                 'campaign_tags_header'             => new WP_Customize_Custom_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[campaign_tags_header]',
@@ -781,7 +805,7 @@ HTML;
                         'settings'    => $this->option_prefix . '[company_name_shortcode]',
                         'description' => sprintf(
                             __('Your company name as defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
-                            MAILOPTIN_SETTINGS_SETTINGS_PAGE . '#email_campaign_settings'
+                            MAILOPTIN_SETTINGS_SETTINGS_GENERAL_PAGE . '#email_campaign_settings'
                         ),
                         'priority'    => 170
                     )
@@ -796,7 +820,7 @@ HTML;
                         'settings'    => $this->option_prefix . '[company_address_shortcode]',
                         'description' => sprintf(
                             __('Your company address as defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
-                            MAILOPTIN_SETTINGS_SETTINGS_PAGE . '#email_campaign_settings'
+                            MAILOPTIN_SETTINGS_SETTINGS_GENERAL_PAGE . '#email_campaign_settings'
                         ),
                         'priority'    => 180
                     )
@@ -811,7 +835,7 @@ HTML;
                         'settings'    => $this->option_prefix . '[company_address_2_shortcode]',
                         'description' => sprintf(
                             __('Company address 2 defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
-                            MAILOPTIN_SETTINGS_SETTINGS_PAGE . '#email_campaign_settings'
+                            MAILOPTIN_SETTINGS_SETTINGS_GENERAL_PAGE . '#email_campaign_settings'
                         ),
                         'priority'    => 180
                     )
@@ -826,7 +850,7 @@ HTML;
                         'settings'    => $this->option_prefix . '[company_city_shortcode]',
                         'description' => sprintf(
                             __('Your company city as defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
-                            MAILOPTIN_SETTINGS_SETTINGS_PAGE . '#email_campaign_settings'
+                            MAILOPTIN_SETTINGS_SETTINGS_GENERAL_PAGE . '#email_campaign_settings'
                         ),
                         'priority'    => 190
                     )
@@ -841,7 +865,7 @@ HTML;
                         'settings'    => $this->option_prefix . '[company_state_shortcode]',
                         'description' => sprintf(
                             __('Your company state as defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
-                            MAILOPTIN_SETTINGS_SETTINGS_PAGE . '#email_campaign_settings'
+                            MAILOPTIN_SETTINGS_SETTINGS_GENERAL_PAGE . '#email_campaign_settings'
                         ),
                         'priority'    => 200
                     )
@@ -856,7 +880,7 @@ HTML;
                         'settings'    => $this->option_prefix . '[company_zip_shortcode]',
                         'description' => sprintf(
                             __('Zip or postal code as defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
-                            MAILOPTIN_SETTINGS_SETTINGS_PAGE . '#email_campaign_settings'
+                            MAILOPTIN_SETTINGS_SETTINGS_GENERAL_PAGE . '#email_campaign_settings'
                         ),
                         'priority'    => 210
                     )
@@ -871,7 +895,7 @@ HTML;
                         'settings'    => $this->option_prefix . '[company_country_shortcode]',
                         'description' => sprintf(
                             __('Your company country defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
-                            MAILOPTIN_SETTINGS_SETTINGS_PAGE . '#email_campaign_settings'
+                            MAILOPTIN_SETTINGS_SETTINGS_GENERAL_PAGE . '#email_campaign_settings'
                         ),
                         'priority'    => 220
                     )

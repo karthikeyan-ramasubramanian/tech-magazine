@@ -58,14 +58,12 @@ class Product
         $integrations      = WooInit::get_instance()->woo_select_integration_options();
         $saved_integration = $product_object->get_meta('mailoptinWooCommerceSelectIntegration');
         $upsell_url        = 'https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=woocommerce_connection';
-        $doc_url           = 'https://mailoptin.io/?p=32794&utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=woocommerce_connection';
+        $doc_url           = 'https://mailoptin.io/article/add-woocommerce-customers-email-list-by-purchased-product/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=woocommerce_connection';
 
         $content = sprintf(
             __("Upgrade to %sMailOptin Premium%s to add customers that purchase this product to a specific email list, assign tags and custom field data to them.", 'mailoptin'),
             '<a target="_blank" href="' . $upsell_url . '">',
-            '</a>',
-            '<strong>',
-            '</strong>'
+            '</a>'
         );
 
         ?>
@@ -167,13 +165,13 @@ class Product
 
         $first_name = WooInit::get_instance()->get_first_name($order);
         $last_name  = WooInit::get_instance()->get_last_name($order);
-        $name       = WooInit::get_instance()->get_full_name($first_name, $last_name);
+        $name       = Init::get_full_name($first_name, $last_name);
 
         $optin_data->optin_campaign_id   = 0; // since it's non mailoptin form, set it to zero.
         $optin_data->payload             = $payload;
         $optin_data->name                = Init::return_name($name, $first_name, $last_name);
         $optin_data->email               = $email;
-        $optin_data->optin_campaign_type = esc_html__('WooCommerce', 'mailoptin');
+        $optin_data->optin_campaign_type = 'WooCommerce';
 
         $optin_data->connection_service    = $connection_service;
         $optin_data->connection_email_list = $connection_email_list;

@@ -63,7 +63,7 @@ class Connect extends AbstractDripConnect implements ConnectionInterface
             'label'       => __('First Name Field ID', 'mailoptin'),
             'description' => sprintf(
                 __('If subscribers first names are missing, change this to the correct custom field ID. %sLearn more%s', 'mailoptin'),
-                '<a href="https://mailoptin.io/?p=21482" target="_blank">', '</a>'
+                '<a href="https://mailoptin.io/article/subscriber-name-missing-fix/" target="_blank">', '</a>'
             )
         ];
         $controls[] = [
@@ -72,7 +72,7 @@ class Connect extends AbstractDripConnect implements ConnectionInterface
             'label'       => __('Last Name Field ID', 'mailoptin'),
             'description' => sprintf(
                 __('If subscribers last names are missing, change this to the correct custom field ID. %sLearn more%s', 'mailoptin'),
-                '<a href="https://mailoptin.io/?p=21482" target="_blank">', '</a>'
+                '<a href="https://mailoptin.io/article/subscriber-name-missing-fix/" target="_blank">', '</a>'
             )
         ];
 
@@ -153,12 +153,13 @@ class Connect extends AbstractDripConnect implements ConnectionInterface
     }
 
     /**
+     * Fulfill interface contract.
      *
      * {@inheritdoc}
      */
     public function replace_placeholder_tags($content, $type = 'html')
     {
-
+        return $this->replace_footer_placeholder_tags($content);
     }
 
     /**

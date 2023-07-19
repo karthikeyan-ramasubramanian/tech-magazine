@@ -45,6 +45,7 @@ function authorship_box_post_types( $display = 'all', $type = 'all', $select = f
     }
 
     if ( empty( $post_types ) ) return array();
+
     $array = $opts = array();
 
     foreach ( molongui_get_post_types( $type, 'objects', false ) as $post_type_name => $post_type_object )

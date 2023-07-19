@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Doctrine\Validator;
 
@@ -15,7 +15,9 @@ class ValidatorFactory {
   /** @var AnnotationReaderProvider */
   private $annotationReaderProvider;
 
-  public function __construct(AnnotationReaderProvider $annotationReaderProvider) {
+  public function __construct(
+    AnnotationReaderProvider $annotationReaderProvider
+  ) {
     $this->annotationReaderProvider = $annotationReaderProvider;
   }
 

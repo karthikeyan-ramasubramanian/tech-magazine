@@ -124,6 +124,18 @@ class WP_Mail_BG_Process extends WP_Background_Process
         });
     }
 
+    public function wp_mail_error_log($email_address, $campaign_log_id, $email_campaign_id)
+    {
+        add_action('wp_mail_failed', function ($wp_error) use ($email_address, $campaign_log_id, $email_campaign_id) {
+            $status = $wp_error->get_error_message();
+            AbstractConnect::save_campaign_error_log(
+                "Email address: $email_address; Note: $status",
+                $campaign_log_id,
+                $email_campaign_id
+            );
+        });
+    }
+
     /**
      * Task
      *
@@ -138,8 +150,6 @@ class WP_Mail_BG_Process extends WP_Background_Process
      */
     protected function task($user_data)
     {
-        $repository = CampaignLogRepository::instance();
-
         $email_address = $user_data->user_email;
 
         $unsubscribed_contacts = get_option('mo_wp_user_unsubscribers', []);
@@ -164,17 +174,21 @@ class WP_Mail_BG_Process extends WP_Background_Process
         $content_text = str_replace($search, $replace, $content_text);
         $content_html = str_replace($search, $replace, $content_html);
 
-        $subject = $repository->retrieveTitle($campaign_log_id);
+        $subject = CampaignLogRepository::instance()->retrieveTitle($campaign_log_id);
 
         $this->wp_mail_from_filter($campaign_log_id);
         $this->wp_mail_from_name_filter($campaign_log_id);
         $this->add_plain_text_message($content_text);
 
         $this->add_html_content_type();
+
+        $this->wp_mail_error_log($username, $email_address, $campaign_log_id, $email_campaign_id);
+
         $response = wp_mail($email_address, $subject, $content_html); // send the newsletter.
         $this->remove_html_content_type();
 
         if ( ! $response) {
+
             $status = __('Email failed to be delivered', 'mailoptin');
 
             AbstractConnect::save_campaign_error_log(
@@ -190,7 +204,7 @@ class WP_Mail_BG_Process extends WP_Background_Process
     /**
      * Save queue
      *
-     * @return $this
+     * @return static
      */
     public function mo_save($campaign_log_id, $email_campaign_id)
     {

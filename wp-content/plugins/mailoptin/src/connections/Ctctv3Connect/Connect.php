@@ -52,7 +52,7 @@ class Connect extends AbstractCtctv3Connect implements ConnectionInterface
      */
     public function register_connection($connections)
     {
-        $connections[self::$connectionName] = __('Constant Contact (v3)', 'mailoptin');
+        $connections[self::$connectionName] = __('Constant Contact', 'mailoptin');
 
         return $connections;
     }
@@ -143,16 +143,7 @@ class Connect extends AbstractCtctv3Connect implements ConnectionInterface
     {
         try {
 
-            $lists = get_transient('ctctv3_get_email_list');
-
-            if (empty($lists) || false === $lists) {
-
-                $lists = $this->ctctv3Instance()->getContactList();
-
-                set_transient('ctctv3_get_email_list', $lists, HOUR_IN_SECONDS);
-            }
-
-            return $lists;
+            return $this->ctctv3Instance()->getContactList();
 
         } catch (\Exception $e) {
             self::save_optin_error_log($e->getMessage(), 'constantcontactv3');
@@ -232,7 +223,7 @@ class Connect extends AbstractCtctv3Connect implements ConnectionInterface
                 'name'        => 'Ctctv3Connect_contact_tags',
                 'choices'     => $this->get_tags(),
                 'label'       => __('Subscriber Tags', 'mailoptin'),
-                'description' => __('Select Constant Contact (v3) tags that will be assigned to contacts.', 'mailoptin')
+                'description' => __('Select Constant Contact tags that will be assigned to contacts.', 'mailoptin')
             ];
 
             return $controls;
@@ -330,7 +321,7 @@ class Connect extends AbstractCtctv3Connect implements ConnectionInterface
             $message = sprintf(
             /* translators: 1: open <a> tag, 2: close </a> tag */
                 esc_html__(
-                    'On March 31, 2022, Constant Contact is ending support for their previous authorization management service. %1$sPlease re-authorize your Constant Contact (v3) integration%2$s urgently to get your MailOptin form working again.',
+                    'On March 31, 2022, Constant Contact is ending support for their previous authorization management service. %1$sPlease re-authorize your Constant Contact integration%2$s urgently to get your MailOptin form working again.',
                     'mailoptin'
                 ),
                 '<a href="' . MAILOPTIN_CONNECTIONS_SETTINGS_PAGE . '#ctctv3_auth">',

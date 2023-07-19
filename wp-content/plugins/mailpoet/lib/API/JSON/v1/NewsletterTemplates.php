@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\API\JSON\v1;
 
@@ -10,9 +10,9 @@ use MailPoet\API\JSON\Error as APIError;
 use MailPoet\API\JSON\ResponseBuilders\NewsletterTemplatesResponseBuilder;
 use MailPoet\Config\AccessControl;
 use MailPoet\Newsletter\ApiDataSanitizer;
+use MailPoet\Newsletter\NewsletterCoupon;
 use MailPoet\NewsletterTemplates\NewsletterTemplatesRepository;
 use MailPoet\NewsletterTemplates\ThumbnailSaver;
-use MailPoet\WP\Functions as WPFunctions;
 
 class NewsletterTemplates extends APIEndpoint {
   public $permissions = [
@@ -35,16 +35,22 @@ class NewsletterTemplates extends APIEndpoint {
   /** @var ApiDataSanitizer */
   private $apiDataSanitizer;
 
+
+  /*** @var NewsletterCoupon */
+  private $newsletterCoupon;
+
   public function __construct(
     NewsletterTemplatesRepository $newsletterTemplatesRepository,
     NewsletterTemplatesResponseBuilder $newsletterTemplatesResponseBuilder,
     ThumbnailSaver $thumbnailImageSaver,
-    ApiDataSanitizer $apiDataSanitizer
+    ApiDataSanitizer $apiDataSanitizer,
+    NewsletterCoupon $newsletterCoupon
   ) {
     $this->newsletterTemplatesRepository = $newsletterTemplatesRepository;
     $this->newsletterTemplatesResponseBuilder = $newsletterTemplatesResponseBuilder;
     $this->thumbnailImageSaver = $thumbnailImageSaver;
     $this->apiDataSanitizer = $apiDataSanitizer;
+    $this->newsletterCoupon = $newsletterCoupon;
   }
 
   public function get($data = []) {
@@ -54,7 +60,7 @@ class NewsletterTemplates extends APIEndpoint {
 
     if (!$template) {
       return $this->errorResponse([
-        APIError::NOT_FOUND => WPFunctions::get()->__('This template does not exist.', 'mailpoet'),
+        APIError::NOT_FOUND => __('This template does not exist.', 'mailpoet'),
       ]);
     }
 
@@ -72,6 +78,7 @@ class NewsletterTemplates extends APIEndpoint {
     ignore_user_abort(true);
     if (!empty($data['body'])) {
       $body = $this->apiDataSanitizer->sanitizeBody(json_decode($data['body'], true));
+      $body = $this->newsletterCoupon->cleanupBodySensitiveData($body);
       $data['body'] = json_encode($body);
     }
     try {
@@ -94,7 +101,7 @@ class NewsletterTemplates extends APIEndpoint {
 
     if (!$template) {
       return $this->errorResponse([
-        APIError::NOT_FOUND => WPFunctions::get()->__('This template does not exist.', 'mailpoet'),
+        APIError::NOT_FOUND => __('This template does not exist.', 'mailpoet'),
       ]);
     }
 

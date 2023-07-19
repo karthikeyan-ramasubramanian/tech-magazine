@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\API\JSON\v1;
 
@@ -27,7 +27,6 @@ use MailPoet\Segments\WooCommerce;
 use MailPoet\Segments\WP;
 use MailPoet\Subscribers\SubscribersRepository;
 use MailPoet\UnexpectedValueException;
-use MailPoet\WP\Functions as WPFunctions;
 
 class Segments extends APIEndpoint {
   public $permissions = [
@@ -100,7 +99,7 @@ class Segments extends APIEndpoint {
       return $this->successResponse($this->segmentsResponseBuilder->build($segment));
     } else {
       return $this->errorResponse([
-        APIError::NOT_FOUND => WPFunctions::get()->__('This list does not exist.', 'mailpoet'),
+        APIError::NOT_FOUND => __('This list does not exist.', 'mailpoet'),
       ]);
     }
   }
@@ -123,6 +122,8 @@ class Segments extends APIEndpoint {
 
   public function save($data = []) {
     try {
+      $data['name'] = isset($data['name']) ? sanitize_text_field($data['name']) : '';
+      $data['description'] = isset($data['description']) ? sanitize_textarea_field($data['description']) : '';
       $segment = $this->segmentSavecontroller->save($data);
     } catch (ValidationException $exception) {
       return $this->badRequest([
@@ -142,7 +143,7 @@ class Segments extends APIEndpoint {
     if ($segment instanceof SegmentEntity) {
       if (!$this->isTrashOrRestoreAllowed($segment)) {
         return $this->errorResponse([
-          APIError::FORBIDDEN => WPFunctions::get()->__('This list cannot be moved to trash.', 'mailpoet'),
+          APIError::FORBIDDEN => __('This list cannot be moved to trash.', 'mailpoet'),
         ]);
       }
       // When the segment is of type WP_USERS we want to restore all its subscribers
@@ -162,7 +163,7 @@ class Segments extends APIEndpoint {
       );
     } else {
       return $this->errorResponse([
-        APIError::NOT_FOUND => WPFunctions::get()->__('This list does not exist.', 'mailpoet'),
+        APIError::NOT_FOUND => __('This list does not exist.', 'mailpoet'),
       ]);
     }
   }
@@ -172,13 +173,13 @@ class Segments extends APIEndpoint {
     if (!$segment instanceof SegmentEntity) {
 
       return $this->errorResponse([
-        APIError::NOT_FOUND => WPFunctions::get()->__('This list does not exist.', 'mailpoet'),
+        APIError::NOT_FOUND => __('This list does not exist.', 'mailpoet'),
       ]);
     }
 
     if (!$this->isTrashOrRestoreAllowed($segment)) {
       return $this->errorResponse([
-        APIError::FORBIDDEN => WPFunctions::get()->__('This list cannot be moved to trash.', 'mailpoet'),
+        APIError::FORBIDDEN => __('This list cannot be moved to trash.', 'mailpoet'),
       ]);
     }
 
@@ -188,6 +189,7 @@ class Segments extends APIEndpoint {
         APIError::BAD_REQUEST => str_replace(
           '%1$s',
           "'" . join("', '", $activelyUsedNewslettersSubjects[$segment->getId()] ) . "'",
+          // translators: %1$s is a comma-seperated list of emails for which the segment is used.
           _x('List cannot be deleted because it’s used for %1$s email', 'Alert shown when trying to delete segment, which is assigned to any automatic emails.', 'mailpoet')
         ),
       ]);
@@ -199,6 +201,7 @@ class Segments extends APIEndpoint {
         APIError::BAD_REQUEST => str_replace(
           '%1$s',
           "'" . join("', '", $activelyUsedFormNames[$segment->getId()] ) . "'",
+          // translators: %1$s is a comma-seperated list of forms for which the segment is used.
           _nx(
             'List cannot be deleted because it’s used for %1$s form',
             'List cannot be deleted because it’s used for %1$s forms',
@@ -234,7 +237,7 @@ class Segments extends APIEndpoint {
       return $this->successResponse(null, ['count' => 1]);
     } else {
       return $this->errorResponse([
-        APIError::NOT_FOUND => WPFunctions::get()->__('This list does not exist.', 'mailpoet'),
+        APIError::NOT_FOUND => __('This list does not exist.', 'mailpoet'),
       ]);
     }
   }
@@ -256,7 +259,7 @@ class Segments extends APIEndpoint {
       );
     } else {
       return $this->errorResponse([
-        APIError::NOT_FOUND => WPFunctions::get()->__('This list does not exist.', 'mailpoet'),
+        APIError::NOT_FOUND => __('This list does not exist.', 'mailpoet'),
       ]);
     }
   }

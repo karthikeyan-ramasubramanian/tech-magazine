@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Config;
 
@@ -12,7 +12,6 @@ use MailPoet\Util\Helpers;
 use MailPoet\Util\License\Features\Subscribers as SubscribersFeature;
 use MailPoet\Util\License\License;
 use MailPoet\WP\DateTime;
-use MailPoet\WP\Functions as WPFunctions;
 use MailPoet\WP\Notice as WPNotice;
 
 class ServicesChecker {
@@ -65,7 +64,8 @@ class ServicesChecker {
         $dateTime = new DateTime();
         $date = $dateTime->formatDate(strtotime($mssKey['data']['expire_at']));
         $error = Helpers::replaceLinkTags(
-          WPFunctions::get()->__("Your newsletters are awesome! Don't forget to [link]upgrade your MailPoet email plan[/link] by %s to keep sending them to your subscribers.", 'mailpoet'),
+          // translators: %s is a date.
+          __("Your newsletters are awesome! Don't forget to [link]upgrade your MailPoet email plan[/link] by %s to keep sending them to your subscribers.", 'mailpoet'),
           'https://account.mailpoet.com?s=' . $this->subscribersFeature->getSubscribersCount(),
           ['target' => '_blank']
         );
@@ -96,7 +96,7 @@ class ServicesChecker {
       || $premiumKey['state'] === Bridge::KEY_ALREADY_USED
     ) {
       if ($displayErrorNotice) {
-        $errorString = WPFunctions::get()->__('[link1]Register[/link1] your copy of the MailPoet Premium plugin to receive access to automatic upgrades and support. Need a license key? [link2]Purchase one now.[/link2]', 'mailpoet');
+        $errorString = __('[link1]Register[/link1] your copy of the MailPoet Premium plugin to receive access to automatic upgrades and support. Need a license key? [link2]Purchase one now.[/link2]', 'mailpoet');
         $error = Helpers::replaceLinkTags(
           $errorString,
           'admin.php?page=mailpoet-settings#premium',
@@ -120,7 +120,8 @@ class ServicesChecker {
         $dateTime = new DateTime();
         $date = $dateTime->formatDate(strtotime($premiumKey['data']['expire_at']));
         $error = Helpers::replaceLinkTags(
-          WPFunctions::get()->__("Your License Key for MailPoet is expiring! Don't forget to [link]renew your license[/link] by %s to keep enjoying automatic updates and Premium support.", 'mailpoet'),
+          // translators: %s is a date.
+          __("Your License Key for MailPoet is expiring! Don't forget to [link]renew your license[/link] by %s to keep enjoying automatic updates and Premium support.", 'mailpoet'),
           'https://account.mailpoet.com',
           ['target' => '_blank']
         );
@@ -157,20 +158,31 @@ class ServicesChecker {
   }
 
   /**
-   * Returns MSS or Premium valid key.
+   * Return a key when it can be used for account administration purposes (stats report, auth. addresses or domains administration)
+   * Key can be used when it is valid for MSS or Premium, but also when it is valid but has no privileges for MSS or Premium (API returns 403).
    */
-  public function getAnyValidKey(): ?string {
+  public function getValidAccountKey(): ?string {
     if ($this->isMailPoetAPIKeyValid(false, true)) {
       return $this->settings->get(Bridge::API_KEY_SETTING_NAME);
     }
+    $mssKeyState = $this->settings->get(Bridge::API_KEY_STATE_SETTING_NAME);
+    if (($mssKeyState['state'] ?? null) === Bridge::KEY_VALID_UNDERPRIVILEGED) {
+      return $this->settings->get(Bridge::API_KEY_SETTING_NAME);
+    }
+
     if ($this->isPremiumKeyValid(false)) {
       return $this->settings->get(Bridge::PREMIUM_KEY_SETTING_NAME);
     }
+    $premiumKeyState = $this->settings->get(Bridge::PREMIUM_KEY_STATE_SETTING_NAME);
+    if (($premiumKeyState['state'] ?? null) === Bridge::KEY_VALID_UNDERPRIVILEGED) {
+      return $this->settings->get(Bridge::PREMIUM_KEY_SETTING_NAME);
+    }
+
     return null;
   }
 
   public function generatePartialApiKey(): string {
-    $key = (string)($this->getAnyValidKey());
+    $key = (string)($this->getValidAccountKey());
     if ($key) {
       $halfKeyLength = (int)(strlen($key) / 2);
 

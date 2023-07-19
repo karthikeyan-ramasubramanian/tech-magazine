@@ -226,8 +226,35 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			)
 		);
 
-		do_action( 'everest_forms_submission_redirection_settings', $this, 'submission_redirection' );
+		everest_forms_panel_field(
+			'checkbox',
+			'settings',
+			'enable_redirect_query_string',
+			$this->form_data,
+			esc_html__( ' Append Query String', 'everest-forms' ),
+			array(
+				'default' => '0',
+			)
+		);
 
+		everest_forms_panel_field(
+			'text',
+			'settings',
+			'query_string',
+			$this->form_data,
+			esc_html__( 'Query String', 'everest-forms' ),
+			array(
+				'default'   => isset( $settings['query_string'] ) ? $settings['query_string'] : '',
+				'class'     => isset( $settings['enable_redirect_query_string'] ) && '1' === $settings['enable_redirect_query_string'] ? '' : 'everest-forms-hidden',
+				'smarttags' => array(
+					'type'        => 'all',
+					'form_fields' => 'all',
+				),
+				'after'     => '<p class="desc">' . sprintf( esc_html__( 'Example: firstname= {field_id="name_ys0GeZISRs-1"}&email={field_id="email_LbH5NxasXM-2"}', 'everest-forms' ) ) . '</p>',
+			)
+		);
+
+		do_action( 'everest_forms_submission_redirection_settings', $this, 'submission_redirection' );
 		echo '</div>';
 
 		everest_forms_panel_field(
@@ -312,7 +339,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		$recaptcha_secret = get_option( 'everest_forms_recaptcha_' . $recaptcha_type . '_secret_key' );
 		switch ( $recaptcha_type ) {
 			case 'v2':
-				$recaptcha_label = esc_html__( 'Enable Google Invisible reCAPTCHA v2', 'everest-forms' );
+				$recaptcha_label = esc_html__( 'Enable Google reCAPTCHA v2', 'everest-forms' );
 				break;
 
 			case 'v3':
@@ -573,7 +600,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					$this->form_data,
 					esc_html__( 'Email Message', 'everest-forms' ),
 					array(
-						'default'    => isset( $settings['email'][ $connection_id ]['evf_email_message'] ) ? $settings['email'][ $connection_id ]['evf_email_message'] : __( '{all_fields}', 'everest-forms' ),
+						'default'    => isset( $settings['email'][ $connection_id ]['evf_email_message'] ) ? evf_string_translation( $this->form_data['id'], 'evf_email_message', $settings['email'][ $connection_id ]['evf_email_message'] ) : __( '{all_fields}', 'everest-forms' ),
 						/* translators: %1$s - general settings docs url */
 						'tooltip'    => sprintf( esc_html__( 'Enter the message of the email. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/email-settings/#email-message' ) ),
 						'smarttags'  => array(

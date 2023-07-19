@@ -3,9 +3,7 @@
 
 namespace CreativeMail\Modules\Contacts\Models;
 
-
-class OptActionBy
-{
-    const Visitor = 1;
-    const Owner = 2;
+class OptActionBy {
+	const VISITOR = 1;
+	const OWNER   = 2;
 }

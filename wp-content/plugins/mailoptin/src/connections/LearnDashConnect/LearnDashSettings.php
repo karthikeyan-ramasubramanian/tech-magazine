@@ -22,14 +22,12 @@ class LearnDashSettings
 
         if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM')) :
             $upsell_url = 'https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=learndash_connection_settings';
-            $doc_url    = 'https://mailoptin.io/?p=33850&utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=learndash_connection_settings';
+            $doc_url    = 'https://mailoptin.io/article/learndash-mailchimp-aweber-more/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=learndash_connection_settings';
 
             $content = sprintf(
-                __("Upgrade to %sMailOptin Premium%s to add all Learndash students and students that enrolled to specific courses to your email marketing list.", 'mailoptin'),
+                __("Upgrade to %sMailOptin Premium%s to add all Learndash students and students that are enrolled to specific courses to your email marketing list.", 'mailoptin'),
                 '<a target="_blank" href="' . $upsell_url . '">',
-                '</a>',
-                '<strong>',
-                '</strong>'
+                '</a>'
             );
 
             $html = '<div class="mo-external-upsell-block">';
@@ -58,7 +56,7 @@ class LearnDashSettings
                 'type' => 'arbitrary',
                 'data' => '<p>' . sprintf(
                         esc_html__('Upon course enrollment, the LearnDash LMS integration subscribes students to your email marketing software and CRM. %sLearn more%s', 'mailoptin'),
-                        '<a href="https://mailoptin.io/?p=33850" target="_blank">', '</a>'
+                        '<a href="https://mailoptin.io/article/learndash-mailchimp-aweber-more/" target="_blank">', '</a>'
                     ) . '</p>',
             ];
 
@@ -93,7 +91,6 @@ class LearnDashSettings
                     $learndash_settings['mailoptin_learndash_double_optin'] = [
                         'type'           => 'checkbox',
                         'label'          => $label,
-                        'checkbox_label' => esc_html__('Disable', 'wp-user-avatar'),
                         'description'    => __('Double optin requires users to confirm their email address before they are added or subscribed.', 'mailoptin'),
                     ];
                 }
@@ -121,7 +118,7 @@ class LearnDashSettings
                     if (in_array($saved_connections, Init::select2_tag_connections())) {
                         $tags     = [];
                         $instance = ConnectionFactory::make($saved_connections);
-                        if (method_exists($instance, 'get_tags')) {
+                        if (is_object($instance) && method_exists($instance, 'get_tags')) {
                             $tags = $instance->get_tags();
                         }
 
@@ -159,7 +156,7 @@ class LearnDashSettings
             $learndash_settings['mailoptin_learndash_subscribe_students'] = [
                 'type'        => 'select',
                 'label'       => __('Subscribe Students', 'mailoptin'),
-                'description' => __('Choose "Ask for permission" to show an opt-in checkbox during the course and group enrollment. Students will only be subscribed to the email marketing list if they opt in. Choose Automatically to subscribe users silently upon enrollment. Caution, this is without the customer\'s consent.', 'mailoptin'),
+                'description' => __('Choose "Ask for permission" to show an opt-in checkbox during the course and group enrollment. Students will only be subscribed to the email marketing list if they check the checkbox. Choose Automatically to subscribe users silently upon enrollment. Caution, this is without the customer\'s consent.', 'mailoptin'),
                 'options'     => [
                     'no'  => __('Automatically', 'mailoptin'),
                     'yes' => __('Ask for permission', 'mailoptin')
@@ -170,14 +167,14 @@ class LearnDashSettings
             $learndash_settings['mailoptin_learndash_subscription_registration_message'] = [
                 'type'        => 'textarea',
                 'label'       => __('Subscription Registration Message', 'mailoptin'),
-                'description' => __('This is only used if Subscribe students is turned to "Ask for permission" and It is the text that will display beside the checkbox before subscribing.', 'mailoptin'),
+                'description' => __('This is only used if Subscribe students is set to "Ask for permission" and it is the text that will display beside the optin checkbox.', 'mailoptin'),
                 'value'       => __('Subscribe to our newsletter', 'mailoptin'),
             ];
 
             $learndash_settings['mailoptin_learndash_subscription_success_message'] = [
                 'type'        => 'textarea',
                 'label'       => __('Subscription Success Message', 'mailoptin'),
-                'description' => __('This is only used if Subscribe students is turned to "Ask for permission" and it is the text that will be displayed when the students has already subscribed.', 'mailoptin'),
+                'description' => __('This is only used if Subscribe students is set to "Ask for permission" and it is the text that will be displayed when the students has already subscribed.', 'mailoptin'),
                 'value'       => __('Subscription successful', 'mailoptin'),
             ];
 
@@ -243,13 +240,13 @@ class LearnDashSettings
 
         $first_name = $user_data->first_name;
         $last_name  = $user_data->last_name;
-        $name       = LearnDashInit::get_instance()->get_full_name($first_name, $last_name);
+        $name       = Init::get_full_name($first_name, $last_name);
 
         $optin_data->optin_campaign_id   = 0; // since it's non mailoptin form, set it to zero.
         $optin_data->payload             = $payload;
         $optin_data->name                = Init::return_name($name, $first_name, $last_name);
         $optin_data->email               = $email;
-        $optin_data->optin_campaign_type = esc_html__('LearnDash', 'mailoptin');
+        $optin_data->optin_campaign_type = 'LearnDash';
 
         $optin_data->connection_service    = $connection_service;
         $optin_data->connection_email_list = $connection_email_list;

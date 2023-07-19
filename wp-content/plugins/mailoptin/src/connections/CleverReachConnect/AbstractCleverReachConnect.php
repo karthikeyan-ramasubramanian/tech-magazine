@@ -43,7 +43,7 @@ class AbstractCleverReachConnect extends AbstractConnect
      */
     public function get_expire_at($val)
     {
-        return absint($val) - (2 * WEEK_IN_SECONDS);
+        return absint($val) - absint(apply_filters('mailoptin_connection_cleverreach_expire_at_factor', 2 * WEEK_IN_SECONDS));
     }
 
     /**

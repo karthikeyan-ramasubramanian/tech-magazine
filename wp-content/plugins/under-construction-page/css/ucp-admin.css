@@ -1,10 +1,10 @@
 /*
  * UnderConstructionPage
  * Main backend CSS
- * (c) Web factory Ltd, 2015 - 2022
+ * (c) Web factory Ltd, 2015 - 2023
  */
 
-@import url('//fonts.googleapis.com/css?family=Roboto:400,500,600,900');
+@import url('//fonts.bunny.net/css?family=Roboto:400,500,600,900');
 
 .settings_page_ucp .button-primary,
 .settings_page_ucp .button.button-primary {
@@ -1264,14 +1264,38 @@ option.weglot-promo {
   padding: 10px 20px;
   background: white;
   position: absolute;
-  top: 160px;
-  left: 1030px;
-  sdisplay: none;
 }
 
-@media screen and (max-width: 1600px) {
-  #wpfssl-ad {
-    display: none !important;
+#ucp-ad {
+  border: 3px solid #ff9900;
+  min-width: 300px;
+  max-width: 400px;
+  padding: 10px 20px;
+  background: white;
+  margin-bottom: 30px;
+}
+
+#ucp-sidebar-ads {
+  position: fixed;
+  display: none;
+}
+
+.settings_page_ucp .plain-list {
+  margin-top: 10px;
+  list-style-type: circle;
+  list-style-position: inside;
+}
+
+.settings_page_ucp .plain-list li {
+  text-indent: -20px;
+  padding-left: 23px;
+  line-height: 23px;
+  margin: 0;
+}
+
+@media screen and (max-width: 1300px) {
+  #ucp-sidebar-ads {
+      display: none !important;
   }
 }
 
@@ -1299,4 +1323,37 @@ option.weglot-promo {
 
 .textcenter {
   text-align: center;
+}
+
+div.ui-dialog {
+  position: fixed;
+}
+
+#ucp_rate_notice,
+#ucp_update_pro{
+    max-width: 970px;
+}
+
+@media screen and (max-width: 1520px) {
+    #ucp_tabs{
+        max-width:700px;
+    }
+    #ucp_rate_notice,
+    #ucp_update_pro{
+        max-width:670px;
+    }
+}
+
+@media screen and (max-width: 1300px) {
+    #ucp-sidebar-ads {
+        display: none !important;
+    }
+
+    #ucp_tabs{
+        max-width:1000px;
+    }
+    #ucp_rate_notice,
+    #ucp_update_pro{
+        max-width:970px;
+    }
 }

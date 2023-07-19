@@ -52,7 +52,7 @@ abstract class WIS_Feed {
 	 */
 	public function __get( $name ) {
 		if ( isset( $this->instance[ $name ] ) ) {
-			return $this->instance[ $name ];
+			return is_string( $this->instance[ $name ] ) ? sanitize_text_field( $this->instance[ $name ] ) : $this->instance[ $name ];
 		}
 
 		return null;
@@ -103,13 +103,7 @@ abstract class WIS_Feed {
 	 * @return mixed|null
 	 */
 	public function get( $name ) {
-		if ( $this->is_mobile ) {
-			if ( isset( $this->instance["m_{$name}"] ) ) {
-				return $this->instance["m_{$name}"];
-			}
-		}
-
-		return $this->__get( $name );
+		return $this->is_mobile ? $this->__get( "m_{$name}" ) : $this->__get( $name );
 	}
 
 	/**

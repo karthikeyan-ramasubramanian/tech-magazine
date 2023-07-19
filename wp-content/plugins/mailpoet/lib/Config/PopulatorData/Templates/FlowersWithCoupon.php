@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 namespace MailPoet\Config\PopulatorData\Templates;
 
 if (!defined('ABSPATH')) exit;
@@ -19,7 +19,7 @@ class FlowersWithCoupon {
 
   public function get() {
     return [
-      'name' => WPFunctions::get()->__("Flowers (with coupon)", 'mailpoet'),
+      'name' => __("Flowers (with coupon)", 'mailpoet'),
       'categories' => json_encode(['woocommerce', 'all']),
       'readonly' => 1,
       'thumbnail' => $this->getThumbnail(),
@@ -369,29 +369,40 @@ class FlowersWithCoupon {
     <p style="text-align: center;"><span style="color: #333333;"><strong>here\'s a little gift from us for your next order.</strong></span></p>',
                    ],
                   1 =>
-                   [
-                    'type' => 'button',
-                    'text' => 'CoUpOn_Code',
-                    'url' => '',
-                    'styles' =>
-                     [
-                      'block' =>
-                       [
-                        'backgroundColor' => '#292929',
-                        'borderColor' => '#0074a2',
-                        'borderWidth' => '0px',
-                        'borderRadius' => '0px',
-                        'borderStyle' => 'solid',
-                        'width' => '288px',
-                        'lineHeight' => '50px',
-                        'fontColor' => '#ffffff',
-                        'fontFamily' => 'Courier New',
-                        'fontSize' => '26px',
-                        'fontWeight' => 'normal',
-                        'textAlign' => 'center',
-                       ],
-                     ],
-                   ],
+                    [
+                      'productIds' => [],
+                      'excludedProductIds' => [],
+                      'productCategoryIds' => [],
+                      'excludedProductCategoryIds' => [],
+                      'type' => 'coupon',
+                      'amount' => 10,
+                      'amountMax' => 100,
+                      'discountType' => 'percent',
+                      'expiryDay' => 10,
+                      'usageLimit' => '',
+                      'usageLimitPerUser' => '',
+                      'minimumAmount' => '',
+                      'maximumAmount' => '',
+                      'emailRestrictions' => '',
+                      'styles' => [
+                        'block' => [
+                          'backgroundColor' => '#292929',
+                          'borderColor' => '#0074a2',
+                          'borderWidth' => '0px',
+                          'borderRadius' => '0px',
+                          'borderStyle' => 'solid',
+                          'width' => '288px',
+                          'lineHeight' => '50px',
+                          'fontColor' => '#ffffff',
+                          'fontFamily' => 'Courier New',
+                          'fontSize' => '26px',
+                          'fontWeight' => 'normal',
+                          'textAlign' => 'center',
+                        ],
+                      ],
+                      'source' => 'createNew',
+                      'code' => 'XXXX-XXXXXXX-XXXX',
+                    ],
                   2 =>
                    [
                     'type' => 'text',
@@ -1121,7 +1132,7 @@ class FlowersWithCoupon {
                   2 =>
                    [
                     'type' => 'footer',
-                    'text' => '<p><span style="color: #b3748a;"><a href="[link:subscription_unsubscribe_url]" style="color: #b3748a;">'.WPFunctions::get()->__("Unsubscribe", 'mailpoet').'</a> | <a href="[link:subscription_manage_url]" style="color: #b3748a;">'.WPFunctions::get()->__("Manage your subscription", 'mailpoet').'</a></span><br />'.WPFunctions::get()->__("Add your postal address here!", 'mailpoet').'</p>',
+                    'text' => '<p><span style="color: #b3748a;"><a href="[link:subscription_unsubscribe_url]" style="color: #b3748a;">'.__("Unsubscribe", 'mailpoet').'</a> | <a href="[link:subscription_manage_url]" style="color: #b3748a;">'.__("Manage your subscription", 'mailpoet').'</a></span><br />'.__("Add your postal address here!", 'mailpoet').'</p>',
                     'styles' =>
                      [
                       'block' =>
@@ -1354,7 +1365,7 @@ class FlowersWithCoupon {
          ],
         'footer' =>
          [
-          'text' => '<p><a href="[link:subscription_unsubscribe_url]">'.WPFunctions::get()->__("Unsubscribe", 'mailpoet').'</a> | <a href="[link:subscription_manage_url]">'.WPFunctions::get()->__("Manage your subscription", 'mailpoet').'</a><br />'.WPFunctions::get()->__("Add your postal address here!", 'mailpoet').'</p>',
+          'text' => '<p><a href="[link:subscription_unsubscribe_url]">'.__("Unsubscribe", 'mailpoet').'</a> | <a href="[link:subscription_manage_url]">'.__("Manage your subscription", 'mailpoet').'</a><br />'.__("Add your postal address here!", 'mailpoet').'</p>',
           'styles' =>
            [
             'block' =>
@@ -1491,7 +1502,7 @@ class FlowersWithCoupon {
          ],
         'header' =>
          [
-          'text' => '<a href="[link:newsletter_view_in_browser_url]">'.WPFunctions::get()->__("View this in your browser.", 'mailpoet').'</a>',
+          'text' => '<a href="[link:newsletter_view_in_browser_url]">'.__("View this in your browser.", 'mailpoet').'</a>',
           'styles' =>
            [
             'block' =>

@@ -87,7 +87,7 @@ class SendCampaign extends AbstractMailerliteConnect
             }
 
             $err = __('Unexpected error. Please try again', 'mailoptin');
-            self::save_campaign_error_log($response->error->message, $this->campaign_log_id, $this->email_campaign_id);
+            self::save_campaign_error_log($campaign->error->message, $this->campaign_log_id, $this->email_campaign_id);
 
             return parent::ajax_failure($err);
 

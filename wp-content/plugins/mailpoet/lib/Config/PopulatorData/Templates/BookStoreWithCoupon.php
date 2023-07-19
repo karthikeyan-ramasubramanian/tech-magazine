@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 namespace MailPoet\Config\PopulatorData\Templates;
 
 if (!defined('ABSPATH')) exit;
@@ -19,7 +19,7 @@ class BookStoreWithCoupon {
 
   public function get() {
     return [
-      'name' => WPFunctions::get()->__("Book store (with coupon)", 'mailpoet'),
+      'name' => __("Book store (with coupon)", 'mailpoet'),
       'categories' => json_encode(['woocommerce', 'all']),
       'readonly' => 1,
       'thumbnail' => $this->getThumbnail(),
@@ -453,29 +453,40 @@ class BookStoreWithCoupon {
                     'text' => '<h2 style="text-align: center;"><strong>20% off all books</strong></h2>',
                    ],
                   3 =>
-                   [
-                    'type' => 'button',
-                    'text' => 'Coupon_Code',
-                    'url' => '',
-                    'styles' =>
-                     [
-                      'block' =>
-                       [
-                        'backgroundColor' => '#ffffff',
-                        'borderColor' => '#125674',
-                        'borderWidth' => '3px',
-                        'borderRadius' => '40px',
-                        'borderStyle' => 'solid',
-                        'width' => '288px',
-                        'lineHeight' => '50px',
-                        'fontColor' => '#125674',
-                        'fontFamily' => 'Courier New',
-                        'fontSize' => '26px',
-                        'fontWeight' => 'bold',
-                        'textAlign' => 'center',
-                       ],
-                     ],
-                   ],
+                    [
+                      'productIds' => [],
+                      'excludedProductIds' => [],
+                      'productCategoryIds' => [],
+                      'excludedProductCategoryIds' => [],
+                      'type' => 'coupon',
+                      'amount' => 10,
+                      'amountMax' => 100,
+                      'discountType' => 'percent',
+                      'expiryDay' => 10,
+                      'usageLimit' => '',
+                      'usageLimitPerUser' => '',
+                      'minimumAmount' => '',
+                      'maximumAmount' => '',
+                      'emailRestrictions' => '',
+                      'styles' => [
+                        'block' => [
+                          'backgroundColor' => '#ffffff',
+                          'borderColor' => '#125674',
+                          'borderWidth' => '3px',
+                          'borderRadius' => '40px',
+                          'borderStyle' => 'solid',
+                          'width' => '288px',
+                          'lineHeight' => '50px',
+                          'fontColor' => '#125674',
+                          'fontFamily' => 'Courier New',
+                          'fontSize' => '26px',
+                          'fontWeight' => 'bold',
+                          'textAlign' => 'center',
+                        ],
+                      ],
+                      'source' => 'createNew',
+                      'code' => 'XXXX-XXXXXXX-XXXX',
+                    ],
                   4 =>
                    [
                     'type' => 'image',
@@ -801,7 +812,7 @@ class BookStoreWithCoupon {
                   1 =>
                    [
                     'type' => 'footer',
-                    'text' => '<p><span style="color: #cdc391;"><a href="[link:subscription_unsubscribe_url]" style="color: #cdc391;">'.WPFunctions::get()->__("Unsubscribe", 'mailpoet').'</a> | <a href="[link:subscription_manage_url]" style="color: #cdc391;">'.WPFunctions::get()->__("Manage your subscription", 'mailpoet').'</a></span><br /><span style="color: #ffffff;">'.WPFunctions::get()->__("Add your postal address here!", 'mailpoet').'</span></p>',
+                    'text' => '<p><span style="color: #cdc391;"><a href="[link:subscription_unsubscribe_url]" style="color: #cdc391;">'.__("Unsubscribe", 'mailpoet').'</a> | <a href="[link:subscription_manage_url]" style="color: #cdc391;">'.__("Manage your subscription", 'mailpoet').'</a></span><br /><span style="color: #ffffff;">'.__("Add your postal address here!", 'mailpoet').'</span></p>',
                     'styles' =>
                      [
                       'block' =>
@@ -825,7 +836,7 @@ class BookStoreWithCoupon {
                   2 =>
                    [
                     'type' => 'header',
-                    'text' => '<p><span style="color: #ffffff;"><a href="[link:newsletter_view_in_browser_url]" style="color: #ffffff;">'.WPFunctions::get()->__("View this in your browser.", 'mailpoet').'</a></span></p>',
+                    'text' => '<p><span style="color: #ffffff;"><a href="[link:newsletter_view_in_browser_url]" style="color: #ffffff;">'.__("View this in your browser.", 'mailpoet').'</a></span></p>',
                     'styles' =>
                      [
                       'block' =>
@@ -1018,30 +1029,6 @@ class BookStoreWithCoupon {
           'backgroundColor' => '#ffffff',
           'backgroundColorAlternate' => '#eeeeee',
          ],
-        'button' =>
-         [
-          'text' => 'Coupon_Code',
-          'url' => '',
-          'styles' =>
-           [
-            'block' =>
-             [
-              'backgroundColor' => '#ffffff',
-              'borderColor' => '#125674',
-              'borderWidth' => '3px',
-              'borderRadius' => '40px',
-              'borderStyle' => 'solid',
-              'width' => '288px',
-              'lineHeight' => '50px',
-              'fontColor' => '#125674',
-              'fontFamily' => 'Courier New',
-              'fontSize' => '26px',
-              'fontWeight' => 'bold',
-              'textAlign' => 'center',
-             ],
-           ],
-          'type' => 'button',
-         ],
         'divider' =>
          [
           'styles' =>
@@ -1059,7 +1046,7 @@ class BookStoreWithCoupon {
          ],
         'footer' =>
          [
-          'text' => '<p><a href="[link:subscription_unsubscribe_url]">'.WPFunctions::get()->__("Unsubscribe", 'mailpoet').'</a> | <a href="[link:subscription_manage_url]">'.WPFunctions::get()->__("Manage your subscription", 'mailpoet').'</a><br />'.WPFunctions::get()->__("Add your postal address here!", 'mailpoet').'</p>',
+          'text' => '<p><a href="[link:subscription_unsubscribe_url]">'.__("Unsubscribe", 'mailpoet').'</a> | <a href="[link:subscription_manage_url]">'.__("Manage your subscription", 'mailpoet').'</a><br />'.__("Add your postal address here!", 'mailpoet').'</p>',
           'styles' =>
            [
             'block' =>
@@ -1176,7 +1163,7 @@ class BookStoreWithCoupon {
          ],
         'header' =>
          [
-          'text' => '<a href="[link:newsletter_view_in_browser_url]">'.WPFunctions::get()->__("View this in your browser.", 'mailpoet').'</a>',
+          'text' => '<a href="[link:newsletter_view_in_browser_url]">'.__("View this in your browser.", 'mailpoet').'</a>',
           'styles' =>
            [
             'block' =>

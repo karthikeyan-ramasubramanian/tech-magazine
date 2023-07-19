@@ -7,9 +7,12 @@ if (!defined('ABSPATH')) exit;
 
 use MailPoet\API\JSON\Endpoint as APIEndpoint;
 use MailPoet\API\JSON\Error as APIError;
+use MailPoet\API\JSON\ErrorResponse;
 use MailPoet\API\JSON\Response;
 use MailPoet\API\JSON\ResponseBuilders\SubscribersResponseBuilder;
+use MailPoet\API\JSON\SuccessResponse;
 use MailPoet\Config\AccessControl;
+use MailPoet\ConflictException;
 use MailPoet\Doctrine\Validator\ValidationException;
 use MailPoet\Entities\SegmentEntity;
 use MailPoet\Entities\SubscriberEntity;
@@ -24,7 +27,6 @@ use MailPoet\Subscribers\SubscribersRepository;
 use MailPoet\Subscribers\SubscriberSubscribeController;
 use MailPoet\UnexpectedValueException;
 use MailPoet\Util\Helpers;
-use MailPoet\WP\Functions as WPFunctions;
 
 class Subscribers extends APIEndpoint {
   const SUBSCRIPTION_LIMIT_COOLDOWN = 60;
@@ -87,7 +89,7 @@ class Subscribers extends APIEndpoint {
     $subscriber = $this->getSubscriber($data);
     if (!$subscriber instanceof SubscriberEntity) {
       return $this->errorResponse([
-        APIError::NOT_FOUND => WPFunctions::get()->__('This subscriber does not exist.', 'mailpoet'),
+        APIError::NOT_FOUND => __('This subscriber does not exist.', 'mailpoet'),
       ]);
     }
     $result = $this->subscribersResponseBuilder->build($subscriber);
@@ -149,12 +151,21 @@ class Subscribers extends APIEndpoint {
     );
   }
 
-  public function save($data = []) {
+  /**
+   * @param array $data
+   * @return ErrorResponse|SuccessResponse
+   * @throws \Exception
+   */
+  public function save(array $data = []) {
     try {
       $subscriber = $this->saveController->save($data);
     } catch (ValidationException $validationException) {
       return $this->badRequest([$this->getErrorMessage($validationException)]);
-    }
+    } catch (ConflictException $conflictException) {
+      return $this->badRequest([
+        APIError::BAD_REQUEST => $conflictException->getMessage(),
+      ]);
+    };
 
     return $this->successResponse(
       $this->subscribersResponseBuilder->build($subscriber)
@@ -172,7 +183,7 @@ class Subscribers extends APIEndpoint {
       );
     } else {
       return $this->errorResponse([
-        APIError::NOT_FOUND => WPFunctions::get()->__('This subscriber does not exist.', 'mailpoet'),
+        APIError::NOT_FOUND => __('This subscriber does not exist.', 'mailpoet'),
       ]);
     }
   }
@@ -188,7 +199,7 @@ class Subscribers extends APIEndpoint {
       );
     } else {
       return $this->errorResponse([
-        APIError::NOT_FOUND => WPFunctions::get()->__('This subscriber does not exist.', 'mailpoet'),
+        APIError::NOT_FOUND => __('This subscriber does not exist.', 'mailpoet'),
       ]);
     }
   }
@@ -200,7 +211,7 @@ class Subscribers extends APIEndpoint {
       return $this->successResponse(null, ['count' => $count]);
     } else {
       return $this->errorResponse([
-        APIError::NOT_FOUND => WPFunctions::get()->__('This subscriber does not exist.', 'mailpoet'),
+        APIError::NOT_FOUND => __('This subscriber does not exist.', 'mailpoet'),
       ]);
     }
   }
@@ -230,7 +241,7 @@ class Subscribers extends APIEndpoint {
       }
     } else {
       return $this->errorResponse([
-        APIError::NOT_FOUND => WPFunctions::get()->__('This subscriber does not exist.', 'mailpoet'),
+        APIError::NOT_FOUND => __('This subscriber does not exist.', 'mailpoet'),
       ]);
     }
   }
@@ -245,7 +256,7 @@ class Subscribers extends APIEndpoint {
       $segment = $this->getSegment($data);
       if (!$segment) {
         return $this->errorResponse([
-          APIError::NOT_FOUND => WPFunctions::get()->__('This segment does not exist.', 'mailpoet'),
+          APIError::NOT_FOUND => __('This segment does not exist.', 'mailpoet'),
         ]);
       }
     }
@@ -299,11 +310,11 @@ class Subscribers extends APIEndpoint {
   private function getErrorMessage(ValidationException $exception): string {
     $exceptionMessage = $exception->getMessage();
     if (strpos($exceptionMessage, 'This value should not be blank.') !== false) {
-      return WPFunctions::get()->__('Please enter your email address', 'mailpoet');
+      return __('Please enter your email address', 'mailpoet');
     } elseif (strpos($exceptionMessage, 'This value is not a valid email address.') !== false) {
-      return WPFunctions::get()->__('Your email address is invalid!', 'mailpoet');
+      return __('Your email address is invalid!', 'mailpoet');
     }
 
-    return WPFunctions::get()->__('Unexpected error.', 'mailpoet');
+    return __('Unexpected error.', 'mailpoet');
   }
 }

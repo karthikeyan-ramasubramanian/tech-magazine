@@ -3,8 +3,14 @@ defined( 'ABSPATH' ) or exit;
 function authorship_update_counters()
 {
     check_ajax_referer( 'authorship_update_counters_nonce', 'nonce', true );
-    if ( defined( 'DISABLE_WP_CRON' ) and DISABLE_WP_CRON ) $result = false;
-    $result = authorship_update_post_counters();
+    if ( apply_filters( 'authorship/check_wp_cron', true ) and ( defined( 'DISABLE_WP_CRON' ) and DISABLE_WP_CRON ) )
+    {
+        $result = 'cron_disabled';
+    }
+    else
+    {
+        $result = authorship_update_post_counters();
+    }
     echo json_encode( is_wp_error( $result ) ? 'false' : $result );
     wp_die();
 }

@@ -1,8 +1,8 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: hitmag.1.3.2\n"
-"POT-Creation-Date: 2022-01-24 12:33+0530\n"
+"Project-Id-Version: hitmag.1.3.3\n"
+"POT-Creation-Date: 2022-08-07 21:57+0530\n"
 "PO-Revision-Date: 2017-11-21 08:57+0530\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -114,10 +114,6 @@ msgstr ""
 msgid "Footer Right Sidebar"
 msgstr ""
 
-#: functions.php:295 functions.php:301 functions.php:307
-msgid "on"
-msgstr ""
-
 #: header.php:40
 msgid "Skip to content"
 msgstr ""
@@ -225,16 +221,12 @@ msgid "Boxed Layout"
 msgstr ""
 
 #: inc/customizer/customizer.php:132 inc/customizer/customizer.php:246
-#: inc/kirki-old/controls/php/class-kirki-control-switch.php:52
-#: inc/kirki-old/field/class-kirki-field-switch.php:42
 #: inc/kirki/controls/php/class-kirki-control-switch.php:52
 #: inc/kirki/field/class-kirki-field-switch.php:39
 msgid "On"
 msgstr ""
 
 #: inc/customizer/customizer.php:133 inc/customizer/customizer.php:247
-#: inc/kirki-old/controls/php/class-kirki-control-switch.php:56
-#: inc/kirki-old/field/class-kirki-field-switch.php:43
 #: inc/kirki/controls/php/class-kirki-control-switch.php:56
 #: inc/kirki/field/class-kirki-field-switch.php:40
 msgid "Off"
@@ -462,7 +454,6 @@ msgid "Clear color"
 msgstr ""
 
 #: inc/customizer/customizer.php:654
-#: inc/kirki-old/controls/php/class-kirki-control-image.php:71
 #: inc/kirki/assets/vendor/wp-color-picker-alpha/wp-color-picker-alpha.js:124
 #: inc/kirki/controls/php/class-kirki-control-base.php:134
 #: inc/kirki/controls/views/image.php:36
@@ -610,20 +601,14 @@ msgstr ""
 msgid "Create a page."
 msgstr ""
 
-#: inc/kirki-old/controls/php/class-kirki-control-background.php:48
 #: inc/kirki/controls/php/class-kirki-control-background.php:48
 msgid "Background Color"
 msgstr ""
 
-#: inc/kirki-old/controls/php/class-kirki-control-background.php:54
 #: inc/kirki/controls/php/class-kirki-control-background.php:54
 msgid "Background Image"
 msgstr ""
 
-#: inc/kirki-old/controls/php/class-kirki-control-background.php:59
-#: inc/kirki-old/controls/php/class-kirki-control-image.php:62
-#: inc/kirki-old/controls/php/class-kirki-control-repeater.php:398
-#: inc/kirki-old/controls/php/class-kirki-control-repeater.php:403
 #: inc/kirki/controls/php/class-kirki-control-background.php:59
 #: inc/kirki/controls/php/class-kirki-control-base.php:132
 #: inc/kirki/controls/php/class-kirki-control-repeater.php:408
@@ -631,10 +616,6 @@ msgstr ""
 msgid "No File Selected"
 msgstr ""
 
-#: inc/kirki-old/controls/php/class-kirki-control-background.php:62
-#: inc/kirki-old/controls/php/class-kirki-control-image.php:67
-#: inc/kirki-old/controls/php/class-kirki-control-repeater.php:376
-#: inc/kirki-old/controls/php/class-kirki-control-repeater.php:433
 #: inc/kirki/controls/php/class-kirki-control-background.php:62
 #: inc/kirki/controls/php/class-kirki-control-base.php:133
 #: inc/kirki/controls/php/class-kirki-control-repeater.php:386
@@ -645,610 +626,106 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: inc/kirki-old/controls/php/class-kirki-control-background.php:63
-#: inc/kirki-old/controls/php/class-kirki-control-image.php:75
 #: inc/kirki/controls/php/class-kirki-control-background.php:63
 #: inc/kirki/controls/php/class-kirki-control-base.php:135
 msgid "Select File"
 msgstr ""
 
-#: inc/kirki-old/controls/php/class-kirki-control-background.php:70
 #: inc/kirki/controls/php/class-kirki-control-background.php:70
 msgid "Background Repeat"
 msgstr ""
 
-#: inc/kirki-old/controls/php/class-kirki-control-background.php:72
 #: inc/kirki/controls/php/class-kirki-control-background.php:72
 msgid "No Repeat"
 msgstr ""
 
-#: inc/kirki-old/controls/php/class-kirki-control-background.php:73
 #: inc/kirki/controls/php/class-kirki-control-background.php:73
 msgid "Repeat All"
 msgstr ""
 
-#: inc/kirki-old/controls/php/class-kirki-control-background.php:74
 #: inc/kirki/controls/php/class-kirki-control-background.php:74
 msgid "Repeat Horizontally"
 msgstr ""
 
-#: inc/kirki-old/controls/php/class-kirki-control-background.php:75
 #: inc/kirki/controls/php/class-kirki-control-background.php:75
 msgid "Repeat Vertically"
 msgstr ""
 
-#: inc/kirki-old/controls/php/class-kirki-control-background.php:81
 #: inc/kirki/controls/php/class-kirki-control-background.php:81
 msgid "Background Position"
 msgstr ""
 
-#: inc/kirki-old/controls/php/class-kirki-control-background.php:83
-#: inc/kirki-old/controls/php/class-kirki-control-dimensions.php:115
 #: inc/kirki/controls/php/class-kirki-control-background.php:83
 #: inc/kirki/controls/php/class-kirki-control-dimensions.php:114
 msgid "Left Top"
 msgstr ""
 
-#: inc/kirki-old/controls/php/class-kirki-control-background.php:84
-#: inc/kirki-old/controls/php/class-kirki-control-dimensions.php:116
 #: inc/kirki/controls/php/class-kirki-control-background.php:84
 #: inc/kirki/controls/php/class-kirki-control-dimensions.php:115
 msgid "Left Center"
 msgstr ""
 
-#: inc/kirki-old/controls/php/class-kirki-control-background.php:85
-#: inc/kirki-old/controls/php/class-kirki-control-dimensions.php:117
 #: inc/kirki/controls/php/class-kirki-control-background.php:85
 #: inc/kirki/controls/php/class-kirki-control-dimensions.php:116
 msgid "Left Bottom"
 msgstr ""
 
-#: inc/kirki-old/controls/php/class-kirki-control-background.php:86
-#: inc/kirki-old/controls/php/class-kirki-control-dimensions.php:118
 #: inc/kirki/controls/php/class-kirki-control-background.php:86
 #: inc/kirki/controls/php/class-kirki-control-dimensions.php:117
 msgid "Right Top"
 msgstr ""
 
-#: inc/kirki-old/controls/php/class-kirki-control-background.php:87
-#: inc/kirki-old/controls/php/class-kirki-control-dimensions.php:119
 #: inc/kirki/controls/php/class-kirki-control-background.php:87
 #: inc/kirki/controls/php/class-kirki-control-dimensions.php:118
 msgid "Right Center"
 msgstr ""
 
-#: inc/kirki-old/controls/php/class-kirki-control-background.php:88
-#: inc/kirki-old/controls/php/class-kirki-control-dimensions.php:120
 #: inc/kirki/controls/php/class-kirki-control-background.php:88
 #: inc/kirki/controls/php/class-kirki-control-dimensions.php:119
 msgid "Right Bottom"
 msgstr ""
 
-#: inc/kirki-old/controls/php/class-kirki-control-background.php:89
-#: inc/kirki-old/controls/php/class-kirki-control-dimensions.php:121
 #: inc/kirki/controls/php/class-kirki-control-background.php:89
 #: inc/kirki/controls/php/class-kirki-control-dimensions.php:120
 msgid "Center Top"
 msgstr ""
 
-#: inc/kirki-old/controls/php/class-kirki-control-background.php:90
-#: inc/kirki-old/controls/php/class-kirki-control-dimensions.php:122
 #: inc/kirki/controls/php/class-kirki-control-background.php:90
 #: inc/kirki/controls/php/class-kirki-control-dimensions.php:121
 msgid "Center Center"
 msgstr ""
 
-#: inc/kirki-old/controls/php/class-kirki-control-background.php:91
-#: inc/kirki-old/controls/php/class-kirki-control-dimensions.php:123
 #: inc/kirki/controls/php/class-kirki-control-background.php:91
 #: inc/kirki/controls/php/class-kirki-control-dimensions.php:122
 msgid "Center Bottom"
 msgstr ""
 
-#: inc/kirki-old/controls/php/class-kirki-control-background.php:97
 #: inc/kirki/controls/php/class-kirki-control-background.php:97
 msgid "Background Size"
 msgstr ""
 
-#: inc/kirki-old/controls/php/class-kirki-control-background.php:100
 #: inc/kirki/controls/php/class-kirki-control-background.php:100
 msgid "Cover"
 msgstr ""
 
-#: inc/kirki-old/controls/php/class-kirki-control-background.php:103
 #: inc/kirki/controls/php/class-kirki-control-background.php:103
 msgid "Contain"
 msgstr ""
 
-#: inc/kirki-old/controls/php/class-kirki-control-background.php:106
 #: inc/kirki/controls/php/class-kirki-control-background.php:106
 msgid "Auto"
 msgstr ""
 
-#: inc/kirki-old/controls/php/class-kirki-control-background.php:113
 #: inc/kirki/controls/php/class-kirki-control-background.php:113
 msgid "Background Attachment"
 msgstr ""
 
-#: inc/kirki-old/controls/php/class-kirki-control-background.php:116
 #: inc/kirki/controls/php/class-kirki-control-background.php:116
 msgid "Scroll"
 msgstr ""
 
-#: inc/kirki-old/controls/php/class-kirki-control-background.php:119
 #: inc/kirki/controls/php/class-kirki-control-background.php:119
 msgid "Fixed"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-code.php:53
-msgid "Update to WordPress 4.9 or greater for syntax highlighting."
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-date.php:51
-msgid "Update to WordPress 4.9 or greater for a datetime picker."
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-dimension.php:39
-#: inc/kirki-old/controls/php/class-kirki-control-dimensions.php:140
-#: inc/kirki-old/controls/php/class-kirki-control-number.php:41
-#: inc/kirki/controls/php/class-kirki-control-dimension.php:41
-#: inc/kirki/controls/php/class-kirki-control-dimensions.php:138
-msgid "Invalid Value"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-dimensions.php:124
-#: inc/kirki-old/controls/php/class-kirki-control-typography.php:123
-#: inc/kirki/controls/php/class-kirki-control-dimensions.php:123
-#: inc/kirki/controls/php/class-kirki-control-typography.php:102
-msgid "Font Size"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-dimensions.php:125
-#: inc/kirki/controls/php/class-kirki-control-dimensions.php:124
-msgid "Font Weight"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-dimensions.php:126
-#: inc/kirki-old/controls/php/class-kirki-control-typography.php:131
-#: inc/kirki/controls/php/class-kirki-control-dimensions.php:125
-#: inc/kirki/controls/php/class-kirki-control-typography.php:110
-msgid "Line Height"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-dimensions.php:127
-#: inc/kirki/controls/php/class-kirki-control-dimensions.php:126
-msgid "Font Style"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-dimensions.php:128
-#: inc/kirki-old/controls/php/class-kirki-control-typography.php:139
-#: inc/kirki/controls/php/class-kirki-control-dimensions.php:127
-#: inc/kirki/controls/php/class-kirki-control-typography.php:118
-msgid "Letter Spacing"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-dimensions.php:129
-#: inc/kirki-old/controls/php/class-kirki-control-typography.php:147
-#: inc/kirki/controls/php/class-kirki-control-dimensions.php:128
-#: inc/kirki/controls/php/class-kirki-control-typography.php:126
-msgid "Word Spacing"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-dimensions.php:130
-#: inc/kirki-old/field/class-kirki-field-spacing.php:77
-#: inc/kirki/controls/php/class-kirki-control-dimensions.php:129
-#: inc/kirki/field/class-kirki-field-spacing.php:32
-msgid "Top"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-dimensions.php:131
-#: inc/kirki-old/field/class-kirki-field-spacing.php:78
-#: inc/kirki/controls/php/class-kirki-control-dimensions.php:130
-#: inc/kirki/field/class-kirki-field-spacing.php:33
-msgid "Bottom"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-dimensions.php:132
-#: inc/kirki-old/controls/php/class-kirki-control-typography.php:166
-#: inc/kirki-old/field/class-kirki-field-spacing.php:79
-#: inc/kirki/controls/php/class-kirki-control-dimensions.php:131
-#: inc/kirki/controls/php/class-kirki-control-typography.php:145
-#: inc/kirki/field/class-kirki-field-spacing.php:34
-msgid "Left"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-dimensions.php:133
-#: inc/kirki-old/controls/php/class-kirki-control-typography.php:178
-#: inc/kirki-old/field/class-kirki-field-spacing.php:80
-#: inc/kirki/controls/php/class-kirki-control-dimensions.php:132
-#: inc/kirki/controls/php/class-kirki-control-typography.php:157
-#: inc/kirki/field/class-kirki-field-spacing.php:35
-msgid "Right"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-dimensions.php:134
-#: inc/kirki-old/controls/php/class-kirki-control-typography.php:172
-#: inc/kirki/controls/php/class-kirki-control-dimensions.php:133
-#: inc/kirki/controls/php/class-kirki-control-typography.php:151
-msgid "Center"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-dimensions.php:135
-#: inc/kirki/controls/php/class-kirki-control-dimensions.php:134
-msgid "Size"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-dimensions.php:136
-#: inc/kirki-old/controls/php/class-kirki-control-dimensions.php:139
-#: inc/kirki/controls/php/class-kirki-control-dimensions.php:137
-msgid "Height"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-dimensions.php:137
-#: inc/kirki/controls/php/class-kirki-control-dimensions.php:135
-msgid "Spacing"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-dimensions.php:138
-#: inc/kirki/controls/php/class-kirki-control-dimensions.php:136
-msgid "Width"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-number.php:39
-msgid "Value lower than allowed minimum"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-number.php:40
-msgid "Value higher than allowed maximum"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-repeater.php:70
-#: inc/kirki/controls/php/class-kirki-control-repeater.php:77
-msgid "row"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-repeater.php:79
-#: inc/kirki/controls/php/class-kirki-control-repeater.php:86
-#, php-format
-msgid "Add new %s"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-repeater.php:114
-#: inc/kirki/controls/php/class-kirki-control-repeater.php:121
-msgid "Select a Page"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-repeater.php:220
-#: inc/kirki/controls/php/class-kirki-control-repeater.php:227
-#, php-format
-msgid "Limit: %s rows"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-repeater.php:349
-msgid "Hex Value"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-repeater.php:366
-#: inc/kirki-old/controls/php/class-kirki-control-repeater.php:371
-#: inc/kirki/controls/php/class-kirki-control-repeater.php:376
-#: inc/kirki/controls/php/class-kirki-control-repeater.php:381
-msgid "No Image Selected"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-repeater.php:377
-#: inc/kirki-old/controls/php/class-kirki-control-repeater.php:381
-#: inc/kirki/controls/php/class-kirki-control-repeater.php:387
-#: inc/kirki/controls/php/class-kirki-control-repeater.php:391
-msgid "Add Image"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-repeater.php:377
-#: inc/kirki-old/controls/php/class-kirki-control-repeater.php:379
-#: inc/kirki/controls/php/class-kirki-control-repeater.php:387
-#: inc/kirki/controls/php/class-kirki-control-repeater.php:389
-msgid "Change Image"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-repeater.php:409
-#: inc/kirki-old/controls/php/class-kirki-control-repeater.php:413
-#: inc/kirki/controls/php/class-kirki-control-repeater.php:419
-#: inc/kirki/controls/php/class-kirki-control-repeater.php:423
-msgid "Add File"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-repeater.php:409
-#: inc/kirki-old/controls/php/class-kirki-control-repeater.php:411
-#: inc/kirki/controls/php/class-kirki-control-repeater.php:419
-#: inc/kirki/controls/php/class-kirki-control-repeater.php:421
-msgid "Change File"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-slider.php:65
-#: inc/kirki/controls/php/class-kirki-control-slider.php:67
-msgid "Reset"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-typography.php:93
-#: inc/kirki/controls/php/class-kirki-control-typography.php:82
-msgid "Font Family"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-typography.php:94
-#: inc/kirki-old/controls/php/class-kirki-control-typography.php:99
-#: inc/kirki/controls/php/class-kirki-control-typography.php:83
-#: inc/kirki/controls/php/class-kirki-control-typography.php:88
-msgid "Select Font Family"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-typography.php:98
-#: inc/kirki/controls/php/class-kirki-control-typography.php:87
-msgid "Backup Font"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-typography.php:104
-#: inc/kirki/controls/php/class-kirki-control-typography.php:93
-msgid "Variant"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-typography.php:110
-msgid "Subset(s)"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-typography.php:155
-#: inc/kirki/controls/php/class-kirki-control-typography.php:134
-msgid "Text Align"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-typography.php:160
-#: inc/kirki-old/controls/php/class-kirki-control-typography.php:201
-#: inc/kirki/controls/php/class-kirki-control-typography.php:139
-#: inc/kirki/controls/php/class-kirki-control-typography.php:181
-#: inc/kirki/controls/php/class-kirki-control-typography.php:197
-msgid "Inherit"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-typography.php:184
-#: inc/kirki/controls/php/class-kirki-control-typography.php:163
-msgid "Justify"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-typography.php:194
-#: inc/kirki/controls/php/class-kirki-control-typography.php:173
-msgid "Text Transform"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-typography.php:196
-#: inc/kirki/controls/php/class-kirki-control-typography.php:176
-#: inc/kirki/controls/php/class-kirki-control-typography.php:192
-msgid "None"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-typography.php:197
-#: inc/kirki/controls/php/class-kirki-control-typography.php:177
-msgid "Capitalize"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-typography.php:198
-#: inc/kirki/controls/php/class-kirki-control-typography.php:178
-msgid "Uppercase"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-typography.php:199
-#: inc/kirki/controls/php/class-kirki-control-typography.php:179
-msgid "Lowercase"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-typography.php:200
-#: inc/kirki/controls/php/class-kirki-control-typography.php:180
-#: inc/kirki/controls/php/class-kirki-control-typography.php:196
-msgid "Initial"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-typography.php:209
-#: inc/kirki/controls/php/class-kirki-control-typography.php:221
-msgid "Color"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-typography.php:217
-#: inc/kirki/controls/php/class-kirki-control-typography.php:205
-msgid "Margin Top"
-msgstr ""
-
-#: inc/kirki-old/controls/php/class-kirki-control-typography.php:225
-#: inc/kirki/controls/php/class-kirki-control-typography.php:213
-msgid "Margin Bottom"
-msgstr ""
-
-#: inc/kirki-old/core/class-kirki-field.php:232
-#: inc/kirki/core/class-kirki-field.php:248
-#, php-format
-msgid "Typo found in field %s - setting instead of settings."
-msgstr ""
-
-#: inc/kirki-old/core/class-kirki-field.php:241
-#: inc/kirki-old/core/class-kirki-field.php:251
-#: inc/kirki/core/class-kirki-field.php:257
-#: inc/kirki/core/class-kirki-field.php:267
-#, php-format
-msgid ""
-"Config not defined for field %1$s - See %2$s for details on how to properly "
-"add fields."
-msgstr ""
-
-#: inc/kirki-old/core/class-kirki-field.php:391
-#: inc/kirki/core/class-kirki-field.php:358
-#, php-format
-msgid "Typo found in field %s - \"theme_mods\" vs \"theme_mod\""
-msgstr ""
-
-#: inc/kirki-old/core/class-kirki-field.php:409
-#: inc/kirki/core/class-kirki-field.php:375
-#, php-format
-msgid "\"partial_refresh\" invalid entry in field %s"
-msgstr ""
-
-#: inc/kirki-old/core/class-kirki-field.php:538
-#: inc/kirki-old/core/class-kirki-field.php:548
-#: inc/kirki/core/class-kirki-field.php:498
-#: inc/kirki/core/class-kirki-field.php:509
-#, php-format
-msgid ""
-"\"output\" invalid format in field %s. The \"output\" argument should be "
-"defined as an array of arrays."
-msgstr ""
-
-#: inc/kirki-old/core/class-kirki-init.php:282
-#: inc/kirki/core/class-kirki-init.php:289
-msgid ""
-"We detected you're using Kirki_Init::get_variables(). Please use Kirki_Util::"
-"get_variables() instead."
-msgstr ""
-
-#: inc/kirki-old/core/class-kirki-sanitize-values.php:35
-#, php-format
-msgid "Kirki_Sanitize_Values::%s does not exist"
-msgstr ""
-
-#: inc/kirki-old/core/class-kirki.php:176 inc/kirki/core/class-kirki.php:237
-msgid ""
-"Kirki fields should not be added on customize_register. Please add them "
-"directly, or on init."
-msgstr ""
-
-#: inc/kirki-old/core/deprecated.php:31 inc/kirki/deprecated/functions.php:19
-#, php-format
-msgid "%1$s or %2$s"
-msgstr ""
-
-#: inc/kirki-old/field/class-kirki-field-color.php:55
-#: inc/kirki/field/class-kirki-field-color.php:52
-msgid ""
-"Do not use \"alpha\" as an argument in color controls. Use "
-"\"choices[alpha]\" instead."
-msgstr ""
-
-#: inc/kirki-old/field/class-kirki-field-radio.php:37
-#: inc/kirki/field/class-kirki-field-radio.php:37
-#, php-format
-msgid ""
-"Error in field %1$s. The \"mode\" argument has been deprecated since Kirki "
-"v0.8. Use the \"radio-%2$s\" type instead."
-msgstr ""
-
-#: inc/kirki-old/modules/custom-sections/sections/class-kirki-sections-nested-section.php:59
-#: inc/kirki/modules/custom-sections/sections/class-kirki-sections-nested-section.php:61
-msgid "Customizing"
-msgstr ""
-
-#: inc/kirki-old/modules/custom-sections/sections/class-kirki-sections-nested-section.php:62
-#: inc/kirki/modules/custom-sections/sections/class-kirki-sections-nested-section.php:64
-#, php-format
-msgid "Customizing &#9656; %s"
-msgstr ""
-
-#: inc/kirki-old/modules/webfonts/class-kirki-fonts.php:193
-#: inc/kirki-old/modules/webfonts/class-kirki-fonts.php:194
-#: inc/kirki/modules/webfonts/class-kirki-fonts.php:198
-#: inc/kirki/modules/webfonts/class-kirki-fonts.php:199
-msgid "Ultra-Light 100"
-msgstr ""
-
-#: inc/kirki-old/modules/webfonts/class-kirki-fonts.php:195
-#: inc/kirki/modules/webfonts/class-kirki-fonts.php:200
-msgid "Ultra-Light 100 Italic"
-msgstr ""
-
-#: inc/kirki-old/modules/webfonts/class-kirki-fonts.php:196
-#: inc/kirki/modules/webfonts/class-kirki-fonts.php:201
-msgid "Light 200"
-msgstr ""
-
-#: inc/kirki-old/modules/webfonts/class-kirki-fonts.php:197
-#: inc/kirki/modules/webfonts/class-kirki-fonts.php:202
-msgid "Light 200 Italic"
-msgstr ""
-
-#: inc/kirki-old/modules/webfonts/class-kirki-fonts.php:198
-#: inc/kirki/modules/webfonts/class-kirki-fonts.php:203
-msgid "Book 300"
-msgstr ""
-
-#: inc/kirki-old/modules/webfonts/class-kirki-fonts.php:199
-#: inc/kirki/modules/webfonts/class-kirki-fonts.php:204
-msgid "Book 300 Italic"
-msgstr ""
-
-#: inc/kirki-old/modules/webfonts/class-kirki-fonts.php:200
-#: inc/kirki-old/modules/webfonts/class-kirki-fonts.php:201
-#: inc/kirki/modules/webfonts/class-kirki-fonts.php:205
-#: inc/kirki/modules/webfonts/class-kirki-fonts.php:206
-msgid "Normal 400"
-msgstr ""
-
-#: inc/kirki-old/modules/webfonts/class-kirki-fonts.php:202
-#: inc/kirki/modules/webfonts/class-kirki-fonts.php:207
-msgid "Normal 400 Italic"
-msgstr ""
-
-#: inc/kirki-old/modules/webfonts/class-kirki-fonts.php:203
-#: inc/kirki/modules/webfonts/class-kirki-fonts.php:208
-msgid "Medium 500"
-msgstr ""
-
-#: inc/kirki-old/modules/webfonts/class-kirki-fonts.php:204
-#: inc/kirki/modules/webfonts/class-kirki-fonts.php:209
-msgid "Medium 500 Italic"
-msgstr ""
-
-#: inc/kirki-old/modules/webfonts/class-kirki-fonts.php:205
-#: inc/kirki-old/modules/webfonts/class-kirki-fonts.php:206
-#: inc/kirki/modules/webfonts/class-kirki-fonts.php:210
-#: inc/kirki/modules/webfonts/class-kirki-fonts.php:211
-msgid "Semi-Bold 600"
-msgstr ""
-
-#: inc/kirki-old/modules/webfonts/class-kirki-fonts.php:207
-#: inc/kirki/modules/webfonts/class-kirki-fonts.php:212
-msgid "Semi-Bold 600 Italic"
-msgstr ""
-
-#: inc/kirki-old/modules/webfonts/class-kirki-fonts.php:208
-#: inc/kirki/modules/webfonts/class-kirki-fonts.php:213
-msgid "Bold 700"
-msgstr ""
-
-#: inc/kirki-old/modules/webfonts/class-kirki-fonts.php:209
-#: inc/kirki/modules/webfonts/class-kirki-fonts.php:214
-msgid "Bold 700 Italic"
-msgstr ""
-
-#: inc/kirki-old/modules/webfonts/class-kirki-fonts.php:210
-#: inc/kirki-old/modules/webfonts/class-kirki-fonts.php:211
-#: inc/kirki/modules/webfonts/class-kirki-fonts.php:215
-#: inc/kirki/modules/webfonts/class-kirki-fonts.php:216
-msgid "Extra-Bold 800"
-msgstr ""
-
-#: inc/kirki-old/modules/webfonts/class-kirki-fonts.php:212
-#: inc/kirki/modules/webfonts/class-kirki-fonts.php:217
-msgid "Extra-Bold 800 Italic"
-msgstr ""
-
-#: inc/kirki-old/modules/webfonts/class-kirki-fonts.php:213
-#: inc/kirki-old/modules/webfonts/class-kirki-fonts.php:214
-#: inc/kirki/modules/webfonts/class-kirki-fonts.php:218
-#: inc/kirki/modules/webfonts/class-kirki-fonts.php:219
-msgid "Ultra-Bold 900"
-msgstr ""
-
-#: inc/kirki-old/modules/webfonts/class-kirki-fonts.php:215
-#: inc/kirki/modules/webfonts/class-kirki-fonts.php:220
-msgid "Ultra-Bold 900 Italic"
-msgstr ""
-
-#: inc/kirki-old/upgrade-notifications.php:30
-#: inc/kirki/upgrade-notifications.php:30
-msgid "Important Upgrade Notice:"
 msgstr ""
 
 #: inc/kirki/controls/php/class-kirki-control-base.php:136
@@ -1267,6 +744,186 @@ msgstr ""
 msgid "Default Browser Font-Family"
 msgstr ""
 
+#: inc/kirki/controls/php/class-kirki-control-dimension.php:41
+#: inc/kirki/controls/php/class-kirki-control-dimensions.php:138
+msgid "Invalid Value"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-dimensions.php:123
+#: inc/kirki/controls/php/class-kirki-control-typography.php:102
+msgid "Font Size"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-dimensions.php:124
+msgid "Font Weight"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-dimensions.php:125
+#: inc/kirki/controls/php/class-kirki-control-typography.php:110
+msgid "Line Height"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-dimensions.php:126
+msgid "Font Style"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-dimensions.php:127
+#: inc/kirki/controls/php/class-kirki-control-typography.php:118
+msgid "Letter Spacing"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-dimensions.php:128
+#: inc/kirki/controls/php/class-kirki-control-typography.php:126
+msgid "Word Spacing"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-dimensions.php:129
+#: inc/kirki/field/class-kirki-field-spacing.php:32
+msgid "Top"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-dimensions.php:130
+#: inc/kirki/field/class-kirki-field-spacing.php:33
+msgid "Bottom"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-dimensions.php:131
+#: inc/kirki/controls/php/class-kirki-control-typography.php:145
+#: inc/kirki/field/class-kirki-field-spacing.php:34
+msgid "Left"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-dimensions.php:132
+#: inc/kirki/controls/php/class-kirki-control-typography.php:157
+#: inc/kirki/field/class-kirki-field-spacing.php:35
+msgid "Right"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-dimensions.php:133
+#: inc/kirki/controls/php/class-kirki-control-typography.php:151
+msgid "Center"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-dimensions.php:134
+msgid "Size"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-dimensions.php:135
+msgid "Spacing"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-dimensions.php:136
+msgid "Width"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-dimensions.php:137
+msgid "Height"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-repeater.php:77
+msgid "row"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-repeater.php:86
+#, php-format
+msgid "Add new %s"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-repeater.php:121
+msgid "Select a Page"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-repeater.php:227
+#, php-format
+msgid "Limit: %s rows"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-repeater.php:376
+#: inc/kirki/controls/php/class-kirki-control-repeater.php:381
+msgid "No Image Selected"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-repeater.php:387
+#: inc/kirki/controls/php/class-kirki-control-repeater.php:391
+msgid "Add Image"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-repeater.php:387
+#: inc/kirki/controls/php/class-kirki-control-repeater.php:389
+msgid "Change Image"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-repeater.php:419
+#: inc/kirki/controls/php/class-kirki-control-repeater.php:423
+msgid "Add File"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-repeater.php:419
+#: inc/kirki/controls/php/class-kirki-control-repeater.php:421
+msgid "Change File"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-slider.php:67
+msgid "Reset"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-typography.php:82
+msgid "Font Family"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-typography.php:83
+#: inc/kirki/controls/php/class-kirki-control-typography.php:88
+msgid "Select Font Family"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-typography.php:87
+msgid "Backup Font"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-typography.php:93
+msgid "Variant"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-typography.php:134
+msgid "Text Align"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-typography.php:139
+#: inc/kirki/controls/php/class-kirki-control-typography.php:181
+#: inc/kirki/controls/php/class-kirki-control-typography.php:197
+msgid "Inherit"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-typography.php:163
+msgid "Justify"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-typography.php:173
+msgid "Text Transform"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-typography.php:176
+#: inc/kirki/controls/php/class-kirki-control-typography.php:192
+msgid "None"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-typography.php:177
+msgid "Capitalize"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-typography.php:178
+msgid "Uppercase"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-typography.php:179
+msgid "Lowercase"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-typography.php:180
+#: inc/kirki/controls/php/class-kirki-control-typography.php:196
+msgid "Initial"
+msgstr ""
+
 #: inc/kirki/controls/php/class-kirki-control-typography.php:189
 msgid "Text Decoration"
 msgstr ""
@@ -1281,6 +938,18 @@ msgstr ""
 
 #: inc/kirki/controls/php/class-kirki-control-typography.php:195
 msgid "Line-Through"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-typography.php:205
+msgid "Margin Top"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-typography.php:213
+msgid "Margin Bottom"
+msgstr ""
+
+#: inc/kirki/controls/php/class-kirki-control-typography.php:221
+msgid "Color"
 msgstr ""
 
 #: inc/kirki/controls/views/image.php:34 inc/kirki/controls/views/image.php:39
@@ -1304,6 +973,43 @@ msgstr ""
 msgid "Choose image"
 msgstr ""
 
+#: inc/kirki/core/class-kirki-field.php:248
+#, php-format
+msgid "Typo found in field %s - setting instead of settings."
+msgstr ""
+
+#: inc/kirki/core/class-kirki-field.php:257
+#: inc/kirki/core/class-kirki-field.php:267
+#, php-format
+msgid ""
+"Config not defined for field %1$s - See %2$s for details on how to properly "
+"add fields."
+msgstr ""
+
+#: inc/kirki/core/class-kirki-field.php:358
+#, php-format
+msgid "Typo found in field %s - \"theme_mods\" vs \"theme_mod\""
+msgstr ""
+
+#: inc/kirki/core/class-kirki-field.php:375
+#, php-format
+msgid "\"partial_refresh\" invalid entry in field %s"
+msgstr ""
+
+#: inc/kirki/core/class-kirki-field.php:498
+#: inc/kirki/core/class-kirki-field.php:509
+#, php-format
+msgid ""
+"\"output\" invalid format in field %s. The \"output\" argument should be "
+"defined as an array of arrays."
+msgstr ""
+
+#: inc/kirki/core/class-kirki-init.php:289
+msgid ""
+"We detected you're using Kirki_Init::get_variables(). Please use Kirki_Util::"
+"get_variables() instead."
+msgstr ""
+
 #: inc/kirki/core/class-kirki-init.php:365
 msgid ""
 "Your theme uses a Font Awesome field for icons. To avoid issues with missing "
@@ -1317,6 +1023,120 @@ msgstr ""
 
 #: inc/kirki/core/class-kirki-init.php:369
 msgid "Don't show this again"
+msgstr ""
+
+#: inc/kirki/core/class-kirki.php:237
+msgid ""
+"Kirki fields should not be added on customize_register. Please add them "
+"directly, or on init."
+msgstr ""
+
+#: inc/kirki/deprecated/functions.php:19
+#, php-format
+msgid "%1$s or %2$s"
+msgstr ""
+
+#: inc/kirki/field/class-kirki-field-color.php:52
+msgid ""
+"Do not use \"alpha\" as an argument in color controls. Use "
+"\"choices[alpha]\" instead."
+msgstr ""
+
+#: inc/kirki/field/class-kirki-field-radio.php:37
+#, php-format
+msgid ""
+"Error in field %1$s. The \"mode\" argument has been deprecated since Kirki "
+"v0.8. Use the \"radio-%2$s\" type instead."
+msgstr ""
+
+#: inc/kirki/modules/custom-sections/sections/class-kirki-sections-nested-section.php:61
+msgid "Customizing"
+msgstr ""
+
+#: inc/kirki/modules/custom-sections/sections/class-kirki-sections-nested-section.php:64
+#, php-format
+msgid "Customizing &#9656; %s"
+msgstr ""
+
+#: inc/kirki/modules/webfonts/class-kirki-fonts.php:198
+#: inc/kirki/modules/webfonts/class-kirki-fonts.php:199
+msgid "Ultra-Light 100"
+msgstr ""
+
+#: inc/kirki/modules/webfonts/class-kirki-fonts.php:200
+msgid "Ultra-Light 100 Italic"
+msgstr ""
+
+#: inc/kirki/modules/webfonts/class-kirki-fonts.php:201
+msgid "Light 200"
+msgstr ""
+
+#: inc/kirki/modules/webfonts/class-kirki-fonts.php:202
+msgid "Light 200 Italic"
+msgstr ""
+
+#: inc/kirki/modules/webfonts/class-kirki-fonts.php:203
+msgid "Book 300"
+msgstr ""
+
+#: inc/kirki/modules/webfonts/class-kirki-fonts.php:204
+msgid "Book 300 Italic"
+msgstr ""
+
+#: inc/kirki/modules/webfonts/class-kirki-fonts.php:205
+#: inc/kirki/modules/webfonts/class-kirki-fonts.php:206
+msgid "Normal 400"
+msgstr ""
+
+#: inc/kirki/modules/webfonts/class-kirki-fonts.php:207
+msgid "Normal 400 Italic"
+msgstr ""
+
+#: inc/kirki/modules/webfonts/class-kirki-fonts.php:208
+msgid "Medium 500"
+msgstr ""
+
+#: inc/kirki/modules/webfonts/class-kirki-fonts.php:209
+msgid "Medium 500 Italic"
+msgstr ""
+
+#: inc/kirki/modules/webfonts/class-kirki-fonts.php:210
+#: inc/kirki/modules/webfonts/class-kirki-fonts.php:211
+msgid "Semi-Bold 600"
+msgstr ""
+
+#: inc/kirki/modules/webfonts/class-kirki-fonts.php:212
+msgid "Semi-Bold 600 Italic"
+msgstr ""
+
+#: inc/kirki/modules/webfonts/class-kirki-fonts.php:213
+msgid "Bold 700"
+msgstr ""
+
+#: inc/kirki/modules/webfonts/class-kirki-fonts.php:214
+msgid "Bold 700 Italic"
+msgstr ""
+
+#: inc/kirki/modules/webfonts/class-kirki-fonts.php:215
+#: inc/kirki/modules/webfonts/class-kirki-fonts.php:216
+msgid "Extra-Bold 800"
+msgstr ""
+
+#: inc/kirki/modules/webfonts/class-kirki-fonts.php:217
+msgid "Extra-Bold 800 Italic"
+msgstr ""
+
+#: inc/kirki/modules/webfonts/class-kirki-fonts.php:218
+#: inc/kirki/modules/webfonts/class-kirki-fonts.php:219
+msgid "Ultra-Bold 900"
+msgstr ""
+
+#: inc/kirki/modules/webfonts/class-kirki-fonts.php:220
+msgid "Ultra-Bold 900 Italic"
+msgstr ""
+
+#: inc/kirki/upgrade-notifications.php:30
+msgid "Important Upgrade Notice:"
 msgstr ""
 
 #: inc/template-tags.php:64

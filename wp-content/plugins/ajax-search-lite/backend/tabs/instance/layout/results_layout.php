@@ -1,6 +1,19 @@
+<div class="item">
+	<?php
+	$o = new wpdreamsCustomSelect("results_snap_to", __('Snap the live results box to the ', 'ajax-search-lite'), array(
+		'selects'=>array(
+			array('option' => 'left side of the search', 'value' => 'left'),
+			array('option' => 'right side of the search', 'value' => 'right'),
+			array('option' => 'the center', 'value' => 'center')
+		),
+		'value'=>$sd['results_snap_to']
+	));
+	$params[$o->getName()] = $o->getData();
+	?>
+</div>
 <div class="item item-flex-nogrow item-flex-wrap">
 	<?php
-	$o = new wpdreamsTextSmall("results_width", __('Results box width', 'ajax-search-pro'), array(
+	$o = new wpdreamsTextSmall("results_width", __('Results box width', 'ajax-search-lite'), array(
 		'icon' => 'desktop',
 		'value' => $sd['results_width']
 	));

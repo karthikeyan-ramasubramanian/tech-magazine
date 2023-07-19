@@ -10,7 +10,6 @@ if ( ! defined('ABSPATH')) {
     exit;
 }
 
-
 class Connections extends AbstractSettingsPage
 {
     public function __construct()
@@ -106,48 +105,91 @@ class Connections extends AbstractSettingsPage
 
     public function sidebar_metaboxes()
     {
+        $mailpoet_url  = 'https://mailoptin.io/article/create-mailpoet-opt-in-forms-wordpress/?utm_source=wp_dashboard&utm_medium=integration_metabox&utm_campaign=mailpoet';
+        $mailster_url  = 'https://mailoptin.io/article/create-mailster-optin-forms-wordpress/?utm_source=wp_dashboard&utm_medium=integration_metabox&utm_campaign=mailster';
+        $fluentcrm_url = 'https://mailoptin.io/article/create-fluent-crm-forms-wordpress/?utm_source=wp_dashboard&utm_medium=integration_metabox&utm_campaign=fluentcrm';
+
+        $mailpoet_error_url  = AbstractConnect::get_optin_error_log_link('mailpoet', true);
+        $mailster_error_url  = AbstractConnect::get_optin_error_log_link('mailster', true);
+        $fluentcrm_error_url = AbstractConnect::get_optin_error_log_link('fluentcrm', true);
+
+        if (
+            \MailOptin\MailPoetConnect\Connect::is_connected() &&
+            ! empty($mailpoet_error_url)
+        ) {
+            $mailpoet_url = $mailpoet_error_url;
+        }
+
+        if (
+            \MailOptin\MailsterConnect\Connect::is_connected() &&
+            ! empty($mailster_error_url)
+        ) {
+            $mailster_url = $mailster_error_url;
+        }
+
+        if (
+            \MailOptin\FluentCRMConnect\Connect::is_connected() &&
+            ! empty($fluentcrm_error_url)
+        ) {
+            $fluentcrm_url = $fluentcrm_error_url;
+        }
+
         $boxes = [
             [
-                'title'   => esc_html__('Elite WordPress Integrations'),
-                'content' => sprintf(__('MailOptin also integrates with the following WordPress features and plugins.
-                <p><a href="%s" target="_blank">WordPress user registration</a></p>
-                <p><a href="%s" target="_blank">MailPoet email marketing plugin</a></p>
-                <p><a href="%s" target="_blank">Mailster email marketing plugin</a></p>
-                <p><a href="%s" target="_blank">FluentCRM plugin</a></p>
-                <p><a href="%s" target="_blank">Polylang, WPML & Weglot for multilingual support</a></p>
-                '),
-                    'https://mailoptin.io/article/create-wordpress-user-registration-form/?utm_source=wp_dashboard&utm_medium=integration_metabox&utm_campaign=wp_user_registration',
-                    'https://mailoptin.io/article/create-mailpoet-opt-in-forms-wordpress/?utm_source=wp_dashboard&utm_medium=integration_metabox&utm_campaign=mailpoet',
-                    'https://mailoptin.io/article/create-mailster-optin-forms-wordpress/?utm_source=wp_dashboard&utm_medium=integration_metabox&utm_campaign=mailster',
-                    'https://mailoptin.io/article/create-fluent-crm-forms-wordpress/?utm_source=wp_dashboard&utm_medium=integration_metabox&utm_campaign=fluentcrm',
-                    'https://mailoptin.io/article/create-multilingual-optin-campaigns/?utm_source=wp_dashboard&utm_medium=integration_metabox&utm_campaign=multilingual'
-                )
-            ],
-            [
-                'title'   => esc_html__('Integration with Form Plugins'),
-                'content' => sprintf(__('MailOptin integrates with popular WordPress form plugins to help save all contacts and subscribers from your forms submissions to your email marketing software and CRM.
+                'section_title' => esc_html__('Integration with Form Plugins'),
+                'content'       => sprintf(__('MailOptin integrates with popular WordPress form plugins to help save all contacts and subscribers from your forms submissions to your email marketing software and CRM.
                 <p><a href="%s" target="_blank">Gravity Forms integration</a></p>
                 <p><a href="%s" target="_blank">Contact Form 7 integration</a></p>
                 <p><a href="%s" target="_blank">WPForms integration</a></p>
                 <p><a href="%s" target="_blank">Ninja Forms integration</a></p>
                 <p><a href="%s" target="_blank">Elementor Forms integration</a></p>
                 <p><a href="%s" target="_blank">Forminator integration</a></p>
+                <p><a href="%s" target="_blank">Formidable Forms integration</a></p>
                 '),
                     'https://mailoptin.io/article/gravity-forms-mailchimp-aweber-more/?utm_source=wp_dashboard&utm_medium=integration_metabox&utm_campaign=gravity_forms',
                     'https://mailoptin.io/article/contact-form-7-mailchimp-aweber-more/?utm_source=wp_dashboard&utm_medium=integration_metabox&utm_campaign=cf7',
                     'https://mailoptin.io/article/wpforms-email-marketing-crm/?utm_source=wp_dashboard&utm_medium=integration_metabox&utm_campaign=wpforms',
                     'https://mailoptin.io/article/ninja-forms-mailchimp-aweber-more/?utm_source=wp_dashboard&utm_medium=integration_metabox&utm_campaign=ninja_forms',
                     'https://mailoptin.io/article/elementor-form-integration/?utm_source=wp_dashboard&utm_medium=integration_metabox&utm_campaign=elementor_forms',
-                    'https://mailoptin.io/article/forminator-email-marketing-crm/?utm_source=wp_dashboard&utm_medium=integration_metabox&utm_campaign=forminator'
+                    'https://mailoptin.io/article/forminator-email-marketing-crm/?utm_source=wp_dashboard&utm_medium=integration_metabox&utm_campaign=forminator',
+                    'https://mailoptin.io/article/formidable-forms-email-marketing-crm/?utm_source=wp_dashboard&utm_medium=integration_metabox&utm_campaign=formidable_forms'
                 )
             ],
+            [
+                'section_title' => esc_html__('Elite WordPress Integrations'),
+                'content'       => sprintf(__('MailOptin also integrates with the following WordPress features and plugins.
+                <p><a href="%s" target="_blank">WordPress user registration</a></p>
+                <p><a href="%s" target="_blank">MailPoet</a>, <a href="%s" target="_blank">Mailster</a> & <a href="%s" target="_blank">FluentCRM plugins</a></p>
+                <p><a href="%s" target="_blank">WooCommerce, memberships & subscriptions plugins</a></p>
+                <p><a href="%s" target="_blank">Easy Digital Downloads plugin</a></p>
+                <p><a href="%s" target="_blank">MemberPress</a>, <a href="%s" target="_blank">Restrict Content Pro</a> & <a href="%s" target="_blank">Paid Memberships Pro</a></a></p>
+                <p><a href="%s" target="_blank">LearnDash</a>, <a href="%s" target="_blank">LifterLMS</a>, <a href="%s" target="_blank">GiveWP</a></p>
+                <p><a href="%s" target="_blank">Polylang, WPML & Weglot for multilingual support</a></p>
+                '),
+                    'https://mailoptin.io/article/create-wordpress-user-registration-form/?utm_source=wp_dashboard&utm_medium=integration_metabox&utm_campaign=wp_user_registration',
+                    $mailpoet_url,
+                    $mailster_url,
+                    $fluentcrm_url,
+                    'https://mailoptin.io/integrations/woocommerce/?utm_source=wp_dashboard&utm_medium=integration_metabox&utm_campaign=woocommerce',
+                    'https://mailoptin.io/integrations/easy-digital-downloads/?utm_source=wp_dashboard&utm_medium=integration_metabox&utm_campaign=edd',
+                    'https://mailoptin.io/integrations/memberpress/?utm_source=wp_dashboard&utm_medium=integration_metabox&utm_campaign=memberpress',
+                    'https://mailoptin.io/integrations/restrict-content-pro/?utm_source=wp_dashboard&utm_medium=integration_metabox&utm_campaign=memberpress',
+                    'https://mailoptin.io/integrations/paid-memberships-pro/?utm_source=wp_dashboard&utm_medium=integration_metabox&utm_campaign=pmpro',
+                    'https://mailoptin.io/integrations/learndash/?utm_source=wp_dashboard&utm_medium=integration_metabox&utm_campaign=learndash',
+                    'https://mailoptin.io/integrations/lifterlms/?utm_source=wp_dashboard&utm_medium=integration_metabox&utm_campaign=lifterlms',
+                    'https://mailoptin.io/integrations/givewp/?utm_source=wp_dashboard&utm_medium=integration_metabox&utm_campaign=givewp',
+                    'https://mailoptin.io/article/create-multilingual-optin-campaigns/?utm_source=wp_dashboard&utm_medium=integration_metabox&utm_campaign=multilingual'
+                )
+            ]
         ];
+
+        $boxes = array_merge($boxes, $this->sidebar_args());
 
         foreach ($boxes as $box) :
             ?>
             <div class="postbox">
                 <div class="postbox-header">
-                    <h2 class="hndle is-non-sortable"><span><?= $box['title'] ?></span></h2>
+                    <h2 class="hndle is-non-sortable"><span><?= $box['section_title'] ?></span></h2>
                 </div>
                 <div class="inside"><?= $box['content'] ?></div>
             </div>
@@ -242,8 +284,8 @@ class Connections extends AbstractSettingsPage
     {
         // handle oauth errors.
         if (isset($_GET['mo-oauth-provider'], $_GET['mo-oauth-error'])) {
-            $provider      = ucfirst(sanitize_text_field($_GET['mo-oauth-provider']));
-            $error_message = strtolower(sanitize_text_field($_GET['mo-oauth-error']));
+            $provider      = ucfirst(esc_html($_GET['mo-oauth-provider']));
+            $error_message = strtolower(esc_html($_GET['mo-oauth-error']));
 
             echo '<div id="message" class="updated notice is-dismissible">';
             echo '<p>';

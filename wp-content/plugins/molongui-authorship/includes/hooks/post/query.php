@@ -3,14 +3,17 @@ defined( 'ABSPATH' ) or exit;
 if ( !authorship_byline_takeover() ) return;
 function authorship_filter_user_posts( $wp_query )
 {
-    if ( isset( $wp_query->is_guest_author )
-         or ( molongui_is_request( 'admin' ) and !$wp_query->is_author )
-         or ( !$wp_query->is_main_query() and apply_filters_ref_array( 'molongui_edit_main_query_only', array( true, &$wp_query ) ) )
-    ) return;
+    if ( isset( $wp_query->is_guest_author ) ) return;
+    if ( molongui_is_request( 'admin' ) )
+    {
+        $current_screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+        if ( !isset( $current_screen->id ) ) return;
+
+        if ( !( $wp_query->is_author and in_array( $current_screen->id, molongui_enabled_post_screens( MOLONGUI_AUTHORSHIP_PREFIX, 'all' ) ) ) ) return;
+    }
+    if ( !$wp_query->is_main_query() and apply_filters_ref_array( 'molongui_edit_main_query_only', array( true, &$wp_query ) ) ) return;
     if ( $wp_query->is_author )
     {
-        $meta_query = $wp_query->get( 'meta_query' );
-        if ( !is_array( $meta_query ) and empty( $meta_query ) ) $meta_query = array();
         if ( !empty( $wp_query->query_vars['author'] ) )
         {
             $author_id = $wp_query->query_vars['author'];
@@ -22,16 +25,7 @@ function authorship_filter_user_posts( $wp_query )
 
             $author_id = $author[0]->ID;
         }
-        $meta_query[] = array
-        (
-            array
-            (
-                'key'     => '_molongui_author',
-                'value'   => 'user-'.$author_id,
-                'compare' => '==',
-            ),
-        );
-        $wp_query->set( 'meta_query', $meta_query );
+        authorship_add_author_meta_query( $wp_query, 'user', $author_id );
         add_filter( '_authorship/posts_where', '__return_true' );
     }
 }

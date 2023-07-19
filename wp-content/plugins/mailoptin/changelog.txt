@@ -1,5 +1,95 @@
 ﻿== Changelog ==
 
+= 1.2.58.0 =
+* Added integration with the new MailerLite platform.
+
+= 1.2.57.0 =
+* Pro: [Restrict Content Pro](https://mailoptin.io/integrations/restrict-content-pro/?ref=changelog) integration.
+* Added filter to flag a sendinblue field as boolean.
+* Fixed a couple of PHP Warning: Undefined array key.
+* Fixed bug with error reporting.
+
+= 1.2.56.0 =
+* Pro: [GiveWP](https://mailoptin.io/integrations/givewp/?ref=changelog) integration.
+* Added preheader support when creating email automations and broadcasts.
+* Added lagacy label to old Constant Contavt integration.
+
+= 1.2.55.1 =
+* Pro: [Added email support to LifterLMS](https://mailoptin.io/article/send-wordpress-emails-lifterlms-students/?ref=changelog).
+
+= 1.2.55.0 =
+* Pro: [Paid Memberships Pro](https://mailoptin.io/integrations/paid-memberships-pro/) integration.
+* Pro: Improved [Easy Digital Downloads email campaign](https://mailoptin.io/article/send-emails-edd-customers-wordpress/) integration.
+* Pro: Improved [MemberPress email campaign](https://mailoptin.io/article/send-wordpress-emails-memberpress-members/) integration.
+* Pro: Improved [WooCommerce Membership email campaign](https://mailoptin.io/article/send-emails-woocommerce-memberships/) integration.
+* Pro: Improved [WooCommerce Subscriptions email campaign](https://mailoptin.io/article/send-emails-woocommerce-subscriptions/) integration.
+* Fixed bug where some hubspot properties were missing in fetch.
+
+= 1.2.54.1 =
+* Added WPML compatibility.
+* Ensure email is valid before attempt to subscribe.
+* Fixed couple of XSS on admin settings page
+* Restrict admin notices to only administrators.
+
+= 1.2.54.0 =
+* Pro: [send emails to LearnDash users](https://mailoptin.io/article/send-wordpress-emails-learndash-users/?ref=changelog).
+* Fixed bug where empty images when post doesn't have feature image was in email.
+* Fixed email content with broken html.
+* Fixed bug where VTI was including p tag in matching link.
+* Added missing error log link for MailPoet, Mailster, FCRM.
+
+= 1.2.53.0 =
+* Pro: [send emails to Easy Digital Downloads customers](https://mailoptin.io/article/send-emails-edd-customers-wordpress/).
+* PHP 8 compatibility improvements.
+* Converts relative image URLs to absolute URLs.
+* Fix PHP Fatal error with Forminator quiz integration.
+* Fix deprecation errors from Elementor forms integration.
+
+= 1.2.52.1 =
+* Added OPT_IN Sendinblue contact attribute support.
+* Fixed: TypeError thrownCannot access offset of type string on string
+* Fixed bug where mailoptin_disable_send_optin_error_email filter didn't work in some cases.
+* Increased email campaign title DB limit
+* Added tool to install missing Mailoptin missing DB tables.
+
+= 1.2.52.0 =
+* Pro: [LifterLMS integration](https://mailoptin.io/article/lifterlms-mailchimp-aweber-more/?ref=changelog).
+* Added error handling output on failed email campaign creation.
+* Added [post-author-avatar-url] support to email campaigns.
+
+= 1.2.51.1 =
+* Extended cache clearing to also clear ESP related data.
+* Fixed PHP warning: Invalid argument supplied for foreach().
+
+= 1.2.51.0 =
+* Pro: [WooCommerce](https://mailoptin.io/article/send-emails-woocommerce-customers-wordpress/?ref=prochangelog) email support.
+* Pro: [WooCommerce Subscriptions](https://mailoptin.io/article/send-emails-woocommerce-subscriptions/?ref=prochangelog) email support.
+* Pro: [WooCommerce Memberships](https://mailoptin.io/article/send-emails-woocommerce-memberships/?ref=prochangelog) email support.
+* jQuery syntax update.
+* Fixed bug where select2 re-population didn't work for some fields.
+
+= 1.2.50.0 =
+* Pro: [Easy Digital Downloads integration](https://mailoptin.io/article/edd-mailchimp-aweber-more/?ref=changelog).
+* Pro: [Cookie Optin Targeting](https://mailoptin.io/article/target-visitors-based-browser-cookies//?ref=changelog) support.
+* Added capability and nonce check to optin cache clearing.
+* Fixed: Implicit conversion from float 1.0E+20 to int loses precision.
+* Added filter to campaign error email address.
+
+= 1.2.49.0 =
+* Pro feature: Added [Comment Form Optin](https://mailoptin.io/article/wordpress-comment-form-email-subscription/?ref=changelog).
+* Pro feature: Added [User Registration Optin](https://mailoptin.io/article/user-registration-optin-mailchimp-aweber-more/?ref=changelog).
+* Pro feature: Added [MemberPress email campaign](https://mailoptin.io/article/send-wordpress-emails-memberpress-members/?ref=changelog).
+* Fixed PHP notice caused by WP_User_Query being called with an argument that is deprecated.
+* Added Japan Zoho DC support.
+* Fixed NewsMan email campaign bug with encoding.
+
+= 1.2.48.0 =
+* Pro feature: Added [MemberPress integration](https://mailoptin.io/article/memberpress-mailchimp-aweber-more/?ref=changelog).
+* Fixed bug where not all zoho list were retrieved.
+* Fixed bug with Newsman optin not working.
+* Added better error reporting for wp_mail deliveries.
+* Removed unused cron job.
+
 = 1.2.47.1 =
 * Removed the Full Site Editing callout in customizer.
 * Fixed bug where VTI was matching in a link.

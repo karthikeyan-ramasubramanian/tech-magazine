@@ -28,13 +28,11 @@ class Group
         $integrations      = LearnDashInit::get_instance()->learndash_select_integration_options();
         $saved_integration = LearnDashInit::get_instance()->learndash_get_field('mailoptinLearnDashSelectIntegration', $course_id);
         $upsell_url        = 'https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=learndash_connection';
-        $doc_url           = 'https://mailoptin.io/?p=33850&utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=learndash_connection';
+        $doc_url           = 'https://mailoptin.io/article/learndash-mailchimp-aweber-more/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=learndash_connection';
         $content           = sprintf(
             __("Upgrade to %sMailOptin Premium%s to add students that enrols this course to a specific email list, assign tags and custom field data to them.", 'mailoptin'),
             '<a target="_blank" href="' . $upsell_url . '">',
-            '</a>',
-            '<strong>',
-            '</strong>'
+            '</a>'
         );
         ?>
         <div id="mailoptin_email_integration" class="panel learndash_options_panel">

@@ -99,13 +99,16 @@ class Connect extends AbstractConnect implements ConnectionInterface
     {
         try {
 
-            $response = mailster()->get_custom_fields();
-
             $custom_fields_array = [];
 
-            if (is_array($response) && ! empty($response)) {
-                foreach ($response as $key => $customField) {
-                    $custom_fields_array[$key] = $customField['name'];
+            if (self::is_connected()) {
+
+                $response = mailster()->get_custom_fields();
+
+                if (is_array($response) && ! empty($response)) {
+                    foreach ($response as $key => $customField) {
+                        $custom_fields_array[$key] = $customField['name'];
+                    }
                 }
             }
 
@@ -123,9 +126,9 @@ class Connect extends AbstractConnect implements ConnectionInterface
      * @param string $content_html
      * @param string $content_text
      *
+     * @return array
      * @throws \Exception
      *
-     * @return array
      */
     public function send_newsletter($email_campaign_id, $campaign_log_id, $subject, $content_html, $content_text)
     {

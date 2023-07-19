@@ -9,14 +9,14 @@ use MailOptin\Core\Connections\AbstractConnect;
 use MailOptin\Core\Connections\ConnectionInterface;
 use MailOptin\Core\Logging\CampaignLogRepository;
 use MailOptin\Core\Repositories\EmailCampaignRepository;
-use MailOptin\Core\Repositories\OptinConversionsRepository;
+use MailOptin\Core\Repositories\OptinConversionsRepository as ConversionsRepository;
 
 class Connect extends AbstractConnect implements ConnectionInterface
 {
     /**
      * @var WP_Mail_BG_Process
      */
-    public $bg_process_instance;
+    public $ru_process_instance;
 
     /**
      * @var string key of connection service. its important all connection name ends with "Connect"
@@ -30,17 +30,13 @@ class Connect extends AbstractConnect implements ConnectionInterface
         add_filter('mailoptin_email_campaign_customizer_settings_controls', array($this, 'integration_customizer_controls'), 10, 4);
 
         add_action('plugins_loaded', array($this, 'init'));
-
         add_action('init', [$this, 'unsubscribe_handler']);
-
         add_action('init', [$this, 'view_online_version']);
-
-        parent::__construct();
     }
 
     public function init()
     {
-        $this->bg_process_instance = new WP_Mail_BG_Process();
+        $this->ru_process_instance = new WP_Mail_BG_Process();
     }
 
     public static function features_support()
@@ -49,8 +45,6 @@ class Connect extends AbstractConnect implements ConnectionInterface
     }
 
     /**
-     * Register Sendy Connection.
-     *
      * @param array $connections
      *
      * @return array
@@ -155,20 +149,15 @@ class Connect extends AbstractConnect implements ConnectionInterface
         // array of username and email object.
         $users_data = get_users($args);
 
-        // campaign log and email campaign IDs to each $users_data
-        $users_data = array_reduce($users_data, function ($carry, $user_data) use ($email_campaign_id, $campaign_log_id) {
+        foreach ($users_data as $user_data) {
+
             $user_data->email_campaign_id = $email_campaign_id;
             $user_data->campaign_log_id   = $campaign_log_id;
-            $carry[]                      = $user_data;
 
-            return $carry;
-        });
-
-        foreach ($users_data as $user_data) {
-            $this->bg_process_instance->push_to_queue($user_data);
+            $this->ru_process_instance->push_to_queue($user_data);
         }
 
-        $this->bg_process_instance->mo_save($campaign_log_id, $email_campaign_id)
+        $this->ru_process_instance->mo_save($campaign_log_id, $email_campaign_id)
                                   ->mo_dispatch($campaign_log_id, $email_campaign_id);
 
         return ['success' => true];
@@ -196,18 +185,11 @@ class Connect extends AbstractConnect implements ConnectionInterface
 
         update_option('mo_wp_user_unsubscribers', $contacts, false);
 
-        if (apply_filters('mo_email_unsubscribe_delete_lead', false)) {
-            $emails = OptinConversionsRepository::get_conversions_by_email(base64_decode($email));
-            if (is_array($emails) && ! empty($emails)) {
-                foreach ($emails as $email) {
-                    OptinConversionsRepository::delete($email['id']);
-                }
-            }
-        }
+        $this->delete_unsubscribe_leadbank_contact($email);
 
-        do_action('mo_wp_user_unsubscribe', $contacts);
+        do_action('mo_wp_user_unsubscribe', $contacts, $email);
 
-        $success_message = apply_filters('mo_wp_user_unsubscribe_message', esc_html__('You\'ve successfully unsubscribed.', 'mailoptin'));
+        $success_message = apply_filters('mo_wp_user_unsubscribe_message', esc_html__("You've successfully been unsubscribed.", 'mailoptin'));
 
         wp_die($success_message, $success_message, ['response' => 200]);
     }
@@ -242,6 +224,18 @@ class Connect extends AbstractConnect implements ConnectionInterface
      */
     public function subscribe($email, $name, $list_id, $extras = null)
     {
+    }
+
+    public function delete_unsubscribe_leadbank_contact($email)
+    {
+        if (apply_filters('mo_email_unsubscribe_delete_lead', false)) {
+            $emails = ConversionsRepository::get_conversions_by_email(base64_decode($email));
+            if (is_array($emails) && ! empty($emails)) {
+                foreach ($emails as $email) {
+                    ConversionsRepository::delete($email['id']);
+                }
+            }
+        }
     }
 
     /**

@@ -295,6 +295,9 @@
 	&total::before {
 		content: '\e020';
 	}
+	&subtotal::before {
+		content: '\e020';
+	}
 	&img-upload::before {
 		content: '\e022';
 	}
@@ -324,5 +327,23 @@
 	}
 	&wysiwyg::before {
 		content: '\e901';
+	}
+	&eye::before {
+		content: '\e903';
+	}
+	&coupon::before {
+		content: '\e904';
+	}
+	&yes-no::before {
+		content: '\e905';
+	}
+	&reset::before {
+		content: '\e907';
+	}
+	&progress::before {
+		content: '\e908';
+	}
+	&color::before {
+		content: '\e909';
 	}
 }

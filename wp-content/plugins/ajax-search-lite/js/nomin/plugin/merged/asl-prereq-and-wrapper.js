@@ -5,11 +5,8 @@
 
     window.WPD = typeof window.WPD !== 'undefined' ? window.WPD : {};
 
-    // Newer version added?
     if ( typeof WPD.dom != "undefined" ) {
-        if ( WPD.dom.version > version ) {
-            return false;	// Terminate
-        }
+        return false;	// Terminate
     }
 
     WPD.dom = function() {
@@ -425,6 +422,14 @@
                             parseInt( this.css('marginBottom') )
                         );
                 },
+                innerWidth: function() {
+                    let el = this.get(0);
+                    if ( el != null ) {
+                        let cs = window.getComputedStyle(el);
+                        return this.outerWidth() - parseFloat(cs.borderLeftWidth) - parseFloat(cs.borderRightWidth);
+                    }
+                    return 0;
+                },
                 width: function() {
                     return this.outerWidth();
                 },
@@ -433,7 +438,7 @@
                 },
                 on: function() {
                     let args = arguments,
-                        func1 = function(args, e) {
+                        func = function(args, e) {
                             let $el;
                             if ( e.type == 'mouseenter' || e.type == 'mouseleave' || e.type == 'hover' ) {
                                 let el = document.elementFromPoint(e.clientX, e.clientY);
@@ -460,16 +465,6 @@
                                 }
                                 args[2].apply($el.get(0), argd);
                             }
-                        },
-                        func2 = function(args, e) {
-                            let argd = [];
-                            argd.push(e);
-                            if ( typeof args[3] != 'undefined' ) {
-                                for (let i=3; i<args.length; i++) {
-                                    argd.push(args[i]);
-                                }
-                            }
-                            args[1].apply(this, argd);
                         };
                     let events = args[0].split(' ');
                     for (let i=0;i<events.length;i++) {
@@ -477,7 +472,7 @@
                         if ( typeof args[1] == "string" ) {
                             this.forEach(function(el){
                                 if ( !WPD.dom._fn.hasEventListener(el, type, args[2]) ) {
-                                    let f = func1.bind(el, args);
+                                    let f = func.bind(el, args);
                                     el.addEventListener(type, f, args[3]);
                                     // Store the trigger in the selected elements, not the parent node
                                     el._wpd_el = typeof el._wpd_el == "undefined" ? [] : el._wpd_el;
@@ -491,19 +486,21 @@
                                 }
                             });
                         } else {
-                            this.forEach(function (el) {
-                                if ( !WPD.dom._fn.hasEventListener(el, type, args[1]) ) {
-                                    let f = func2.bind(el, args);
-                                    el.addEventListener(type, f, args[2]);
-                                    el._wpd_el = typeof el._wpd_el == "undefined" ? [] : el._wpd_el;
-                                    el._wpd_el.push({
-                                        'type': type,
-                                        'func': f,
-                                        'trigger': args[1],
-                                        'args': args[2]
-                                    });
-                                }
-                            });
+                            for (let i=0;i<events.length;i++) {
+                                let type = events[i];
+                                this.forEach(function (el) {
+                                    if ( !WPD.dom._fn.hasEventListener(el, type, args[1]) ) {
+                                        el.addEventListener(type, args[1], args[2]);
+                                        el._wpd_el = typeof el._wpd_el == "undefined" ? [] : el._wpd_el;
+                                        el._wpd_el.push({
+                                            'type': type,
+                                            'func': args[1],
+                                            'trigger': args[1],
+                                            'args': args[2]
+                                        });
+                                    }
+                                });
+                            }
                         }
                     }
                     return this;
@@ -699,18 +696,28 @@
                 }
             }
             WPD.dom._fn = {
-                bodyTransformY: function() {
+                bodyTransform: function() {
+                    let x = 0, y = 0;
                     if ( typeof WebKitCSSMatrix !== 'undefined' ) {
                         let style = window.getComputedStyle(document.body);
                         if ( typeof style.transform != 'undefined' ) {
                             let matrix = new WebKitCSSMatrix(style.transform);
+                            if ( matrix.m41 != 'undefined' ) {
+                                x = matrix.m41;
+                            }
                             if ( matrix.m42 != 'undefined' ) {
-                                return matrix.m42;
+                                y = matrix.m42;
                             }
                         }
                     }
 
-                    return 0;
+                    return {x: x, y: y};
+                },
+                bodyTransformY: function() {
+                    return this.bodyTransform().y;
+                },
+                bodyTransformX: function() {
+                    return this.bodyTransform().x;
                 },
                 hasFixedParent: function(el) {
                     /**
@@ -727,6 +734,7 @@
                     } while( el = el.parentElement );
                     return false;
                 },
+
                 hasEventListener: function(el, type, trigger) {
                     if (typeof el._wpd_el == "undefined") {
                         return false;
@@ -800,6 +808,10 @@
     WPD.dom();
     document.dispatchEvent(new Event('wpd-dom-core-loaded'));
 }());(function() {
+    // Prevent duplicate loading
+    if ( typeof WPD.dom.fn.animate != "undefined" ) {
+        return false;	// Terminate
+    }
     WPD.dom.fn._animate = {
         "easing": {
             "linear": function(x) { return x; },
@@ -870,7 +882,7 @@
     };
     document.dispatchEvent(new Event('wpd-dom-animate-loaded'));
 }());/*
- * jQuery Highlight plugin
+ * WPD.dom Highlight plugin
  *
  * Based on highlight v3 by Johann Burkard
  * http://johannburkard.de/blog/programming/javascript/highlight-javascript-text-higlighting-jquery-plugin.html
@@ -882,9 +894,14 @@
 (function() {
     let $ = WPD.dom;
 
+    // Prevent duplicate loading
+    if ( typeof WPD.dom.fn.unhighlight != "undefined" ) {
+        return false;	// Terminate
+    }
+
     WPD.dom.fn.unhighlight = function (options) {
         let settings = {className: 'highlight', element: 'span'};
-        $.extend(settings, options);
+        $.fn.extend(settings, options);
 
         return this.find(settings.element + "." + settings.className).each(function () {
             let parent = this.parentNode;
@@ -910,7 +927,7 @@
             return el != '';
         });
         words.forEach(function(w, i, o){
-            o[i].replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            o[i] = w.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
         });
 
         if (words.length == 0) {
@@ -923,7 +940,6 @@
             pattern = "(?:,|^|\\s)" + pattern + "(?:,|$|\\s)";
         }
         let re = new RegExp(pattern, flag);
-
         function highlight(node, re, nodeName, className, excludeParents) {
             excludeParents = excludeParents == '' ? '.exhghttt' : excludeParents;
             if (node.nodeType === 3) {
@@ -960,6 +976,10 @@
         });
     };
 }());(function() {
+    // Prevent duplicate loading
+    if ( typeof WPD.dom.fn.serialize != "undefined" ) {
+        return false;	// Terminate
+    }
     WPD.dom.fn.serialize = function() {
         let form = this.get(0);
         if ( !form || form.nodeName !== "FORM" ) {
@@ -1037,6 +1057,10 @@
     };
     document.dispatchEvent(new Event('wpd-dom-serialize-loaded'));
 }());(function() {
+    // Prevent duplicate loading
+    if ( typeof WPD.dom.fn.inViewPort != "undefined" ) {
+        return false;	// Terminate
+    }
     WPD.dom.fn.inViewPort = function (tolerance, viewport) {
         "use strict";
         let element = this.get(0), vw, vh;
@@ -1082,6 +1106,10 @@
     };
     document.dispatchEvent(new Event('wpd-dom-viewport-loaded'));
 }());(function() {
+    // Prevent duplicate loading
+    if ( typeof WPD.dom.fn.ajax != "undefined" ) {
+        return false;	// Terminate
+    }
     WPD.dom.fn.ajax = function(args) {
         let defaults = {
             'url': '',
@@ -1310,6 +1338,18 @@ window.WPD.Base64 = {
             args.splice(0, 2);
             filters.forEach( function( hooks ) {
                 hooks.forEach( function( obj ) {
+                    /**
+                     * WARNING!
+                     * If, this function is called with a referanced parameter like OBJECT or ARRAY argument
+                     * as the first argument - then the callback function MUST return that value, otherwise
+                     * it is overwritten with NULL!
+                     * Ex.:
+                     * Hooks.applyFilters('my_filter', object);
+                     * Hooks.addFilter('my_filter', function(obj){
+                     *     do things..
+                     *     return obj; <--- IMPORTANT IN EVERY CASE
+                     * });
+                     */
                     value = obj.callback.apply( obj.scope, [value].concat(args) );
                 } );
             } );
@@ -1435,68 +1475,88 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
     };
 
     window.ASL.initialized = false;
-    window.ASL.initializeById = function (id, ignoreViewport) {
-        let selector = ".asl_init_data";
-        ignoreViewport = typeof ignoreViewport == 'undefined' ? false : ignoreViewport;
-        if (typeof id !== 'undefined' && typeof id != 'object')
-            selector = "div[id*=asl_init_id_" + id + "]";
-
-        /**
-         * Getting around inline script declarations with this solution.
-         * So these new, invisible divs contains a JSON object with the parameters.
-         * Parse all of them and do the declaration.
-         */
+    window.ASL.initializeSearchByID = function (id) {
+        let instances = ASL.getInstances();
+        if (typeof id !== 'undefined' && typeof id != 'object' ) {
+            if ( typeof instances[id] !== 'undefined' ) {
+                let ni = [];
+                ni[id] = instances[id];
+                instances = ni;
+            } else {
+                return false;
+            }
+        }
         let initialized = 0;
-        $(selector).forEach(function (el) {
+        instances.forEach(function (data, i) {
             // noinspection JSUnusedAssignment
-            let $asl = $(el).closest('.asl_w_container').find('.asl_m');
-            // $asl.length == 0 -> when fixed compact layout mode is enabled
-            if ( $asl.length == 0 || typeof $asl.get(0).hasAsl != 'undefined') {
+            $('.asl_m_' + i).forEach(function(el){
+                let $el = $(el);
+                if ( typeof $el.get(0).hasAsl != 'undefined') {
+                    ++initialized;
+                    return true;
+                }
+                el.hasAsl = true;
                 ++initialized;
-                return true;
-            }
-
-            if (!ignoreViewport && !$asl.inViewPort(-100)) {
-                return true;
-            }
-
-            let jsonData = $(el).data("asldata");
-            if (typeof jsonData === "undefined") return true;   // Do not return false, it breaks the loop!
-
-            jsonData = WPD.Base64.decode(jsonData);
-            if (typeof jsonData === "undefined" || jsonData == "") return true; // Do not return false, it breaks the loop!
-
-            let args = JSON.parse(jsonData);
-            $asl.get(0).hasAsl = true;
-            ++initialized;
-            return $asl.ajaxsearchlite(args);
+                return $el.ajaxsearchlite(data);
+            });
         });
+    }
 
-        if ($(selector).length == initialized) {
-            document.removeEventListener('scroll', ASL.initializeById);
-            document.removeEventListener('resize', ASL.initializeById);
+    window.ASL.getInstances = function() {
+        // noinspection JSUnresolvedVariable
+        if ( typeof window.ASL_INSTANCES !== 'undefined' ) {
+            // noinspection JSUnresolvedVariable
+            return window.ASL_INSTANCES;
+        } else {
+            let instances = [];
+            $('.asl_init_data').forEach(function (el) {
+                if (typeof el.dataset['asldata'] === "undefined") return true;   // Do not return false, it breaks the loop!
+                let data = WPD.Base64.decode(el.dataset['asldata']);
+                if (typeof data === "undefined" || data == "") return true;
+
+                instances[el.dataset['aslId']] = JSON.parse(data);
+            });
+            return instances;
         }
     }
 
-// Call this function if you need to initialize an instance that is printed after an AJAX call
-// Calling without an argument initializes all instances found.
     window.ASL.initialize = function (id) {
-        // this here is either window.ASL or window._ASL
-        let _this = this;
-
         // Some weird ajax loader problem prevention
-        if (typeof _this.version == 'undefined')
+        if (typeof ASL.version == 'undefined')
             return false;
 
-        // noinspection JSUnresolvedVariable
-        if ( ASL.script_async_load ) {
-            document.addEventListener('scroll', ASL.initializeById, {passive: true});
-            document.addEventListener('resize', ASL.initializeById, {passive: true});
-            ASL.initializeById(id);
+        if( !!window.IntersectionObserver ){
+            if ( ASL.script_async_load || ASL.init_only_in_viewport ) {
+                let searches = document.querySelectorAll('.asl_w_container');
+                if ( searches.length ) {
+                    let observer = new IntersectionObserver(function(entries){
+                        entries.forEach(function(entry){
+                            if ( entry.isIntersecting ) {
+                                ASL.initializeSearchByID(entry.target.dataset.id);
+                                observer.unobserve(entry.target);
+                            }
+                        });
+                    });
+                    searches.forEach(function(search){
+                        observer.observe(search);
+                    });
+                }
+            } else {
+                ASL.initializeSearchByID(id);
+            }
         } else {
-            ASL.initializeById(id, true);
+            ASL.initializeSearchByID(id);
         }
 
+        ASL.initializeMutateDetector();
+        ASL.initializeHighlight();
+        ASL.initializeOtherEvents();
+
+        ASL.initialized = true;
+    };
+
+    window.ASL.initializeHighlight = function() {
+        let _this = this;
         if (_this.highlight.enabled) {
             let data = localStorage.getItem('asl_phrase_highlight');
             localStorage.removeItem('asl_phrase_highlight');
@@ -1530,56 +1590,10 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                 });
             }
         }
-
-        _this.initialized = true;
     };
 
-    window.ASL.ready = function () {
-        let _this = this,
-            $body = $('body'),
-            t, tt, ttt, ts;
-
-        /**
-         * This function is triggered right after the script stack is loaded, when using the async loader.
-         * The DOMContentLoaded is already fired, so we need to force the init.
-         */
-        if ( ASL.script_async_load ) {
-            _this.initialize();
-        }
-
-        $(document).on('DOMContentLoaded', function() {
-            _this.initialize();
-        });
-
-        // DOM tree modification detection to re-initialize automatically if enabled
-        // noinspection JSUnresolvedVariable
-        if (typeof ASL.detect_ajax != "undefined" && ASL.detect_ajax == 1) {
-            let observer = new MutationObserver(function() {
-                clearTimeout(t);
-                t = setTimeout(function () {
-                    _this.initialize();
-                }, 500);
-            });
-            function addObserverIfDesiredNodeAvailable() {
-                let db = document.querySelector("body");
-                if( !db ) {
-                    //The node we need does not exist yet.
-                    //Wait 500ms and try again
-                    window.setTimeout(addObserverIfDesiredNodeAvailable,500);
-                    return;
-                }
-                observer.observe(db, {subtree: true, childList: true});
-            }
-            addObserverIfDesiredNodeAvailable();
-        }
-
-        $(window).on('resize', function () {
-            clearTimeout(tt);
-            tt = setTimeout(function () {
-                _this.initializeById();
-            }, 200);
-        });
-
+    window.ASL.initializeOtherEvents = function() {
+        let ttt, ts, $body = $('body'), _this = this;
         // Known slide-out and other type of menus to initialize on click
         ts = '#menu-item-search, .fa-search, .fa, .fas';
         // Avada theme
@@ -1608,7 +1622,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
         $body.on('click touchend', ts, function () {
             clearTimeout(ttt);
             ttt = setTimeout(function () {
-                _this.initializeById({}, true);
+                _this.initializeSearchByID();
             }, 300);
         });
 
@@ -1616,9 +1630,33 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
         if ( typeof jQuery != 'undefined' ) {
             jQuery(document).on('elementor/popup/show', function(){
                 setTimeout(function () {
-                    _this.initializeById({}, true);
+                    _this.initializeSearchByID();
                 }, 10);
             });
+        }
+    };
+
+    window.ASL.initializeMutateDetector = function() {
+        let t;
+        if ( typeof ASL.detect_ajax != "undefined" && ASL.detect_ajax == 1 ) {
+            let o = new MutationObserver(function() {
+                clearTimeout(t);
+                t = setTimeout(function () {
+                    ASL.initializeSearchByID();
+                }, 500);
+            });
+            o.observe(document.querySelector("body"), {subtree: true, childList: true});
+        }
+    };
+
+    window.ASL.ready = function () {
+        let _this = this;
+
+        if (document.readyState === "complete" || document.readyState === "loaded"  || document.readyState === "interactive") {
+            // document is already ready to go
+            _this.initialize();
+        } else {
+            $(document).on('DOMContentLoaded', _this.initialize);
         }
     };
 
@@ -1650,15 +1688,9 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
         }
     };
 
-    // noinspection JSUnresolvedVariable
-    if (
-        !window.ASL.css_async ||
-        typeof window.ASL.css_loaded != 'undefined' // CSS loader finished, but this script was not ready yet
-    ) {
-        window.WPD.intervalUntilExecute(window.ASL.init, function() {
-            return typeof window.ASL.version != 'undefined' && $.fn.ajaxsearchlite != 'undefined'
-        });
-    }
+    window.WPD.intervalUntilExecute(window.ASL.init, function() {
+        return typeof window.ASL.version != 'undefined' && $.fn.ajaxsearchlite != 'undefined'
+    });
 };
 // Run on document ready
 (function() {

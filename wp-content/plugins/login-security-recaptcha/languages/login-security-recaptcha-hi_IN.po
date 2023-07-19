@@ -1,12 +1,12 @@
 # Copyright (C) 2019 ScriptsTown
-# This file is distributed under the same license as the Login Security reCAPTCHA plugin.
+# This file is distributed under the same license as the Login Security Captcha plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Login Security reCAPTCHA 1.3.9\n"
+"Project-Id-Version: Login Security Captcha 1.5.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/login-security-"
 "recaptcha\n"
-"POT-Creation-Date: 2022-05-06T19:42:41+00:00\n"
-"PO-Revision-Date: 2022-05-07 01:12+0530\n"
+"POT-Creation-Date: 2023-03-02T00:12:47+00:00\n"
+"PO-Revision-Date: 2023-03-02 05:42+0530\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: hi_IN\n"
@@ -14,14 +14,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n==0 || n==1);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.2.2\n"
 "X-Domain: login-security-recaptcha\n"
 
 #. Plugin Name of the plugin
-#: admin/inc/class-stlsr-admin-menu.php:6
-#: admin/inc/class-stlsr-admin-menu.php:9 admin/inc/setting/index.php:34
-msgid "Login Security reCAPTCHA"
-msgstr "लॉगिन सुरक्षा रिकैप्चा"
+#: admin/inc/class-stlsr-admin-menu.php:10
+#: admin/inc/class-stlsr-admin-menu.php:13 admin/inc/setting/index.php:29
+msgid "Login Security Captcha"
+msgstr "लॉगिन सुरक्षा कैप्चा"
 
 #. Plugin URI of the plugin
 msgid "https://scriptstown.com/wordpress-plugins/login-security-recaptcha/"
@@ -29,8 +29,8 @@ msgstr ""
 
 #. Description of the plugin
 msgid ""
-"Secure WordPress login, registration, and comment form with Google "
-"reCAPTCHA. Monitor error logs. Prevent Brute-force attacks and more."
+"Secure WordPress login, registration, and comment form with Google reCAPTCHA "
+"or Cloudflare Turnstile. Prevent Brute-force attacks and more."
 msgstr ""
 
 #. Author of the plugin
@@ -41,7 +41,7 @@ msgstr ""
 msgid "https://scriptstown.com/"
 msgstr ""
 
-#: admin/inc/class-stlsr-admin-menu.php:6
+#: admin/inc/class-stlsr-admin-menu.php:10
 msgid "Login Security"
 msgstr "लॉगिन सुरक्षा"
 
@@ -49,45 +49,45 @@ msgstr "लॉगिन सुरक्षा"
 msgid "Settings"
 msgstr "सेटिंग्स"
 
-#: admin/inc/class-stlsr-setting.php:10
+#: admin/inc/class-stlsr-setting.php:11
 msgid "Get Premium"
 msgstr ""
 
 #. translators: %s: Settings page link.
-#: admin/inc/class-stlsr-setting.php:26
+#: admin/inc/class-stlsr-setting.php:28
 msgid ""
-"To get started with Login Security reCAPTCHA, visit our <a href=\"%s\" "
+"To get started with Login Security Captcha, visit our <a href=\"%s\" "
 "target=\"_blank\">settings page</a>."
 msgstr ""
 
-#: admin/inc/class-stlsr-setting.php:40
+#: admin/inc/class-stlsr-setting.php:42
 #, fuzzy
-#| msgid "Login Security reCAPTCHA"
-msgid "Login Security reCAPTCHA Settings"
+#| msgid "Login Security Captcha"
+msgid "Login Security Captcha Settings"
 msgstr "लॉगिन सुरक्षा रिकैप्चा"
 
-#: admin/inc/class-stlsr-setting.php:116 admin/inc/class-stlsr-setting.php:129
-#: admin/inc/class-stlsr-setting.php:142 admin/inc/class-stlsr-setting.php:155
+#: admin/inc/class-stlsr-setting.php:153 admin/inc/class-stlsr-setting.php:166
+#: admin/inc/class-stlsr-setting.php:179 admin/inc/class-stlsr-setting.php:192
 msgid "Please select valid captcha."
 msgstr "वैध कैप्चा का चयन करें।"
 
-#: admin/inc/class-stlsr-setting.php:169
+#: admin/inc/class-stlsr-setting.php:206
 msgid "Setting saved."
 msgstr "सेटिंग सहेजी गई।"
 
-#: admin/inc/class-stlsr-setting.php:193
+#: admin/inc/class-stlsr-setting.php:231
 msgid "The plugin has been reset to its default state."
 msgstr ""
 
-#: admin/inc/class-stlsr-setting.php:207
+#: admin/inc/class-stlsr-setting.php:245
 msgid "The error logs have been cleared successfully."
 msgstr ""
 
 #: admin/inc/partials/pro.php:11
 msgid ""
 "<span class=\"stlsr-pro-light\">Upgrade to</span> <span class=\"stlsr-pro-"
-"bold\">Login Security <span class=\"stlsr-pro-bold stlsr-pro-underline"
-"\">Pro</span>"
+"bold\">Login Security <span class=\"stlsr-pro-bold stlsr-pro-"
+"underline\">Pro</span>"
 msgstr ""
 
 #: admin/inc/partials/pro.php:18
@@ -103,32 +103,42 @@ msgid "Role-Based Redirection"
 msgstr ""
 
 #: admin/inc/partials/pro.php:21
-msgid "Recent Login History"
+msgid "Show Recent Login History"
 msgstr ""
 
-#: admin/inc/partials/pro.php:24
-msgid "Login History by Username"
+#: admin/inc/partials/pro.php:22
+msgid "Plugin Documentation Guide"
 msgstr ""
 
 #: admin/inc/partials/pro.php:25
-msgid "WooCommerce Login / Register"
+msgid "Login History by Username"
 msgstr ""
 
 #: admin/inc/partials/pro.php:26
-msgid "WooCommerce Checkout"
+msgid "WooCommerce Login / Register"
 msgstr ""
 
 #: admin/inc/partials/pro.php:27
 #, fuzzy
+#| msgid "Lost Password"
+msgid "WooCommerce Lost Password"
+msgstr "पासवर्ड खोया"
+
+#: admin/inc/partials/pro.php:28
+msgid "WooCommerce Checkout Form"
+msgstr ""
+
+#: admin/inc/partials/pro.php:29
+#, fuzzy
 #| msgid "Login Security"
-msgid "Advanced Security"
+msgid "Advanced Security & More"
 msgstr "लॉगिन सुरक्षा"
 
-#: admin/inc/partials/pro.php:32 admin/inc/setting/index.php:28
+#: admin/inc/partials/pro.php:34 admin/inc/setting/index.php:22
 msgid "Buy Now"
 msgstr ""
 
-#: admin/inc/partials/pro.php:33
+#: admin/inc/partials/pro.php:35
 msgid "Learn More"
 msgstr ""
 
@@ -144,162 +154,205 @@ msgstr "त्रुटि लॉग"
 msgid "Reset"
 msgstr "रीसेट"
 
+#: admin/inc/setting/index.php:17
+#, fuzzy
+#| msgid "Login Security"
+msgid "Upgrade to Login Security Pro"
+msgstr "लॉगिन सुरक्षा"
+
 #: admin/inc/setting/index.php:20
-msgid ""
-"<span class=\"stlsr-pro-light\">GET</span> <span class=\"stlsr-pro-bold"
-"\">Login Security <span class=\"stlsr-pro-bold stlsr-pro-underline\">Pro</"
-"span>"
+msgid "Upgrade to <span>Pro</span> Version"
 msgstr ""
 
-#: admin/inc/setting/index.php:25
-msgid ""
-"Limit Login Attempts by IP Address, Secure WooCommerce Login, Registration "
-"and Checkout Form, Check Login History by Username, Check and Monitor Last "
-"Login, Role-Based Redirection after Login and Logout, Plugin Documentation."
+#: admin/inc/setting/index.php:23
+msgid "More Detail"
 msgstr ""
 
-#: admin/inc/setting/index.php:29
-msgid "More Info"
-msgstr ""
-
-#: admin/inc/setting/tabs/captcha.php:88
+#: admin/inc/setting/tabs/captcha.php:81
 msgid "Please set the the \"Site Key\" for \"Google reCAPTCHA Version 2\"."
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:95
+#: admin/inc/setting/tabs/captcha.php:88
 msgid "Please set the the \"Secret Key\" for \"Google reCAPTCHA Version 2\"."
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:105
+#: admin/inc/setting/tabs/captcha.php:98
 msgid "Please set the the \"Site Key\" for \"Google reCAPTCHA Version 3\"."
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:112
+#: admin/inc/setting/tabs/captcha.php:105
 msgid "Please set the the \"Secret Key\" for \"Google reCAPTCHA Version 3\"."
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:131
+#: admin/inc/setting/tabs/captcha.php:115
+msgid "Please set the the \"Site Key\" for \"Cloudflare Turnstile\"."
+msgstr ""
+
+#: admin/inc/setting/tabs/captcha.php:122
+msgid "Please set the the \"Secret Key\" for \"Cloudflare Turnstile\"."
+msgstr ""
+
+#: admin/inc/setting/tabs/captcha.php:143
 msgid "Enable Captcha"
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:135
+#: admin/inc/setting/tabs/captcha.php:147
 msgid "Enable Captcha at Login Form"
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:139
+#: admin/inc/setting/tabs/captcha.php:151
 msgid "Enable at Login Form"
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:153
+#: admin/inc/setting/tabs/captcha.php:165
 msgid "Enable Captcha at Lost Password Form"
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:157
+#: admin/inc/setting/tabs/captcha.php:169
 msgid "Enable at Lost Password Form"
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:171
+#: admin/inc/setting/tabs/captcha.php:183
 msgid "Enable Captcha at Registration Form"
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:175
+#: admin/inc/setting/tabs/captcha.php:187
 msgid "Enable at Registration Form"
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:189
+#: admin/inc/setting/tabs/captcha.php:201
 msgid "Enable Captcha at Comment Form"
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:193
+#: admin/inc/setting/tabs/captcha.php:205
 msgid "Enable at Comment Form"
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:197
+#: admin/inc/setting/tabs/captcha.php:209
 msgid "Only when user is not logged in."
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:206
+#: admin/inc/setting/tabs/captcha.php:217
 msgid "Include logged in users."
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:214
+#: admin/inc/setting/tabs/captcha.php:225
 msgid "Captcha Settings"
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:218
+#: admin/inc/setting/tabs/captcha.php:229
 msgid "Set Captcha Settings"
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:241
-#: admin/inc/setting/tabs/captcha.php:295
+#: admin/inc/setting/tabs/captcha.php:250
+#: admin/inc/setting/tabs/captcha.php:304
+#: admin/inc/setting/tabs/captcha.php:404
 msgid "Site Key"
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:246
+#: admin/inc/setting/tabs/captcha.php:255
 msgid "Enter Google reCAPTCHA v2 Site Key."
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:247
-#: admin/inc/setting/tabs/captcha.php:260
-#: admin/inc/setting/tabs/captcha.php:301
-#: admin/inc/setting/tabs/captcha.php:314
+#: admin/inc/setting/tabs/captcha.php:256
+#: admin/inc/setting/tabs/captcha.php:269
+#: admin/inc/setting/tabs/captcha.php:310
+#: admin/inc/setting/tabs/captcha.php:323
+#: admin/inc/setting/tabs/captcha.php:410
+#: admin/inc/setting/tabs/captcha.php:423
 msgid "Click Here"
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:254
-#: admin/inc/setting/tabs/captcha.php:308
+#: admin/inc/setting/tabs/captcha.php:263
+#: admin/inc/setting/tabs/captcha.php:317
+#: admin/inc/setting/tabs/captcha.php:417
 msgid "Secret Key"
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:259
+#: admin/inc/setting/tabs/captcha.php:268
 msgid "Enter Google reCAPTCHA v2 Secret Key."
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:267
+#: admin/inc/setting/tabs/captcha.php:276
+#: admin/inc/setting/tabs/captcha.php:330
 msgid "Theme"
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:272
-#: admin/inc/setting/tabs/captcha.php:289
+#: admin/inc/setting/tabs/captcha.php:281
+#: admin/inc/setting/tabs/captcha.php:298
 msgid "Select Google reCAPTCHA Version 2 Theme."
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:300
+#: admin/inc/setting/tabs/captcha.php:309
+msgid "Enter Cloudflare Turnstile Site Key."
+msgstr ""
+
+#: admin/inc/setting/tabs/captcha.php:322
+msgid "Enter Cloudflare Turnstile Secret Key."
+msgstr ""
+
+#: admin/inc/setting/tabs/captcha.php:335
+#: admin/inc/setting/tabs/captcha.php:352
+msgid "Select Cloudflare Turnstile Theme."
+msgstr ""
+
+#: admin/inc/setting/tabs/captcha.php:358
+msgid "Size"
+msgstr ""
+
+#: admin/inc/setting/tabs/captcha.php:363
+#: admin/inc/setting/tabs/captcha.php:380
+msgid "Select Cloudflare Turnstile Size."
+msgstr ""
+
+#: admin/inc/setting/tabs/captcha.php:386
+#: admin/inc/setting/tabs/captcha.php:391
+#: admin/inc/setting/tabs/captcha.php:395
+msgid "Disable Submit Button"
+msgstr ""
+
+#: admin/inc/setting/tabs/captcha.php:398
+msgid ""
+"The user will not be able to click on the submit button until the Turnstile "
+"challenge is completed."
+msgstr ""
+
+#: admin/inc/setting/tabs/captcha.php:409
 msgid "Enter Google reCAPTCHA v3 Site Key."
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:313
+#: admin/inc/setting/tabs/captcha.php:422
 msgid "Enter Google reCAPTCHA v3 Secret Key."
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:321
+#: admin/inc/setting/tabs/captcha.php:430
 msgid "Score"
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:326
+#: admin/inc/setting/tabs/captcha.php:435
 msgid "Select Google reCAPTCHA Version 3 Score."
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:343
+#: admin/inc/setting/tabs/captcha.php:452
 msgid ""
 "reCAPTCHA v3 returns a score (0.0 is very likely a bot). Select Google "
 "reCAPTCHA Version 3 Score."
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:349
+#: admin/inc/setting/tabs/captcha.php:458
 msgid "Badge Position"
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:354
+#: admin/inc/setting/tabs/captcha.php:463
 msgid "Select Badge Position for reCAPTCHA Version 3."
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:377
+#: admin/inc/setting/tabs/captcha.php:486
 msgid "Save Changes"
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:388
-#: admin/inc/setting/tabs/captcha.php:392
+#: admin/inc/setting/tabs/captcha.php:499
+#: admin/inc/setting/tabs/captcha.php:503
 msgid "Like this plugin? Leave a Review."
 msgstr ""
 
@@ -364,76 +417,92 @@ msgstr ""
 msgid "Google reCAPTCHA Version 3"
 msgstr ""
 
-#: includes/class-stlsr-helper.php:14
+#: includes/class-stlsr-helper.php:9
+msgid "Cloudflare Turnstile"
+msgstr ""
+
+#: includes/class-stlsr-helper.php:15 includes/class-stlsr-helper.php:43
 msgid "Light"
 msgstr ""
 
-#: includes/class-stlsr-helper.php:15
+#: includes/class-stlsr-helper.php:16 includes/class-stlsr-helper.php:44
 msgid "Dark"
 msgstr ""
 
-#: includes/class-stlsr-helper.php:21
+#: includes/class-stlsr-helper.php:22
 msgid "0.1"
 msgstr "0.1"
 
-#: includes/class-stlsr-helper.php:22
+#: includes/class-stlsr-helper.php:23
 msgid "0.2"
 msgstr "0.2"
 
-#: includes/class-stlsr-helper.php:23
+#: includes/class-stlsr-helper.php:24
 msgid "0.3"
 msgstr "0.3"
 
-#: includes/class-stlsr-helper.php:24
+#: includes/class-stlsr-helper.php:25
 msgid "0.4"
 msgstr "0.4"
 
-#: includes/class-stlsr-helper.php:25
+#: includes/class-stlsr-helper.php:26
 msgid "0.5"
 msgstr "0.5"
 
-#: includes/class-stlsr-helper.php:31
+#: includes/class-stlsr-helper.php:27
+#, fuzzy
+#| msgid "0.1"
+msgid "0.6"
+msgstr "0.1"
+
+#: includes/class-stlsr-helper.php:28
+#, fuzzy
+#| msgid "0.1"
+msgid "0.7"
+msgstr "0.1"
+
+#: includes/class-stlsr-helper.php:34
 msgid "Inline"
 msgstr ""
 
-#: includes/class-stlsr-helper.php:32
+#: includes/class-stlsr-helper.php:35
 msgid "Bottom - Left"
 msgstr ""
 
-#: includes/class-stlsr-helper.php:33
+#: includes/class-stlsr-helper.php:36
 msgid "Bottom - Right"
 msgstr ""
 
-#: public/inc/class-stlsr-captcha.php:103
+#: includes/class-stlsr-helper.php:42
+msgid "Auto"
+msgstr ""
+
+#: includes/class-stlsr-helper.php:50
+msgid "Normal"
+msgstr ""
+
+#: includes/class-stlsr-helper.php:51
+msgid "Compact"
+msgstr ""
+
+#: public/inc/class-stlsr-captcha.php:38
 msgid "Login"
 msgstr "लॉग-इन"
 
-#: public/inc/class-stlsr-captcha.php:145
-#: public/inc/class-stlsr-captcha.php:196
-#: public/inc/class-stlsr-captcha.php:268
-#: public/inc/class-stlsr-captcha.php:319
-#: public/inc/class-stlsr-captcha.php:387
-#: public/inc/class-stlsr-captcha.php:438
-#: public/inc/class-stlsr-captcha.php:519
-#: public/inc/class-stlsr-captcha.php:570
-msgid "<strong>ERROR:</strong> Please confirm you are not a robot."
-msgstr ""
-
-#: public/inc/class-stlsr-captcha.php:189
-#: public/inc/class-stlsr-captcha.php:312
-#: public/inc/class-stlsr-captcha.php:431
-#: public/inc/class-stlsr-captcha.php:563
+#: public/inc/class-stlsr-captcha.php:96 public/inc/class-stlsr-captcha.php:214
+#: public/inc/class-stlsr-captcha.php:328
+#: public/inc/class-stlsr-captcha.php:448
 msgid "low-score"
 msgstr "कम अंक"
 
-#: public/inc/class-stlsr-captcha.php:226
+#: public/inc/class-stlsr-captcha.php:156
 msgid "Lost Password"
 msgstr "पासवर्ड खोया"
 
-#: public/inc/class-stlsr-captcha.php:345
+#: public/inc/class-stlsr-captcha.php:270
 msgid "Register"
 msgstr "रजिस्टर"
 
-#: public/inc/class-stlsr-captcha.php:477
+#: public/inc/class-stlsr-captcha.php:390
 msgid "Comment"
 msgstr "टिपण्णी"

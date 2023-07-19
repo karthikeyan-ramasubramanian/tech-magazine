@@ -1,18 +1,21 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 if (!defined('ABSPATH')) exit;
 
 
 /*
- * Plugin Name: MailPoet 3 (New)
- * Version: 3.89.3
- * Plugin URI: http://www.mailpoet.com
+ * Plugin Name: MailPoet
+ * Version: 4.12.2
+ * Plugin URI: https://www.mailpoet.com
  * Description: Create and send newsletters, post notifications and welcome emails from your WordPress.
  * Author: MailPoet
- * Author URI: http://www.mailpoet.com
- * Requires at least: 5.3
+ * Author URI: https://www.mailpoet.com
+ * Requires at least: 5.9
  * Text Domain: mailpoet
  * Domain Path: /lang
+ *
+ * WC requires at least: 7.2.0
+ * WC tested up to: 7.4.0
  *
  * @package WordPress
  * @author MailPoet
@@ -20,12 +23,15 @@ if (!defined('ABSPATH')) exit;
  */
 
 $mailpoetPlugin = [
-  'version' => '3.89.3',
+  'version' => '4.12.2',
   'filename' => __FILE__,
   'path' => dirname(__FILE__),
   'autoloader' => dirname(__FILE__) . '/vendor/autoload.php',
   'initializer' => dirname(__FILE__) . '/mailpoet_initializer.php',
 ];
+
+const MAILPOET_MINIMUM_REQUIRED_WP_VERSION = '5.9';
+const MAILPOET_MINIMUM_REQUIRED_WOOCOMMERCE_VERSION = '6.4';// Older versions lead to fatal errors
 
 function mailpoet_deactivate_plugin() {
   deactivate_plugins(plugin_basename(__FILE__));
@@ -35,7 +41,7 @@ function mailpoet_deactivate_plugin() {
 }
 
 // Check for minimum supported WP version
-if (version_compare(get_bloginfo('version'), '5.6', '<')) {
+if (version_compare(get_bloginfo('version'), MAILPOET_MINIMUM_REQUIRED_WP_VERSION, '<')) {
   add_action('admin_notices', 'mailpoet_wp_version_notice');
   // deactivate the plugin
   add_action('admin_init', 'mailpoet_deactivate_plugin');
@@ -50,12 +56,56 @@ if (version_compare(phpversion(), '7.2.0', '<')) {
   return;
 }
 
+// Check for minimum supported WooCommerce version
+if (!function_exists('is_plugin_active')) {
+  require_once ABSPATH . 'wp-admin/includes/plugin.php';
+}
+if (is_plugin_active('woocommerce/woocommerce.php')) {
+  $woocommerceVersion = get_plugin_data(WP_PLUGIN_DIR . '/woocommerce/woocommerce.php')['Version'];
+  if (version_compare($woocommerceVersion, MAILPOET_MINIMUM_REQUIRED_WOOCOMMERCE_VERSION, '<')) {
+    add_action('admin_notices', 'mailpoet_woocommerce_version_notice');
+    // deactivate the plugin
+    add_action('admin_init', 'mailpoet_deactivate_plugin');
+    return;
+  }
+}
+
 // Display WP version error notice
 function mailpoet_wp_version_notice() {
   $notice = str_replace(
     '[link]',
     '<a href="https://kb.mailpoet.com/article/152-minimum-requirements-for-mailpoet-3#wp_version" target="_blank">',
-    __('MailPoet plugin requires WordPress version 5.6 or newer. Please read our [link]instructions[/link] on how to resolve this issue.', 'mailpoet')
+    sprintf(
+      // translators: %s is the number of minimum WordPress version that MailPoet requires
+      __('MailPoet plugin requires WordPress version %s or newer. Please read our [link]instructions[/link] on how to resolve this issue.', 'mailpoet'),
+      MAILPOET_MINIMUM_REQUIRED_WP_VERSION
+    )
+  );
+  $notice = str_replace('[/link]', '</a>', $notice);
+  printf(
+    '<div class="error"><p>%1$s</p></div>',
+    wp_kses(
+      $notice,
+      [
+        'a' => [
+          'href' => true,
+          'target' => true,
+        ],
+      ]
+    )
+  );
+}
+
+// Display WooCommerce version error notice
+function mailpoet_woocommerce_version_notice() {
+  $notice = str_replace(
+    '[link]',
+    '<a href="https://kb.mailpoet.com/article/152-minimum-requirements-for-mailpoet-3#woocommerce-version" target="_blank">',
+    sprintf(
+      // translators: %s is the number of minimum WooCommerce version that MailPoet requires
+      __('MailPoet plugin requires WooCommerce version %s or newer. Please update your WooCommerce plugin version, or read our [link]instructions[/link] for additional options on how to resolve this issue.', 'mailpoet'),
+      MAILPOET_MINIMUM_REQUIRED_WOOCOMMERCE_VERSION
+    )
   );
   $notice = str_replace('[/link]', '</a>', $notice);
   printf(

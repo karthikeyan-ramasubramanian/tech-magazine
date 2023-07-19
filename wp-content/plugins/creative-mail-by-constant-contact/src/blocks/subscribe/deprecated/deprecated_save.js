@@ -16,7 +16,7 @@ export function deprecated_4_0({ attributes, className }) {
           tagName="h2"
           value={attributes.title}
         />
-        <p className="subTitle">{__(attributes.onSubmission, "cewp4")}</p>
+        <p className="subTitle">{attributes.onSubmission}</p>
       </div>
       <form className="cm-contact-form" name="contact-form">
         <input
@@ -98,7 +98,8 @@ export function deprecated_4_0({ attributes, className }) {
               name="telephone"
               type="tel"
               pattern="[+]?[0-9\(\)\s+-]{5,20}"
-              oninvalid={`setCustomValidity('${__("Please enter a valid phone number", "cewp4")}')`}
+              oninvalid={`setCustomValidity('${__('Please enter a valid phone number', 
+                                                'creative-mail-by-constant-contact')}')`}
               oninput="setCustomValidity('')"
               required={attributes.displayFirstName === FIELD_SETTING.REQUIRED}
             ></input>
@@ -116,7 +117,8 @@ export function deprecated_4_0({ attributes, className }) {
             className="email"
             name="email"
             type="email"
-            oninvalid={`setCustomValidity('${__("Please enter a valid email address", "cewp4")}')`}
+            oninvalid={`setCustomValidity('${__( 'Please enter a valid email address',
+                                              'creative-mail-by-constant-contact')}')`}
             oninput="setCustomValidity('')"
             required
           ></input>
@@ -130,8 +132,8 @@ export function deprecated_4_0({ attributes, className }) {
               checked
             ></input>
             {__(
-              "By submitting your information, you are granting us permission to email you. You may unsubscribe at any time.",
-              "cewp4"
+              'By submitting your information, you are granting us permission to email you. You may unsubscribe at any time.',
+              'creative-mail-by-constant-contact'
             )}
           </span>
         )}
@@ -147,12 +149,12 @@ export function deprecated_4_0({ attributes, className }) {
               htmlFor={`consent_check_${attributes.blockId}`}
               className="disclaimer"
             >
-              {__("Can we send you an email from time to time?", "cewp4")}
+              {__('Can we send you an email from time to time?', 'creative-mail-by-constant-contact')}
             </label>
           </span>
         )}
         <button className="wp-block-button__link submit-button" type="submit">
-          {__("Subscribe", "cewp4")}
+          {__('Subscribe', 'creative-mail-by-constant-contact')}
         </button>
       </form>
     </div>

@@ -103,8 +103,9 @@ class WooSettings
         }
 
         $double_optin = false;
+
         if (in_array($connection_service, Init::double_optin_support_connections(true))) {
-            $double_optin = Settings::instance()->mailoptin_woocommerce_double_optin() === "1";
+            $double_optin = Settings::instance()->mailoptin_woocommerce_double_optin() == "true";
         }
 
         $form_tags = '';
@@ -116,16 +117,15 @@ class WooSettings
 
         $optin_data = new ConversionDataBuilder();
 
-
         $first_name = WooInit::get_instance()->get_first_name($order);
         $last_name  = WooInit::get_instance()->get_last_name($order);
-        $name       = WooInit::get_instance()->get_full_name($first_name, $last_name);
+        $name       = Init::get_full_name($first_name, $last_name);
 
         $optin_data->optin_campaign_id   = 0; // since it's non mailoptin form, set it to zero.
         $optin_data->payload             = $payload;
         $optin_data->name                = Init::return_name($name, $first_name, $last_name);
         $optin_data->email               = $email;
-        $optin_data->optin_campaign_type = esc_html__('WooCommerce', 'mailoptin');
+        $optin_data->optin_campaign_type = 'WooCommerce';
 
         $optin_data->connection_service    = $connection_service;
         $optin_data->connection_email_list = $connection_email_list;
@@ -172,14 +172,12 @@ class WooSettings
 
         if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM')) :
             $upsell_url = 'https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=woocommerce_connection_settings';
-            $doc_url    = 'https://mailoptin.io/?p=32886&utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=woocommerce_connection_settings';
+            $doc_url    = 'https://mailoptin.io/article/woocommerce-mailchimp-aweber-more/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=woocommerce_connection_settings';
 
             $content = sprintf(
                 __("Upgrade to %sMailOptin Premium%s to add all WooCommerce customers and customers that purchase products belonging to a specific category or tag to your email marketing list.", 'mailoptin'),
                 '<a target="_blank" href="' . $upsell_url . '">',
-                '</a>',
-                '<strong>',
-                '</strong>'
+                '</a>'
             );
 
             $html = '<div class="mo-woo-upsell-block">';
@@ -208,7 +206,7 @@ class WooSettings
                 'type' => 'arbitrary',
                 'data' => '<p>' . sprintf(
                         esc_html__('The WooCommerce integration subscribes customers to your email marketing software and CRM upon order completion. You can also set this up on a per product, category and tag level. %sLearn more%s', 'mailoptin'),
-                        '<a href="https://mailoptin.io/?p=32886" target="_blank">', '</a>'
+                        '<a href="https://mailoptin.io/article/woocommerce-mailchimp-aweber-more/" target="_blank">', '</a>'
                     ) . '</p>',
             ];
 
@@ -243,7 +241,7 @@ class WooSettings
                     $woocommerce_settings['mailoptin_woocommerce_double_optin'] = [
                         'type'        => 'checkbox',
                         'label'       => $label,
-                        'description' => __('Double optin requires users to confirm their email address before they are added or subscribed.', 'mailoptin'),
+                        'description' => __('Double optin requires customers to confirm their email address before they are added or subscribed.', 'mailoptin'),
                     ];
                 }
 
@@ -271,7 +269,7 @@ class WooSettings
                     if (in_array($saved_connections, Init::select2_tag_connections())) {
                         $tags     = [];
                         $instance = ConnectionFactory::make($saved_connections);
-                        if (method_exists($instance, 'get_tags')) {
+                        if (is_object($instance) && method_exists($instance, 'get_tags')) {
                             $tags = $instance->get_tags();
                         }
 
@@ -309,7 +307,7 @@ class WooSettings
             $woocommerce_settings['mailoptin_woocommerce_subscribe_customers'] = [
                 'type'        => 'select',
                 'label'       => __('Subscribe Customers', 'mailoptin'),
-                'description' => __('Choose "Ask for permission" to show an opt-in checkbox during checkout. Customers will only be subscribed to the email marketing list above if they opt-in. Choose Automatically to subscribe customers silently upon checkout. Caution, this is without the customer\'s consent.', 'mailoptin'),
+                'description' => __('Choose "Ask for permission" to show an opt-in checkbox during checkout. Customers will only be subscribed to the email marketing list above if they check the checkbox. Choose Automatically to subscribe customers silently upon checkout. Caution, this is without the customer\'s consent.', 'mailoptin'),
                 'options'     => [
                     'no'  => __('Automatically', 'mailoptin'),
                     'yes' => __('Ask for permission', 'mailoptin')

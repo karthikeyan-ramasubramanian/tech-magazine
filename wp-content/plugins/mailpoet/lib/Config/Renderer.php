@@ -1,42 +1,37 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Config;
 
 if (!defined('ABSPATH')) exit;
 
 
-use MailPoet\DI\ContainerWrapper;
 use MailPoet\Twig;
-use MailPoet\Util\CdnAssetUrl;
 use MailPoet\WP\Functions as WPFunctions;
-use MailPoetVendor\Twig\Environment as TwigEnv;
 use MailPoetVendor\Twig\Extension\DebugExtension;
 use MailPoetVendor\Twig\Lexer as TwigLexer;
 use MailPoetVendor\Twig\Loader\FilesystemLoader as TwigFileSystem;
 
 class Renderer {
   protected $cachePath;
-  protected $cachingEnabled;
   protected $debuggingEnabled;
   protected $renderer;
   public $assetsManifestJs;
   public $assetsManifestCss;
 
   public function __construct(
-    $cachingEnabled = false,
-    $debuggingEnabled = false
+    bool $debuggingEnabled,
+    string $cachePath,
+    TwigFileSystem $fileSystem,
+    bool $autoReload = false
   ) {
-    $this->cachingEnabled = $cachingEnabled;
     $this->debuggingEnabled = $debuggingEnabled;
-    $this->cachePath = Env::$cachePath;
-
-    $fileSystem = new TwigFileSystem(Env::$viewsPath);
-    $this->renderer = new TwigEnv(
+    $this->cachePath = $cachePath;
+    $this->renderer = new TwigEnvironment(
       $fileSystem,
       [
-        'cache' => $this->detectCache(),
+        'cache' => new TwigFileSystemCache($cachePath),
         'debug' => $this->debuggingEnabled,
-        'auto_reload' => true,
+        'auto_reload' => $autoReload,
       ]
     );
 
@@ -51,6 +46,10 @@ class Renderer {
     $this->setupAnalytics();
     $this->setupGlobalVariables();
     $this->setupSyntax();
+  }
+
+  public function getTwig(): TwigEnvironment {
+    return $this->renderer;
   }
 
   public function setupTranslations() {
@@ -78,12 +77,17 @@ class Renderer {
   }
 
   public function setupGlobalVariables() {
-    $this->renderer->addExtension(new Twig\Assets([
-      'version' => Env::$version,
-      'assets_url' => Env::$assetsUrl,
-      'assets_manifest_js' => $this->assetsManifestJs,
-      'assets_manifest_css' => $this->assetsManifestCss,
-    ], ContainerWrapper::getInstance()->get(CdnAssetUrl::class)));
+    $this->renderer->addExtension(
+      new Twig\Assets(
+        [
+          'version' => Env::$version,
+          'assets_url' => Env::$assetsUrl,
+          'assets_manifest_js' => $this->assetsManifestJs,
+          'assets_manifest_css' => $this->assetsManifestCss,
+        ],
+        WPFunctions::get()
+      )
+    );
   }
 
   public function setupSyntax() {
@@ -94,10 +98,6 @@ class Renderer {
       'interpolation' => ['%{', '}'],
     ]);
     $this->renderer->setLexer($lexer);
-  }
-
-  public function detectCache() {
-    return $this->cachingEnabled ? $this->cachePath : false;
   }
 
   public function setupDebug() {
@@ -111,7 +111,8 @@ class Renderer {
       return $this->renderer->render($template, $context);
     } catch (\RuntimeException $e) {
       throw new \Exception(sprintf(
-        WPFunctions::get()->__('Failed to render template "%s". Please ensure the template cache folder "%s" exists and has write permissions. Terminated with error: "%s"'),
+        // translators: %1$s is the name of the render, %2$s the folder path, %3$s the error message.
+        __('Failed to render template "%1$s". Please ensure the template cache folder "%2$s" exists and has write permissions. Terminated with error: "%3$s"', 'mailpoet'),
         $template,
         $this->cachePath,
         $e->getMessage()

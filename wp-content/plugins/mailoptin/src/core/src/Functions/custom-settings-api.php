@@ -42,6 +42,10 @@ class Custom_Settings_Page_Api
     /** @var array config of main settings builpage */
     private $main_content_config = array();
 
+    private $remove_white_design = false;
+
+    private $remove_h2_header = false;
+
     /** @var array config of settings page sidebar */
     private $sidebar_config = array();
 
@@ -52,7 +56,8 @@ class Custom_Settings_Page_Api
 
     protected function __construct($main_content_config = array(), $option_name = '', $page_header = '')
     {
-        $this->db_options          = get_option($option_name, array());
+        $this->db_options          = get_option($option_name, []);
+        $this->db_options          = !is_array($this->db_options) || empty($this->db_options) ? [] : $this->db_options;
         $this->option_name         = $option_name;
         $this->main_content_config = $main_content_config;
         $this->page_header         = $page_header;
@@ -71,6 +76,16 @@ class Custom_Settings_Page_Api
     public function main_content($val)
     {
         $this->main_content_config = $val;
+    }
+
+    public function remove_white_design()
+    {
+        $this->remove_white_design = true;
+    }
+
+    public function remove_h2_header()
+    {
+        $this->remove_h2_header = true;
     }
 
     public function sidebar($val)
@@ -138,7 +153,7 @@ class Custom_Settings_Page_Api
             return $custom;
         ?>
         <div id="postbox-container-1" class="postbox-container">
-            <div class="meta-box-sortables" style="text-align: center; margin: auto">
+            <div class="meta-box-sortables" style="margin: auto">
                 <?php if ( ! empty($this->sidebar_config)): ?>
                     <?php foreach ($this->sidebar_config as $arg) : ?>
                         <div class="postbox">
@@ -259,12 +274,82 @@ class Custom_Settings_Page_Api
         <?php
     }
 
+    private function remove_white_styling_css()
+    {
+        ?>
+        <style>
+        .remove_white_styling #post-body-content .postbox {
+            background: inherit;
+            border: 0;
+            box-shadow: none;
+        }
+        .remove_white_styling #post-body-content .handlediv.button-link {
+            display: none;
+        }
+
+        .remove_white_styling #post-body-content .postbox .hndle {
+            border: 0;
+        }
+
+        .remove_white_styling #post-body-content .postbox .postbox-header .handle-actions {
+            display:none;
+        }
+
+        .remove_white_styling #post-body-content .CodeMirror {
+            width: 100%;
+            max-width: 900px;
+            border: 0;
+        }
+
+        .remove_white_styling #post-body-content .pp-email-editor-tabcontent {
+            background: #fff;
+            max-width: 900px;
+        }
+
+        .remove_white_styling #post-body-content .pp-email-editor-tab {
+            border: 0;
+        }
+
+        .remove_white_styling #post-body-content .pp-email-editor-tablinks {
+            background: #f1f1f1;
+        }
+
+        .remove_white_styling #post-body-content .pp-email-editor-tablinks.eactive {
+            background: #ffffff;
+        }
+
+        .remove_white_styling #post-body-content .pp-email-editor-tabcontent.epreview {
+            max-height: 650px;
+        }
+
+        .remove_white_styling #post-body-content input.regular-text {
+            width: 100% !important;
+            max-width: 900px !important;
+        }
+
+        .remove_white_styling #post-body-content textarea{
+            width: 100%;
+            min-height: 200px;
+        }
+
+        .remove_white_styling #post-body-content .form-table th{
+            width: 250px;
+        }
+
+        .remove_white_styling #post-body-content tr .description {
+            width: 100%;
+            font-style: italic;
+        }
+        </style>
+    <?php
+    }
+
     public function metabox_toggle_script()
     {
         ?>
         <script type="text/javascript">
             jQuery(document).ready(function ($) {
-                $('.wp_csa_view .handlediv').click(function () {
+                $('.wp_csa_view .handlediv').on('click', function () {
                     $(this).parent().toggleClass("closed").addClass('postbox');
                 });
             });
@@ -274,8 +359,15 @@ class Custom_Settings_Page_Api
 
     public function settings_page_heading()
     {
+        $style = '';
+
+        if($this->remove_h2_header) {
+            $style =' style="display:none;"';
+        }
+
         do_action('wp_cspa_before_header');
-        echo '<h2 class="wp-csa-heading">';
+
+        printf('<h2 class="wp-csa-heading"%s>', $style);
         echo $this->page_header;
         do_action('wp_cspa_before_closing_header');
         echo '</h2>';
@@ -493,7 +585,7 @@ class Custom_Settings_Page_Api
     {
         $key         = sanitize_key($key);
         $label       = esc_attr($args['label']);
-        $defvalue    = sanitize_text_field(@$args['value']);
+        $defvalue    = esc_html(@$args['value']);
         $description = @$args['description'];
         $tr_id       = isset($args['tr_id']) ? $args['tr_id'] : "{$key}_row";
         $option_name = $this->option_name;
@@ -573,7 +665,7 @@ class Custom_Settings_Page_Api
     {
         $key         = esc_attr($key);
         $label       = esc_attr($args['label']);
-        $defvalue    = sanitize_text_field(@$args['value']);
+        $defvalue    = esc_attr(@$args['value']);
         $tr_id       = isset($args['tr_id']) ? $args['tr_id'] : "{$key}_row";
         $description = @$args['description'];
         $option_name = $this->option_name;
@@ -607,7 +699,7 @@ class Custom_Settings_Page_Api
     {
         $key         = esc_attr($key);
         $label       = esc_attr($args['label']);
-        $defvalue    = sanitize_text_field(@$args['value']);
+        $defvalue    = esc_html(@$args['value']);
         $tr_id       = isset($args['tr_id']) ? $args['tr_id'] : "{$key}_row";
         $disabled    = isset($args['disabled']) && $args['disabled'] === true ? 'disabled="disabled"' : '';
         $description = @$args['description'];
@@ -849,7 +941,7 @@ class Custom_Settings_Page_Api
         $label          = esc_attr($args['label']);
         $description    = @$args['description'];
         $tr_id          = isset($args['tr_id']) ? $args['tr_id'] : "{$key}_row";
-        $checkbox_label = ! empty($args['checkbox_label']) ? sanitize_text_field($args['checkbox_label']) : __('Activate', 'mailoptin');
+        $checkbox_label = ! empty($args['checkbox_label']) ? esc_html($args['checkbox_label']) : __('Activate', 'mailoptin');
         $value          = ! empty($args['value']) ? esc_attr($args['value']) : 'true';
         $option_name    = $this->option_name;
         ob_start();
@@ -1008,6 +1100,14 @@ public function _header($section_title, $args = array())
         $this->exclude_top_tav_nav = $exclude_top_tav_nav;
 
         $columns2_class = ! $exclude_sidebar ? ' columns-2' : null;
+
+
+        $view_classes = '';
+
+        if($this->remove_white_design === true) {
+            $this->remove_white_styling_css();
+            $view_classes .= ' remove_white_styling';
+        }
         ?>
         <div class="wrap">
             <?php $this->settings_page_heading(); ?>
@@ -1015,7 +1115,7 @@ public function _header($section_title, $args = array())
             <?php settings_errors('wp_csa_notice'); ?>
             <?php $this->settings_page_tab(); ?>
             <?php do_action('wp_cspa_after_settings_tab', $this->option_name); ?>
-            <div id="poststuff" class="wp_csa_view">
+             <div id="poststuff" class="wp_csa_view <?=$this->option_name; ?><?=$view_classes;?>">
                 <?php do_action('wp_cspa_before_metabox_holder_column'); ?>
                 <div id="post-body" class="metabox-holder<?php echo $columns2_class; ?>">
                     <div id="post-body-content">

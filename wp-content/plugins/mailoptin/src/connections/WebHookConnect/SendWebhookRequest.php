@@ -126,7 +126,7 @@ class SendWebhookRequest extends AbstractConnect
 
         } catch (\Exception $e) {
 
-            self::save_optin_error_log(sprintf('%s (%s)', $e->getMessage(), $e->getCode()), 'webhook', $this->extras['optin_campaign_id']);
+            self::save_optin_error_log(sprintf('%s (%s)', $e->getMessage(), $e->getCode()), 'webhook', $this->extras['optin_campaign_id'], $this->extras['optin_campaign_type']);
 
             return parent::ajax_failure(__('Webhook was not successfully executed.', 'mailoptin'));
         }

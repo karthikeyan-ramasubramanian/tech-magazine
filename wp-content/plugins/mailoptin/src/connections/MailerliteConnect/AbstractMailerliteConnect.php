@@ -9,10 +9,10 @@ use MailOptin\MailerliteConnect\APIClass\MailerLite;
 
 class AbstractMailerliteConnect extends AbstractConnect
 {
-    /** @var \MailOptin\Core\PluginSettings\Settings */
+    /** @var Settings */
     protected $plugin_settings;
 
-    /** @var \MailOptin\Core\PluginSettings\Connections */
+    /** @var Connections */
     protected $connections_settings;
 
     public function __construct()
@@ -24,7 +24,7 @@ class AbstractMailerliteConnect extends AbstractConnect
     }
 
     /**
-     * Is MailerLite successfully connected to?
+     * Is MailerLite Classic successfully connected to?
      *
      * @return bool
      */
@@ -81,7 +81,7 @@ class AbstractMailerliteConnect extends AbstractConnect
         $api_key = $this->connections_settings->mailerlite_api_key();
 
         if (empty($api_key)) {
-            throw new \Exception(__('MailerLite API key not found.', 'mailoptin'));
+            throw new \Exception(__('MailerLite Classic API key not found.', 'mailoptin'));
         }
 
         return new MailerLite($api_key);

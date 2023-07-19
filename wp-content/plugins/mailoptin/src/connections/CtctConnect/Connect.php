@@ -26,15 +26,13 @@ class Connect extends AbstractCtctConnect implements ConnectionInterface
     }
 
     /**
-     * Register Constant Contact Connection.
-     *
      * @param array $connections
      *
      * @return array
      */
     public function register_connection($connections)
     {
-        $connections[self::$connectionName] = __('Constant Contact', 'mailoptin');
+        $connections[self::$connectionName] = __('Constant Contact (Legacy)', 'mailoptin');
 
         return $connections;
     }
@@ -60,22 +58,15 @@ class Connect extends AbstractCtctConnect implements ConnectionInterface
     {
         try {
 
-            $lists_array = get_transient('ctct_get_email_list');
+            $response = $this->ctctInstance()->getContactList();
 
-            if (empty($lists_array) || false === $lists_array) {
+            // an array with list id as key and name as value.
+            $lists_array = array();
 
-                $response = $this->ctctInstance()->getContactList();
-
-                // an array with list id as key and name as value.
-                $lists_array = array();
-
-                if (is_array($response) && ! empty($response)) {
-                    foreach ($response as $list) {
-                        $lists_array[$list->id] = $list->name;
-                    }
+            if (is_array($response) && ! empty($response)) {
+                foreach ($response as $list) {
+                    $lists_array[$list->id] = $list->name;
                 }
-
-                set_transient('ctct_get_email_list', $lists_array, HOUR_IN_SECONDS);
             }
 
             return $lists_array;
@@ -83,6 +74,7 @@ class Connect extends AbstractCtctConnect implements ConnectionInterface
 
         } catch (\Exception $e) {
             self::save_optin_error_log($e->getMessage(), 'constantcontact');
+
             return [];
         }
     }

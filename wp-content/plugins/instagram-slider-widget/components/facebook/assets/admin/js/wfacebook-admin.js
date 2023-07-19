@@ -9,14 +9,14 @@
         var modalOverlay = jQuery('#wis_modal_overlay');
         var spinOverlay = jQuery('.wis-overlay-spinner');
 
-        modalOverlay.on("click", function () {
+        /*modalOverlay.on("click", function () {
             var conf = confirm("You haven't finished adding an account. Are you sure you want to close the window?");
             if (conf) {
                 modal.toggleClass("wis_closed");
                 modalOverlay.toggleClass("wis_closed");
                 spinOverlay.toggleClass("is-active");
             }
-        });
+        });*/
 
         jQuery('.wis_modal_content #wis-facebook-row').on('click', function (e) {
             modal.toggleClass("wis_closed");

@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Config\PopulatorData\Templates;
 
@@ -18,7 +18,7 @@ class WineCity {
 
   public function get() {
     return [
-      'name' => WPFunctions::get()->__("Wine City (with coupon)", 'mailpoet'),
+      'name' => __("Wine City (with coupon)", 'mailpoet'),
       'categories' => json_encode(['woocommerce', 'all']),
       'readonly' => 1,
       'thumbnail' => $this->getThumbnail(),
@@ -463,29 +463,40 @@ class WineCity {
 <p style="text-align: center;"><span style="color: #6d6d6d;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam a elementum ex. Aliquam mollis metus ac nisl luctus pulvinar. Donec tincidunt pharetra sem, nec eleifend augue.</span></p>',
                                  ],
                               2 =>
-                                 [
-                                  'type' => 'button',
-                                  'text' => 'CoUponCoDE',
-                                  'url' => '',
-                                  'styles' =>
-                                     [
-                                      'block' =>
-                                         [
-                                          'backgroundColor' => '#ffffff',
-                                          'borderColor' => '#6d6d6d',
-                                          'borderWidth' => '2px',
-                                          'borderRadius' => '0px',
-                                          'borderStyle' => 'solid',
-                                          'width' => '219px',
-                                          'lineHeight' => '50px',
-                                          'fontColor' => '#6d6d6d',
-                                          'fontFamily' => 'Courier New',
-                                          'fontSize' => '30px',
-                                          'fontWeight' => 'bold',
-                                          'textAlign' => 'center',
-                                         ],
-                                     ],
-                                 ],
+                                [
+                                  'productIds' => [],
+                                  'excludedProductIds' => [],
+                                  'productCategoryIds' => [],
+                                  'excludedProductCategoryIds' => [],
+                                  'type' => 'coupon',
+                                  'amount' => 10,
+                                  'amountMax' => 100,
+                                  'discountType' => 'percent',
+                                  'expiryDay' => 10,
+                                  'usageLimit' => '',
+                                  'usageLimitPerUser' => '',
+                                  'minimumAmount' => '',
+                                  'maximumAmount' => '',
+                                  'emailRestrictions' => '',
+                                  'styles' => [
+                                   'block' => [
+                                     'backgroundColor' => '#ffffff',
+                                     'borderColor' => '#6d6d6d',
+                                     'borderWidth' => '2px',
+                                     'borderRadius' => '0px',
+                                     'borderStyle' => 'solid',
+                                     'width' => '219px',
+                                     'lineHeight' => '50px',
+                                     'fontColor' => '#6d6d6d',
+                                     'fontFamily' => 'Courier New',
+                                     'fontSize' => '30px',
+                                     'fontWeight' => 'bold',
+                                     'textAlign' => 'center',
+                                   ],
+                                  ],
+                                  'source' => 'createNew',
+                                  'code' => 'XXXX-XXXXXXX-XXXX',
+                               ],
                               3 =>
                                  [
                                   'type' => 'divider',
@@ -504,7 +515,7 @@ class WineCity {
                               4 =>
                                  [
                                   'type' => 'footer',
-                                  'text' => '<p><strong><span style="color: #6d6d6d;"><a href="[link:subscription_unsubscribe_url]" style="color: #6d6d6d;">'.WPFunctions::get()->__("Unsubscribe", 'mailpoet').'</a> | <a href="[link:subscription_manage_url]" style="color: #6d6d6d;">'.WPFunctions::get()->__("Manage your subscription", 'mailpoet').'</a></span></strong><br /><span style="color: #6d6d6d;">'.WPFunctions::get()->__("Add your postal address here!", 'mailpoet').'</span></p>',
+                                  'text' => '<p><strong><span style="color: #6d6d6d;"><a href="[link:subscription_unsubscribe_url]" style="color: #6d6d6d;">'.__("Unsubscribe", 'mailpoet').'</a> | <a href="[link:subscription_manage_url]" style="color: #6d6d6d;">'.__("Manage your subscription", 'mailpoet').'</a></span></strong><br /><span style="color: #6d6d6d;">'.__("Add your postal address here!", 'mailpoet').'</span></p>',
                                   'styles' =>
                                      [
                                       'block' =>
@@ -760,30 +771,6 @@ class WineCity {
               'backgroundColor' => '#ffffff',
               'backgroundColorAlternate' => '#eeeeee',
              ],
-          'button' =>
-             [
-              'text' => 'CoUponCoDE',
-              'url' => '',
-              'styles' =>
-                 [
-                  'block' =>
-                     [
-                      'backgroundColor' => '#ffffff',
-                      'borderColor' => '#6d6d6d',
-                      'borderWidth' => '2px',
-                      'borderRadius' => '0px',
-                      'borderStyle' => 'solid',
-                      'width' => '219px',
-                      'lineHeight' => '50px',
-                      'fontColor' => '#6d6d6d',
-                      'fontFamily' => 'Courier New',
-                      'fontSize' => '30px',
-                      'fontWeight' => 'bold',
-                      'textAlign' => 'center',
-                     ],
-                 ],
-              'type' => 'button',
-             ],
           'divider' =>
              [
               'styles' =>
@@ -801,7 +788,7 @@ class WineCity {
              ],
           'footer' =>
              [
-              'text' => '<p><a href="[link:subscription_unsubscribe_url]">'.WPFunctions::get()->__("Unsubscribe", 'mailpoet').'</a> | <a href="[link:subscription_manage_url]">'.WPFunctions::get()->__("Manage your subscription", 'mailpoet').'</a><br />'.WPFunctions::get()->__("Add your postal address here!", 'mailpoet').'</p>',
+              'text' => '<p><a href="[link:subscription_unsubscribe_url]">'.__("Unsubscribe", 'mailpoet').'</a> | <a href="[link:subscription_manage_url]">'.__("Manage your subscription", 'mailpoet').'</a><br />'.__("Add your postal address here!", 'mailpoet').'</p>',
               'styles' =>
                  [
                   'block' =>
@@ -937,7 +924,7 @@ class WineCity {
              ],
           'header' =>
              [
-              'text' => '<a href="[link:newsletter_view_in_browser_url]">'.WPFunctions::get()->__("View this in your browser.", 'mailpoet').'</a>',
+              'text' => '<a href="[link:newsletter_view_in_browser_url]">'.__("View this in your browser.", 'mailpoet').'</a>',
               'styles' =>
                  [
                   'block' =>

@@ -600,7 +600,7 @@ class Author
         $posts = \molongui_cache_get( $key );
         if ( false === $posts )
         {
-            if ( $this->type == 'guest' )
+            if ( 'guest' === $this->type )
             {
                 if ( !empty( $parsed_args['meta_query'] ) )
                 {
@@ -661,66 +661,12 @@ class Author
                         'relation'  => 'AND',
                         array
                         (
-                            'key'     => $parsed_args['meta_query']['key'],
-                            'value'   => $parsed_args['meta_query']['value'],
-                        ),
-                        array
-                        (
-                            'key'     => '_molongui_author',
-                            'compare' => 'NOT EXISTS',
-                        ),
-                    );
-                }
-                else
-                {
-                    $mq = array
-                    (
-                        array
-                        (
-                            'key'     => '_molongui_author',
-                            'compare' => 'NOT EXISTS',
-                        ),
-                    );
-                }
-                $args1 = array
-                (
-                    'post_type'           => $parsed_args['post_type'],
-                    'post__in'            => $parsed_args['post__in'],
-                    'post__not_in'        => $parsed_args['post__not_in'],
-                    'post_status'         => $parsed_args['post_status'],
-                    'cat'                 => $parsed_args['cat'],
-                    'meta_query'          => $mq,
-                    'author'              => $this->id,
-                    'orderby'             => $parsed_args['orderby'],
-                    'order'               => $parsed_args['order'],
-                    'posts_per_page'      => $parsed_args['posts_per_page'],
-                    'no_found_rows'       => $parsed_args['no_found_rows'],
-                    'ignore_sticky_posts' => $parsed_args['ignore_sticky_posts'],
-                    'fields'              => $parsed_args['fields'],
-                    'author_id'           => $parsed_args['author_id'],
-                    'author_type'         => $parsed_args['author_type'],
-                    'site_id'             => $parsed_args['site_id'],
-                    'language'            => $parsed_args['language'],
-                );
-                $data1 = \molongui_query( $args1, 'posts' );
-                if ( !empty( $parsed_args['meta_query'] ) )
-                {
-                    $mq = array
-                    (
-                        'relation'  => 'AND',
-                        array
-                        (
                             'key'    => $parsed_args['meta_query']['key'],
                             'value'  => $parsed_args['meta_query']['value'],
                         ),
                         array
                         (
                             'key'     => '_molongui_author',
-                            'compare' => 'EXISTS',
-                        ),
-                        array
-                        (
-                            'key'     => '_molongui_author',
                             'value'   => 'user-'.$this->id,
                             'compare' => '==',
                         ),
@@ -733,17 +679,12 @@ class Author
                         array
                         (
                             'key'     => '_molongui_author',
-                            'compare' => 'EXISTS',
-                        ),
-                        array
-                        (
-                            'key'     => '_molongui_author',
                             'value'   => 'user-'.$this->id,
                             'compare' => '==',
                         ),
                     );
                 }
-                $args2 = array
+                $args = array
                 (
                     'post_type'           => $parsed_args['post_type'],
                     'post__in'            => $parsed_args['post__in'],
@@ -762,12 +703,12 @@ class Author
                     'site_id'             => $parsed_args['site_id'],
                     'language'            => $parsed_args['language'],
                 );
-                $data2 = \molongui_query( $args2, 'posts' );
-                $data = \array_merge( ( empty( $data1->posts ) ? array() : $data1->posts ), ( empty( $data2->posts ) ? array() : $data2->posts ) );
+                $data = \molongui_query( $args, 'posts' );
+                $data = empty( $data->posts ) ? array() : $data->posts;
                 $data = \apply_filters( 'authorship/author/get_posts', $data, $this->id, $this->type, $this->author, $parsed_args );
                 $post_ids = $parsed_args['fields'] == 'ids' ? \array_unique( $data ) : \array_unique( \wp_list_pluck( $data, 'ID' ) );
                 if ( empty( $post_ids ) ) return array();
-                $args3 = array
+                $args = array
                 (
                     'post_type'           => $parsed_args['post_type'],
                     'post__in'            => $post_ids,
@@ -784,7 +725,7 @@ class Author
                     'site_id'             => $parsed_args['site_id'],
                     'language'            => $parsed_args['language'],
                 );
-                $posts = \molongui_query( $args3, 'posts' );
+                $posts = \molongui_query( $args, 'posts' );
                 $posts = empty( $posts->posts ) ? array() : $posts->posts;
             }
             \molongui_cache_set( $key, $posts );

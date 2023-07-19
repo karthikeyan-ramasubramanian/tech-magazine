@@ -197,8 +197,6 @@ class FFMailOptin extends Forminator_Addon_Abstract
      * @return bool
      * @see   _update_settings_error_message
      *
-     * @since 1.0 Mailchimp Addon
-     *
      */
     protected function validate_mailoptin_email_service_providers($email_service_providers)
     {
@@ -337,7 +335,15 @@ class FFMailOptin extends Forminator_Addon_Abstract
                 throw new \Exception(__('MailOptin addon not connected.', 'mailoptin'));
             }
 
-            $quiz_settings_instance = $this->get_addon_quiz_settings($quiz_id);
+            // backward compatibility
+            if (method_exists($this, 'get_addon_quiz_settings')) {
+                $quiz_settings_instance = $this->get_addon_quiz_settings($quiz_id);
+            }
+
+            if (method_exists($this, 'get_addon_settings')) {
+                $quiz_settings_instance = $this->get_addon_settings($quiz_id, 'quiz');
+            }
+
             if ( ! $quiz_settings_instance instanceof ConnectionQuizSettingsPage) {
                 throw new \Exception(__('Quiz settings instance is not valid Forminator MailOptin Quiz Addon.', 'mailoptin'));
             }
@@ -360,13 +366,11 @@ class FFMailOptin extends Forminator_Addon_Abstract
         }
 
         /**
-         * Filter connected status of mailchimp with the form
+         * Filter connected status with the form
          *
          * @param bool $is_quiz_connected
          * @param int $quiz_id Current Quiz ID
          * @param ConnectionQuizSettingsPage |null $quiz_settings_instance Instance of quiz settings, or null when unavailable
-         *
-         * @since 1.1
          *
          */
         $is_quiz_connected = apply_filters('forminator_addon_mailoptin_is_form_connected', $is_quiz_connected, $quiz_id, $quiz_settings_instance);

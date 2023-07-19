@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Cron\Workers\SendingQueue\Tasks;
 
@@ -9,20 +9,25 @@ use MailPoet\Cron\Workers\SendingQueue\Tasks\Links as LinksTask;
 use MailPoet\Cron\Workers\SendingQueue\Tasks\Posts as PostsTask;
 use MailPoet\Cron\Workers\SendingQueue\Tasks\Shortcodes as ShortcodesTask;
 use MailPoet\DI\ContainerWrapper;
+use MailPoet\Entities\NewsletterEntity;
+use MailPoet\Entities\SubscriberEntity;
 use MailPoet\Logging\LoggerFactory;
 use MailPoet\Mailer\MailerLog;
-use MailPoet\Models\Newsletter as NewsletterModel;
-use MailPoet\Models\NewsletterSegment as NewsletterSegmentModel;
 use MailPoet\Models\SendingQueue as SendingQueueModel;
 use MailPoet\Newsletter\Links\Links as NewsletterLinks;
 use MailPoet\Newsletter\NewslettersRepository;
 use MailPoet\Newsletter\Renderer\PostProcess\OpenTracking;
 use MailPoet\Newsletter\Renderer\Renderer;
+use MailPoet\Newsletter\Sending\SendingQueuesRepository;
 use MailPoet\Settings\TrackingConfig;
 use MailPoet\Statistics\GATracking;
+use MailPoet\Tasks\Sending;
 use MailPoet\Util\Helpers;
+use MailPoet\Util\pQuery\DomNode;
+use MailPoet\Util\pQuery\pQuery;
 use MailPoet\WP\Emoji;
 use MailPoet\WP\Functions as WPFunctions;
+use MailPoetVendor\Carbon\Carbon;
 
 class Newsletter {
   public $trackingEnabled;
@@ -55,6 +60,9 @@ class Newsletter {
   /** @var NewsletterLinks */
   private $newsletterLinks;
 
+  /** @var SendingQueuesRepository */
+  private $sendingQueuesRepository;
+
   public function __construct(
     WPFunctions $wp = null,
     PostsTask $postsTask = null,
@@ -84,38 +92,42 @@ class Newsletter {
     $this->newslettersRepository = ContainerWrapper::getInstance()->get(NewslettersRepository::class);
     $this->linksTask = ContainerWrapper::getInstance()->get(LinksTask::class);
     $this->newsletterLinks = ContainerWrapper::getInstance()->get(NewsletterLinks::class);
+    $this->sendingQueuesRepository = ContainerWrapper::getInstance()->get(SendingQueuesRepository::class);
   }
 
-  public function getNewsletterFromQueue($queue) {
+  public function getNewsletterFromQueue(Sending $sendingTask): ?NewsletterEntity {
     // get existing active or sending newsletter
-    $newsletter = $queue->newsletter()
-      ->whereNull('deleted_at')
-      ->whereAnyIs(
-        [
-          ['status' => NewsletterModel::STATUS_ACTIVE],
-          ['status' => NewsletterModel::STATUS_SENDING],
-        ]
-      )
-      ->findOne();
-    if (!$newsletter) return false;
-    // if this is a notification history, get existing active or sending parent newsletter
-    if ($newsletter->type == NewsletterModel::TYPE_NOTIFICATION_HISTORY) {
-      $parentNewsletter = $newsletter->parent()
-        ->whereNull('deleted_at')
-        ->whereAnyIs(
-          [
-            ['status' => NewsletterModel::STATUS_ACTIVE],
-            ['status' => NewsletterModel::STATUS_SENDING],
-          ]
-        )
-        ->findOne();
-      if (!$parentNewsletter) return false;
+    $sendingQueue = $sendingTask->getSendingQueueEntity();
+    $newsletter = $sendingQueue->getNewsletter();
+
+    if (
+      is_null($newsletter)
+      || $newsletter->getDeletedAt() !== null
+      || !in_array($newsletter->getStatus(), [NewsletterEntity::STATUS_ACTIVE, NewsletterEntity::STATUS_SENDING])
+      || $newsletter->getStatus() === NewsletterEntity::STATUS_CORRUPT
+    ) {
+      return null;
     }
+
+    // if this is a notification history, get existing active or sending parent newsletter
+    if ($newsletter->getType() == NewsletterEntity::TYPE_NOTIFICATION_HISTORY) {
+      $parentNewsletter = $newsletter->getParent();
+
+      if (
+        is_null($parentNewsletter)
+        || $parentNewsletter->getDeletedAt() !== null
+        || !in_array($parentNewsletter->getStatus(), [NewsletterEntity::STATUS_ACTIVE, NewsletterEntity::STATUS_SENDING])
+      ) {
+        return null;
+      }
+    }
+
     return $newsletter;
   }
 
-  public function preProcessNewsletter(\MailPoet\Models\Newsletter $newsletter, $sendingTask) {
+  public function preProcessNewsletter(NewsletterEntity $newsletter, Sending $sendingTask) {
     // return the newsletter if it was previously rendered
+    /** @phpstan-ignore-next-line - SendingQueue::getNewsletterRenderedBody() is called inside Sending using __call(). Sending will be refactored soon to stop using Paris models. */
     if (!is_null($sendingTask->getNewsletterRenderedBody())) {
       return (!$sendingTask->validate()) ?
         $this->stopNewsletterPreProcessing(sprintf('QUEUE-%d-RENDER', $sendingTask->id)) :
@@ -123,8 +135,11 @@ class Newsletter {
     }
     $this->loggerFactory->getLogger(LoggerFactory::TOPIC_NEWSLETTERS)->info(
       'pre-processing newsletter',
-      ['newsletter_id' => $newsletter->id, 'task_id' => $sendingTask->taskId]
+      ['newsletter_id' => $newsletter->getId(), 'task_id' => $sendingTask->taskId]
     );
+
+    $campaignId = null;
+
     // if tracking is enabled, do additional processing
     if ($this->trackingEnabled) {
       // hook to the newsletter post-processing filter and add tracking image
@@ -132,10 +147,13 @@ class Newsletter {
       // render newsletter
       $renderedNewsletter = $this->renderer->render($newsletter, $sendingTask);
       $renderedNewsletter = $this->wp->applyFilters(
-        'mailpoet_sending_newsletter_render_after',
+        'mailpoet_sending_newsletter_render_after_pre_process',
         $renderedNewsletter,
         $newsletter
       );
+      if (is_array($renderedNewsletter)) {
+        $campaignId = $this->calculateCampaignId($newsletter, $renderedNewsletter);
+      }
       $renderedNewsletter = $this->gaTracking->applyGATracking($renderedNewsletter, $newsletter);
       // hash and save all links
       $renderedNewsletter = $this->linksTask->process($renderedNewsletter, $newsletter, $sendingTask);
@@ -143,41 +161,61 @@ class Newsletter {
       // render newsletter
       $renderedNewsletter = $this->renderer->render($newsletter, $sendingTask);
       $renderedNewsletter = $this->wp->applyFilters(
-        'mailpoet_sending_newsletter_render_after',
+        'mailpoet_sending_newsletter_render_after_pre_process',
         $renderedNewsletter,
         $newsletter
       );
+      if (is_array($renderedNewsletter)) {
+        $campaignId = $this->calculateCampaignId($newsletter, $renderedNewsletter);
+      }
       $renderedNewsletter = $this->gaTracking->applyGATracking($renderedNewsletter, $newsletter);
     }
+
+    // This deprecated notice can be removed after 2023-03-23
+    if ($this->wp->hasFilter('mailpoet_sending_newsletter_render_after')) {
+      $this->wp->deprecatedHook(
+        'mailpoet_sending_newsletter_render_after',
+        '3.98.1',
+        'mailpoet_sending_newsletter_render_after_pre_process',
+        __('Please note that mailpoet_sending_newsletter_render_after no longer runs and that the list of parameters of the new filter is different.', 'mailpoet')
+      );
+    }
+
     // check if this is a post notification and if it contains at least 1 ALC post
     if (
-      $newsletter->type === NewsletterModel::TYPE_NOTIFICATION_HISTORY &&
+      $newsletter->getType() === NewsletterEntity::TYPE_NOTIFICATION_HISTORY &&
       $this->postsTask->getAlcPostsCount($renderedNewsletter, $newsletter) === 0
     ) {
       // delete notification history record since it will never be sent
       $this->loggerFactory->getLogger(LoggerFactory::TOPIC_POST_NOTIFICATIONS)->info(
         'no posts in post notification, deleting it',
-        ['newsletter_id' => $newsletter->id, 'task_id' => $sendingTask->taskId]
+        ['newsletter_id' => $newsletter->getId(), 'task_id' => $sendingTask->taskId]
       );
-      $this->newslettersRepository->bulkDelete([(int)$newsletter->id]);
+      $this->newslettersRepository->bulkDelete([(int)$newsletter->getId()]);
       return false;
     }
     // extract and save newsletter posts
-    $newsletterEntity = $this->newslettersRepository->findOneById($newsletter->id);
-    if (!$newsletterEntity) return false;
-    $this->postsTask->extractAndSave($renderedNewsletter, $newsletterEntity);
+    $this->postsTask->extractAndSave($renderedNewsletter, $newsletter);
+
+    $sendingQueueEntity = $sendingTask->getSendingQueueEntity();
+
+    if ($campaignId !== null) {
+      $this->sendingQueuesRepository->saveCampaignId($sendingQueueEntity, $campaignId);
+    }
+
     // update queue with the rendered and pre-processed newsletter
     $sendingTask->newsletterRenderedSubject = ShortcodesTask::process(
-      $newsletter->subject,
+      $newsletter->getSubject(),
       $renderedNewsletter['html'],
       $newsletter,
       null,
-      $sendingTask
+      $sendingQueueEntity
     );
+
     // if the rendered subject is empty, use a default subject,
     // having no subject in a newsletter is considered spammy
     if (empty(trim((string)$sendingTask->newsletterRenderedSubject))) {
-      $sendingTask->newsletterRenderedSubject = WPFunctions::get()->__('No subject', 'mailpoet');
+      $sendingTask->newsletterRenderedSubject = __('No subject', 'mailpoet');
     }
     $renderedNewsletter = $this->emoji->encodeEmojisInBody($renderedNewsletter);
     $sendingTask->newsletterRenderedBody = $renderedNewsletter;
@@ -197,35 +235,41 @@ class Newsletter {
     return $newsletter;
   }
 
-  public function prepareNewsletterForSending($newsletter, $subscriber, $queue) {
-    // shortcodes and links will be replaced in the subject, html and text body
-    // to speed the processing, join content into a continuous string
-    $renderedNewsletter = $queue->getNewsletterRenderedBody();
+  /**
+   * Shortcodes and links will be replaced in the subject, html and text body
+   * to speed the processing, join content into a continuous string.
+   */
+  public function prepareNewsletterForSending(NewsletterEntity $newsletter, SubscriberEntity $subscriber, Sending $sendingTask): array {
+    $sendingQueue = $sendingTask->queue();
+    $renderedNewsletter = $sendingQueue->getNewsletterRenderedBody();
     $renderedNewsletter = $this->emoji->decodeEmojisInBody($renderedNewsletter);
     $preparedNewsletter = Helpers::joinObject(
       [
-        $queue->newsletterRenderedSubject,
+        $sendingTask->newsletterRenderedSubject,
         $renderedNewsletter['html'],
         $renderedNewsletter['text'],
       ]
     );
+
+    $sendingQueueEntity = $sendingTask->getSendingQueueEntity();
+
     $preparedNewsletter = ShortcodesTask::process(
       $preparedNewsletter,
       null,
       $newsletter,
       $subscriber,
-      $queue
+      $sendingQueueEntity
     );
     if ($this->trackingEnabled) {
       $preparedNewsletter = $this->newsletterLinks->replaceSubscriberData(
-        $subscriber->id,
-        $queue->id,
+        $subscriber->getId(),
+        $sendingTask->id,
         $preparedNewsletter
       );
     }
     $preparedNewsletter = Helpers::splitObject($preparedNewsletter);
     return [
-      'id' => $newsletter->id,
+      'id' => $newsletter->getId(),
       'subject' => $preparedNewsletter[0],
       'body' => [
         'html' => $preparedNewsletter[1],
@@ -234,30 +278,57 @@ class Newsletter {
     ];
   }
 
-  public function markNewsletterAsSent($newsletter, $queue) {
+  public function markNewsletterAsSent(NewsletterEntity $newsletter, Sending $sendingTask) {
     // if it's a standard or notification history newsletter, update its status
     if (
-      $newsletter->type === NewsletterModel::TYPE_STANDARD ||
-       $newsletter->type === NewsletterModel::TYPE_NOTIFICATION_HISTORY
+      $newsletter->getType() === NewsletterEntity::TYPE_STANDARD ||
+       $newsletter->getType() === NewsletterEntity::TYPE_NOTIFICATION_HISTORY
     ) {
-      $newsletter->status = NewsletterModel::STATUS_SENT;
-      $newsletter->sentAt = $queue->processedAt;
-      $newsletter->save();
+      $scheduledTask = $sendingTask->task();
+      $newsletter->setStatus(NewsletterEntity::STATUS_SENT);
+      $newsletter->setSentAt(new Carbon($scheduledTask->processedAt));
+      $this->newslettersRepository->persist($newsletter);
+      $this->newslettersRepository->flush();
     }
-  }
-
-  public function getNewsletterSegments($newsletter) {
-    $segments = NewsletterSegmentModel::where('newsletter_id', $newsletter->id)
-      ->select('segment_id')
-      ->findArray();
-    return Helpers::flattenArray($segments);
   }
 
   public function stopNewsletterPreProcessing($errorCode = null) {
     MailerLog::processError(
       'queue_save',
-      WPFunctions::get()->__('There was an error processing your newsletter during sending. If possible, please contact us and report this issue.', 'mailpoet'),
+      __('There was an error processing your newsletter during sending. If possible, please contact us and report this issue.', 'mailpoet'),
       $errorCode
     );
+  }
+
+  /**
+   * @param NewsletterEntity $newsletter
+   * @param array $renderedNewsletters - The pre-processed renderered newsletters, before link tracking has been added or shortcodes have been processed.
+   *
+   * @return string
+   */
+  public function calculateCampaignId(NewsletterEntity $newsletter, array $renderedNewsletters): string {
+    $relevantContent = [
+      $newsletter->getId(),
+      $newsletter->getSubject(),
+    ];
+
+    if (isset($renderedNewsletters['text'])) {
+      $relevantContent[] = $renderedNewsletters['text'];
+    }
+
+    // The text version of emails contains just the alt text of images, which could be the same for multiple images. In order to ensure
+    // campaign IDs change when images change, we should consider all image URLs.
+    if (isset($renderedNewsletters['html'])) {
+      $html = pQuery::parseStr($renderedNewsletters['html']);
+      if ($html instanceof DomNode) {
+        foreach ($html->query('img') as $imageNode) {
+          $src = $imageNode->getAttribute('src');
+          if (is_string($src)) {
+            $relevantContent[] = $src;
+          }
+        }
+      }
+    }
+    return substr(md5(implode('|', $relevantContent)), 0, 16);
   }
 }

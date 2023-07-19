@@ -64,30 +64,49 @@ if ( !function_exists( 'get_main_author' ) )
 {
     function get_main_author( $post_id )
     {
-        $data = new stdClass();
-        $ignore_guest = false;
-        $main_author = get_post_meta( $post_id, '_molongui_main_author', true );
-        if ( !empty( $main_author ) )
-        {
-            $split      = explode( '-', $main_author );
-            $data->id   = $split[1];
-            $data->type = $split[0];
-            $data->ref  = $main_author;
-            if ( $data->type == 'guest' and !authorship_is_feature_enabled( 'guest' ) )
-            {
-                $ignore_guest = true;
-            }
-        }
-        if ( empty( $main_author ) or $ignore_guest )
+        $options = authorship_get_options();
+        $meta    = get_post_meta( $post_id, '_molongui_main_author', true );
+        $data    = false;
+
+        if ( empty( $meta ) or ( !$options['guest_authors'] and !$options['enable_multi_authors'] ) )
         {
             if ( $post_author = get_post_field( 'post_author', $post_id ) )
             {
-                $data->id   = $post_author;
-                $data->type = 'user';
-                $data->ref  = $data->type.'-'.$data->id;
+                $data = authorship_get_wp_post_author( $post_id );
             }
-            else return false;
         }
+        else
+        {
+            $split      = explode( '-', $meta );
+            $data       = new stdClass();
+            $data->id   = $split[1];
+            $data->type = $split[0];
+            $data->ref  = $meta;
+            if ( !authorship_is_post_type_enabled( '', $post_id )
+                 or
+                 $data->type == 'guest' and !$options['guest_authors'] )
+            {
+                $data = authorship_get_wp_post_author( $post_id );
+            }
+        }
+
+        return $data;
+    }
+}
+if ( !function_exists( 'authorship_get_wp_post_author' ) )
+{
+    function authorship_get_wp_post_author( $post_id )
+    {
+        $data = false;
+
+        if ( $post_author = get_post_field( 'post_author', $post_id ) )
+        {
+            $data       = new stdClass();
+            $data->id   = $post_author;
+            $data->type = 'user';
+            $data->ref  = $data->type.'-'.$data->id;
+        }
+
         return $data;
     }
 }
@@ -97,32 +116,60 @@ if ( !function_exists( 'get_post_authors' ) )
     {
         if ( empty( $post_id ) or !is_integer( $post_id ) )
         {
-            global $post;
-            if ( empty( $post ) ) return false;
-            $post_id = $post->ID;
+            $post_id = authorship_get_post_id();
+            if ( !$post_id ) return false;
         }
-        $data = array();
-        $main_author = get_main_author( $post_id );
-        if ( empty( $main_author ) ) return false;
-        if ( !authorship_is_feature_enabled( 'multi' ) ) return array( $main_author );
-        $authors = get_post_meta( $post_id, '_molongui_author', false );
-        if ( !empty( $authors) )
-        {
-            $guest_enabled = authorship_is_feature_enabled( 'guest' );
 
-            foreach ( $authors as $author )
+        $data = array();
+        if ( !in_array( authorship_get_post_type( $post_id ), molongui_supported_post_types( MOLONGUI_AUTHORSHIP_NAME, 'all' ) ) )
+        {
+            $data[] = authorship_get_wp_post_author( $post_id );
+        }
+
+        else
+        {
+            $main_author = get_main_author( $post_id );
+            if ( empty( $main_author ) ) return false;
+            if ( !authorship_is_feature_enabled( 'multi' ) )
             {
-                $split = explode( '-', $author );
-                if ( $split[1] == $main_author->id ) continue;
-                if ( $split[0] === 'guest' and !$guest_enabled ) continue;
-                $data[] = (object) array( 'id' => (int)$split[1], 'type' => $split[0], 'ref' => $author );
+                $data[] = $main_author;
+            }
+
+            else
+            {
+                $authors = get_post_meta( $post_id, '_molongui_author', false );
+                if ( !empty( $authors) )
+                {
+                    $guest_enabled = authorship_is_feature_enabled( 'guest' );
+
+                    foreach ( $authors as $author )
+                    {
+                        $split = explode( '-', $author );
+                        if ( $split[1] == $main_author->id ) continue;
+                        if ( $split[0] === 'guest' and !$guest_enabled ) continue;
+                        $data[] = (object) array( 'id' => (int)$split[1], 'type' => $split[0], 'ref' => $author );
+                    }
+                }
+                array_unshift( $data, $main_author );
             }
         }
-        array_unshift( $data, $main_author );
         if ( !$key ) return $data;
-        $values = array();
-        foreach ( $data as $author ) $values[] = $author->$key;
-        return $values;
+        if ( !empty( $data ) )
+        {
+            $values = array();
+            foreach ( $data as $author )
+            {
+                if ( is_object( $author ) and property_exists( $author, $key ) )
+                {
+                    $values[] = $author->$key;
+                }
+            }
+            return $values;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
 if ( !function_exists( 'get_byline' ) )
@@ -271,86 +318,6 @@ if ( !function_exists( 'get_coauthored_posts' ) )
         return ( !empty( $posts ) ? $posts : array() );
     }
 }
-if ( !function_exists( 'authorship_guess_post_type' ) )
-{
-    function authorship_guess_post_type()
-    {
-        global $post, $typenow, $pagenow, $current_screen;
-
-        $post_id   = isset( $_REQUEST['post'] ) ? (int)$_REQUEST['post'] : false;
-        $post_type = null;
-
-        if ( $post and $post->post_type )
-        {
-            $post_type = authorship_get_post_type( $post );
-        }
-        elseif ( $typenow )
-        {
-            $post_type = $typenow;
-        }
-        elseif ( $current_screen and !empty( $current_screen->post_type ) )
-        {
-            $post_type = $current_screen->post_type;
-        }
-        elseif ( isset( $_REQUEST['post_type'] ) and !empty( $_REQUEST['post_type'] ) and is_string( $_REQUEST['post_type'] ) )
-        {
-            $post_type = sanitize_key( $_REQUEST['post_type']);
-        }
-        elseif ( 'post.php' == $pagenow and !empty( $post_id ) )
-        {
-            $post_type = authorship_get_post_type( $post_id );
-        }
-        elseif ( 'edit.php' == $pagenow and empty( $_REQUEST['post_type'] ) )
-        {
-            $post_type = 'post';
-        }
-        elseif ( isAuthor() )
-        {
-            $post_type = 'post';
-        }
-
-        return $post_type;
-    }
-}
-if ( !function_exists( 'authorship_get_post_type' ) )
-{
-    function authorship_get_post_type( $postOrPostId )
-    {
-        $post = null;
-
-        if ( is_numeric( $postOrPostId ) )
-        {
-            $postOrPostId = (int)$postOrPostId;
-
-            if ( !empty( $postOrPostId ) )
-            {
-                $post = get_post( $postOrPostId );
-            }
-        }
-        else
-        {
-            $post = $postOrPostId;
-        }
-
-        if ( !$post instanceof WP_Post )
-        {
-            return false;
-        }
-
-        return $post->post_type;
-    }
-}
-if ( !function_exists( 'isAuthor' ) )
-{
-    function isAuthor()
-    {
-        global $wp_query;
-
-        if ( !isset( $wp_query ) ) return;
-
-        return is_author();
-    }
-}
 function authorship_post_status( $post_type = '' )
 {
     $post_status = array( 'draft', 'publish', 'future', 'pending', 'private' );
@@ -361,4 +328,11 @@ function authorship_post_status( $post_type = '' )
     }
 
     return apply_filters( 'authorship/post_status', $post_status );
+}
+function authorship_is_post_type_enabled( $post_type = '', $post_id = null )
+{
+    $post_type  = !empty( $post_type ) ? $post_type : authorship_get_post_type( $post_id );
+    $post_types = molongui_supported_post_types( MOLONGUI_AUTHORSHIP_NAME, 'all' );
+
+    return (bool) in_array( $post_type, $post_types );
 }

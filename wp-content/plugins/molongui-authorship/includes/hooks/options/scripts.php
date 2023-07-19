@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) or exit;
 function authorship_register_options_scripts()
 {
-    $file  = apply_filters( 'authorship/options/script', MOLONGUI_AUTHORSHIP_FOLDER . '/assets/js/options.9f28.min.js' );
+    $file  = apply_filters( 'authorship/options/script', MOLONGUI_AUTHORSHIP_FOLDER . '/assets/js/options.542e.min.js' );
     $scope = 'options';
 
     authorship_register_script( $file, $scope );
@@ -10,7 +10,7 @@ function authorship_register_options_scripts()
 add_action( 'admin_enqueue_scripts', 'authorship_register_options_scripts' );
 function authorship_enqueue_options_scripts()
 {
-    $file  = apply_filters( 'authorship/options/script', MOLONGUI_AUTHORSHIP_FOLDER . '/assets/js/options.9f28.min.js' );
+    $file  = apply_filters( 'authorship/options/script', MOLONGUI_AUTHORSHIP_FOLDER . '/assets/js/options.542e.min.js' );
     $scope = 'options';
     authorship_enqueue_script( $file, $scope, true );
 }
@@ -40,11 +40,12 @@ function authorship_options_script_params()
         302 => __( "Forcing an update on post counters is a task that runs in the background and might take a (long) while to complete. Please confirm you want to go ahead.", 'molongui-authorship' ),
         303 => __( "Cancel", 'molongui-authorship' ),
         304 => __( "OK", 'molongui-authorship' ),
-        305 => __( "Running...", 'molongui-authorship' ),
-        306 => __( "Post count update is running in the background. A notice will let you know the update status. You can close this window now.", 'molongui-authorship' ),
-        307 => __( "Error", 'molongui-authorship' ),
-        308 => __( "Something went wrong and counters update failed. Please refresh this page and try again.", 'molongui-authorship' ),
-        309 => __( "Something went wrong and couldn't connect to the server. Please, try again.", 'molongui-authorship' ),
+        305 => __( "Error", 'molongui-authorship' ),
+        306 => __( "You have the WP_Cron disabled, so counters update failed. Please enable the WP_Cron in your wp-config.php file.", 'molongui-authorship' ),
+        307 => __( "Something went wrong and counters update failed. Please refresh this page and try again.", 'molongui-authorship' ),
+        308 => __( "Running...", 'molongui-authorship' ),
+        309 => __( "Post count update is running in the background. A notice will let you know the update status. You can close this window now.", 'molongui-authorship' ),
+        310 => __( "Something went wrong and couldn't connect to the server. Please, try again.", 'molongui-authorship' ),
         400 => __( "Doing it wrong!", 'molongui-authorship' ),
         401 => __( "You cannot disable both 'Authors' and 'Molongui' menus. One of them must be displayed so you have access to the plugin settings page.", 'molongui-authorship' ),
     );

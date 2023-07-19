@@ -49,6 +49,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 				$settings[] = include 'settings/class-evf-settings-recaptcha.php';
 				$settings[] = include 'settings/class-evf-settings-email.php';
 				$settings[] = include 'settings/class-evf-settings-validation.php';
+				$settings[] = include 'settings/class-evf-settings-misc.php';
 				$settings[] = include 'settings/class-evf-settings-integrations.php';
 
 				self::$settings = apply_filters( 'everest_forms_get_settings_pages', $settings );
@@ -328,14 +329,21 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 							$visibility_class[] = $value['is_visible'] ? 'everest-forms-visible' : 'everest-forms-hidden';
 						}
 
+						$upload_text = __( 'Upload Logo', 'everest-forms' );
+						$alt_text    = __( 'Header Logo', 'everest-forms' );
+						if ( 'everest_forms_pdf_background_image' === $value['id'] ) {
+							$upload_text = __( 'Upload Image', 'everest-forms' );
+							$alt_text    = __( 'Background Image', 'everest-forms' );
+						}
+
 						?>
 						<tr valign="top">
 							<th scope="row" class="titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
 							</th>
 							<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
-							<img src="<?php echo esc_attr( $option_value ); ?>" alt="<?php echo esc_attr__( 'Header Logo', 'everest-forms' ); ?>" class="evf-image-uploader <?php echo empty( $option_value ) ? 'everest-forms-hidden' : ''; ?>" height="100" width="auto">
-							<button type="button" class="evf-image-uploader evf-button button-secondary" <?php echo empty( $option_value ) ? '' : 'style="display:none"'; ?> ><?php echo esc_html__( 'Upload Logo', 'everest-forms' ); ?></button>
+							<img src="<?php echo esc_attr( $option_value ); ?>" alt="<?php echo esc_attr( $alt_text ); ?>" class="evf-image-uploader <?php echo empty( $option_value ) ? 'everest-forms-hidden' : ''; ?>" height="100" width="auto">
+							<button type="button" class="evf-image-uploader evf-button button-secondary" <?php echo empty( $option_value ) ? '' : 'style="display:none"'; ?> ><?php echo esc_html( $upload_text ); ?></button>
 							<input
 								name="<?php echo esc_attr( $value['id'] ); ?>"
 								id="<?php echo esc_attr( $value['id'] ); ?>"

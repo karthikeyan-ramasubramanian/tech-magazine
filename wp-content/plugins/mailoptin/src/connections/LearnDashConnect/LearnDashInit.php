@@ -7,7 +7,7 @@ use MailOptin\Connections\Init;
 use MailOptin\Core\PluginSettings\Settings;
 use MailOptin\Core\Repositories\ConnectionsRepository;
 
-if (strpos(__FILE__, 'learndash' . DIRECTORY_SEPARATOR . 'src') !== false) {
+if (strpos(__FILE__, 'mailoptin' . DIRECTORY_SEPARATOR . 'src') !== false) {
     // production url path to assets folder.
     define('MAILOPTIN_LEARNDASH_CONNECT_ASSETS_URL', MAILOPTIN_URL . 'src/connections/LearnDashConnect/assets/');
 } else {
@@ -164,9 +164,9 @@ class LearnDashInit
 
         $connection = sanitize_text_field($_POST['connection']);
 
-        ob_start();
-
         if (empty($_POST['course_id'])) wp_send_json_error([]);
+
+        ob_start();
 
         $course_id = absint($_POST['course_id']);
 
@@ -184,7 +184,7 @@ class LearnDashInit
 
         if (empty($lists)) wp_send_json_error([]);
 
-        $this::ld_mailoptin_select_field(
+        self::ld_mailoptin_select_field(
             [
                 'id'          => 'mailoptinLearnDashSelectList',
                 'label'       => esc_html__('Select List', 'mailoptin'),
@@ -219,17 +219,21 @@ class LearnDashInit
 
         if (empty($_POST['course_id'])) wp_send_json_error([]);
 
+        $mappable_fields = $this->merge_vars_field_map($connection, $connection_email_list);
+
+        if (empty($mappable_fields)) wp_send_json_error([]);
+
         ob_start();
 
-        $course_id = $_POST['course_id'];
+        $course_id = absint($_POST['course_id']);
         ?>
         <h2 class="mo-learndash-map-field-title"><span><?= __('Map Fields', 'mailoptin') ?></span></h2>
         <?php
-        foreach ($this->merge_vars_field_map($connection, $connection_email_list) as $key => $value) {
+        foreach ($mappable_fields as $key => $value) {
             $mapped_key         = rawurlencode('mailoptinLearnDashMappedFields-' . $key);
             $saved_mapped_field = LearnDashInit::get_instance()->learndash_get_field($connection . '[' . $mapped_key . ']', $course_id);
 
-            $this::ld_mailoptin_select_field(
+            self::ld_mailoptin_select_field(
                 [
                     'id'      => $mapped_key,
                     'label'   => $value,
@@ -269,7 +273,7 @@ class LearnDashInit
 
             $tags     = [];
             $instance = ConnectionFactory::make($saved_integration);
-            if (method_exists($instance, 'get_tags')) {
+            if (is_object($instance) && method_exists($instance, 'get_tags')) {
                 $tags = $instance->get_tags();
             }
 
@@ -281,7 +285,7 @@ class LearnDashInit
                 $options[$value] = $label;
             }
 
-            $this::ld_mailoptin_select_field(
+            self::ld_mailoptin_select_field(
                 [
                     'id'          => 'mailoptinLearnDashSelectTags',
                     'name'        => 'mailoptinLearnDashSelectTags[]',
@@ -547,31 +551,6 @@ class LearnDashInit
     }
 
     /**
-     * @param string $first_name
-     * @param string $last_name
-     *
-     * @return mixed|string
-     */
-    public function get_full_name($first_name = '', $last_name = '')
-    {
-        $full_name = '';
-
-        if (empty($first_name) && empty($last_name)) {
-            return $full_name;
-        }
-
-        if ( ! empty($first_name) && empty($last_name)) {
-            $full_name = $first_name;
-        } elseif (empty($first_name) && ! empty($last_name)) {
-            $full_name = $last_name;
-        } else {
-            $full_name = $first_name . ' ' . $last_name;
-        }
-
-        return $full_name;
-    }
-
-    /**
      * Subscribes User to MailOptin List Tag automatically when Enrolling in a Course
      *
      * @param integer $user_id User ID
@@ -716,8 +695,8 @@ class LearnDashInit
             $connections['leadbank'] = __('MailOptin Leads', 'mailoptin');
         }
 
-        //escape webhook connection
         unset($connections['WebHookConnect']);
+        unset($connections['WordPressUserRegistrationConnect']);
 
         return $connections;
     }
@@ -795,8 +774,7 @@ class LearnDashInit
             'nickname'      => __('Nickname', 'mailoptin'),
             'first_name'    => __('First Name', 'mailoptin'),
             'last_name'     => __('Last Name', 'mailoptin'),
-            'description'   => __('Biographical Info ', 'mailoptin'),
-            'role'          => __('User Role', 'mailoptin'),
+            'description'   => __('Biographical Info ', 'mailoptin')
         ];
 
         return apply_filters('mo_learndash_custom_users_mapped_fields', $user_fields);

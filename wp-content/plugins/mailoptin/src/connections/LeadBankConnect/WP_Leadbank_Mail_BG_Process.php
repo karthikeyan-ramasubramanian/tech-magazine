@@ -19,8 +19,6 @@ class WP_Leadbank_Mail_BG_Process extends WP_Mail_BG_Process
      */
     protected function task($user_data)
     {
-        $repository = CampaignLogRepository::instance();
-
         $email_address = $user_data['email_address'];
 
         $unsubscribed_contacts = get_option('mo_leadbank_unsubscribers', []);
@@ -45,13 +43,14 @@ class WP_Leadbank_Mail_BG_Process extends WP_Mail_BG_Process
         $content_text = str_replace($search, $replace, $content_text);
         $content_html = str_replace($search, $replace, $content_html);
 
-        $subject = $repository->retrieveTitle($campaign_log_id);
+        $subject = CampaignLogRepository::instance()->retrieveTitle($campaign_log_id);
 
         $this->wp_mail_from_filter();
         $this->wp_mail_from_name_filter();
         $this->add_plain_text_message($content_text);
 
         $this->add_html_content_type();
+        $this->wp_mail_error_log($email_address, $campaign_log_id, $email_campaign_id);
         $response = wp_mail($email_address, $subject, $content_html); // send the newsletter.
         $this->remove_html_content_type();
 

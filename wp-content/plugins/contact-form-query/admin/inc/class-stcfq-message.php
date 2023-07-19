@@ -54,8 +54,6 @@ class STCFQ_Message {
 		}
 
 		try {
-			$wpdb->query( 'BEGIN;' );
-
 			$success = $wpdb->delete( "{$wpdb->prefix}stcfq_queries", array( 'ID' => $id ) );
 			$message = esc_html__( 'Message deleted successfully.', 'contact-form-query' );
 
@@ -68,13 +66,10 @@ class STCFQ_Message {
 				throw new Exception( $wpdb->last_error );
 			}
 
-			$wpdb->query( 'COMMIT;' );
-
 			STCFQ_Helper::cache_unanswered_messages_count();
 
 			wp_send_json_success( array( 'message' => $message ) );
 		} catch ( Exception $exception ) {
-			$wpdb->query( 'ROLLBACK;' );
 			wp_send_json_error( $exception->getMessage() );
 		}
 	}
@@ -115,8 +110,6 @@ class STCFQ_Message {
 			}
 
 			try {
-				$wpdb->query( 'BEGIN;' );
-
 				$place_holders_ids = ( '%d' . str_repeat( ',%d', ( count( $ids ) - 1 ) ) );
 
 				$ids_string = implode( ',', $ids );
@@ -136,13 +129,10 @@ class STCFQ_Message {
 					throw new Exception( esc_html__( 'Messages not found.', 'contact-form-query' ) );
 				}
 
-				$wpdb->query( 'COMMIT;' );
-
 				STCFQ_Helper::cache_unanswered_messages_count();
 
 				wp_send_json_success( array( 'message' => $message ) );
 			} catch ( Exception $exception ) {
-				$wpdb->query( 'ROLLBACK;' );
 				wp_send_json_error( $exception->getMessage() );
 			}
 		}
@@ -186,8 +176,6 @@ class STCFQ_Message {
 		}
 
 		try {
-			$wpdb->query( 'BEGIN;' );
-
 			$data = array(
 				'answered'   => $answered,
 				'note'       => $note,
@@ -206,13 +194,10 @@ class STCFQ_Message {
 				throw new Exception( $buffer );
 			}
 
-			$wpdb->query( 'COMMIT;' );
-
 			STCFQ_Helper::cache_unanswered_messages_count();
 
 			wp_send_json_success( array( 'message' => $message ) );
 		} catch ( Exception $exception ) {
-			$wpdb->query( 'ROLLBACK;' );
 			wp_send_json_error( $exception->getMessage() );
 		}
 	}
@@ -233,7 +218,9 @@ class STCFQ_Message {
 
 	public static function admin_enqueue_scripts() {
 		if ( current_user_can( 'manage_options' ) ) {
-			wp_enqueue_style( 'stcfq-admin-dashboard', STCFQ_PLUGIN_URL . 'assets/css/stcfq-admin-dashboard.css', array(), STCFQ_PLUGIN_VERSION, 'all' );
+			wp_register_style( 'stcfq-admin-dashboard', STCFQ_PLUGIN_URL . 'assets/css/stcfq-admin-dashboard.css', array(), STCFQ_PLUGIN_VERSION, 'all' );
+			wp_enqueue_style( 'stcfq-admin-dashboard' );
+			wp_style_add_data( 'stcfq-admin-dashboard', 'rtl', 'replace' );
 		}
 	}
 }

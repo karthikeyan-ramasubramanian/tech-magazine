@@ -173,8 +173,21 @@ if ( !function_exists('molongui_is_post_type_enabled') )
 {
     function molongui_is_post_type_enabled( $plugin, $post_type = null, $post_types = null )
     {
-        if ( !$post_type  ) $post_type  = get_post_type();
-        if ( !$post_types ) $post_types = molongui_supported_post_types( $plugin, 'all' );
+        if ( !$post_type  )
+        {
+            if ( is_admin() )
+            {
+                $post_type = authorship_get_post_type();
+            }
+            else
+            {
+                $post_type = get_post_type();
+            }
+        }
+        if ( !$post_types )
+        {
+            $post_types = molongui_supported_post_types( $plugin, 'all' );
+        }
 
         return (bool) in_array( $post_type, $post_types );
     }
@@ -185,38 +198,38 @@ if ( !function_exists( 'molongui_debug' ) )
     {
         if ( molongui_is_request( 'ajax' ) or molongui_is_request( 'api' ) or wp_is_json_request() ) return;
         if ( !$in_admin and is_admin() ) return;
+
+        $dbt = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 2 );
+        $debug = array
+        (
+            'file'     => ( isset( $dbt[0]['file'] )     ? $dbt[0]['file'] : '' ),
+            'line'     => ( isset( $dbt[0]['line'] )     ? $dbt[0]['line'] : '' ),
+            'class'    => ( isset( $dbt[1]['class'] )    ? $dbt[1]['class'] : '' ),
+            'function' => ( isset( $dbt[1]['function'] ) ? $dbt[1]['function'] : '' ),
+        );
+
         if ( $backtrace )
         {
-            $dbt  = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 2 );
-            $info = array
-            (
-                'file'        => ( isset( $dbt[0]['file'] )     ? $dbt[0]['file'] : '' ),
-                'class'       => ( isset( $dbt[1]['class'] )    ? $dbt[1]['class'] : '' ),
-                'function'    => ( isset( $dbt[1]['function'] ) ? $dbt[1]['function'] : '' ),
-                'filter'      => current_filter(),
-                'is_admin'    => molongui_is_request( 'admin' ),
-                'is_front'    => molongui_is_request( 'front' ),
-                'is_ajax'     => molongui_is_request( 'ajax'  ),
-                'is_cron'     => molongui_is_request( 'cron'  ),
-                'in_the_loop' => in_the_loop(),
-                'backtrace'   => wp_debug_backtrace_summary( null, 0, false ),
-            );
-            $data = array_merge( $info, ( is_array( $data ) ? $data : (array)$data ) );
+            $debug['filter']      = current_filter();
+            $debug['is_admin']    = molongui_is_request( 'admin' );
+            $debug['is_front']    = molongui_is_request( 'front' );
+            $debug['is_ajax']     = molongui_is_request( 'ajax'  );
+            $debug['is_cron']     = molongui_is_request( 'cron'  );
+            $debug['in_the_loop'] = in_the_loop();
+            $debug['backtrace']   = wp_debug_backtrace_summary( null, 0, false );
         }
-        else
-        {
-            $data = array_merge( array( 'molongui_debug_'.rand() ), ( is_array( $data ) ? $data : (array)$data ) );
-        }
-        $data = print_r( $data, true );
+
+        $debug['data'] = $data;
+        $debug = print_r( $debug, true );
         if ( is_admin() )
         {
             if ( !did_action( 'admin_notices' ) )
             {
-                add_action( 'admin_notices', function() use ( $data )
+                add_action( 'admin_notices', function() use ( $debug )
                 {
                     if ( !current_user_can( 'administrator' ) ) return;
 
-                    $html_message = sprintf( '<div class="notice notice-info" style="display: block !important;"><h2>Debug Information</h2><pre>%s</pre></div>', $data );
+                    $html_message = sprintf( '<div class="notice notice-info" style="display: block !important;"><h2>Debug Information</h2><pre>%s</pre></div>', $debug );
                     echo $html_message;
                 }, 0 );
             }
@@ -225,7 +238,7 @@ if ( !function_exists( 'molongui_debug' ) )
                 if ( !current_user_can( 'administrator' ) ) return;
 
                 echo '<pre style="margin: 20px 20px 20px 180px; padding: 1em; border: 2px dashed green; background: #fbfbfb;">';
-                echo $data;
+                echo $debug;
                 echo "</pre>";
             }
         }
@@ -237,7 +250,7 @@ if ( !function_exists( 'molongui_debug' ) )
             }
 
             echo '<pre style="margin: 1em; padding: 1em; border: 2px dashed green; background: #fbfbfb;">';
-            echo $data;
+            echo $debug;
             echo "</pre>";
         }
         if ( $die ) die;

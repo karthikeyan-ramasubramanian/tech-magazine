@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Doctrine\Validator;
 
@@ -15,7 +15,10 @@ class ValidationException extends \RuntimeException {
   /** @var ConstraintViolationListInterface|ConstraintViolationInterface[] */
   private $violations;
 
-  public function __construct($resourceName, ConstraintViolationListInterface $violations) {
+  public function __construct(
+    $resourceName,
+    ConstraintViolationListInterface $violations
+  ) {
     $this->resourceName = $resourceName;
     $this->violations = $violations;
 

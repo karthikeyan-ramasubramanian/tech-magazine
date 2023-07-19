@@ -1,10 +1,10 @@
 === HitMag ===
 
 Contributors: Pubudu Malalasekara
-Requires at least: 4.0
-Tested up to: 5.9
+Requires at least: 4.7
+Tested up to: 6.1
 Requires PHP: 5.3
-Stable tag: 1.3.2
+Stable tag: 1.3.4
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -54,6 +54,12 @@ Jetpack
 Font Awesome 4 Menus
 
 == Changelog ==
+
+= 1.3.4 =
+* Fix: Flexslider did not load properly when the magazine page template has not assigned as the front page.
+
+= 1.3.3 =
+* Now Google Fonts are loaded from locally to comply with GDPR law.
 
 = 1.3.2 =
 * Now flexslider and magnific popup jquery libraries are loaded only where needed. 

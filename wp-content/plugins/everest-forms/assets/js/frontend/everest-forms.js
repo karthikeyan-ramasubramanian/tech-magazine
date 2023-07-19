@@ -30,6 +30,7 @@ jQuery( function ( $ ) {
 			this.randomize_elements();
 			this.init_enhanced_select();
 			this.checkUncheckAllcheckbox();
+			this.validateMinimumWordLength();
 
 			// Inline validation.
 			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox, input:radio', this.validate_field );
@@ -68,7 +69,11 @@ jQuery( function ( $ ) {
 					suggested: function( el, suggestion ) {
 						$( '#' + id + '_suggestion' ).remove();
 						var suggestion_msg = everest_forms_params.i18n_messages_email_suggestion.replace( '{suggestion}', '<a href="#" class="mailcheck-suggestion" data-id="' + id + '" title="' + everest_forms_params.i18n_messages_email_suggestion_title + '">' + suggestion.full + '</a>' );
-						$( el ).after( '<label class="evf-error mailcheck-error" id="' + id + '_suggestion">' + suggestion_msg + '</label>' );
+						if( el.parents( 'span.input-wrapper' ).length ) {
+							$( el ).parents( 'span.input-wrapper' ).after( '<label class="evf-error mailcheck-error" id="' + id + '_suggestion">' + suggestion_msg + '</label>' );
+						}else {
+							$( el ).after( '<label class="evf-error mailcheck-error" id="' + id + '_suggestion">' + suggestion_msg + '</label>' );
+						}
 					},
 					empty: function() {
 						$( '#' + id + '_suggestion' ).remove();
@@ -87,15 +92,47 @@ jQuery( function ( $ ) {
 		},
 		init_datepicker: function () {
 			var evfDateField = $( '.evf-field-date-time' );
-			if ( evfDateField.length > 0 ) {
-				$( '.flatpickr-field' ).each( function() {
+			if ( evfDateField.length && evfDateField.find( '.flatpickr-field' ).length ) {
+				evfDateField.find( '.flatpickr-field' ).each( function () {
 					var timeInterval = 5,
 						inputData  	 = $( this ).data(),
 						disableDates = [];
 
+					var minDateRange = '';
+					if( inputData.minDateRange ) {
+						minDateRange = 'today';
+						if( 'today' === inputData.minDateRange ) {
+							minDateRange = minDateRange
+						} else if ( /^\s*[-+]?\d+\s*d/i.test( inputData.minDateRange ) ) {
+							minDateRange = inputData.minDateRange.match( /^\s*[-+]?\d+\s*d/i )[0].replace( 'd', '' );
+							minDateRange = new Date().fp_incr( minDateRange );
+						} else {
+							minDateRange = 'today';
+						}
+					}
+
+					var maxDateRange = '';
+					if( inputData.maxDateRange ) {
+						maxDateRange = 'today';
+						if( 'today' === inputData.maxDateRange ) {
+							maxDateRange = maxDateRange
+						} else if ( /^\s*[-+]?\d+\s*d/i.test( inputData.maxDateRange ) ) {
+							maxDateRange = inputData.maxDateRange.match( /^\s*[-+]?\d+\s*d/i )[0].replace( 'd', '' );
+							maxDateRange = new Date().fp_incr( maxDateRange );
+						} else {
+							maxDateRange = '';
+						}
+					}
+
 					// Extract list of disabled dates.
 					if ( inputData.disableDates ) {
 						disableDates = inputData.disableDates.split( ',' );
+					}
+
+					if(inputData.pastDisableDate){
+						var pastDisableDate = inputData.pastDisableDate;
+					} else {
+						var pastDisableDate = '';
 					}
 
 					switch( inputData.dateTime ) {
@@ -104,8 +141,8 @@ jQuery( function ( $ ) {
 							$( this ).flatpickr({
 								disableMobile : true,
 								mode          : inputData.mode,
-								minDate       : inputData.minDate,
-								maxDate       : inputData.maxDate,
+								minDate       : minDateRange ? minDateRange : ( inputData.minDate ? inputData.minDate : pastDisableDate ),
+								maxDate       : maxDateRange ? maxDateRange : inputData.maxDate,
 								dateFormat    : inputData.dateFormat,
 								disable       : disableDates,
 							});
@@ -136,8 +173,8 @@ jQuery( function ( $ ) {
 								noCalendar   	: false,
 								disableMobile	: true,
 								mode            : inputData.mode,
-								minDate         : inputData.minDate,
-								maxDate         : inputData.maxDate,
+								minDate         : minDateRange ? minDateRange : ( inputData.minDate ? inputData.minDate : pastDisableDate ),
+								maxDate         : maxDateRange ? maxDateRange : inputData.maxDate,
 								minuteIncrement : timeInterval,
 								dateFormat      : inputData.dateFormat,
 								time_24hr		: inputData.dateFormat.includes( 'H:i' ),
@@ -146,7 +183,7 @@ jQuery( function ( $ ) {
 						break;
 						default:
 					}
-				});
+				} );
 			}
 		},
 		init_datedropdown: function () {
@@ -197,7 +234,7 @@ jQuery( function ( $ ) {
 					}
 					options += '<option value = "' + i + '"> ' + ( ( i< 10 ) ? '0' + i : i ) + '</option>';
 				}
-				// alert(options);
+
 				$this.siblings( '#minute-select-'+id ).html( options );
 				$this.siblings( '#minute-select-'+id ).attr('value', $this.siblings( '#minute-select-'+id ).find('option:first').val());
 			}
@@ -445,9 +482,17 @@ jQuery( function ( $ ) {
 								element.parent().find( '.select2' ).after( error );
 							}
 						} else if ( element.hasClass( 'evf-smart-phone-field' ) || element.hasClass( 'everest-forms-field-password-primary' ) || element.hasClass( 'everest-forms-field-password-secondary' ) ) {
-							element.parent().after( error );
+							if( element.parents('span.input-wrapper').length ) {
+								element.parents('span.input-wrapper').after( error );
+							} else {
+								element.parent().after( error );
+							}
 						} else {
-							error.insertAfter( element );
+							if( element.parents('span.input-wrapper').length ) {
+								element.parents('span.input-wrapper').after( error );
+							} else {
+								error.insertAfter( element );
+							}
 						}
 					},
 					highlight: function( element, errorClass, validClass ) {
@@ -482,6 +527,7 @@ jQuery( function ( $ ) {
 							processText = $submit.data( 'process-text' );
 							var	recaptchaID = $submit.get( 0 ).recaptchaID;
 							var  razorpayForms = $form.find( "[data-gateway='razorpay']" );
+							var stripeForms = $form.find( "[data-gateway*='stripe']" );
 						// Process form.
 						if ( processText ) {
 							$submit.text( processText ).prop( 'disabled', true );
@@ -496,8 +542,8 @@ jQuery( function ( $ ) {
 							return;
 						}
 
-						if ( 1 !== $form.data( 'ajax_submission' ) ) {
-							form.submit();
+						if ( 1 !== $form.data( 'ajax_submission' ) || (stripeForms.length < 0  && 0 !== stripeForms.children.length) ) {
+							 form.submit();
 						} else {
 							return;
 						}
@@ -630,7 +676,7 @@ jQuery( function ( $ ) {
 					if ( 'undefined' !== typeof $.fn.selectWoo ) {
 						$( 'select.evf-enhanced-select:visible' ).filter( ':not(.evf-enhanced)' ).each( function() {
 							var select2_args = $.extend({
-								minimumResultsForSearch: 10,
+								minimumResultsForSearch: 10 < $( this ).find( 'option' ).length ? 10 : null,
 								placeholder: $( this ).attr( 'placeholder' ) || '',
 								allowClear: $( this ).prop( 'multiple' ) ? false : true,
 							}, getEnhancedSelectFormatString() );
@@ -672,6 +718,24 @@ jQuery( function ( $ ) {
 					});
 				});
 			}
+		},
+		validateMinimumWordLength: function() {
+			Array.prototype.slice.call( document.querySelectorAll( '.everest-forms-min-words-length-enabled' ) ).map( function( event ) {
+				var minWords    = parseInt( event.dataset.textMinLength, 10 ) || 0;
+
+				// Add the custom validation method.
+				jQuery.validator.addMethod( 'minWordLength',
+					function(value, element, params) {
+						var wordsCount = value.trim().split( /\s+/ ).length;
+						return wordsCount >= params[0];
+					}
+				);
+
+				jQuery( '#'+event.id ).each( function() {
+					jQuery( this ).rules( 'add', { minWordLength: [minWords] });
+				});
+
+			} );
 		},
 	};
 

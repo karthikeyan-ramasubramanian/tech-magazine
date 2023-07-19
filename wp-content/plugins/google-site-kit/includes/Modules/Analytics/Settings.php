@@ -191,6 +191,7 @@ class Settings extends Module_Settings implements Setting_With_Owned_Keys_Interf
 			'trackingDisabled'      => array( 'loggedinUsers' ),
 			'useSnippet'            => true,
 			'canUseSnippet'         => true,
+			'dashboardView'         => 'universal-analytics',
 		);
 	}
 
@@ -214,10 +215,20 @@ class Settings extends Module_Settings implements Setting_With_Owned_Keys_Interf
 					$option['anonymizeIP'] = (bool) $option['anonymizeIP'];
 				}
 				if ( isset( $option['trackingDisabled'] ) ) {
-					$option['trackingDisabled'] = (array) $option['trackingDisabled'];
+					// Prevent other options from being saved if 'loggedinUsers' is selected.
+					if ( in_array( 'loggedinUsers', $option['trackingDisabled'], true ) ) {
+						$option['trackingDisabled'] = array( 'loggedinUsers' );
+					} else {
+						$option['trackingDisabled'] = (array) $option['trackingDisabled'];
+					}
 				}
 				if ( isset( $option['adsenseLinked'] ) ) {
 					$option['adsenseLinked'] = (bool) $option['adsenseLinked'];
+				}
+				if ( isset( $option['dashboardView'] ) ) {
+					if ( ! in_array( $option['dashboardView'], array( 'universal-analytics', 'google-analytics-4' ), true ) ) {
+						$option['dashboardView'] = $this->get()['dashboardView'];
+					}
 				}
 			}
 			return $option;

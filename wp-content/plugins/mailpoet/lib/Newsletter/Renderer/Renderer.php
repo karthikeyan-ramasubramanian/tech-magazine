@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Newsletter\Renderer;
 
@@ -8,14 +8,15 @@ if (!defined('ABSPATH')) exit;
 use MailPoet\Config\Env;
 use MailPoet\Config\ServicesChecker;
 use MailPoet\Entities\NewsletterEntity;
-use MailPoet\InvalidStateException;
-use MailPoet\Models\Newsletter;
+use MailPoet\Logging\LoggerFactory;
 use MailPoet\Newsletter\NewslettersRepository;
 use MailPoet\Newsletter\Renderer\EscapeHelper as EHelper;
-use MailPoet\RuntimeException;
+use MailPoet\Newsletter\Sending\SendingQueuesRepository;
+use MailPoet\NewsletterProcessingException;
 use MailPoet\Tasks\Sending as SendingTask;
 use MailPoet\Util\pQuery\DomNode;
 use MailPoet\WP\Functions as WPFunctions;
+use MailPoetVendor\Html2Text\Html2Text;
 
 class Renderer {
   const NEWSLETTER_TEMPLATE = 'Template.html';
@@ -33,56 +34,52 @@ class Renderer {
   /** @var \MailPoetVendor\CSS */
   private $cSSInliner;
 
-  /** @var NewslettersRepository */
-  private $newslettersRepository;
-
   /** @var ServicesChecker */
   private $servicesChecker;
+
+  /** @var WPFunctions */
+  private $wp;
+
+  /*** @var LoggerFactory */
+  private $loggerFactory;
+
+  /*** @var NewslettersRepository */
+  private $newslettersRepository;
+
+  /*** @var SendingQueuesRepository */
+  private $sendingQueuesRepository;
 
   public function __construct(
     Blocks\Renderer $blocksRenderer,
     Columns\Renderer $columnsRenderer,
     Preprocessor $preprocessor,
     \MailPoetVendor\CSS $cSSInliner,
+    ServicesChecker $servicesChecker,
+    WPFunctions $wp,
+    LoggerFactory $loggerFactory,
     NewslettersRepository $newslettersRepository,
-    ServicesChecker $servicesChecker
+    SendingQueuesRepository $sendingQueuesRepository
   ) {
     $this->blocksRenderer = $blocksRenderer;
     $this->columnsRenderer = $columnsRenderer;
     $this->preprocessor = $preprocessor;
     $this->cSSInliner = $cSSInliner;
-    $this->newslettersRepository = $newslettersRepository;
     $this->servicesChecker = $servicesChecker;
+    $this->wp = $wp;
+    $this->loggerFactory = $loggerFactory;
+    $this->newslettersRepository = $newslettersRepository;
+    $this->sendingQueuesRepository = $sendingQueuesRepository;
   }
 
-  /**
-   * This is only temporary, when all calls are refactored to doctrine and only entity is passed we don't need this
-   * @param \MailPoet\Models\Newsletter|NewsletterEntity $newsletter
-   * @return NewsletterEntity|null
-   */
-  private function getNewsletter($newsletter) {
-    if ($newsletter instanceof Newsletter) {
-      return $this->newslettersRepository->findOneById($newsletter->id);
-    }
-    if (!$newsletter instanceof NewsletterEntity) {
-      throw new InvalidStateException();
-    }
-    return $newsletter;
-  }
-
-  public function render($newsletter, SendingTask $sendingTask = null, $type = false) {
+  public function render(NewsletterEntity $newsletter, SendingTask $sendingTask = null, $type = false) {
     return $this->_render($newsletter, $sendingTask, $type);
   }
 
-  public function renderAsPreview($newsletter, $type = false, ?string $subject = null) {
+  public function renderAsPreview(NewsletterEntity $newsletter, $type = false, ?string $subject = null) {
     return $this->_render($newsletter, null, $type, true, $subject);
   }
 
-  private function _render($newsletter, SendingTask $sendingTask = null, $type = false, $preview = false, $subject = null) {
-    $newsletter = $this->getNewsletter($newsletter);
-    if (!$newsletter instanceof NewsletterEntity) {
-      throw new RuntimeException('Newsletter was not found');
-    }
+  private function _render(NewsletterEntity $newsletter, SendingTask $sendingTask = null, $type = false, $preview = false, $subject = null) {
     $body = (is_array($newsletter->getBody()))
       ? $newsletter->getBody()
       : [];
@@ -99,14 +96,30 @@ class Renderer {
       $content = $this->addMailpoetLogoContentBlock($content, $styles);
     }
 
-    $content = $this->preprocessor->process($newsletter, $content, $preview, $sendingTask);
-    $renderedBody = $this->renderBody($newsletter, $content);
+    $language = $this->wp->getBloginfo('language');
+    $metaRobots = $preview ? '<meta name="robots" content="noindex, nofollow" />' : '';
+    $renderedBody = "";
+    try {
+      $content = $this->preprocessor->process($newsletter, $content, $preview, $sendingTask);
+      $renderedBody = $this->renderBody($newsletter, $content);
+    } catch (NewsletterProcessingException $e) {
+      $this->loggerFactory->getLogger(LoggerFactory::TOPIC_COUPONS)->error(
+        $e->getMessage(),
+        ['newsletter_id' => $newsletter->getId()]
+      );
+      $this->newslettersRepository->setAsCorrupt($newsletter);
+      if ($newsletter->getLatestQueue()) {
+        $this->sendingQueuesRepository->pause($newsletter->getLatestQueue());
+      }
+    }
     $renderedStyles = $this->renderStyles($styles);
     $customFontsLinks = StylesHelper::getCustomFontsLinks($styles);
 
     $template = $this->injectContentIntoTemplate(
       (string)file_get_contents(dirname(__FILE__) . '/' . self::NEWSLETTER_TEMPLATE),
       [
+        $language,
+        $metaRobots,
         htmlspecialchars($subject ?: $newsletter->getSubject()),
         $renderedStyles,
         $customFontsLinks,
@@ -208,7 +221,7 @@ class Renderer {
    */
   private function renderTextVersion($template) {
     $template = (mb_detect_encoding($template, 'UTF-8', true)) ? $template : utf8_encode($template);
-    return @\Html2Text\Html2Text::convert($template);
+    return @Html2Text::convert($template);
   }
 
   /**
@@ -223,7 +236,7 @@ class Renderer {
     // because tburry/pquery contains a bug and replaces the opening non mso condition incorrectly we have to replace the opening tag with correct value
     $template = $templateDom->__toString();
     $template = str_replace('<!--[if !mso]><![endif]-->', '<!--[if !mso]><!-- -->', $template);
-    $template = WPFunctions::get()->applyFilters(
+    $template = $this->wp->applyFilters(
       self::FILTER_POST_PROCESS,
       $template
     );
@@ -256,7 +269,7 @@ class Renderer {
           'blocks' => [
             [
               'type' => 'image',
-              'link' => 'http://www.mailpoet.com',
+              'link' => 'https://www.mailpoet.com/?ref=free-plan-user-email&utm_source=free_plan_user_email&utm_medium=email',
               'src' => Env::$assetsUrl . '/img/mailpoet_logo_newsletter.png',
               'fullWidth' => false,
               'alt' => 'Email Marketing Powered by MailPoet',

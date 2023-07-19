@@ -2,6 +2,10 @@
 defined( 'ABSPATH' ) || die();
 
 class STCFQ_Admin_Menu {
+	public static function register_assets() {
+		wp_register_style( 'stcfq-admin', STCFQ_PLUGIN_URL . 'assets/css/stcfq-admin.css', array(), STCFQ_PLUGIN_VERSION, 'all' );
+	}
+
 	public static function create_menu() {
 		$messages = add_menu_page(
 			esc_html__( 'Contact Form Query', 'contact-form-query' ),
@@ -26,7 +30,8 @@ class STCFQ_Admin_Menu {
 	}
 
 	public static function messages_assets() {
-		wp_enqueue_style( 'stcfq-admin', STCFQ_PLUGIN_URL . 'assets/css/stcfq-admin.css', array(), STCFQ_PLUGIN_VERSION, 'all' );
+		wp_enqueue_style( 'stcfq-admin' );
+		wp_style_add_data( 'stcfq-admin', 'rtl', 'replace' );
 		wp_enqueue_script( 'stcfq-admin', STCFQ_PLUGIN_URL . 'assets/js/stcfq-admin.js', array( 'jquery', 'jquery-form', 'jquery-ui-sortable', 'wp-color-picker' ), STCFQ_PLUGIN_VERSION, true );
 		wp_add_inline_script(
 			'stcfq-admin',
@@ -41,7 +46,8 @@ class STCFQ_Admin_Menu {
 
 	public static function settings_assets() {
 		wp_enqueue_style( 'wp-color-picker' );
-		wp_enqueue_style( 'stcfq-admin', STCFQ_PLUGIN_URL . 'assets/css/stcfq-admin.css', array(), STCFQ_PLUGIN_VERSION, 'all' );
+		wp_enqueue_style( 'stcfq-admin' );
+		wp_style_add_data( 'stcfq-admin', 'rtl', 'replace' );
 		wp_enqueue_script( 'stcfq-admin', STCFQ_PLUGIN_URL . 'assets/js/stcfq-admin.js', array( 'jquery', 'jquery-form', 'jquery-ui-sortable', 'wp-color-picker' ), STCFQ_PLUGIN_VERSION, true );
 		wp_add_inline_script(
 			'stcfq-admin',

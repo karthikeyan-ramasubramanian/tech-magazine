@@ -64,7 +64,7 @@ class FormidableForm extends FrmFormAction
         $tags = [];
         if ( ! empty($saved_integration) && in_array($saved_integration, Init::select2_tag_connections())) {
             $instance = ConnectionFactory::make($saved_integration);
-            if (method_exists($instance, 'get_tags')) {
+            if (is_object($instance) && method_exists($instance, 'get_tags')) {
                 $tags = $instance->get_tags();
             }
         }
@@ -170,7 +170,7 @@ class FormidableForm extends FrmFormAction
         $optin_data->payload             = $postdata;
         $optin_data->name                = Init::return_name($name, $first_name, $last_name);
         $optin_data->email               = $postdata['moEmail'];
-        $optin_data->optin_campaign_type = esc_html__('Formidable Forms', 'mailoptin');
+        $optin_data->optin_campaign_type = 'Formidable Forms';
 
         $optin_data->connection_service    = $connection_service;
         $optin_data->connection_email_list = moVar($settings, 'mofm_list');
@@ -217,7 +217,7 @@ class FormidableForm extends FrmFormAction
             $value = $_POST['item_meta'][$field_id];
         }
 
-        return $value;
+        return sanitize_text_field($value);
     }
 
     /**

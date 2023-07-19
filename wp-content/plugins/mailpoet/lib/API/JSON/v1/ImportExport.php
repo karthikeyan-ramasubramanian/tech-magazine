@@ -1,15 +1,15 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\API\JSON\v1;
 
 if (!defined('ABSPATH')) exit;
 
 
-use InvalidArgumentException;
 use MailPoet\API\JSON\Endpoint as APIEndpoint;
 use MailPoet\API\JSON\Error as APIError;
 use MailPoet\API\JSON\ResponseBuilders\SegmentsResponseBuilder;
 use MailPoet\Config\AccessControl;
+use MailPoet\ConflictException;
 use MailPoet\Cron\CronWorkerScheduler;
 use MailPoet\Cron\Workers\WooCommerceSync;
 use MailPoet\CustomFields\CustomFieldsRepository;
@@ -23,6 +23,7 @@ use MailPoet\Subscribers\ImportExport\Import\Import;
 use MailPoet\Subscribers\ImportExport\Import\MailChimp;
 use MailPoet\Subscribers\ImportExport\ImportExportRepository;
 use MailPoet\Subscribers\SubscribersRepository;
+use MailPoet\Tags\TagRepository;
 
 class ImportExport extends APIEndpoint {
 
@@ -50,6 +51,9 @@ class ImportExport extends APIEndpoint {
   /** @var SegmentsResponseBuilder */
   private $segmentsResponseBuilder;
 
+  /** @var TagRepository */
+  private $tagRepository;
+
   /** @var CronWorkerScheduler */
   private $cronWorkerScheduler;
 
@@ -66,7 +70,8 @@ class ImportExport extends APIEndpoint {
     SegmentSaveController $segmentSavecontroller,
     SegmentsResponseBuilder $segmentsResponseBuilder,
     CronWorkerScheduler $cronWorkerScheduler,
-    SubscribersRepository $subscribersRepository
+    SubscribersRepository $subscribersRepository,
+    TagRepository $tagRepository
   ) {
     $this->wpSegment = $wpSegment;
     $this->customFieldsRepository = $customFieldsRepository;
@@ -77,6 +82,7 @@ class ImportExport extends APIEndpoint {
     $this->segmentSavecontroller = $segmentSavecontroller;
     $this->cronWorkerScheduler = $cronWorkerScheduler;
     $this->segmentsResponseBuilder = $segmentsResponseBuilder;
+    $this->tagRepository = $tagRepository;
   }
 
   public function getMailChimpLists($data) {
@@ -105,6 +111,8 @@ class ImportExport extends APIEndpoint {
 
   public function addSegment($data) {
     try {
+      $data['name'] = isset($data['name']) ? sanitize_text_field($data['name']) : '';
+      $data['description'] = isset($data['description']) ? sanitize_textarea_field($data['description']) : '';
       $segment = $this->segmentSavecontroller->save($data);
       $response = $this->segmentsResponseBuilder->build($segment);
       return $this->successResponse($response);
@@ -112,7 +120,7 @@ class ImportExport extends APIEndpoint {
       return $this->badRequest([
         APIError::BAD_REQUEST => __('Please specify a name.', 'mailpoet'),
       ]);
-    } catch (InvalidArgumentException $exception) {
+    } catch (ConflictException $exception) {
       return $this->badRequest([
         APIError::BAD_REQUEST => __('Another record already exists. Please specify a different "name".', 'mailpoet'),
       ]);
@@ -127,6 +135,7 @@ class ImportExport extends APIEndpoint {
         $this->importExportRepository,
         $this->newsletterOptionsRepository,
         $this->subscriberRepository,
+        $this->tagRepository,
         json_decode($data, true)
       );
       $process = $import->process();

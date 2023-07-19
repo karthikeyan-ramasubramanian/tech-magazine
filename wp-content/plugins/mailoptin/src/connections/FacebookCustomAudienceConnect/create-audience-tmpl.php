@@ -25,7 +25,7 @@
 
 <script type="text/javascript">
     (function ($) {
-        $('#mo-create-fb-custom-audience').click(function (e) {
+        $('#mo-create-fb-custom-audience').on('click', function (e) {
             e.preventDefault();
             $.fancybox.open({
                 src: '#mo-create-fb-custom-audience-modal',

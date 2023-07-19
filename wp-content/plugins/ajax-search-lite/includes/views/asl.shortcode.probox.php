@@ -2,7 +2,7 @@
 
 	<?php do_action('asl_layout_before_magnifier', $id); ?>
 
-	<div class='promagnifier'>
+	<button class='promagnifier' aria-label="<?php echo esc_attr(asl_icl_t('Search magnifier button aria-Label', $style['aria_magnifier_label'])); ?>">
 		<?php do_action('asl_layout_in_magnifier', $id); ?>
 		<div class='innericon'>
 			<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="22" height="22" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
@@ -13,7 +13,7 @@
 						z"/>
 				</svg>
 		</div>
-	</div>
+	</button>
 
 	<?php do_action('asl_layout_after_magnifier', $id); ?>
 
@@ -33,9 +33,21 @@
 	<?php do_action('asl_layout_before_input', $id); ?>
 
 	<div class='proinput'>
-		<form autocomplete="off" aria-label='Ajax search form'>
-			<input aria-label='Search input' type='search' class='orig' name='phrase' placeholder='<?php echo asl_icl_t( "Search bar placeholder text", w_isset_def($style['defaultsearchtext'], '') ); ?>' value='<?php echo apply_filters('asl_print_search_query', get_search_query()); ?>' autocomplete="off"/>
-			<input aria-label='Autocomplete input, do not use this' type='text' class='autocomplete' name='phrase' value='' autocomplete="off"/>
+        <form role="search" action='#' autocomplete="off"
+			  aria-label="<?php echo esc_attr(asl_icl_t('Search form aria-Label', $style['aria_search_form_label'])); ?>">
+			<input aria-label="<?php echo esc_attr(asl_icl_t('Search input aria-Label', $style['aria_search_input_label'])); ?>"
+				   type='search' class='orig'
+				   name='phrase'
+				   placeholder='<?php echo asl_icl_t( "Search bar placeholder text", w_isset_def($style['defaultsearchtext'], '') ); ?>'
+				   value='<?php echo apply_filters('asl_print_search_query', get_search_query()); ?>'
+				   autocomplete="off"/>
+			<input aria-label="<?php echo esc_attr(asl_icl_t('Search autocomplete input aria-Label', $style['aria_search_autocomplete_label'])); ?>"
+				   type='text'
+				   class='autocomplete'
+				   tabindex="-1"
+				   name='phrase'
+				   value=''
+				   autocomplete="off" disabled/>
 			<input type='submit' value="Start search" style='width:0; height: 0; visibility: hidden;'>
 		</form>
 	</div>

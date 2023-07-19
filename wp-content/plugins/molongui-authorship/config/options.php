@@ -1119,7 +1119,7 @@ if ( true )
         (
             'advanced' => array
             (
-                'display'  => true,
+                'display'  => $is_pro,
                 'type'     => 'advanced',
                 'label'    => __( "Show Advanced", 'molongui-authorship' ),
                 'title'    => __( "Click to show advanced settings", 'molongui-authorship' ),
@@ -1638,7 +1638,7 @@ if ( true )
             ),
             'save' => array
             (
-                'display'  => true,
+                'display'  => $is_pro,
                 'type'     => 'save',
                 'label'    => __( "Save", 'molongui-authorship' ),
                 'title'    => __( "Save Settings", 'molongui-authorship' ),
@@ -2216,7 +2216,7 @@ if ( true )
         'type'     => 'header',
         'class'    => '',
         'id'       => 'main_user_roles_header',
-        'label'    => __( 'User Roles', 'molongui-authorship' ),
+        'label'    => __( "User Roles", 'molongui-authorship' ),
         'buttons'  => array
         (
             'advanced' => array
@@ -2230,7 +2230,7 @@ if ( true )
             ),
             'save' => array
             (
-                'display'  => true,
+                'display'  => $is_pro,
                 'type'     => 'save',
                 'label'    => __( "Save", 'molongui-authorship' ),
                 'title'    => __( "Save Settings", 'molongui-authorship' ),
@@ -2318,6 +2318,61 @@ if ( true )
     );
 
     $options = array_merge( $options, apply_filters( '_authorship/options/archives/user/markup', $user_archive ) );
+    $options[] = array
+    (
+        'display'  => true,
+        'advanced' => false,
+        'deps'     => '',
+        'search'   => '',
+        'type'     => 'header',
+        'class'    => '',
+        'id'       => 'user_permissions_header',
+        'label'    => __( "Permissions", 'molongui-authorship' ),
+        'buttons'  => array
+        (
+            'advanced' => array
+            (
+                'display'  => false,
+                'type'     => 'advanced',
+                'label'    => __( "Show Advanced", 'molongui-authorship' ),
+                'title'    => __( "Click to show advanced settings", 'molongui-authorship' ),
+                'class'    => 'm-advanced-options',
+                'disabled' => false,
+            ),
+            'save' => array
+            (
+                'display'  => $is_pro,
+                'type'     => 'save',
+                'label'    => __( "Save", 'molongui-authorship' ),
+                'title'    => __( "Save Settings", 'molongui-authorship' ),
+                'class'    => 'm-save-options',
+                'disabled' => true,
+            ),
+        ),
+    );
+    $permissions   = array();
+    $permissions[] = array
+    (
+        'display'  => apply_filters( 'authorship/options/display_banners', true ),
+        'advanced' => false,
+        'type'     => 'banner',
+        'class'    => '',
+        'default'  => '',
+        'id'       => 'permissions_hide_others_posts',
+        'title'    => __( "Prevent authors to see the Posts that other users are working on and keep Posts list shorter", 'molongui-authorship' ),
+        'desc'     => __( "By default, users see all posts but can only edit theirs. With this option you can hide other authors' posts for selected user roles. Custom user roles supported", 'molongui-authorship' ),
+        'label'    => '',
+        'button'   => array
+        (
+            'label'  => __( "Upgrade", 'molongui-authorship' ),
+            'title'  => __( "Upgrade", 'molongui-authorship' ),
+            'class'  => 'm-upgrade',
+            'href'   => MOLONGUI_AUTHORSHIP_WEB,
+            'target' => '_blank',
+        ),
+    );
+
+    $options = array_merge( $options, apply_filters( '_authorship/options/permissions/markup', $permissions ) );
 }
 if ( true )
 {
@@ -3006,74 +3061,6 @@ if ( true )
             'link' => '',
         ),
         'label'   => __( "Load vendor assets from remote CDN", 'molongui-authorship' ),
-    );
-    $options[] = array
-    (
-        'display'  => true,
-        'advanced' => false,
-        'deps'     => '',
-        'search'   => '',
-        'type'     => 'header',
-        'class'    => '',
-        'id'       => 'template_tags_header',
-        'label'    => __( 'Template Tags', 'molongui-authorship' ),
-        'buttons'  => array
-        (
-            'advanced' => array
-            (
-                'display'  => false,
-                'type'     => 'advanced',
-                'label'    => __( "Show Advanced", 'molongui-authorship' ),
-                'title'    => __( "Click to show advanced settings", 'molongui-authorship' ),
-                'class'    => 'm-advanced-options',
-                'disabled' => false,
-            ),
-            'save' => array
-            (
-                'display'  => true,
-                'type'     => 'save',
-                'label'    => __( "Save", 'molongui-authorship' ),
-                'title'    => __( "Save Settings", 'molongui-authorship' ),
-                'class'    => 'm-save-options',
-                'disabled' => true,
-            ),
-        ),
-    );
-    $options[] = array
-    (
-        'display'  => true,
-        'advanced' => false,
-        'deps'     => '',
-        'search'   => '',
-        'type'     => 'toggle',
-        'class'    => '',
-        'default'  => true,
-        'id'       => 'enable_byline_template_tags',
-        'title'    => '',
-        'desc'     => '',
-        'help'     => array
-        (
-            'text' => sprintf( __( "%sFully customized and functional bylines can be achieved using the provided template tags.%s %sIt requires coding skills, but using them is the best way to go in order to avoid byline issues (e.g., wrong author name being displayed).%s %sSome parameters can be provided to the template tags so bylines can be fully localized and customized with custom HTML markup and CSS styles.%s", 'molongui-authorship' ), '<p>', '</p>', '<p>', '</p>', '<p>', '</p>' ),
-            'link' => 'https://www.molongui.com/docs/molongui-authorship/howto/how-to-incorporate-molongui-authorship-template-tags-into-your-theme/',
-        ),
-        'label'    => __( "Enable Template Tags", 'molongui-authorship' ),
-    );
-    $options[] = array
-    (
-        'display'  => true,
-        'advanced' => false,
-        'deps'     => '',
-        'search'   => '',
-        'type'     => 'link',
-        'class'    => '',
-        'default'  => '',
-        'id'       => '',
-        'title'    => '',
-        'desc'     => '',
-        'help'     => __( "Click to open Plugin Docs", 'molongui-authorship' ),
-        'label'    => __( "Check out Template Tags documentation", 'molongui-authorship' ),
-        'href'     => 'https://www.molongui.com/docs/molongui-authorship/howto/how-to-incorporate-molongui-authorship-template-tags-into-your-theme/',
-        'target'   => '_blank',
     );
     $options[] = array
     (

@@ -193,7 +193,7 @@ class Connect extends AbstractMailjetConnect implements ConnectionInterface
             'label'       => __('First Name Property', 'mailoptin'),
             'description' => sprintf(
                 __('If subscribers first names are missing, change this to the correct contact property name. %sLearn more%s', 'mailoptin'),
-                '<a href="https://mailoptin.io/?p=21482" target="_blank">', '</a>'
+                '<a href="https://mailoptin.io/article/subscriber-name-missing-fix/" target="_blank">', '</a>'
             )
         ];
 
@@ -203,7 +203,7 @@ class Connect extends AbstractMailjetConnect implements ConnectionInterface
             'label'       => __('Last Name Property', 'mailoptin'),
             'description' => sprintf(
                 __('If subscribers last names are missing, change this to the correct attribute name. %sLearn more%s', 'mailoptin'),
-                '<a href="https://mailoptin.io/?p=21482" target="_blank">', '</a>'
+                '<a href="https://mailoptin.io/article/subscriber-name-missing-fix/" target="_blank">', '</a>'
             )
         ];
 

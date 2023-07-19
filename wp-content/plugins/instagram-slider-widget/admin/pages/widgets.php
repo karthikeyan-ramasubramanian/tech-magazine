@@ -93,8 +93,8 @@ class WIS_WidgetsPage extends WIS_Page {
 	 */
 	public function __construct( $plugin ) {
 		$this->id             = "widgets";
-		$this->page_title     = __( 'Social Slider Feeds', 'instagram-slider-widget' );
-		$this->menu_title     = __( 'Social Slider Feeds', 'instagram-slider-widget' );
+		$this->page_title     = __( 'Social Slider Feed', 'instagram-slider-widget' );
+		$this->menu_title     = __( 'Social Slider Feed', 'instagram-slider-widget' );
 		$this->menu_sub_title = __( 'Widgets', 'instagram-slider-widget' );
 		$this->menu_tab_title = __( 'Widgets', 'instagram-slider-widget' );
 		$this->menu_icon      = '~/admin/assets/img/wis.png';
@@ -151,7 +151,7 @@ class WIS_WidgetsPage extends WIS_Page {
 				update_option( 'widget_jr_insta_slider', $insta_widgets );
 			}
 
-			$_SERVER['REQUEST_URI'] = remove_query_arg( 'do' );
+			$_SERVER['REQUEST_URI'] = esc_url(remove_query_arg( 'do' ));
 			wp_redirect( $_SERVER['REQUEST_URI'] );
 		}
 

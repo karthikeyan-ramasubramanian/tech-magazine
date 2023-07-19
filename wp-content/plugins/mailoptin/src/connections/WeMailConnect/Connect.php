@@ -97,13 +97,13 @@ class Connect extends AbstractWeMailConnect implements ConnectionInterface
     }
 
     /**
-     * Replace placeholder tags with actual WeMail tags.
+     * Fulfill interface contract.
      *
      * {@inheritdoc}
      */
     public function replace_placeholder_tags($content, $type = 'html')
     {
-        return [];
+        return $this->replace_footer_placeholder_tags($content);
     }
 
     /**

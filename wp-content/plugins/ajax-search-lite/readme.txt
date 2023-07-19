@@ -3,8 +3,8 @@ Contributors: wpdreams
 Donate link: http://wp-dreams.com
 Tags: search, better wordpress search, search plugin, relevance search, widget, Post, ajax search, search filter, wp ajax search, custom fields search, better search, ajax search plugin, wp search, wp search plugin, filter, relevant search plugin, wordpress search, Live Search, shortcode, google, autocomplete, suggest, woocommerce, woocommerce search, product, product search, custom search, ajax, suggest, autosuggest, search autocomplete, live, plugin, sidebar, product tag search, products, woocommerce tag search, WooCommerce Plugin, shop, search by sku, relevant search, highlight, term, image, custom search, ecommerce, Predictive Search, search product, shop, typehead, suggest, instant-search
 Requires at least: 3.5
-Tested up to: 6.0
-Stable tag: 4.10
+Tested up to: 6.2
+Stable tag: 4.11.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,7 +17,7 @@ A powerful ajax search engine for WordPress. Add a live search form to your site
 Very smooth animations with mobile device support and regular updates. Use **Ajax Search Lite** as a replacement for the default WordPress search with a better looking, more efficient search engine.
 Fine-tune the user experience by providing a powerful ajax search plugin to your visitors. Supports custom post types and custom fields and more. Boost your site search engine with this custom built live search engine.
 
-[Live Demo](https://lite.ajaxsearchpro.com) | [Facebook](https://www.facebook.com/pages/WPDreams/383702515034741) | [Twitter](https://twitter.com/ernest_marcinko)
+[Live Demo](https://ajaxsearchpro.com) | [Facebook](https://www.facebook.com/wpdreams/) | [Twitter](https://twitter.com/ernest_marcinko)
 
 #### Features List
 
@@ -40,7 +40,7 @@ Fine-tune the user experience by providing a powerful ajax search plugin to your
 * Primary and Secondary ordering options
 * Highly compatible and responsive
 
-[Demo](https://lite.ajaxsearchpro.com) | [Pro Version Demo](https://ajaxsearchpro.com)
+[Demo](https://ajaxsearchpro.com)
 
 #### Support
 Feel free to [contact us](https://wordpress.org/support/plugin/ajax-search-lite/) via the support forums.
@@ -49,7 +49,7 @@ Feel free to [contact us](https://wordpress.org/support/plugin/ajax-search-lite/
 
 * [Front-end demo](https://ajaxsearchpro.com) | [Back-end demo](https://ajaxsearchpro.com/admin-demo/)
 * Search in BuddyPress, BBPress, JigoShop, Woocommerce
-* Search in Media Attachments and contents (PDF, Office etc..)
+* Search in Media Attachments and contents (PDF, Excel, Word, PowerPoint etc..)
 * Search in BuddyPress activity feed, users and group names
 * Search in PeepSo Groups and Group Activities
 * Search result grouping by categories or post types
@@ -105,6 +105,48 @@ and will let you know what to do.
 2. Administrator area - nice and smooth
 
 == Changelog ==
+= 4.11.1 =
+* Fixed styling for back-end advanced options tab
+* Improved security for custom field search handler and maintenance panel
+
+= 4.11 =
+* Added options to change the accessibility "aria" form labels excplicitly
+* Changed the live results image containers and added loading="lazy" attribute for native lazy loading support
+* Fixed an issue with the "More resulst" link
+* Fixed an issue with the google analitycs tracker script
+* Adjusted the tabindexes for better compatibility
+* Added a nonce for the custom field selector setting for better security
+* Removed a large chunk of unused and deprecated code
+* Removed the simplebar script
+* Removed all the old jQuery legacy scripts
+
+= 4.10.3 =
+* Added a few lines of CSS to fix common layout override issues
+* Changed the autocomplete field for a negative tabindex, so it is excluded from keyboard navigation
+* For better compatibility, changed the javascript response delimiters to not include "!" characters
+* Fixed an issue with the japanese ideographic space character
+* Fixed an issue with the search box container width
+* Fixed an issue, where the plugin width would "jump" whenever placed in a dynamic width element
+
+= 4.10.2 =
+* Fixed an issue with the script destructor for the init method
+* Updated core .pot translation file
+
+= 4.10.1 =
+* Added a new option to change the results box snapping
+* Improved Init method - Using intersection observer for the init script instead of the "inViewPort" solution
+* Greatly improved the overall script loading method. [Old (~8ms)](https://i.imgur.com/Li6v3jd.png) vs. [New (~0.5ms)](https://i.imgur.com/UAstMci.png)
+* Now every existing installation is switched to the new, more powerful non-legacy scripts. The legacy scripts are now deprecated.
+* Improved the browser pushstate (back and forward) button behavior
+* Scrollbar script disabled and deprecated by default - using modern browser scrollbar styling instead
+* Greatly improved the loading of the single font asset
+* Fixed the keyboard navigation for the results
+* Fixed an issue with the thumbnail generator library
+* Fixed a z-index issue when the search was placed in a fixed container
+* Fixed an issue with accented characters in the keyword highlighter feature
+* Hovering results and settings box positioning - fixed an issue, where the body margin was incorrectly subtracted from the position, when body transformation was not present
+* Fixed an issue with accented characters in the keyword highlighter feature
+
 = 4.10 =
 * The plugin no longer requires jQuery, it had been reworked to more efficient ES6 standards. By default, the old "legacy" scripts are still in use for existing installations - please see [this documentation](https://documentation.ajaxsearchlite.com/compatibility-settings/javascript-compatibility) on how to change it. It will be automatically changed in a future release.
 * Added a [results page live loader](https://documentation.ajaxsearchlite.com/general-options/results-page-live-loader) feature.
@@ -541,4 +583,4 @@ and will let you know what to do.
 
 == Plugin website ==
 
-`http://wp-dreams.com`
+`http://ajaxsearchpro.com`

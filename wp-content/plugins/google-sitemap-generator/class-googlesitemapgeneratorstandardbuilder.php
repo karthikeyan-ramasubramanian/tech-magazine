@@ -73,10 +73,25 @@ class GoogleSitemapGeneratorStandardBuilder {
 			return;
 		}
 
-			$pts = strrpos( $params, '-', $pts - strlen( $params ) - 1 );
+		$pts = strrpos( $params, '-', $pts - strlen( $params ) - 1 );
 
-			$post_type = substr( $params, 0, $pts );
-
+		$param_length   = count( explode( '-', $params ) );
+		$post_type = '';
+		$post_type      = substr( $params, 0, $pts );
+		$type           = explode( '-', $post_type );
+		if ( $param_length > 4 ) {
+			$new = array_slice( $type,0,count($type) -1 );
+			$post_type = implode( "-", $new );
+		} else	{
+			$post_type  = $type[0];
+		}
+		$limit          = $type[count($type)-1];
+		$limits         = substr( $limit, 1 );
+		$links_per_page = $gsg->get_option( 'links_page' );
+		if ( gettype( $links_per_page ) !== 'integer' ) {
+			$links_per_page = (int) 10;
+		}
+		$limit          = ( (int) $limits ) * $links_per_page;
 		if ( ! $post_type || ! in_array( $post_type, $gsg->get_active_post_types(), true ) ) {
 			return;
 		}
@@ -137,6 +152,8 @@ class GoogleSitemapGeneratorStandardBuilder {
 					{$ex_cat_s_q_l}
 				ORDER BY
 					p.post_date_gmt DESC
+				LIMIT
+					{$limit}
 			";
 			// Query for counting all relevant posts for this post type.
 			$qsc = "
@@ -154,7 +171,8 @@ class GoogleSitemapGeneratorStandardBuilder {
 			// phpcs:disable
 			$q = $wpdb->prepare( $qs, $post_type, $year, $month );
 			// phpcs:enable
-			$posts = $wpdb->get_results( $q ); // phpcs:ignore
+			$posts      = $wpdb->get_results( $q ); // phpcs:ignore
+			$posts      = array_slice( $posts, ( $limit - $links_per_page ) );
 			$post_count = count( $posts );
 			if ( ( $post_count ) > 0 ) {
 				/**
@@ -180,18 +198,7 @@ class GoogleSitemapGeneratorStandardBuilder {
 					if ( false === $total_post_count ) {
 						// phpcs:disable
 						$total_post_count = $wpdb->get_var(
-							$wpdb->prepare(
-								"SELECT
-									COUNT(*)
-								FROM
-									{$wpdb->posts} p
-								WHERE
-									p.post_password = ''
-									AND p.post_type = " . $post_type . "
-									AND p.post_status = 'publish'
-									" . $ex_post_s_q_l . ' '
-									. $ex_cat_s_q_l . ''
-							) // phpcs:ignore
+							$wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->posts} p WHERE p.post_password = '' AND p.post_type = '%s' AND p.post_status = 'publish' " . $ex_post_s_q_l . " " . $ex_cat_s_q_l . " ",  $post_type ) // phpcs:ignore
 						); // db call ok.
 						// phpcs:enable
 						wp_cache_add( $cache_key, $total_post_count, 'sitemap', 20 );
@@ -301,14 +308,15 @@ class GoogleSitemapGeneratorStandardBuilder {
 				FROM
 					$wpdb->posts
 				WHERE
-					post_date_gmt < " . $now . "
+					post_date_gmt < '%s'
 					AND post_status = 'publish'
 					AND post_type = 'post'
 				GROUP BY
 					YEAR(post_date_gmt),
 					MONTH(post_date_gmt)
 				ORDER BY
-				post_date_gmt DESC"
+				post_date_gmt DESC",
+				$now
 			)
 			// phpcs:enable
 		); // db call ok; no-cache ok.
@@ -424,27 +432,23 @@ class GoogleSitemapGeneratorStandardBuilder {
 		if ( 0 === $enabled_post_types_count ) {
 			$enabled_post_types[] = 'post';
 		}
-		// phpcs:disable
-		$authors = $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT DISTINCT
-				u.ID,
-				u.user_nicename,
-				MAX(p.post_modified_gmt) AS last_post
-			FROM
-				{$wpdb->users} u,
-				{$wpdb->posts} p
-			WHERE
-				p.post_author = u.ID
-				AND p.post_status = 'publish'
-				AND p.post_type IN('" . implode( "','", array_map( 'esc_sql', $enabled_post_types ) ) . "' )
-				AND p.post_password = ''
-			GROUP BY
-				u.ID,
-				u.user_nicename"
-			)
-		); // db call ok; no-cache ok.
-		// phpcs:enable
+		$sql     = "SELECT DISTINCT
+						u.ID,
+						u.user_nicename,
+						MAX(p.post_modified_gmt) AS last_post
+					FROM
+						{$wpdb->users} u,
+						{$wpdb->posts} p
+					WHERE
+						p.post_author = u.ID
+						AND p.post_status = 'publish'
+						AND p.post_type IN(" . implode( ', ', array_fill( 0, count( $enabled_post_types ), '%s' ) ) . ")
+						AND p.post_password = ''
+					GROUP BY
+						u.ID,
+						u.user_nicename";
+		$query   = call_user_func_array( array( $wpdb, 'prepare' ), array_merge( array( $sql ), $enabled_post_types ) );
+		$authors = $wpdb->get_results( $query ); // phpcs:ignore
 		if ( $authors && is_array( $authors ) ) {
 			foreach ( $authors as $author ) {
 				$url = get_author_posts_url( $author->ID, $author->user_nicename );
@@ -500,12 +504,23 @@ class GoogleSitemapGeneratorStandardBuilder {
 
 		$offset         = $taxonomy;
 		$links_per_page = $gsg->get_option( 'links_page' );
+		if ( gettype( $links_per_page ) !== 'integer' ) {
+			$links_per_page = (int) 10;
+		}
 		if ( strpos( $taxonomy, '-' ) !== false ) {
 			$offset   = substr( $taxonomy, strrpos( $taxonomy, '-' ) + 1 );
 			$taxonomy = str_replace( '-' . $offset, '', $taxonomy );
+		} else {
+			$offset = 1;
 		}
-		$offset = ( --$offset ) * $links_per_page;
-
+		$temp_offset = $offset;
+		$offset = intval( $offset );
+		if ( 0 === $offset ) {
+			$taxonomy = $taxonomy . '-' . $temp_offset;
+			$links_per_page = 10;
+		} else {
+			$offset = ( --$offset ) * $links_per_page;
+		}
 		$enabled_taxonomies = $this->get_enabled_taxonomies( $gsg );
 		if ( in_array( $taxonomy, $enabled_taxonomies, true ) ) {
 
@@ -584,6 +599,9 @@ class GoogleSitemapGeneratorStandardBuilder {
 	 */
 	public function build_product_tags( GoogleSitemapGenerator $gsg, $offset ) {
 		$links_per_page = $gsg->get_option( 'links_page' );
+		if ( gettype( $links_per_page ) !== 'integer' ) {
+			$links_per_page = (int) 10;
+		}
 		$offset         = ( --$offset ) * $links_per_page;
 
 		add_filter( 'get_terms_fields', array( $this, 'filter_terms_query' ), 20, 2 );
@@ -615,6 +633,9 @@ class GoogleSitemapGeneratorStandardBuilder {
 	 */
 	public function build_product_categories( GoogleSitemapGenerator $gsg, $offset ) {
 		$links_per_page = $gsg->get_option( 'links_page' );
+		if ( gettype( $links_per_page ) !== 'integer' ) {
+			$links_per_page = (int) 10;
+		}
 		$offset         = ( --$offset ) * $links_per_page;
 		$excludes       = array();
 		$excl_cats      = $gsg->get_option( 'b_exclude_cats' ); // Excluded cats.
@@ -654,13 +675,19 @@ class GoogleSitemapGeneratorStandardBuilder {
 		$pages = $gsg->get_pages();
 		if ( $pages && is_array( $pages ) && count( $pages ) > 0 ) {
 			foreach ( $pages as $page ) {
-
+				// Disabled phpcs for backward compatibility .
+				// phpcs:disable
+				$url         = ! empty( $page->get_url() ) ? $page->get_url() : $page->_url;
+				$change_freq = ! empty( $page->get_change_freq() ) ? $page->get_change_freq() : $page->_changeFreq;
+				$priority    = ! empty( $page->get_priority() ) ? $page->get_priority() : $page->_priority;
+				$last_mod    = ! empty( $page->_lastMod ) ? $page->_lastMod : $page->last_mod;
+				// phpcs:enable
 				/**
 				 * Description for $page variable.
 				 *
 				 * @var $page GoogleSitemapGeneratorPage
 				 */
-				$gsg->add_url( $page->get_url(), $page->get_last_mod(), $page->get_change_freq(), $page->get_priority() );
+				$gsg->add_url( $url, $last_mod, $change_freq, $priority );
 			}
 		}
 	}
@@ -679,7 +706,8 @@ class GoogleSitemapGeneratorStandardBuilder {
 		global $wpdb;
 		$blog_update    = strtotime( get_lastpostmodified( 'gmt' ) );
 		$links_per_page = $gsg->get_option( 'links_page' );
-		if ( 0 === $links_per_page ) {
+		$links_per_page = (int) $links_per_page;
+		if ( 0 === $links_per_page || is_nan( $links_per_page ) ) {
 			$links_per_page = 10;
 			$gsg->set_option( 'links_page', 10 );
 		}
@@ -694,16 +722,17 @@ class GoogleSitemapGeneratorStandardBuilder {
 			$excludes = $excl_cats;
 		}
 
-		foreach ( $taxonomies as $tax ) {
-			if ( ! in_array( $tax, $taxonomies_to_exclude, true ) ) {
-				$step         = 1;
-				$taxs         = get_terms( $tax, array( 'exclude' => $excludes ) );
-				$size_of_taxs = count( $taxs );
-				for ( $tax_count = 0; $tax_count < $size_of_taxs; $tax_count++ ) {
-					if ( 0 === ( $tax_count % $links_per_page ) && '' !== $taxs[ $tax_count ]->taxonomy ) {
-						$gsg->add_sitemap( 'tax-' . $taxs[ $tax_count ]->taxonomy, $step, $blog_update );
+		foreach ( $taxonomies as $taxonomy ) {
+			if ( ! in_array( $taxonomy, $taxonomies_to_exclude, true ) ) {
+				$step = 1;
+				$taxs = get_terms( $taxonomy, array( 'exclude' => $excludes ) );
+				$i    = 0;
+				foreach ( $taxs as $tax ) {
+					if ( 0 === ( $i % $links_per_page ) && '' !== $tax->taxonomy ) {
+						$gsg->add_sitemap( 'tax-' . $tax->taxonomy, $step, $blog_update );
 						$step = ++$step;
 					}
+					$i++;
 				}
 			}
 		}
@@ -750,7 +779,8 @@ class GoogleSitemapGeneratorStandardBuilder {
 		$pages = $gsg->get_pages();
 		if ( count( $pages ) > 0 ) {
 			foreach ( $pages as $page ) {
-				if ( $page instanceof GoogleSitemapGeneratorPage && $page->get_url() ) {
+				$url = ! empty( $page->get_url() ) ? $page->get_url() : ( property_exists( $page, '_url' ) ? $page->_url : '' );
+				if ( $page instanceof GoogleSitemapGeneratorPage && $url ) {
 					$gsg->add_sitemap( 'externals', null, $blog_update );
 					break;
 				}
@@ -792,26 +822,32 @@ class GoogleSitemapGeneratorStandardBuilder {
 						{$wpdb->posts} p
 					WHERE
 						p.post_password = ''
-						AND p.post_type = '" . esc_sql( $post_type_custom ) . "'
+						AND p.post_type = '%s'
 						AND p.post_status = 'publish'
-						" . $ex_post_s_q_l . ''
+						" . $ex_post_s_q_l . ""
 						. $ex_cat_s_q_l . "
 					GROUP BY
 						YEAR(p.post_date_gmt),
 						MONTH(p.post_date_gmt)
 					ORDER BY
-						p.post_date_gmt DESC"
+						p.post_date_gmt DESC",
+						$post_type_custom
 				);
 				$posts = $wpdb->get_results($prp);
 				if ( $posts ) {
 					if ( 'post' === $post_type_custom ) {
 						$has_posts = true;
 					}
-
 					$has_enabled_post_types_posts = true;
-
 					foreach ( $posts as $post ) {
-						$gsg->add_sitemap( 'pt', $post_type_custom . '-' . sprintf( '%04d-%02d', $post->year, $post->month ), $gsg->get_timestamp_from_my_sql( $post->last_mod ) );
+						$step = 1;
+						for ( $i = 0; $i < $post->numposts; $i++ ) {
+							if ( 0 === ( $i % $links_per_page ) ) {
+								$gsg->add_sitemap( 'pt', $post_type_custom . '-p' . $step . '-' . sprintf( '%04d-%02d', $post->year, $post->month ), $gsg->get_timestamp_from_my_sql( $post->last_mod ), 'p' . $step );
+								$step = ++$step;
+							}
+						}
+						// $gsg->add_sitemap( 'pt', $post_type_custom . '-' . sprintf( '%04d-%02d', $post->year, $post->month ), $gsg->get_timestamp_from_my_sql( $post->last_mod ) );
 					}
 				}
 				// phpcs:enable

@@ -82,7 +82,7 @@ class Console extends Analytics {
 		$this->http_post( 'https://www.googleapis.com/siteVerification/v1/webResource?verificationMethod=META', $args );
 
 		// Sync sitemap.
-		as_enqueue_async_action( 'rank_math/analytics/sync_sitemaps' );
+		as_enqueue_async_action( 'rank_math/analytics/sync_sitemaps', [], 'rank-math' );
 
 		return $this->is_success();
 	}
@@ -100,7 +100,7 @@ class Console extends Analytics {
 
 		$rank_math_google_sites = [];
 		$response               = $this->http_get( 'https://www.googleapis.com/webmasters/v3/sites' );
-		if ( ! $this->is_success() ) {
+		if ( ! $this->is_success() || empty( $response['siteEntry'] ) ) {
 			return $rank_math_google_sites;
 		}
 
@@ -186,12 +186,18 @@ class Console extends Analytics {
 			];
 		}
 
+		$default            = trailingslashit( strtolower( home_url() ) );
+		$rank_math_site_url = get_option( 'rank_math_google_analytic_profile', [ 'profile' => $default ] );
+		$rank_math_site_url = empty( $rank_math_site_url['profile'] ) ? $default : $rank_math_site_url['profile'];
+
+		$workflow = 'console';
+		$this->set_workflow( $workflow );
 		$response = $this->http_post(
-			'https://www.googleapis.com/webmasters/v3/sites/' . rawurlencode( self::get_site_url() ) . '/searchAnalytics/query',
+			'https://www.googleapis.com/webmasters/v3/sites/' . rawurlencode( $rank_math_site_url ) . '/searchAnalytics/query',
 			$args
 		);
 
-		$this->log_failed_request( $response, 'console', $start_date, func_get_args() );
+		$this->log_failed_request( $response, $workflow, $start_date, func_get_args() );
 
 		if ( ! $this->is_success() || ! isset( $response['rows'] ) ) {
 			return false;
@@ -282,7 +288,7 @@ class Console extends Analytics {
 
 			if ( Str::contains( 'sc-domain:', $rank_math_site_url ) ) {
 				$rank_math_site_url = str_replace( 'sc-domain:', '', $rank_math_site_url );
-				$rank_math_site_url = ( is_ssl() ? 'https' : 'http' ) . $rank_math_site_url;
+				$rank_math_site_url = ( is_ssl() ? 'https://' : 'http://' ) . $rank_math_site_url;
 			}
 		}
 

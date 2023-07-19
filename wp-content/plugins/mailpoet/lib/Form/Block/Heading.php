@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Form\Block;
 
@@ -45,7 +45,7 @@ class Heading {
     if ($classes) {
       $result[] = $classes;
     }
-    if (isset($block['params']['anchor'])) {
+    if (!empty($block['params']['anchor'])) {
       $result[] = $this->renderAnchor($block);
     }
     $styles = $this->renderStyle($block);
@@ -89,14 +89,14 @@ class Heading {
 
   private function renderStyle(array $block): string {
     $styles = [];
-    if (isset($block['params']['align'])) {
+    if (!empty($block['params']['align'])) {
       $styles[] = 'text-align: ' . $block['params']['align'];
     }
-    if (isset($block['params']['text_color'])) {
+    if (!empty($block['params']['text_color'])) {
       $styles[] = 'color: ' . $block['params']['text_color'];
     }
     if (!empty($block['params']['font_size'])) {
-      $styles[] = 'font-size: ' . $block['params']['font_size'] . 'px';
+      $styles[] = 'font-size: ' . $block['params']['font_size'] . (is_numeric($block['params']['font_size']) ? 'px' : '');
     }
     if (!empty($block['params']['line_height'])) {
       $styles[] = 'line-height: ' . $block['params']['line_height'];

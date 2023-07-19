@@ -574,7 +574,6 @@ authorship_editor_heading( __( "Social Icons", 'molongui-authorship' ) );
 authorship_editor_select( 'author_box_social_show', __( "Show social icons", 'molongui-authorship' ), array( '1' => __( 'Show' ), '0' => __( 'Hide' ) ), array
     (
         'default' => '1',
-        'parent' => 'social',
     )
 );
 authorship_editor_separator();

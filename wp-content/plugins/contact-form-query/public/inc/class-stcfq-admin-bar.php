@@ -22,7 +22,9 @@ class STCFQ_Admin_Bar {
 
 	public static function admin_bar_menu_assets() {
 		if ( current_user_can( 'manage_options' ) ) {
-			wp_enqueue_style( 'stcfq-admin-bar', STCFQ_PLUGIN_URL . 'assets/css/stcfq-admin-bar.css', array(), STCFQ_PLUGIN_VERSION, 'all' );
+			wp_register_style( 'stcfq-admin-bar', STCFQ_PLUGIN_URL . 'assets/css/stcfq-admin-bar.css', array(), STCFQ_PLUGIN_VERSION, 'all' );
+			wp_enqueue_style( 'stcfq-admin-bar' );
+			wp_style_add_data( 'stcfq-admin-bar', 'rtl', 'replace' );
 		}
 	}
 }

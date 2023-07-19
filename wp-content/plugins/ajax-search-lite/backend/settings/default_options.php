@@ -72,17 +72,11 @@ function asl_do_init_options() {
 		'js_source' => "jqueryless-min",
 		'js_source_def' => array(
 			array('option' => 'Non minified', 'value' => 'jqueryless-nomin'),
-			array('option' => 'Minified (default)', 'value' => 'jqueryless-min'),
-			array('option' => 'Legacy Non minified', 'value' => 'nomin'),
-			array('option' => 'Legacy Minified', 'value' => 'min'),
-			array('option' => 'Legacy Non-minified scoped', 'value' => 'nomin-scoped'),
-			array('option' => 'Legacy Minified scoped', 'value' => 'min-scoped')
+			array('option' => 'Minified (default)', 'value' => 'jqueryless-min')
 		),
 		'script_loading_method' => 'optimized',
-        'load_scroll_js' => 'yes',
-        'js_fix_duplicates' => 1,
-        "detect_ajax" => 0,
-        "js_retain_popstate" => 0,
+		'init_instances_inviewport_only' => 1,
+        "detect_ajax" => 1,
         'load_google_fonts' => 1,
         // DB
         'query_soft_check' => 0,
@@ -110,6 +104,7 @@ function asl_do_init_options() {
         'custom_redirect_url' => '?s={phrase}',
         'results_per_page' => 'auto',
         'triggerontype' => 1,
+		'trigger_update_href' => 0,
         'customtypes' => array('post', 'page'),
         'searchintitle' => 1,
         'searchincontent' => 1,
@@ -205,8 +200,13 @@ function asl_do_init_options() {
         'exsearchintaxonomiestext' => "Filter by",
         'exsearchincategoriestext' => "Filter by Categories",
 
+		'auto_populate' => 'disabled',
+		'auto_populate_phrase' => '',
+		'auto_populate_count' => '1',
+
         /* Layout Options */
         // Box layout
+		'results_snap_to' => 'left',
         'box_width' => "100%",
         'box_width_tablet' => '100%',
         'box_width_phone' => '100%',
@@ -329,7 +329,14 @@ function asl_do_init_options() {
         'polylang_compatibility' => 1,
 
 		'kw_exceptions' => '',
-		'kw_exceptions_e' => ''
+		'kw_exceptions_e' => '',
+
+		// Accessibility
+		'aria_search_form_label' => 'Search form',
+		'aria_settings_form_label' => 'Search settings form',
+		'aria_search_input_label' => 'Search input',
+		'aria_search_autocomplete_label' => 'Search autocomplete input',
+		'aria_magnifier_label' => 'Search magnifier button',
     );
 }
 

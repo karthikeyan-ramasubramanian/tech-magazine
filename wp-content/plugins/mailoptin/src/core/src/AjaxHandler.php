@@ -175,10 +175,10 @@ class AjaxHandler
         }
 
         $email_campaign_id = absint($_REQUEST['email_campaign_id']);
-        $admin_email = EmailCampaignRepository::get_customizer_value($email_campaign_id, 'send_test_email_input');
-        if(empty($admin_email)) $admin_email = mo_test_admin_email();
+        $admin_email       = EmailCampaignRepository::get_customizer_value($email_campaign_id, 'send_test_email_input');
+        if (empty($admin_email)) $admin_email = mo_test_admin_email();
 
-        $campaign_subject  = Misc::parse_email_subject(EmailCampaignRepository::get_customizer_value($email_campaign_id, 'email_campaign_subject'));
+        $campaign_subject = Misc::parse_email_subject(EmailCampaignRepository::get_customizer_value($email_campaign_id, 'email_campaign_subject'));
 
         if (EmailCampaignRepository::is_newsletter($email_campaign_id)) {
             $campaign_subject = Misc::parse_email_subject(EmailCampaignRepository::get_customizer_value($email_campaign_id, 'email_campaign_title'));
@@ -543,7 +543,8 @@ class AjaxHandler
                 array('redirect' => Email_Campaign_List::_campaign_customize_url($email_campaign_id))
             );
         } else {
-            wp_send_json_error();
+            global $wpdb;
+            wp_send_json_error(isset($wpdb->last_error) ? $wpdb->last_error : null);
         }
 
         wp_die();
@@ -952,8 +953,15 @@ class AjaxHandler
             return AbstractConnect::ajax_failure($no_email_provider_or_list_error);
         }
 
+        $conversion_data->email = trim(isset($conversion_data->email) ? $conversion_data->email : '');
+
+        if (empty($conversion_data->email) || ! is_email($conversion_data->email)) {
+            return AbstractConnect::ajax_failure(__('Email address is not valid. Please try again.', 'mailoptin'));
+        }
+
         $extras                          = $conversion_data->payload;
         $extras['optin_campaign_id']     = $optin_campaign_id;
+        $extras['optin_campaign_type']   = $conversion_data->optin_campaign_type;
         $extras['connection_service']    = $connection_service;
         $extras['connection_email_list'] = $connection_email_list;
         // useful for third party integration to specify custom fields.
@@ -970,7 +978,7 @@ class AjaxHandler
         $extras['mo_campaign_name'] = OptinCampaignsRepository::get_optin_campaign_name($conversion_data->optin_campaign_id);
 
         //add the disable_double_optin for external forms
-        if($optin_campaign_id == 0) {
+        if ($optin_campaign_id == 0) {
             $extras['is_double_optin'] = $conversion_data->is_double_optin;
         }
 
@@ -995,8 +1003,8 @@ class AjaxHandler
             return;
         }
 
-        $payload           = sanitize_data($_REQUEST['stat_data']);
-        $optin_uuid        = $payload['optin_uuid'];
+        $payload           = sanitize_data(moVar($_REQUEST, 'stat_data', []));
+        $optin_uuid        = moVar($payload, 'optin_uuid', '');
         $optin_campaign_id = OptinCampaignsRepository::get_optin_campaign_id_by_uuid($optin_uuid);
         $stat_type         = 'impression';
         (new OptinCampaignStat($optin_campaign_id))->save($stat_type);
@@ -1155,7 +1163,7 @@ class AjaxHandler
             stripslashes(sanitize_text_field($_POST['custom_fields'])), true
         );
 
-        $custom_fields['system_fields'] = \MailOptin\Core\system_form_fields();
+        $custom_fields['system_fields'] = system_form_fields();
 
         $merge_fields = ConnectionFactory::make($connection)->get_optin_fields($list_id);
 
@@ -1220,6 +1228,8 @@ class AjaxHandler
      */
     public function page_targeting_search()
     {
+        current_user_has_privilege() || exit;
+
         $q           = sanitize_text_field($_REQUEST['q']);
         $search_type = sanitize_text_field($_REQUEST['search_type']);
         $response    = array();
@@ -1255,7 +1265,71 @@ class AjaxHandler
             case 'RegisteredUsersConnect_users' :
                 $response = ControlsHelpers::get_users($q);
                 break;
+            case 'MemberPressConnect_members' :
+                if (class_exists('\MeprUser')) {
+                    $members = \MeprUser::list_table('', '', '', $q, 'any', '0');
+                    if (is_array($members['results']) && ! empty($members['results'])) {
+                        $response = [];
+                        foreach ($members['results'] as $member) {
+                            $response[$member->ID] = sprintf('%s %s (%s)', $member->first_name, $member->last_name, $member->email);
+                        }
+                    }
+                }
+                break;
+            case 'woocommerce_customers' :
+                if (class_exists('\WooCommerce')) {
+
+                    $wp_user_query = new \WP_User_Query(
+                        array(
+                            'search'         => "*{$q}*",
+                            'search_columns' => array(
+                                'user_login',
+                                'user_nicename',
+                                'user_email',
+                                'ID',
+                                'display_name'
+                            ),
+                            'role'           => 'customer',
+                            'fields'         => ['ID', 'user_email', 'display_name']
+                        ));
+
+                    $users = $wp_user_query->get_results();
+
+                    $wp_user_query2 = new \WP_User_Query(
+                        array(
+                            'meta_query' => array(
+                                'relation' => 'OR',
+                                array(
+                                    'key'     => 'first_name',
+                                    'value'   => $q,
+                                    'compare' => 'LIKE'
+                                ),
+                                array(
+                                    'key'     => 'last_name',
+                                    'value'   => $q,
+                                    'compare' => 'LIKE'
+                                )
+                            ),
+                            'role'       => 'customer',
+                            'fields'     => ['ID', 'user_email', 'display_name']
+                        )
+                    );
+
+                    $users2 = $wp_user_query2->get_results();
+
+                    $users = array_unique(array_merge($users, $users2), SORT_REGULAR);
+
+                    if (is_array($users) && ! empty($users)) {
+                        $response = [];
+                        foreach ($users as $user) {
+                            $response[$user->ID] = sprintf('%s (%s)', $user->display_name, $user->user_email);
+                        }
+                    }
+                }
+                break;
         }
+
+        $response = apply_filters('mo_page_targeting_search_response', $response, $search_type, $q);
 
         if (strpos($search_type, 'ch_get_terms') !== false) {
             $param    = explode('|', $search_type);

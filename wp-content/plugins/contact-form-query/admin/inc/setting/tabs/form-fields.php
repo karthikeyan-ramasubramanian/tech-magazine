@@ -169,7 +169,35 @@ $feedback_messages = STCFQ_Helper::feedback_messages();
 
 								<div class="stcfq-accordion-field">
 									<span class="stcfq-accordion-field-label">
-										<label for="stcfq_form_classes_button"><?php esc_html_e( 'Additional Class (use space for multiple classes)', 'contact-form-query' ); ?></label>
+										<label for="stcfq_form_classes_button_parent">
+											<?php esc_html_e( 'Additional Class for Button Container (use space for multiple classes)', 'contact-form-query' ); ?>
+											<hr>
+											<?php
+											echo wp_kses(
+												__( 'Example: <span class="stcfq-text-light">wp-block-buttons', 'contact-form-query' ),
+												array( 'span' => array( 'class' => array() ) )
+											);
+											?>
+										</label>
+									</span>
+
+									<span class="stcfq-accordion-field-input">
+										<input name="parent_classes_button" type="text" id="stcfq_form_classes_button_parent" value="<?php echo esc_attr( $submit_button['parent_classes'] ); ?>" class="regular-text">
+									</span>
+								</div>
+
+								<div class="stcfq-accordion-field">
+									<span class="stcfq-accordion-field-label">
+										<label for="stcfq_form_classes_button">
+											<?php esc_html_e( 'Additional Class for Button Element (use space for multiple classes)', 'contact-form-query' ); ?>
+											<hr>
+											<?php
+											echo wp_kses(
+												__( 'Example: <span class="stcfq-text-light">wp-block-button wp-block-button-link wp-element-button</span>', 'contact-form-query' ),
+												array( 'span' => array( 'class' => array() ) )
+											);
+											?>
+										</label>
 									</span>
 									<span class="stcfq-accordion-field-input">
 										<input name="classes_button" type="text" id="stcfq_form_classes_button" value="<?php echo esc_attr( $submit_button['classes'] ); ?>" class="regular-text">

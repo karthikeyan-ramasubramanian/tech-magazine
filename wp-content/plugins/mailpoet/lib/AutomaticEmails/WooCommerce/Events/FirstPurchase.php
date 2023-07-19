@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\AutomaticEmails\WooCommerce\Events;
 
@@ -7,12 +7,13 @@ if (!defined('ABSPATH')) exit;
 
 use MailPoet\AutomaticEmails\WooCommerce\WooCommerce;
 use MailPoet\DI\ContainerWrapper;
+use MailPoet\Entities\NewsletterEntity;
+use MailPoet\Entities\SendingQueueEntity;
+use MailPoet\Entities\SubscriberEntity;
 use MailPoet\Logging\LoggerFactory;
-use MailPoet\Models\Newsletter;
-use MailPoet\Models\SendingQueue;
-use MailPoet\Models\Subscriber;
 use MailPoet\Newsletter\AutomaticEmailsRepository;
 use MailPoet\Newsletter\Scheduler\AutomaticEmailScheduler;
+use MailPoet\Subscribers\SubscribersRepository;
 use MailPoet\WooCommerce\Helper as WCHelper;
 use MailPoet\WP\Functions as WPFunctions;
 
@@ -32,18 +33,22 @@ class FirstPurchase {
   private $loggerFactory;
 
   /** @var AutomaticEmailsRepository */
-  private $repository;
+  private $automaticEmailsRepository;
+
+  /** @var SubscribersRepository */
+  private $subscribersRepository;
 
   public function __construct(
     WCHelper $helper = null
   ) {
     if ($helper === null) {
-      $helper = new WCHelper();
+      $helper = ContainerWrapper::getInstance()->get(WCHelper::class);
     }
     $this->helper = $helper;
     $this->scheduler = ContainerWrapper::getInstance()->get(AutomaticEmailScheduler::class);
     $this->loggerFactory = LoggerFactory::getInstance();
-    $this->repository = ContainerWrapper::getInstance()->get(AutomaticEmailsRepository::class);
+    $this->automaticEmailsRepository = ContainerWrapper::getInstance()->get(AutomaticEmailsRepository::class);
+    $this->subscribersRepository = ContainerWrapper::getInstance()->get(SubscribersRepository::class);
   }
 
   public function init() {
@@ -70,20 +75,43 @@ class FirstPurchase {
   public function getEventDetails() {
     return [
       'slug' => self::SLUG,
-      'title' => WPFunctions::get()->__('First Purchase', 'mailpoet'),
-      'description' => WPFunctions::get()->__('Let MailPoet send an email to customers who make their first purchase.', 'mailpoet'),
-      'listingScheduleDisplayText' => WPFunctions::get()->__('Email sent when a customer makes their first purchase.', 'mailpoet'),
+      'title' => __('First Purchase', 'mailpoet'),
+      'description' => __('Let MailPoet send an email to customers who make their first purchase.', 'mailpoet'),
+      'listingScheduleDisplayText' => __('Email sent when a customer makes their first purchase.', 'mailpoet'),
+      'afterDelayText' => __('after the first purchase', 'mailpoet'),
       'badge' => [
-        'text' => WPFunctions::get()->__('Must-have', 'mailpoet'),
+        'text' => __('Must-have', 'mailpoet'),
         'style' => 'red',
+      ],
+      'timeDelayValues' => [
+        'immediate' => [
+          'text' => __('immediately', 'mailpoet'),
+          'displayAfterTimeNumberField' => false,
+        ],
+        'minutes' => [
+          'text' => __('minute(s)', 'mailpoet'),
+          'displayAfterTimeNumberField' => true,
+        ],
+        'hours' => [
+          'text' => __('hour(s)', 'mailpoet'),
+          'displayAfterTimeNumberField' => true,
+        ],
+        'days' => [
+          'text' => __('day(s)', 'mailpoet'),
+          'displayAfterTimeNumberField' => true,
+        ],
+        'weeks' => [
+          'text' => __('week(s)', 'mailpoet'),
+          'displayAfterTimeNumberField' => true,
+        ],
       ],
       'shortcodes' => [
         [
-          'text' => WPFunctions::get()->__('Order amount', 'mailpoet'),
+          'text' => __('Order amount', 'mailpoet'),
           'shortcode' => self::ORDER_TOTAL_SHORTCODE,
         ],
         [
-          'text' => WPFunctions::get()->__('Order date', 'mailpoet'),
+          'text' => __('Order date', 'mailpoet'),
           'shortcode' => self::ORDER_DATE_SHORTCODE,
         ],
       ],
@@ -103,9 +131,9 @@ class FirstPurchase {
     }
     $this->loggerFactory->getLogger(self::SLUG)->info(
       'handleOrderDateShortcode called', [
-        'newsletter_id' => ($newsletter instanceof Newsletter) ? $newsletter->id : null,
-        'subscriber_id' => ($subscriber instanceof Subscriber) ? $subscriber->id : null,
-        'task_id' => ($queue instanceof SendingQueue) ? $queue->taskId : null,
+        'newsletter_id' => ($newsletter instanceof NewsletterEntity) ? $newsletter->getId() : null,
+        'subscriber_id' => ($subscriber instanceof SubscriberEntity) ? $subscriber->getId() : null,
+        'task_id' => ($queue instanceof SendingQueueEntity) ? (($task = $queue->getTask()) ? $task->getId() : null) : null,
         'shortcode' => $shortcode,
         'result' => $result,
       ]
@@ -126,9 +154,9 @@ class FirstPurchase {
     }
     $this->loggerFactory->getLogger(self::SLUG)->info(
       'handleOrderTotalShortcode called', [
-        'newsletter_id' => ($newsletter instanceof Newsletter) ? $newsletter->id : null,
-        'subscriber_id' => ($subscriber instanceof Subscriber) ? $subscriber->id : null,
-        'task_id' => ($queue instanceof SendingQueue) ? $queue->taskId : null,
+        'newsletter_id' => ($newsletter instanceof NewsletterEntity) ? $newsletter->getId() : null,
+        'subscriber_id' => ($subscriber instanceof SubscriberEntity) ? $subscriber->getId() : null,
+        'task_id' => ($queue instanceof SendingQueueEntity) ? (($task = $queue->getTask()) ? $task->getId() : null) : null,
         'shortcode' => $shortcode,
         'result' => $result,
       ]
@@ -165,9 +193,9 @@ class FirstPurchase {
       'order_id' => $orderDetails->get_id(),
     ];
 
-    $subscriber = Subscriber::getWooCommerceSegmentSubscriber($customerEmail);
+    $subscriber = $this->subscribersRepository->getWooCommerceSegmentSubscriber($customerEmail);
 
-    if (!$subscriber instanceof Subscriber) {
+    if (!$subscriber instanceof SubscriberEntity) {
       $this->loggerFactory->getLogger(self::SLUG)->info(
         'Email not scheduled because the customer was not found as WooCommerce list subscriber',
         ['order_id' => $orderId, 'customer_email' => $customerEmail]
@@ -175,18 +203,18 @@ class FirstPurchase {
       return;
     }
 
-    $checkEmailWasNotScheduled = function (Newsletter $newsletter) use ($subscriber) {
-      return !$this->repository->wasScheduledForSubscriber($newsletter->id, $subscriber->id);
+    $checkEmailWasNotScheduled = function (NewsletterEntity $newsletter) use ($subscriber) {
+      return !$this->automaticEmailsRepository->wasScheduledForSubscriber((int)$newsletter->getId(), (int)$subscriber->getId());
     };
 
     $this->loggerFactory->getLogger(self::SLUG)->info(
       'Email scheduled', [
         'order_id' => $orderId,
         'customer_email' => $customerEmail,
-        'subscriber_id' => $subscriber->id,
+        'subscriber_id' => $subscriber->getId(),
       ]
     );
-    $this->scheduler->scheduleAutomaticEmail(WooCommerce::SLUG, self::SLUG, $checkEmailWasNotScheduled, $subscriber->id, $meta);
+    $this->scheduler->scheduleAutomaticEmail(WooCommerce::SLUG, self::SLUG, $checkEmailWasNotScheduled, $subscriber, $meta);
   }
 
   public function getCustomerOrderCount($customerEmail) {
@@ -199,15 +227,18 @@ class FirstPurchase {
     return $this->getGuestCustomerOrderCountByEmail($customerEmail);
   }
 
-  private function getGuestCustomerOrderCountByEmail($customerEmail) {
-    global $wpdb;
-    $count = $wpdb->get_var( $wpdb->prepare("SELECT COUNT(*)
-        FROM $wpdb->posts as posts
-        LEFT JOIN {$wpdb->postmeta} AS meta ON posts.ID = meta.post_id
-        WHERE   meta.meta_key = '_billing_email'
-        AND     posts.post_type = 'shop_order'
-        AND     meta_value = %s
-    ", $customerEmail));
-    return (int)$count;
+  private function getGuestCustomerOrderCountByEmail(string $customerEmail): int {
+    $ordersCount = $this->helper->wcGetOrders(
+      [
+        'status' => 'all',
+        'type' => 'shop_order',
+        'billing_email' => $customerEmail,
+        'limit' => 1,
+        'return' => 'ids',
+        'paginate' => true,
+      ]
+    )->total;
+
+    return $ordersCount;
   }
 }

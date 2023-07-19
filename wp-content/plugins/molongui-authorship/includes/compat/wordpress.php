@@ -3,26 +3,21 @@ defined( 'ABSPATH' ) or exit;
 add_filter( '_authorship/filter/get_user_by', function( $data, $args )
 {
     list( $filter, $user ) = $data;
+    $dbt = $args['dbt'];
     $wp_files = array
     (
         'wp-includes/user.php',
+        'wp-admin/user-edit.php',
     );
     foreach ( $wp_files as $file )
     {
-        foreach ( $args['dbt'] as $dbt )
+        foreach ( $dbt as $trace )
         {
-            if ( isset( $dbt['file'] ) and substr_compare( $dbt['file'], $file, strlen( $dbt['file'] )-strlen( $file ), strlen( $file ) ) === 0 ) return array( false, $user );
+            if ( isset( $trace['file'] ) and substr_compare( $trace['file'], $file, strlen( $trace['file'] )-strlen( $file ), strlen( $file ) ) === 0 ) return array( false, $user );
         }
     }
     $wp_fns = array
     (
-        'setup_userdata',                    // wp-includes/user.php. The whole file is excluded; left here for clarity.
-        'wp_update_user',                    // wp-includes/user.php. The whole file is excluded; left here for clarity.
-        'wp_insert_user',                    // wp-includes/user.php. The whole file is excluded; left here for clarity.
-        'update_user_meta',                  // wp-includes/user.php. The whole file is excluded; left here for clarity.
-        'register_new_user',                 // wp-includes/user.php. The whole file is excluded; left here for clarity.
-        'wp_new_user_notification',          // wp-includes/pluggable.php
-        'wp_list_authors',                   // wp-includes/author-template.php
         'retrieve_password',                 // wp-login.php
         'get_pages',                         // wp-includes/post.php
         'wp_validate_auth_cookie',           // wp-includes/pluggable.php
@@ -43,60 +38,37 @@ add_filter( '_authorship/filter/get_user_by', function( $data, $args )
         'wp_media_personal_data_exporter',   // wp-includes/media.php
         'create_item',                       // wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
         'update_item',                       // wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+        'setup_userdata',                    // wp-includes/user.php. The whole file is excluded; left here for clarity.
+        'wp_update_user',                    // wp-includes/user.php. The whole file is excluded; left here for clarity.
+        'wp_insert_user',                    // wp-includes/user.php. The whole file is excluded; left here for clarity.
+        'update_user_meta',                  // wp-includes/user.php. The whole file is excluded; left here for clarity.
+        'register_new_user',                 // wp-includes/user.php. The whole file is excluded; left here for clarity.
+        'wp_new_user_notification',          // wp-includes/pluggable.php
+        'wp_list_authors',                   // wp-includes/author-template.php
+        'wp_admin_bar_my_account_menu',      // wp-includes/admin-bar.php
+        'wp_admin_bar_my_account_item',      // wp-includes/admin-bar.php
     );
-    if ( array_intersect( $wp_fns, array_column( $args['dbt'], 'function' ) ) ) return array( false, $user );
+    if ( array_intersect( $wp_fns, array_column( $dbt, 'function' ) ) ) return array( false, $user );
     return array( $filter, $user );
 }, 10, 2 );
 add_filter( 'authorship/filter_author_link', function( $default, &$args )
 {
+    $dbt = $args['dbt'];
     $wp_fns = array
     (
         'wp_list_authors',                   // wp-includes/author-template.php
         'render_block_core_latest_comments', // wp-includes/blocks/latest-comments.php
     );
-    if ( array_intersect( $wp_fns, array_column( $args['dbt'], 'function' ) ) ) return true;
-    if ( ( is_author() or is_guest_author() ) and isset( $args['dbt'][4]['function'] ) and ( $args['dbt'][4]['function'] == 'get_author_feed_link' ) )
-    {
+    if ( array_intersect( $wp_fns, array_column( $dbt, 'function' ) ) ) return true;
+    if ( ( is_author() or is_guest_author() )
+          and
+          $key = array_search( 'get_author_feed_link', array_column( $dbt, 'function' ) ) )
+        {
         $args['link'] = authorship_filter_author_page_link( $args['link'] );
         return true;
     }
     return false;
 }, 10, 2 );
-add_filter( 'authorship/get_avatar_data/skip', function( $default, $args, $dbt )
-{
-    $i  = 4;
-    $fn = 'post_comment_form_avatar';
-    if ( isset( $dbt[$i]['function'] ) and $dbt[$i]['function'] == $fn ) return true;
-    return $default;
-}, 10, 3 );
-add_filter( 'authorship/get_avatar_data/skip', function( $default, $args, $dbt )
-{
-    if ( !is_admin() ) return $default;
-    $i    = 4;
-    $fn   = 'get_avatar';
-    $file = '/wp-admin/options-discussion.php';
-    if ( isset( $dbt[$i]['function'] ) and $dbt[$i]['function'] == $fn and
-         isset( $dbt[$i]['file'] ) and substr_compare( $dbt[$i]['file'], $file, strlen( $dbt[$i]['file'] )-strlen( $file ), strlen( $file ) ) === 0
-    ) return true;
-    return $default;
-}, 10, 3 );
-add_filter( '_authorship/get_avatar_data/filter/author', function( $author, $id_or_email, $dbt )
-{
-    $fns = array
-    (
-        'wp_admin_bar_my_account_menu',
-        'wp_admin_bar_my_account_item',
-    );
-
-    if ( array_intersect( $fns, array_column( $dbt, 'function' ) ) )
-    {
-        $author         = new stdClass();
-        $author->object = wp_get_current_user();
-        $author->id     = $author->object->ID;
-        $author->type   = 'user';
-    }
-    return $author;
-}, 10, 3 );
 add_filter( 'authorship/author_link', function( $url, $args )
 {
     $fn_1  = 'get_author_posts_url';
@@ -118,6 +90,44 @@ add_filter( 'authorship/author_link', function( $url, $args )
 
     return $url;
 }, 10, 2 );
+add_filter( 'authorship/get_avatar_data/skip', function( $default, $args, $dbt )
+{
+    $fn = 'post_comment_form_avatar';
+    if ( $i = array_search( $fn, array_column( $dbt, 'function' ) ) )
+    {
+        return true;
+    }
+    return $default;
+}, 10, 3 );
+add_filter( 'authorship/get_avatar_data/skip', function( $default, $args, $dbt )
+{
+    if ( !is_admin() ) return $default;
+    $i    = 4;
+    $fn   = 'get_avatar';
+    $file = '/wp-admin/options-discussion.php';
+    if ( isset( $dbt[$i]['function'] ) and $dbt[$i]['function'] == $fn and
+        isset( $dbt[$i]['file'] ) and substr_compare( $dbt[$i]['file'], $file, strlen( $dbt[$i]['file'] )-strlen( $file ), strlen( $file ) ) === 0
+    ) return true;
+    return $default;
+}, 10, 3 );
+add_filter( 'authorship/get_avatar_data/skip', function( $default, $args, $dbt )
+{
+    if ( !is_admin() ) return $default;
+
+    $fn    = 'get_avatar';
+    $files = array( '/wp-admin/user-edit.php', '/views/user/html-admin-gravatar-field.php' );
+    if ( $i = array_search( $fn, array_column( $dbt, 'function' ) ) )
+    {
+        foreach ( $files as $file )
+        {
+            if ( isset( $dbt[$i]['file'] ) and substr_compare( $dbt[$i]['file'], $file, strlen( $dbt[$i]['file'] )-strlen( $file ), strlen( $file ) ) === 0 )
+            {
+                return true;
+            }
+        }
+    }
+    return $default;
+}, 10, 3 );
 add_filter( 'authorship/render_box', function( $default, $post )
 {
     $dbt = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 10 );

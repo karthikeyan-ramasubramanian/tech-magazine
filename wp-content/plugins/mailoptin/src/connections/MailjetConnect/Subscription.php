@@ -215,13 +215,13 @@ class Subscription extends AbstractMailjetConnect
                 return parent::ajax_success();
             }
 
-            self::save_optin_error_log(json_encode($response), 'mailjet', $this->extras['optin_campaign_id']);
+            self::save_optin_error_log(json_encode($response), 'mailjet', $this->extras['optin_campaign_id'], $this->extras['optin_campaign_type']);
 
             return parent::ajax_failure($error_message);
 
         } catch (\Exception $e) {
 
-            self::save_optin_error_log($e->getCode() . ': ' . $e->getMessage(), 'mailjet', $this->extras['optin_campaign_id']);
+            self::save_optin_error_log($e->getCode() . ': ' . $e->getMessage(), 'mailjet', $this->extras['optin_campaign_id'], $this->extras['optin_campaign_type']);
 
             return parent::ajax_failure($error_message);
         }

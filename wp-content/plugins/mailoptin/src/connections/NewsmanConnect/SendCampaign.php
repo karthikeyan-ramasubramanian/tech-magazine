@@ -59,6 +59,7 @@ class SendCampaign extends AbstractNewsmanConnect
                     'html'             => $this->content_html,
                     'text'             => $this->content_text,
                     'newsletter_props' => [
+                        'encoding'=>'utf-8',
                         'subject' => $this->campaign_subject
                     ]
                 ],

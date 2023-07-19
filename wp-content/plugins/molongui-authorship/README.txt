@@ -3,7 +3,7 @@ Contributors: molongui
 Donate link: https://www.paypal.me/amitzy/
 Tags: author, author box, author bio, author biography, simple author box, author profile fields, author social icons, responsive author box, guest, guest author, guest author box, guest posts, co-authors, coauthors, multiple authors, multi-author
 Requires at least: 5.2
-Tested up to: 6.0
+Tested up to: 6.1
 Requires PHP: 5.5
 Stable tag: trunk
 License: GPLv3 or later
@@ -20,7 +20,7 @@ Best Author Box for WordPress! Easy, Beautiful and Responsive. Add authors, co-a
 - **Co-authors**. One post, multiple authors. Credit every one involved adding multiple authors to a single post.
 - **Guest Authors**. Add guest authors or one-time contributors to a post without creating a WordPress account for them.
 
-Whatever your need is, Molongui Authorship has you covered. Do you find yourself...
+Whatever your need is, Molongui Authorship has you covered. Do you find yourself...
 
 - Posting on your blog and want to make your name stand out?
 - Accepting guest posts that require recognition?
@@ -46,7 +46,7 @@ Molongui Authorship is the WordPress authors plugin you were looking for! The on
   - Different layouts options
   - Optionally display a custom headline above the author box
   - Responsive author box. Looks great on desktop, laptop, tablet and mobile
-  - SEO friendly. Mircrodata support
+  - SEO friendly. Microdata support
   - Credit everyone: Single Authors, Multiple Authors and Guest Authors
 
 - **MULTIPLE AUTHORS**
@@ -245,6 +245,78 @@ If you have purchased a Pro plugin at [molongui.com](https://www.molongui.com/),
 == Changelog ==
 
 > <strong>Important</strong>: if you use a caching plugin, please flush cache after any plugin update.
+
+= 4.6.16 (2023-02-15) =
+
+* Fixed role not displayed for guest authors on the authors admin screen
+
+= 4.6.15 (2023-02-14) =
+
+* Fixed PHP fatal error
+
+= 4.6.14 (2023-02-14) =
+
+* Improved navigation experience for screen reader users
+* Improved some UI notifications
+* Improved compatibility with the Advanced Access Manager (AAM) plugin
+* Added filter to remove HTML comments
+* Fixed tabbed layout labels not taking variable tags
+* Fixed author box title not being displayed on multi-authored posts
+* Fixed some author box rtl styling issues when using a CDN
+* Fixed background tasks running simultaneously on plugin activation
+* Fixed author filter being overwritten for every post type
+* Fixed apostrophes being escaped with backslashes
+* Fixed PHP notices when updating a misconfigured plugin
+* Fixed issues with author names on post bylines and author pages when using tagDiv Cloud templates
+
+= 4.6.13 (2022-12-08) =
+
+* Added Mastodon social network
+* Added filter to allow background tasks having WP_Cron disabled
+* Improved compatibility with the Newspaper theme
+* Improved compatibility with the WP OAuth Server plugin
+* Fixed some PHP warnings
+* Added WordPress 6.1 compatibility
+
+= 4.6.12 (2022-09-06) =
+
+* Fixed "Invalid post type" error when adding a new author
+
+= 4.6.11 (2022-08-11) =
+
+* Fixed PHP warning about missing ID property
+
+= 4.6.10 (2022-07-18) =
+
+* Added hook to disable author box responsiveness completely
+* Fixed issue with object cache
+* Fixed social icons style preview not working properly
+
+= 4.6.9 (2022-07-07) =
+
+* Fixed author pages not working on certain installations
+
+= 4.6.8 (2022-07-06) =
+
+* Fixed PHP warning displayed when global $wp_query not set
+
+= 4.6.7 (2022-07-06) =
+
+* Improved compatibility with the LearnDash plugin
+* Improved compatibility with the Premium Addons for Elementor plugin
+* Fixed not being able to display social icons once disabled
+* Fixed some minor issues
+
+= 4.6.6 (2022-06-09) =
+
+* Improved compatibility with the Newspaper theme
+* Fixed wrong main author retrieval on some cases
+* Fixed PHP warning
+
+= 4.6.5 (2022-06-01) =
+
+* Fixed default WordPress author field displayed on edit post screen on WP 6.0
+* Removed setting to enable plugin template tags. They are enabled now by default
 
 = 4.6.4 (2022-05-27) =
 

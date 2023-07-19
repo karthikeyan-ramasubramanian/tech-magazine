@@ -6,16 +6,16 @@
 
             $this.showResultsBox();
 
-            if ($this.n.items.length > 0) {
+            if ($this.n('items').length > 0) {
                 // noinspection JSUnresolvedVariable
-                let count = (($this.n.items.length < $this.o.itemscount) ? $this.n.items.length : $this.o.itemscount);
+                let count = (($this.n('items').length < $this.o.itemscount) ? $this.n('items').length : $this.o.itemscount);
                 count = count <= 0 ? 9999 : count;
-                let groups = $('.asl_group_header', $this.n.resultsDiv);
+                let groups = $('.asl_group_header', $this.n('resultsDiv'));
 
                 // So if the result list is short, we dont even need to do the match
                 // noinspection JSUnresolvedVariable
-                if ($this.o.itemscount == 0 || $this.n.items.length <= $this.o.itemscount) {
-                    $this.n.results.css({
+                if ($this.o.itemscount == 0 || $this.n('items').length <= $this.o.itemscount) {
+                    $this.n('results').css({
                         height: 'auto'
                     });
                 } else {
@@ -23,7 +23,7 @@
                     // Set the height to a fictive value to refresh the scrollbar
                     // .. otherwise the height is not calculated correctly, because of the scrollbar width.
                     if ( $this.call_num < 1 )
-                        $this.n.results.css({
+                        $this.n('results').css({
                             height: "30px"
                         });
 
@@ -34,7 +34,7 @@
                             final_h = 0,
                             highest = 0;
 
-                        $this.n.items.forEach(function () {
+                        $this.n('items').forEach(function () {
                             h += $(this).outerHeight(true);
                             if ($(this).outerHeight(true) > highest)
                                 highest = $(this).outerHeight(true);
@@ -66,7 +66,7 @@
                                 }
                             });
                         }
-                        $this.n.results.css({
+                        $this.n('results').css({
                             height: final_h + 'px'
                         });
 
@@ -74,12 +74,12 @@
                 }
 
                 // Mark the last item
-                $this.n.items.last().addClass('asl_last_item');
+                $this.n('items').last().addClass('asl_last_item');
                 // Before groups as well
-                $this.n.results.find('.asl_group_header').prev('.item').addClass('asl_last_item');
+                $this.n('results').find('.asl_group_header').prev('.item').addClass('asl_last_item');
                 if ($this.o.highlight == 1) {
                     // noinspection JSUnresolvedVariable
-                    $("div.item", $this.n.resultsDiv).highlight($this.n.text.val().split(" "), {
+                    $("div.item", $this.n('resultsDiv')).highlight($this.n('text').val().split(" "), {
                         element: 'span', className: 'highlighted', wordsOnly: $this.o.highlightWholewords
                     });
                 }
@@ -87,19 +87,17 @@
 
             }
             $this.resize();
-            if ($this.n.items.length == 0) {
-                $this.n.results.css({
+            if ($this.n('items').length == 0) {
+                $this.n('results').css({
                     height: 'auto'
                 });
             }
-            $this.n.results.css({
+            $this.n('results').css({
                 'overflowY': 'auto'
             });
 
             // Scroll to top
-            let $container = $this.is_scroll && typeof $this.scroll.recalculate !== 'undefined' ?
-                $($this.scroll.getScrollElement()) : $this.n.results;
-            $container.get(0).scrollTop = 0;
+            $this.n('results').get(0).scrollTop = 0;
 
             $this.fixResultsPosition(true);
             $this.searching = false;

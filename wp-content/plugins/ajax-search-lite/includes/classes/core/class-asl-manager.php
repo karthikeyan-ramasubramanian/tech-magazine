@@ -180,7 +180,7 @@ if (!class_exists("WD_ASL_Manager")) {
             }
 
             // Special case
-            if (wpdreams_on_backend_post_editor()) {
+            if ( wpdreams_on_backend_post_editor() ) {
                 require_once(ASL_PATH . "/backend/tinymce/buttons.php");
             }
 

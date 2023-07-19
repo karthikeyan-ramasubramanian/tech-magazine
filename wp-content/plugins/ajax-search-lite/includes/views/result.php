@@ -36,10 +36,7 @@ defined('ABSPATH') or die("You can't access this file directly.");
 
             <?php do_action('asl_res_vertical_before_image'); ?>
 
-            <div class='asl_image'
-                 style='background-image: url("<?php echo $r->image; ?>");'>
-                <div class='void'></div>
-            </div>
+            <img class='asl_image' loading='lazy' src='<?php echo $r->image; ?>'>
 
             <?php do_action('asl_res_vertical_after_image'); ?>
 

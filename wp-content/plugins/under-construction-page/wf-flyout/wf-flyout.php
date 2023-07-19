@@ -1,7 +1,7 @@
 <?php
 /**
  * Universal fly-out menu for WebFactory plugins
- * (c) WebFactory Ltd, 2022
+ * (c) WebFactory Ltd, 2023
  */
 
 

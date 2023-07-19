@@ -42,13 +42,13 @@ class Connect extends AbstractGEMConnect implements ConnectionInterface
     }
 
     /**
-     * Replace placeholder tags with actual EmailOctopus tags.
+     * Fulfill interface contract.
      *
      * {@inheritdoc}
      */
     public function replace_placeholder_tags($content, $type = 'html')
     {
-
+        return $this->replace_footer_placeholder_tags($content);
     }
 
     /**

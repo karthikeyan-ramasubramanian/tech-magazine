@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Mailer\Methods\ErrorMappers;
 
@@ -79,7 +79,11 @@ class MailPoetMapper {
         $resultParsed = json_decode($result['message'], true);
         $message = __('Error while sending.', 'mailpoet');
         if (!is_array($resultParsed)) {
-          $message .= ' ' . $result['message'];
+          if (isset($result['error']) && $result['error'] === API::ERROR_MESSAGE_DMRAC) {
+            $message .= $this->getDmarcMessage($result, $sender);
+          } else {
+            $message .= ' ' . $result['message'];
+          }
           break;
         }
         try {
@@ -181,12 +185,32 @@ class MailPoetMapper {
     return "{$message}<br/>";
   }
 
+  private function getDmarcMessage($result, $sender): string {
+    $messageToAppend = __('[link1]Click here to start the authentication[/link1].', 'mailpoet');
+    $senderEmail = $sender['from_email'] ?? '';
+
+    $appendMessage = Helpers::replaceLinkTags(
+      $messageToAppend,
+      '#',
+      [
+        'class' => 'mailpoet-js-button-authorize-email-and-sender-domain',
+        'data-email' => $senderEmail,
+        'data-type' => 'domain',
+        'rel' => 'noopener noreferrer',
+      ],
+      'link1'
+    );
+    $final = ' ' . $result['message'] . ' ' . $appendMessage;
+    return $final;
+  }
+
   private function getEmailVolumeLimitReachedMessage(): string {
     $partialApiKey = $this->servicesChecker->generatePartialApiKey();
     $emailVolumeLimit = $this->subscribersFeature->getEmailVolumeLimit();
     $date = Carbon::now()->startOfMonth()->addMonth();
     $message = sprintf(
-      __('You have sent more emails this month than your MailPoet plan includes (%s), and sending has been temporarily paused. To continue sending with MailPoet Sending Service please [link]upgrade your plan[/link], or wait until sending is automatically resumed on <b>%s</b>.', 'mailpoet'),
+      // translators: %1$s is email volume limit and %2$s the date when you can resume sending.
+      __('You have sent more emails this month than your MailPoet plan includes (%1$s), and sending has been temporarily paused. To continue sending with MailPoet Sending Service please [link]upgrade your plan[/link], or wait until sending is automatically resumed on <b>%2$s</b>.', 'mailpoet'),
       $emailVolumeLimit,
       $this->wp->dateI18n(get_option('date_format'), $date->getTimestamp())
     );
@@ -203,7 +227,7 @@ class MailPoetMapper {
   }
 
   private function getPendingApprovalMessage(): string {
-    $message = __("Your subscription is currently [link]pending approval[/link].You’ll soon be able to send once our team reviews your account. In the meantime, you can send previews to your authorized emails.", 'mailpoet');
+    $message = __("Your subscription is currently [link]pending approval[/link]. You’ll soon be able to send once our team reviews your account. In the meantime, you can send previews to your authorized emails.", 'mailpoet');
     $message = Helpers::replaceLinkTags(
       $message,
       'https://kb.mailpoet.com/article/350-pending-approval-subscription',
@@ -221,19 +245,19 @@ class MailPoetMapper {
    * Returns error $message and $operation for API::RESPONSE_CODE_CAN_NOT_SEND
    */
   private function getCanNotSendError(array $result, $sender): array {
-    if ($result['message'] === MailerError::MESSAGE_PENDING_APPROVAL) {
+    if ($result['error'] === API::ERROR_MESSAGE_PENDING_APPROVAL) {
       $operation = MailerError::OPERATION_PENDING_APPROVAL;
       $message = $this->getPendingApprovalMessage();
       return [$operation, $message];
     }
 
-    if ($result['message'] === MailerError::MESSAGE_EMAIL_INSUFFICIENT_PRIVILEGES) {
+    if ($result['error'] === API::ERROR_MESSAGE_INSUFFICIENT_PRIVILEGES) {
       $operation = MailerError::OPERATION_INSUFFICIENT_PRIVILEGES;
       $message = $this->getInsufficientPrivilegesMessage();
       return [$operation, $message];
     }
 
-    if ($result['message'] === MailerError::MESSAGE_EMAIL_VOLUME_LIMIT_REACHED) {
+    if ($result['error'] === API::ERROR_MESSAGE_EMAIL_VOLUME_LIMIT_REACHED) {
       // Update the current email volume limit from MSS
       $premiumKey = $this->settings->get(Bridge::PREMIUM_KEY_SETTING_NAME);
       $result = $this->bridge->checkPremiumKey($premiumKey);
@@ -244,7 +268,7 @@ class MailPoetMapper {
       return [$operation, $message];
     }
 
-    if ($result['message'] === MailerError::MESSAGE_EMAIL_NOT_AUTHORIZED) {
+    if ($result['error'] === API::ERROR_MESSAGE_INVALID_FROM) {
       $operation = MailerError::OPERATION_AUTHORIZATION;
       $message = $this->getUnauthorizedEmailMessage($sender);
       return [$operation, $message];

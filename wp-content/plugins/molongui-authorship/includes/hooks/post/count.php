@@ -9,15 +9,26 @@ function authorship_enable_post_count_update()
 add_action( 'authorship/init', 'authorship_enable_post_count_update' );
 function authorship_post_counters_update()
 {
-    if ( defined( 'DISABLE_WP_CRON' ) and DISABLE_WP_CRON ) return;
+    if ( apply_filters( 'authorship/check_wp_cron', true ) and ( defined( 'DISABLE_WP_CRON' ) and DISABLE_WP_CRON ) ) return false;
 
     if ( get_option( 'molongui_authorship_update_post_counters' ) )
     {
-        delete_option( 'molongui_authorship_update_post_counters' );
-        authorship_update_post_counters();
+        if ( get_option( 'molongui_authorship_update_post_authors', false ) or get_option( 'm_update_post_authors_running', false ) )
+        {
+            add_action( 'admin_notices', function()
+            {
+                $message = '<p>' . sprintf( __( '%sAuthorship Data Updater%s - Post counters update will run once the post authorship update process finishes.', 'molongui-authorship' ), '<strong>', '</strong>' ) . '</p>';
+                echo '<div class="notice notice-warning is-dismissible">' . $message . '</div>';
+            });
+        }
+        else
+        {
+            delete_option( 'molongui_authorship_update_post_counters' );
+            authorship_update_post_counters();
+        }
     }
 }
-add_action( 'admin_init', 'authorship_post_counters_update' );
+add_action( 'admin_init', 'authorship_post_counters_update', 11 );
 function authorship_post_counters_update_completed()
 {
     if ( get_option( 'm_update_post_counters_complete' ) )

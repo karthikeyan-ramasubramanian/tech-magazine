@@ -5,28 +5,13 @@ add_filter( 'posts_where'                , 'authorship_um_add_coauthored_2', 10,
 function authorship_um_add_coauthored_1( $args )
 {
     $author = $args['author'];
-    $meta_query = array
+    $meta_query[] = array
     (
-        'relation' => 'OR',
         array
         (
             'key'     => '_molongui_author',
-            'compare' => 'NOT EXISTS',
-        ),
-        array
-        (
-            'relation' => 'AND',
-            array
-            (
-                'key'     => '_molongui_author',
-                'compare' => 'EXISTS',
-            ),
-            array
-            (
-                'key'     => '_molongui_author',
-                'value'   => 'user-'.$author,
-                'compare' => '==',
-            ),
+            'value'   => 'user-'.$author,
+            'compare' => '==',
         ),
     );
     $args['meta_query'] = !empty( $args['meta_query'] ) ? array_merge( $args['meta_query'], $meta_query ) : $meta_query;

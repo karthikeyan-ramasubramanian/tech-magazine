@@ -11,19 +11,21 @@ require_once STCFQ_PLUGIN_DIR_PATH . 'admin/inc/message/query.php';
 	<?php require_once STCFQ_PLUGIN_DIR_PATH . 'admin/inc/partials/pro.php'; ?>
 
 	<table class="stcfq-table">
-		<caption class="stcfq-table-heading"><?php esc_html_e( 'Contact Form Messages', 'contact-form-query' ); ?></caption>
-		<caption class="stcfq-table-filter">
-			<?php require_once STCFQ_PLUGIN_DIR_PATH . 'admin/inc/message/filter.php'; ?>
-		</caption>
-		<caption class="stcfq-align-left">
-			<div class="stcfq-bulk-action">
-				<select name="bulk_action" class="stcfq-bulk-select">
-					<option value=""><?php esc_html_e( 'Select Action', 'contact-form-query' ); ?></option>
-					<option value="delete" data-message-confirm="<?php esc_attr_e( 'Are you sure to delete selected messages?', 'contact-form-query' ); ?>" data-message-select="<?php esc_attr_e( 'Please select atleast one message.', 'contact-form-query' ); ?>"><?php esc_html_e( 'Delete Selected', 'contact-form-query' ); ?></option>
-				</select>
-				<button type="button" class="button stcfq-bulk-apply" data-action-select="<?php esc_attr_e( 'Please select a bulk action.', 'contact-form-query' ); ?>" data-nonce="<?php echo esc_attr( wp_create_nonce( 'bulk-action' ) ); ?>">
-					<?php esc_html_e( 'Bulk Apply', 'contact-form-query' ); ?>
-				</button>
+		<caption>
+			<div class="stcfq-table-heading"><?php esc_html_e( 'Contact Form Messages', 'contact-form-query' ); ?></div>
+			<div class="stcfq-table-filter">
+				<?php require_once STCFQ_PLUGIN_DIR_PATH . 'admin/inc/message/filter.php'; ?>
+			</div>
+			<div class="stcfq-align-left">
+				<div class="stcfq-bulk-action">
+					<select name="bulk_action" class="stcfq-bulk-select">
+						<option value=""><?php esc_html_e( 'Select Action', 'contact-form-query' ); ?></option>
+						<option value="delete" data-message-confirm="<?php esc_attr_e( 'Are you sure to delete selected messages?', 'contact-form-query' ); ?>" data-message-select="<?php esc_attr_e( 'Please select atleast one message.', 'contact-form-query' ); ?>"><?php esc_html_e( 'Delete Selected', 'contact-form-query' ); ?></option>
+					</select>
+					<button type="button" class="button stcfq-bulk-apply" data-action-select="<?php esc_attr_e( 'Please select a bulk action.', 'contact-form-query' ); ?>" data-nonce="<?php echo esc_attr( wp_create_nonce( 'bulk-action' ) ); ?>">
+						<?php esc_html_e( 'Bulk Apply', 'contact-form-query' ); ?>
+					</button>
+				</div>
 			</div>
 		</caption>
 		<thead>

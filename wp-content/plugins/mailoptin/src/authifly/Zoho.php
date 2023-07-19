@@ -200,6 +200,12 @@ class Zoho extends OAuth2
                 case 'cn':
                     $accessTokenUrl = 'https://accounts.zoho.com.cn/oauth/v2/token';
                     break;
+                case 'jp':
+                    $accessTokenUrl = 'https://accounts.zoho.jp/oauth/v2/token';
+                    break;
+                default:
+                    $accessTokenUrl = sprintf('https://accounts.zoho.%s/oauth/v2/token', sanitize_text_field($_GET['location']));
+                    break;
             }
         }
 

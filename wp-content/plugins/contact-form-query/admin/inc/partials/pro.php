@@ -29,8 +29,8 @@ if ( ! class_exists( 'STLSP_Login_Security_Pro' ) ) {
 		</div>
 	</div>
 	<div class="stcfq-pro-links">
-		<a target="_blank" href="<?php echo esc_url( STCFQ_Helper::get_pro_url() ); ?>" class="stcfq-pro-link stcfq-pro-link--signup stcfq-pro-bold"><?php esc_html_e( 'Buy Now', 'contact-form-query' ); ?></a>
-		<a target="_blank" href="<?php echo esc_url( STCFQ_Helper::get_pro_detail_url() ); ?>" class="stcfq-pro-link stcfq-pro-link--detail"><?php esc_html_e( 'Learn More', 'contact-form-query' ); ?></a>
+		<a target="_blank" href="<?php echo esc_url( STCFQ_Helper::get_pro_url() ); ?>" class="stcfq-pro-link stcfq-pro-bold"><?php esc_html_e( 'Buy Now', 'contact-form-query' ); ?></a>
+		<a target="_blank" href="<?php echo esc_url( STCFQ_Helper::get_pro_detail_url() ); ?>" class="stcfq-pro-link stcfq-pro-link--alt"><?php esc_html_e( 'Learn More', 'contact-form-query' ); ?></a>
 	</div>
 </div>
 	<?php

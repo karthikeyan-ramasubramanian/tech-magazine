@@ -33,7 +33,7 @@ class Subscription extends AbstractSendinblueConnect
         $setting = $this->get_integration_data('SendinblueConnect_enable_double_optin');
 
         //external forms
-        if($optin_campaign_id == 0) {
+        if ($optin_campaign_id == 0) {
             $setting = $this->extras['is_double_optin'];
         }
 
@@ -137,11 +137,19 @@ class Subscription extends AbstractSendinblueConnect
                     // selected for it, the default "Select..." value is empty ("")
                     if ( ! empty($customFieldKey) && ! empty($this->extras[$customFieldKey])) {
                         $value = $this->extras[$customFieldKey];
+
                         // date field just works. no multi-select support
                         if (is_array($value)) {
                             $value = implode(', ', $value);
                         }
-                        $lead_data['attributes'][$SendinblueFieldKey] = esc_attr($value);
+
+                        if ($SendinblueFieldKey == 'OPT_IN' || apply_filters('mo_connections_sendinblue_field_type_boolean_' . $SendinblueFieldKey, false)) {
+                            $value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+                        } else {
+                            $value = esc_attr($value);
+                        }
+
+                        $lead_data['attributes'][$SendinblueFieldKey] = $value;
                     }
                 }
             }
@@ -165,12 +173,12 @@ class Subscription extends AbstractSendinblueConnect
                 }
             }
 
-            self::save_optin_error_log($response['body']->code . ': ' . $response['body']->message, 'sendinblue', $this->extras['optin_campaign_id']);
+            self::save_optin_error_log($response['body']->code . ': ' . $response['body']->message, 'sendinblue', $this->extras['optin_campaign_id'], $this->extras['optin_campaign_type']);
 
             return parent::ajax_failure(__('There was an error saving your contact. Please try again.', 'mailoptin'));
 
         } catch (\Exception $e) {
-            self::save_optin_error_log($e->getCode() . ': ' . $e->getMessage(), 'sendinblue', $this->extras['optin_campaign_id']);
+            self::save_optin_error_log($e->getCode() . ': ' . $e->getMessage(), 'sendinblue', $this->extras['optin_campaign_id'], $this->extras['optin_campaign_type']);
 
             return parent::ajax_failure(__('There was an error saving your contact. Please try again.', 'mailoptin'));
         }
@@ -182,12 +190,12 @@ class Subscription extends AbstractSendinblueConnect
 
         if (empty($double_optin_templates)) {
             $error = true;
-            self::save_optin_error_log('A Double Optin Template is missing', 'sendinblue', $this->extras['optin_campaign_id']);
+            self::save_optin_error_log('A Double Optin Template is missing', 'sendinblue', $this->extras['optin_campaign_id'], $this->extras['optin_campaign_type']);
         }
 
         if (empty($redirection_url)) {
             $error = true;
-            self::save_optin_error_log('A DOI Redirection URL is missing', 'sendinblue', $this->extras['optin_campaign_id']);
+            self::save_optin_error_log('A DOI Redirection URL is missing', 'sendinblue', $this->extras['optin_campaign_id'], $this->extras['optin_campaign_type']);
         }
 
         return $error === true;

@@ -34,8 +34,6 @@ class Connect extends AbstractZohoCRMConnect implements ConnectionInterface
     }
 
     /**
-     * Register Constant Contact Connection.
-     *
      * @param array $connections
      *
      * @return array

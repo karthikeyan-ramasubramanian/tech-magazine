@@ -27,15 +27,15 @@ class ConnectSettingsPage
         }
 
         $settingsArg[] = array(
-            'section_title_without_status' => __('MailerLite', 'mailoptin'),
-            'section_title'                => __('MailerLite Connection', 'mailoptin') . " $status",
+            'section_title_without_status' => __('MailerLite Classic', 'mailoptin'),
+            'section_title'                => __('MailerLite Classic Connection', 'mailoptin') . " $status",
             'type'                         => AbstractConnect::EMAIL_MARKETING_TYPE,
             'mailerlite_api_key'           => array(
                 'type'          => 'text',
                 'obfuscate_val' => true,
                 'label'         => __('Enter API Key', 'mailoptin'),
                 'description'   => sprintf(
-                    __('Log in to your %sMailerLite account%s to get your API Key.', 'mailoptin'),
+                    __('Log in to your %sMailerLite Classic account%s to get your API Key.', 'mailoptin'),
                     '<a target="_blank" href="https://app.mailerlite.com/integrations/api/">',
                     '</a>'
                 ),

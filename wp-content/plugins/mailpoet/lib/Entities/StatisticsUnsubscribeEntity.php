@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Entities;
 
@@ -23,6 +23,12 @@ class StatisticsUnsubscribeEntity {
   const SOURCE_MANAGE = 'manage';
   const SOURCE_ADMINISTRATOR = 'admin';
   const SOURCE_ORDER_CHECKOUT = 'order_checkout';
+  const SOURCE_AUTOMATION = 'automation';
+  const SOURCE_MP_API = 'mp_api';
+
+  const METHOD_LINK = 'link';
+  const METHOD_ONE_CLICK = 'one_click';
+  const METHOD_UNKNOWN = 'unknown';
 
   /**
    * @ORM\ManyToOne(targetEntity="MailPoet\Entities\NewsletterEntity")
@@ -56,6 +62,12 @@ class StatisticsUnsubscribeEntity {
    * @var string|null
    */
   private $meta;
+
+  /**
+   * @ORM\Column(type="string", nullable=false)
+   * @var string
+   */
+  private $method = self::METHOD_UNKNOWN;
 
   public function __construct(
     NewsletterEntity $newsletter = null,
@@ -109,5 +121,13 @@ class StatisticsUnsubscribeEntity {
    */
   public function getMeta() {
     return $this->meta;
+  }
+
+  public function setMethod(string $method) {
+    $this->method = $method;
+  }
+
+  public function getMethod(): string {
+    return $this->method;
   }
 }

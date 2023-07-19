@@ -121,9 +121,9 @@ class Sassy_Social_Share_Shortcodes {
 		$html = '';
 
 		if ( $social_networks ) {
-			$networks = explode( ',', $social_networks );
+			$networks = explode( ',', esc_attr( $social_networks ) );
 
-			$icon_style = 'width:' . $width . 'px;height:' . $height . 'px;' . ( $shape == 'round' ? 'border-radius:999px;' : '' );
+			$icon_style = 'width:' . esc_attr( $width ) . 'px;height:' . esc_attr( $height ) . 'px;' . ( $shape == 'round' ? 'border-radius:999px;' : '' );
 
 			if ( $theme == '' ) {
 				$icon_theme = $theme;
@@ -133,14 +133,13 @@ class Sassy_Social_Share_Shortcodes {
 				$icon_theme = $theme . '_';
 			}
 
-			$html .= '<div ' . ( $type == 'floating' ? 'style="position:fixed;top:' . $top . 'px;' . $align . ':' . $$align . 'px;width:' . $width . 'px;"'  : '' ) . 'class="heateor_sss_' . $icon_theme . 'follow_icons_container">';
-
+			$html .= '<div ' . ( $type == 'floating' ? 'style="position:fixed;top:' . esc_attr( $top ) . 'px;' . esc_attr( $align ) . ':' . esc_attr( $$align ) . 'px;width:' . esc_attr( $width ) . 'px;"'  : '' ) . 'class="heateor_sss_' . esc_attr( $icon_theme ) . 'follow_icons_container">';
 
 			if ( ! empty( $title ) ) {
 				if ( $type == 'floating' ) {
-					$html .= '<div class="heateor_sss_follow_icons_title" style="text-align:center;font-size:' . $width*30/100 . 'px">';
+					$html .= '<div class="heateor_sss_follow_icons_title" style="text-align:center;font-size:' . esc_attr( $width )*30/100 . 'px">';
 				}
-				$html .= $title;
+				$html .= esc_html( $title );
 				if ( $type == 'floating' ) {
 					$html .= '</div>';
 				}
@@ -215,7 +214,7 @@ class Sassy_Social_Share_Shortcodes {
 		if ( $url == '' && is_singular() ) {
 			$share_count_url = get_permalink( $post -> ID );
 		}
-		$custom_post_url = $this->public_class_object->apply_target_share_url_filter( $target_url, $type, false );
+		$custom_post_url = $this->public_class_object->apply_target_share_url_filter( $target_url, esc_attr( $type ), false );
 		if ( $custom_post_url != $target_url ) {
 			$target_url = $custom_post_url;
 			$share_count_url = $target_url;
@@ -249,28 +248,28 @@ class Sassy_Social_Share_Shortcodes {
 			$inline_script .= 'var heateorSssUrlCountFetched = [], heateorSssSharesText = \''. htmlspecialchars( __( 'Shares', 'sassy-social-share' ), ENT_QUOTES ) . '\', heateorSssShareText = \'' . htmlspecialchars( __( 'Share', 'sassy-social-share' ), ENT_QUOTES ) . '\';';
 			$inline_script .= 'function heateorSssPopup(e) {window.open(e,"popUpWindow","height=400,width=600,left=400,top=100,resizable,scrollbars,toolbar=0,personalbar=0,menubar=no,location=no,directories=no,status")}';
 			if ( $this->public_class_object->facebook_like_recommend_enabled() || $this->public_class_object->facebook_share_enabled() ) {
-				$inline_script .= 'function heateorSssInitiateFB() {FB.init({appId:"",channelUrl:"",status:!0,cookie:!0,xfbml:!0,version:"v13.0"})}window.fbAsyncInit=function() {heateorSssInitiateFB(),' . ( defined( 'HEATEOR_SOCIAL_SHARE_MYCRED_INTEGRATION_VERSION' ) && $this->public_class_object->facebook_like_recommend_enabled() ? 1 : 0 ) . '&&(FB.Event.subscribe("edge.create",function(e) {heateorSsmiMycredPoints("Facebook_like_recommend","",e?e:"")}),FB.Event.subscribe("edge.remove",function(e) {heateorSsmiMycredPoints("Facebook_like_recommend","",e?e:"","Minus point(s) for undoing Facebook like-recommend")}) ),'. ( defined( 'HEATEOR_SHARING_GOOGLE_ANALYTICS_VERSION' ) ? 1 : 0 ) .'&&(FB.Event.subscribe("edge.create",function(e) {heateorSsgaSocialPluginsTracking("Facebook","Like",e?e:"")}),FB.Event.subscribe("edge.remove",function(e) {heateorSsgaSocialPluginsTracking("Facebook","Unlike",e?e:"")}) )},function(e) {var n,i="facebook-jssdk",o=e.getElementsByTagName("script")[0];e.getElementById(i)||(n=e.createElement("script"),n.id=i,n.async=!0,n.src="//connect.facebook.net/'. ( $this->options['language'] ? $this->options['language'] : 'en_GB' ) .'/sdk.js",o.parentNode.insertBefore(n,o) )}(document);';
+				$inline_script .= 'function heateorSssInitiateFB() {FB.init({appId:"",channelUrl:"",status:!0,cookie:!0,xfbml:!0,version:"v16.0"})}window.fbAsyncInit=function() {heateorSssInitiateFB(),' . ( defined( 'HEATEOR_SOCIAL_SHARE_MYCRED_INTEGRATION_VERSION' ) && $this->public_class_object->facebook_like_recommend_enabled() ? 1 : 0 ) . '&&(FB.Event.subscribe("edge.create",function(e) {heateorSsmiMycredPoints("Facebook_like_recommend","",e?e:"")}),FB.Event.subscribe("edge.remove",function(e) {heateorSsmiMycredPoints("Facebook_like_recommend","",e?e:"","Minus point(s) for undoing Facebook like-recommend")}) ),'. ( defined( 'HEATEOR_SHARING_GOOGLE_ANALYTICS_VERSION' ) ? 1 : 0 ) .'&&(FB.Event.subscribe("edge.create",function(e) {heateorSsgaSocialPluginsTracking("Facebook","Like",e?e:"")}),FB.Event.subscribe("edge.remove",function(e) {heateorSsgaSocialPluginsTracking("Facebook","Unlike",e?e:"")}) )},function(e) {var n,i="facebook-jssdk",o=e.getElementsByTagName("script")[0];e.getElementById(i)||(n=e.createElement("script"),n.id=i,n.async=!0,n.src="//connect.facebook.net/'. ( $this->options['language'] ? $this->options['language'] : 'en_GB' ) .'/sdk.js",o.parentNode.insertBefore(n,o) )}(document);';
 			}
 			wp_enqueue_script( 'heateor_sss_sharing_js', plugins_url( '../public/js/sassy-social-share-public.js', __FILE__ ), array( 'jquery' ), $this->public_class_object->version, $in_footer );
 			wp_add_inline_script( 'heateor_sss_sharing_js', $inline_script, $position = 'before' );
 		}
 
-		$html = '<div class="heateor_sss_sharing_container heateor_sss_' . ( $type == 'standard' ? 'horizontal' : 'vertical' ) . '_sharing' . ( $type == 'floating' && isset( $this->options['hide_mobile_sharing'] ) ? ' heateor_sss_hide_sharing' : '' ) . ( $type == 'floating' && isset( $this->options['bottom_mobile_sharing'] ) ? ' heateor_sss_bottom_sharing' : '' ) . '" data-heateor-ss-offset="' . $alignment_offset . '" ' . ( $this->public_class_object->is_amp_page() ? "" : "data-heateor-sss-href='" . ( isset( $share_count_url ) && $share_count_url ? $share_count_url : $target_url ) . "'" ) . ( ( $cached_share_count === false || $this->public_class_object->is_amp_page() ) ? "" : 'data-heateor-sss-no-counts="1" ' );
+		$html = '<div class="heateor_sss_sharing_container heateor_sss_' . ( $type == 'standard' ? 'horizontal' : 'vertical' ) . '_sharing' . ( $type == 'floating' && isset( $this->options['hide_mobile_sharing'] ) ? ' heateor_sss_hide_sharing' : '' ) . ( $type == 'floating' && isset( $this->options['bottom_mobile_sharing'] ) ? ' heateor_sss_bottom_sharing' : '' ) . '" data-heateor-ss-offset="' . esc_attr( $alignment_offset ) . '" ' . ( $this->public_class_object->is_amp_page() ? "" : "data-heateor-sss-href='" . esc_url( isset( $share_count_url ) && $share_count_url ? $share_count_url : $target_url ) . "'" ) . ( ( $cached_share_count === false || $this->public_class_object->is_amp_page() ) ? "" : 'data-heateor-sss-no-counts="1" ' );
 		$vertical_offsets = '';
 		if ( $type == 'floating' ) {
-			$vertical_offsets = $align . ': ' . $$align . 'px; top: ' . $top . 'px;width:' . ( ( $this->options['vertical_sharing_size'] ? $this->options['vertical_sharing_size'] : '35' ) + 4 ) . "px;";
+			$vertical_offsets = esc_attr( $align ) . ': ' . esc_attr( $$align ) . 'px; top: ' . esc_attr( $top ) . 'px;width:' . ( ( $this->options['vertical_sharing_size'] ? $this->options['vertical_sharing_size'] : '35' ) + 4 ) . "px;";
 		}
 		// style 
 		if ( $style != "" || $vertical_offsets != '' ) {
 			$html .= 'style="';
 			if ( strpos( $style, 'background' ) === false ) { $html .= '-webkit-box-shadow:none;box-shadow:none;'; }
 			$html .= $vertical_offsets;
-			$html .= $style;
+			$html .= esc_attr( $style );
 			$html .= '"';
 		}
 		$html .= '>';
 		if ( $type == 'standard' && $title != '' ) {
-			$html .= '<div class="heateor_sss_sharing_title" style="font-weight:bold">' . ucfirst( $title ) . '</div>';
+			$html .= '<div class="heateor_sss_sharing_title" style="font-weight:bold">' . esc_html( ucfirst( $title ) ) . '</div>';
 		}
 		
 		$html .= $this->public_class_object->prepare_sharing_html( $short_url ? $short_url : $target_url, $type == 'standard' ? 'horizontal' : 'vertical', $count, $total_shares == 'ON' ? 1 : 0 );

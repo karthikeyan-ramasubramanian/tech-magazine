@@ -5,20 +5,11 @@ namespace MailPoet\Automation\Engine\API;
 if (!defined('ABSPATH')) exit;
 
 
-use MailPoet\Config\AccessControl;
-use MailPoet\Validator\Schema;
+use MailPoet\API\REST\Endpoint as MailPoetEndpoint;
+use MailPoet\Automation\Engine\Engine;
 
-use function current_user_can;
-
-abstract class Endpoint {
-  abstract public function handle(Request $request): Response;
-
+abstract class Endpoint extends MailPoetEndpoint {
   public function checkPermissions(): bool {
-    return current_user_can(AccessControl::PERMISSION_MANAGE_AUTOMATIONS);
-  }
-
-  /** @return array<string, Schema> */
-  public static function getRequestSchema(): array {
-    return [];
+    return current_user_can(Engine::CAPABILITY_MANAGE_AUTOMATIONS);
   }
 }

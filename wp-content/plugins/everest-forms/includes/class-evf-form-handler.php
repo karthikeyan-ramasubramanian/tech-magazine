@@ -104,7 +104,9 @@ class EVF_Form_Handler {
 		}
 
 		if ( ! current_user_can( 'everest_forms_view_forms' ) && ! current_user_can( 'everest_forms_view_others_forms' ) ) {
-			$args['post__in'] = array( 0 );
+			if ( isset( $args['cap'] ) && 'everest_forms_view_conversational_forms' !== $args['cap'] ) {
+				$args['post__in'] = array( 0 );
+			}
 		}
 
 		// For cache lets unset the cap args.
@@ -208,13 +210,12 @@ class EVF_Form_Handler {
 			)
 		);
 
-		$templates     = evf_get_json_file_contents( 'assets/extensions-json/templates/all_templates.json' );
-
+		$templates = EVF_Admin_Form_Templates::get_template_data();
+		$templates = is_array( $templates ) ? $templates : array();
 		if ( ! empty( $templates ) ) {
-			foreach ( $templates->templates as $template_data ) {
+			foreach ( $templates as $template_data ) {
 				if ( $template_data->slug === $template && 'blank' !== $template_data->slug ) {
 					$form_content = json_decode( base64_decode( $template_data->settings ), true );
-
 					if ( isset( $template_data->styles ) ) {
 						$style_needed           = true;
 						$form_style[ $form_id ] = json_decode( base64_decode( $template_data->styles ), true );
@@ -224,8 +225,9 @@ class EVF_Form_Handler {
 		}
 
 		if ( $form_id ) {
-			$form_content['id']                     = $form_id;
-			$form_content['settings']['form_title'] = $title;
+			$form_content['id']                      = $form_id;
+			$form_content['settings']['form_title']  = $title;
+			$form_content['imported_form_templates'] = $template;
 
 			$form_data = wp_parse_args(
 				$args,

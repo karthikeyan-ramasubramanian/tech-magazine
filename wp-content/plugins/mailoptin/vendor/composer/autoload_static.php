@@ -4,11 +4,13 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit4c48858b398ed8810651adbe80572abc
+class ComposerStaticInite27686d2fdf5de1fb75575a70fb62b06
 {
     public static $files = array (
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
+        'a1105708a18b76903365ca1c4aa61b02' => __DIR__ . '/..' . '/symfony/translation/Resources/functions.php',
         '9e4824c5afbdc1482b6025ce3d4dfde8' => __DIR__ . '/..' . '/league/csv/src/functions_include.php',
         '784368192bb2be2d6178826e1a6f0ee9' => __DIR__ . '/../..' . '/src/authifly/OAuthCredentialStorage.php',
         '90058afbba53e4180c7aea859b5c23a3' => __DIR__ . '/../..' . '/src/authifly/ConstantContact.php',
@@ -38,10 +40,11 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
             'Symfony\\Contracts\\Translation\\' => 30,
             'Symfony\\Component\\Translation\\' => 30,
             'Symfony\\Component\\CssSelector\\' => 30,
+            'Sabberworm\\CSS\\' => 15,
         ),
         'P' => 
         array (
-            'Pelago\\' => 7,
+            'Pelago\\Emogrifier\\' => 18,
         ),
         'M' => 
         array (
@@ -50,28 +53,36 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
             'MailOptin\\ZohoCampaignsConnect\\' => 31,
             'MailOptin\\ZohoCRMConnect\\' => 25,
             'MailOptin\\WordPressUserRegistrationConnect\\' => 43,
+            'MailOptin\\WooSubscriptionsConnect\\' => 34,
+            'MailOptin\\WooMembershipConnect\\' => 31,
             'MailOptin\\WooCommerceConnect\\' => 29,
             'MailOptin\\WebHookConnect\\' => 25,
             'MailOptin\\WeMailConnect\\' => 24,
             'MailOptin\\WPMLConnect\\' => 22,
             'MailOptin\\WPFormsConnect\\' => 25,
             'MailOptin\\VerticalResponseConnect\\' => 34,
+            'MailOptin\\UserRegistrationOptinConnect\\' => 39,
             'MailOptin\\SendyConnect\\' => 23,
             'MailOptin\\SendlaneConnect\\' => 26,
             'MailOptin\\SendinblueConnect\\' => 28,
             'MailOptin\\SendGridConnect\\' => 26,
             'MailOptin\\SendFoxConnect\\' => 25,
             'MailOptin\\RegisteredUsersConnect\\' => 33,
+            'MailOptin\\RCPConnect\\' => 21,
             'MailOptin\\PolylangConnect\\' => 26,
+            'MailOptin\\PmProConnect\\' => 23,
             'MailOptin\\OntraportConnect\\' => 27,
             'MailOptin\\NinjaFormsConnect\\' => 28,
             'MailOptin\\NewsmanConnect\\' => 25,
             'MailOptin\\MoosendConnect\\' => 25,
+            'MailOptin\\MemberPressConnect\\' => 29,
             'MailOptin\\MailsterConnect\\' => 26,
             'MailOptin\\MailjetConnect\\' => 25,
+            'MailOptin\\Mailerlitev2Connect\\' => 30,
             'MailOptin\\MailerliteConnect\\' => 28,
             'MailOptin\\MailPoetConnect\\' => 26,
             'MailOptin\\MailChimpConnect\\' => 27,
+            'MailOptin\\LifterLMSConnect\\' => 27,
             'MailOptin\\LearnDashConnect\\' => 27,
             'MailOptin\\LeadBankConnect\\' => 26,
             'MailOptin\\KlaviyoConnect\\' => 25,
@@ -79,6 +90,7 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
             'MailOptin\\InfusionsoftConnect\\' => 30,
             'MailOptin\\HubspotConnect\\' => 25,
             'MailOptin\\GravityFormsConnect\\' => 30,
+            'MailOptin\\GiveWPConnect\\' => 24,
             'MailOptin\\GetResponseConnect\\' => 29,
             'MailOptin\\GEMConnect\\' => 21,
             'MailOptin\\ForminatorFormConnect\\' => 32,
@@ -88,6 +100,7 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
             'MailOptin\\EmmaConnect\\' => 22,
             'MailOptin\\EmailOctopusConnect\\' => 30,
             'MailOptin\\ElementorConnect\\' => 27,
+            'MailOptin\\EasyDigitalDownloadsConnect\\' => 38,
             'MailOptin\\DripConnect\\' => 22,
             'MailOptin\\Ctctv3Connect\\' => 24,
             'MailOptin\\CtctConnect\\' => 22,
@@ -96,6 +109,7 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
             'MailOptin\\ConvertFoxConnect\\' => 28,
             'MailOptin\\ContactForm7Connect\\' => 30,
             'MailOptin\\Connections\\' => 22,
+            'MailOptin\\CommentOptinConnect\\' => 30,
             'MailOptin\\CleverReachConnect\\' => 29,
             'MailOptin\\CampaignMonitorConnect\\' => 33,
             'MailOptin\\AweberConnect\\' => 24,
@@ -116,6 +130,7 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         'C' => 
         array (
             'Composer\\Installers\\' => 20,
+            'Carbon\\' => 7,
         ),
         'B' => 
         array (
@@ -148,7 +163,11 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         array (
             0 => __DIR__ . '/..' . '/symfony/css-selector',
         ),
-        'Pelago\\' => 
+        'Sabberworm\\CSS\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sabberworm/php-css-parser/src',
+        ),
+        'Pelago\\Emogrifier\\' => 
         array (
             0 => __DIR__ . '/..' . '/pelago/emogrifier/src',
         ),
@@ -171,6 +190,14 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         'MailOptin\\WordPressUserRegistrationConnect\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/connections/WordPressUserRegistrationConnect',
+        ),
+        'MailOptin\\WooSubscriptionsConnect\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/connections/WooSubscriptionsConnect',
+        ),
+        'MailOptin\\WooMembershipConnect\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/connections/WooMembershipConnect',
         ),
         'MailOptin\\WooCommerceConnect\\' => 
         array (
@@ -196,6 +223,10 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         array (
             0 => __DIR__ . '/../..' . '/src/connections/VerticalResponseConnect',
         ),
+        'MailOptin\\UserRegistrationOptinConnect\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/connections/UserRegistrationOptinConnect',
+        ),
         'MailOptin\\SendyConnect\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/connections/SendyConnect',
@@ -220,9 +251,17 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         array (
             0 => __DIR__ . '/../..' . '/src/connections/RegisteredUsersConnect',
         ),
+        'MailOptin\\RCPConnect\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/connections/RCPConnect',
+        ),
         'MailOptin\\PolylangConnect\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/connections/PolylangConnect',
+        ),
+        'MailOptin\\PmProConnect\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/connections/PmProConnect',
         ),
         'MailOptin\\OntraportConnect\\' => 
         array (
@@ -240,6 +279,10 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         array (
             0 => __DIR__ . '/../..' . '/src/connections/MoosendConnect',
         ),
+        'MailOptin\\MemberPressConnect\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/connections/MemberPressConnect',
+        ),
         'MailOptin\\MailsterConnect\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/connections/MailsterConnect',
@@ -247,6 +290,10 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         'MailOptin\\MailjetConnect\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/connections/MailjetConnect',
+        ),
+        'MailOptin\\Mailerlitev2Connect\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/connections/Mailerlitev2Connect',
         ),
         'MailOptin\\MailerliteConnect\\' => 
         array (
@@ -259,6 +306,10 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         'MailOptin\\MailChimpConnect\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/connections/MailChimpConnect',
+        ),
+        'MailOptin\\LifterLMSConnect\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/connections/LifterLMSConnect',
         ),
         'MailOptin\\LearnDashConnect\\' => 
         array (
@@ -287,6 +338,10 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         'MailOptin\\GravityFormsConnect\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/connections/GravityFormsConnect',
+        ),
+        'MailOptin\\GiveWPConnect\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/connections/GiveWPConnect',
         ),
         'MailOptin\\GetResponseConnect\\' => 
         array (
@@ -324,6 +379,10 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         array (
             0 => __DIR__ . '/../..' . '/src/connections/ElementorConnect',
         ),
+        'MailOptin\\EasyDigitalDownloadsConnect\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/connections/EasyDigitalDownloadsConnect',
+        ),
         'MailOptin\\DripConnect\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/connections/DripConnect',
@@ -355,6 +414,10 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         'MailOptin\\Connections\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/connections',
+        ),
+        'MailOptin\\CommentOptinConnect\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/connections/CommentOptinConnect',
         ),
         'MailOptin\\CleverReachConnect\\' => 
         array (
@@ -388,6 +451,10 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         array (
             0 => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers',
         ),
+        'Carbon\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon',
+        ),
         'Barryvdh\\Composer\\' => 
         array (
             0 => __DIR__ . '/..' . '/barryvdh/composer-cleanup-plugin/src',
@@ -395,20 +462,6 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         'Authifly\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/authifly/src',
-        ),
-    );
-
-    public static $fallbackDirsPsr4 = array (
-        0 => __DIR__ . '/..' . '/nesbot/carbon/src',
-    );
-
-    public static $prefixesPsr0 = array (
-        'U' => 
-        array (
-            'UpdateHelper\\' => 
-            array (
-                0 => __DIR__ . '/..' . '/kylekatarnls/update-helper/src',
-            ),
         ),
     );
 
@@ -477,13 +530,89 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         'Authifly\\Thirdparty\\OAuth\\OAuthUtil' => __DIR__ . '/../..' . '/src/authifly/src/Thirdparty/OAuth/OAuthUtil.php',
         'Barryvdh\\Composer\\CleanupPlugin' => __DIR__ . '/..' . '/barryvdh/composer-cleanup-plugin/src/CleanupPlugin.php',
         'Barryvdh\\Composer\\CleanupRules' => __DIR__ . '/..' . '/barryvdh/composer-cleanup-plugin/src/CleanupRules.php',
+        'Carbon\\AbstractTranslator' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/AbstractTranslator.php',
         'Carbon\\Carbon' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Carbon.php',
+        'Carbon\\CarbonConverterInterface' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/CarbonConverterInterface.php',
+        'Carbon\\CarbonImmutable' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/CarbonImmutable.php',
+        'Carbon\\CarbonInterface' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/CarbonInterface.php',
         'Carbon\\CarbonInterval' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/CarbonInterval.php',
         'Carbon\\CarbonPeriod' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/CarbonPeriod.php',
+        'Carbon\\CarbonPeriodImmutable' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/CarbonPeriodImmutable.php',
+        'Carbon\\CarbonTimeZone' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/CarbonTimeZone.php',
+        'Carbon\\Cli\\Invoker' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Cli/Invoker.php',
+        'Carbon\\Doctrine\\CarbonDoctrineType' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Doctrine/CarbonDoctrineType.php',
+        'Carbon\\Doctrine\\CarbonImmutableType' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Doctrine/CarbonImmutableType.php',
+        'Carbon\\Doctrine\\CarbonType' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Doctrine/CarbonType.php',
+        'Carbon\\Doctrine\\CarbonTypeConverter' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Doctrine/CarbonTypeConverter.php',
+        'Carbon\\Doctrine\\DateTimeDefaultPrecision' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Doctrine/DateTimeDefaultPrecision.php',
+        'Carbon\\Doctrine\\DateTimeImmutableType' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Doctrine/DateTimeImmutableType.php',
+        'Carbon\\Doctrine\\DateTimeType' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Doctrine/DateTimeType.php',
+        'Carbon\\Exceptions\\BadComparisonUnitException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/BadComparisonUnitException.php',
+        'Carbon\\Exceptions\\BadFluentConstructorException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/BadFluentConstructorException.php',
+        'Carbon\\Exceptions\\BadFluentSetterException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/BadFluentSetterException.php',
+        'Carbon\\Exceptions\\BadMethodCallException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/BadMethodCallException.php',
+        'Carbon\\Exceptions\\EndLessPeriodException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/EndLessPeriodException.php',
+        'Carbon\\Exceptions\\Exception' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/Exception.php',
+        'Carbon\\Exceptions\\ImmutableException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/ImmutableException.php',
+        'Carbon\\Exceptions\\InvalidArgumentException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/InvalidArgumentException.php',
+        'Carbon\\Exceptions\\InvalidCastException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/InvalidCastException.php',
         'Carbon\\Exceptions\\InvalidDateException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/InvalidDateException.php',
+        'Carbon\\Exceptions\\InvalidFormatException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/InvalidFormatException.php',
+        'Carbon\\Exceptions\\InvalidIntervalException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/InvalidIntervalException.php',
+        'Carbon\\Exceptions\\InvalidPeriodDateException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/InvalidPeriodDateException.php',
+        'Carbon\\Exceptions\\InvalidPeriodParameterException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/InvalidPeriodParameterException.php',
+        'Carbon\\Exceptions\\InvalidTimeZoneException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/InvalidTimeZoneException.php',
+        'Carbon\\Exceptions\\InvalidTypeException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/InvalidTypeException.php',
+        'Carbon\\Exceptions\\NotACarbonClassException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/NotACarbonClassException.php',
+        'Carbon\\Exceptions\\NotAPeriodException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/NotAPeriodException.php',
+        'Carbon\\Exceptions\\NotLocaleAwareException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/NotLocaleAwareException.php',
+        'Carbon\\Exceptions\\OutOfRangeException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/OutOfRangeException.php',
+        'Carbon\\Exceptions\\ParseErrorException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/ParseErrorException.php',
+        'Carbon\\Exceptions\\RuntimeException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/RuntimeException.php',
+        'Carbon\\Exceptions\\UnitException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/UnitException.php',
+        'Carbon\\Exceptions\\UnitNotConfiguredException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/UnitNotConfiguredException.php',
+        'Carbon\\Exceptions\\UnknownGetterException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/UnknownGetterException.php',
+        'Carbon\\Exceptions\\UnknownMethodException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/UnknownMethodException.php',
+        'Carbon\\Exceptions\\UnknownSetterException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/UnknownSetterException.php',
+        'Carbon\\Exceptions\\UnknownUnitException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/UnknownUnitException.php',
+        'Carbon\\Exceptions\\UnreachableException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/UnreachableException.php',
+        'Carbon\\Factory' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Factory.php',
+        'Carbon\\FactoryImmutable' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/FactoryImmutable.php',
+        'Carbon\\Language' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Language.php',
         'Carbon\\Laravel\\ServiceProvider' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Laravel/ServiceProvider.php',
+        'Carbon\\MessageFormatter\\MessageFormatterMapper' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/MessageFormatter/MessageFormatterMapper.php',
+        'Carbon\\PHPStan\\AbstractMacro' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/PHPStan/AbstractMacro.php',
+        'Carbon\\PHPStan\\Macro' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/PHPStan/Macro.php',
+        'Carbon\\PHPStan\\MacroExtension' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/PHPStan/MacroExtension.php',
+        'Carbon\\PHPStan\\MacroScanner' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/PHPStan/MacroScanner.php',
+        'Carbon\\Traits\\Boundaries' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Traits/Boundaries.php',
+        'Carbon\\Traits\\Cast' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Traits/Cast.php',
+        'Carbon\\Traits\\Comparison' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Traits/Comparison.php',
+        'Carbon\\Traits\\Converter' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Traits/Converter.php',
+        'Carbon\\Traits\\Creator' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Traits/Creator.php',
+        'Carbon\\Traits\\Date' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Traits/Date.php',
+        'Carbon\\Traits\\DeprecatedProperties' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Traits/DeprecatedProperties.php',
+        'Carbon\\Traits\\Difference' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Traits/Difference.php',
+        'Carbon\\Traits\\IntervalRounding' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Traits/IntervalRounding.php',
+        'Carbon\\Traits\\IntervalStep' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Traits/IntervalStep.php',
+        'Carbon\\Traits\\Localization' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Traits/Localization.php',
+        'Carbon\\Traits\\Macro' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Traits/Macro.php',
+        'Carbon\\Traits\\MagicParameter' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Traits/MagicParameter.php',
+        'Carbon\\Traits\\Mixin' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Traits/Mixin.php',
+        'Carbon\\Traits\\Modifiers' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Traits/Modifiers.php',
+        'Carbon\\Traits\\Mutability' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Traits/Mutability.php',
+        'Carbon\\Traits\\ObjectInitialisation' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Traits/ObjectInitialisation.php',
+        'Carbon\\Traits\\Options' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Traits/Options.php',
+        'Carbon\\Traits\\Rounding' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Traits/Rounding.php',
+        'Carbon\\Traits\\Serialization' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Traits/Serialization.php',
+        'Carbon\\Traits\\Test' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Traits/Test.php',
+        'Carbon\\Traits\\Timestamp' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Traits/Timestamp.php',
+        'Carbon\\Traits\\ToStringFormat' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Traits/ToStringFormat.php',
+        'Carbon\\Traits\\Units' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Traits/Units.php',
+        'Carbon\\Traits\\Week' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Traits/Week.php',
         'Carbon\\Translator' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Translator.php',
-        'Carbon\\Upgrade' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Upgrade.php',
+        'Carbon\\TranslatorImmutable' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/TranslatorImmutable.php',
+        'Carbon\\TranslatorStrongTypeInterface' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/TranslatorStrongTypeInterface.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Composer\\Installers\\AglInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/AglInstaller.php',
         'Composer\\Installers\\AimeosInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/AimeosInstaller.php',
@@ -594,7 +723,6 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         'DrewM\\Drip\\Response' => __DIR__ . '/..' . '/drewm/drip/src/Response.php',
         'Html2Text\\Html2Text' => __DIR__ . '/..' . '/soundasleep/html2text/src/Html2Text.php',
         'Html2Text\\Html2TextException' => __DIR__ . '/..' . '/soundasleep/html2text/src/Html2TextException.php',
-        'JsonSerializable' => __DIR__ . '/..' . '/nesbot/carbon/src/JsonSerializable.php',
         'League\\Csv\\AbstractCsv' => __DIR__ . '/..' . '/league/csv/src/AbstractCsv.php',
         'League\\Csv\\ByteSequence' => __DIR__ . '/..' . '/league/csv/src/ByteSequence.php',
         'League\\Csv\\CannotInsertRecord' => __DIR__ . '/..' . '/league/csv/src/CannotInsertRecord.php',
@@ -636,6 +764,9 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         'MailOptin\\CleverReachConnect\\ConnectSettingsPage' => __DIR__ . '/../..' . '/src/connections/CleverReachConnect/ConnectSettingsPage.php',
         'MailOptin\\CleverReachConnect\\SendCampaign' => __DIR__ . '/../..' . '/src/connections/CleverReachConnect/SendCampaign.php',
         'MailOptin\\CleverReachConnect\\Subscription' => __DIR__ . '/../..' . '/src/connections/CleverReachConnect/Subscription.php',
+        'MailOptin\\CommentOptinConnect\\CommentOptinSettings' => __DIR__ . '/../..' . '/src/connections/CommentOptinConnect/CommentOptinSettings.php',
+        'MailOptin\\CommentOptinConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/CommentOptinConnect/Connect.php',
+        'MailOptin\\CommentOptinConnect\\Init' => __DIR__ . '/../..' . '/src/connections/CommentOptinConnect/Init.php',
         'MailOptin\\Connections\\GoogleAnalytics' => __DIR__ . '/../..' . '/src/connections/GoogleAnalytics.php',
         'MailOptin\\Connections\\Init' => __DIR__ . '/../..' . '/src/connections/Init.php',
         'MailOptin\\ContactForm7Connect\\CF7' => __DIR__ . '/../..' . '/src/connections/ContactForm7Connect/CF7.php',
@@ -727,6 +858,7 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         'MailOptin\\Core\\Admin\\SettingsPage\\EmailCampaigns' => __DIR__ . '/../..' . '/src/core/src/Admin/SettingsPage/EmailCampaigns.php',
         'MailOptin\\Core\\Admin\\SettingsPage\\Email_Campaign_List' => __DIR__ . '/../..' . '/src/core/src/Admin/SettingsPage/Email_Campaign_List.php',
         'MailOptin\\Core\\Admin\\SettingsPage\\LeadBank' => __DIR__ . '/../..' . '/src/core/src/Admin/SettingsPage/LeadBank.php',
+        'MailOptin\\Core\\Admin\\SettingsPage\\LicenseUpgrader' => __DIR__ . '/../..' . '/src/core/src/Admin/SettingsPage/LicenseUpgrader.php',
         'MailOptin\\Core\\Admin\\SettingsPage\\Newsletter' => __DIR__ . '/../..' . '/src/core/src/Admin/SettingsPage/Newsletter.php',
         'MailOptin\\Core\\Admin\\SettingsPage\\Newsletter_List' => __DIR__ . '/../..' . '/src/core/src/Admin/SettingsPage/Newsletter_List.php',
         'MailOptin\\Core\\Admin\\SettingsPage\\OptinCampaign_List' => __DIR__ . '/../..' . '/src/core/src/Admin/SettingsPage/OptinCampaign_List.php',
@@ -818,6 +950,11 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         'MailOptin\\DripConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/DripConnect/Connect.php',
         'MailOptin\\DripConnect\\ConnectSettingsPage' => __DIR__ . '/../..' . '/src/connections/DripConnect/ConnectSettingsPage.php',
         'MailOptin\\DripConnect\\Subscription' => __DIR__ . '/../..' . '/src/connections/DripConnect/Subscription.php',
+        'MailOptin\\EasyDigitalDownloadsConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/EasyDigitalDownloadsConnect/Connect.php',
+        'MailOptin\\EasyDigitalDownloadsConnect\\Downloads' => __DIR__ . '/../..' . '/src/connections/EasyDigitalDownloadsConnect/Downloads.php',
+        'MailOptin\\EasyDigitalDownloadsConnect\\EDDInit' => __DIR__ . '/../..' . '/src/connections/EasyDigitalDownloadsConnect/EDDInit.php',
+        'MailOptin\\EasyDigitalDownloadsConnect\\MailBGProcess' => __DIR__ . '/../..' . '/src/connections/EasyDigitalDownloadsConnect/MailBGProcess.php',
+        'MailOptin\\EasyDigitalDownloadsConnect\\Settings' => __DIR__ . '/../..' . '/src/connections/EasyDigitalDownloadsConnect/Settings.php',
         'MailOptin\\ElementorConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/ElementorConnect/Connect.php',
         'MailOptin\\ElementorConnect\\CustomSelect' => __DIR__ . '/../..' . '/src/connections/ElementorConnect/CustomSelect.php',
         'MailOptin\\ElementorConnect\\Elementor' => __DIR__ . '/../..' . '/src/connections/ElementorConnect/Elementor.php',
@@ -857,6 +994,11 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         'MailOptin\\GetResponseConnect\\GetResponseAPI3' => __DIR__ . '/../..' . '/src/connections/GetResponseConnect/GetResponseAPI3.php',
         'MailOptin\\GetResponseConnect\\SendCampaign' => __DIR__ . '/../..' . '/src/connections/GetResponseConnect/SendCampaign.php',
         'MailOptin\\GetResponseConnect\\Subscription' => __DIR__ . '/../..' . '/src/connections/GetResponseConnect/Subscription.php',
+        'MailOptin\\GiveWPConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/GiveWPConnect/Connect.php',
+        'MailOptin\\GiveWPConnect\\Forms' => __DIR__ . '/../..' . '/src/connections/GiveWPConnect/Forms.php',
+        'MailOptin\\GiveWPConnect\\GWPInit' => __DIR__ . '/../..' . '/src/connections/GiveWPConnect/GWPInit.php',
+        'MailOptin\\GiveWPConnect\\MailBGProcess' => __DIR__ . '/../..' . '/src/connections/GiveWPConnect/MailBGProcess.php',
+        'MailOptin\\GiveWPConnect\\Settings' => __DIR__ . '/../..' . '/src/connections/GiveWPConnect/Settings.php',
         'MailOptin\\GravityFormsConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/GravityFormsConnect/Connect.php',
         'MailOptin\\GravityFormsConnect\\GFMailOptin' => __DIR__ . '/../..' . '/src/connections/GravityFormsConnect/GFMailOptin.php',
         'MailOptin\\HubspotConnect\\AbstractHubspotConnect' => __DIR__ . '/../..' . '/src/connections/HubspotConnect/AbstractHubspotConnect.php',
@@ -868,10 +1010,6 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         'MailOptin\\InfusionsoftConnect\\ConnectSettingsPage' => __DIR__ . '/../..' . '/src/connections/InfusionsoftConnect/ConnectSettingsPage.php',
         'MailOptin\\InfusionsoftConnect\\SendCampaign' => __DIR__ . '/../..' . '/src/connections/InfusionsoftConnect/SendCampaign.php',
         'MailOptin\\InfusionsoftConnect\\Subscription' => __DIR__ . '/../..' . '/src/connections/InfusionsoftConnect/Subscription.php',
-        'MailOptin\\JiltConnect\\AbstractJiltConnect' => __DIR__ . '/../..' . '/src/connections/JiltConnect/AbstractJiltConnect.php',
-        'MailOptin\\JiltConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/JiltConnect/Connect.php',
-        'MailOptin\\JiltConnect\\ConnectSettingsPage' => __DIR__ . '/../..' . '/src/connections/JiltConnect/ConnectSettingsPage.php',
-        'MailOptin\\JiltConnect\\Subscription' => __DIR__ . '/../..' . '/src/connections/JiltConnect/Subscription.php',
         'MailOptin\\KlaviyoConnect\\APIClass' => __DIR__ . '/../..' . '/src/connections/KlaviyoConnect/APIClass.php',
         'MailOptin\\KlaviyoConnect\\AbstractKlaviyoConnect' => __DIR__ . '/../..' . '/src/connections/KlaviyoConnect/AbstractKlaviyoConnect.php',
         'MailOptin\\KlaviyoConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/KlaviyoConnect/Connect.php',
@@ -885,6 +1023,11 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         'MailOptin\\LearnDashConnect\\Group' => __DIR__ . '/../..' . '/src/connections/LearnDashConnect/Group.php',
         'MailOptin\\LearnDashConnect\\LearnDashInit' => __DIR__ . '/../..' . '/src/connections/LearnDashConnect/LearnDashInit.php',
         'MailOptin\\LearnDashConnect\\LearnDashSettings' => __DIR__ . '/../..' . '/src/connections/LearnDashConnect/LearnDashSettings.php',
+        'MailOptin\\LearnDashConnect\\Mail_BG_Process' => __DIR__ . '/../..' . '/src/connections/LearnDashConnect/Mail_BG_Process.php',
+        'MailOptin\\LifterLMSConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/LifterLMSConnect/Connect.php',
+        'MailOptin\\LifterLMSConnect\\CourseSidebarSettings' => __DIR__ . '/../..' . '/src/connections/LifterLMSConnect/CourseSidebarSettings.php',
+        'MailOptin\\LifterLMSConnect\\MOLifterLMS' => __DIR__ . '/../..' . '/src/connections/LifterLMSConnect/MOLifterLMS.php',
+        'MailOptin\\LifterLMSConnect\\Mail_BG_Process' => __DIR__ . '/../..' . '/src/connections/LifterLMSConnect/Mail_BG_Process.php',
         'MailOptin\\MailChimpConnect\\AbstractMailChimpConnect' => __DIR__ . '/../..' . '/src/connections/MailChimpConnect/AbstractMailChimpConnect.php',
         'MailOptin\\MailChimpConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/MailChimpConnect/Connect.php',
         'MailOptin\\MailChimpConnect\\ConnectSettingsPage' => __DIR__ . '/../..' . '/src/connections/MailChimpConnect/ConnectSettingsPage.php',
@@ -909,6 +1052,12 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         'MailOptin\\MailerliteConnect\\ConnectSettingsPage' => __DIR__ . '/../..' . '/src/connections/MailerliteConnect/ConnectSettingsPage.php',
         'MailOptin\\MailerliteConnect\\SendCampaign' => __DIR__ . '/../..' . '/src/connections/MailerliteConnect/SendCampaign.php',
         'MailOptin\\MailerliteConnect\\Subscription' => __DIR__ . '/../..' . '/src/connections/MailerliteConnect/Subscription.php',
+        'MailOptin\\Mailerlitev2Connect\\APIClass' => __DIR__ . '/../..' . '/src/connections/Mailerlitev2Connect/APIClass.php',
+        'MailOptin\\Mailerlitev2Connect\\AbstractMailerlitev2Connect' => __DIR__ . '/../..' . '/src/connections/Mailerlitev2Connect/AbstractMailerlitev2Connect.php',
+        'MailOptin\\Mailerlitev2Connect\\Connect' => __DIR__ . '/../..' . '/src/connections/Mailerlitev2Connect/Connect.php',
+        'MailOptin\\Mailerlitev2Connect\\ConnectSettingsPage' => __DIR__ . '/../..' . '/src/connections/Mailerlitev2Connect/ConnectSettingsPage.php',
+        'MailOptin\\Mailerlitev2Connect\\SendCampaign' => __DIR__ . '/../..' . '/src/connections/Mailerlitev2Connect/SendCampaign.php',
+        'MailOptin\\Mailerlitev2Connect\\Subscription' => __DIR__ . '/../..' . '/src/connections/Mailerlitev2Connect/Subscription.php',
         'MailOptin\\MailjetConnect\\APIClass' => __DIR__ . '/../..' . '/src/connections/MailjetConnect/APIClass.php',
         'MailOptin\\MailjetConnect\\AbstractMailjetConnect' => __DIR__ . '/../..' . '/src/connections/MailjetConnect/AbstractMailjetConnect.php',
         'MailOptin\\MailjetConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/MailjetConnect/Connect.php',
@@ -917,6 +1066,11 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         'MailOptin\\MailjetConnect\\Subscription' => __DIR__ . '/../..' . '/src/connections/MailjetConnect/Subscription.php',
         'MailOptin\\MailsterConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/MailsterConnect/Connect.php',
         'MailOptin\\MailsterConnect\\Subscription' => __DIR__ . '/../..' . '/src/connections/MailsterConnect/Subscription.php',
+        'MailOptin\\MemberPressConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/MemberPressConnect/Connect.php',
+        'MailOptin\\MemberPressConnect\\MemberPressInit' => __DIR__ . '/../..' . '/src/connections/MemberPressConnect/MemberPressInit.php',
+        'MailOptin\\MemberPressConnect\\MemberPressSettings' => __DIR__ . '/../..' . '/src/connections/MemberPressConnect/MemberPressSettings.php',
+        'MailOptin\\MemberPressConnect\\Membership' => __DIR__ . '/../..' . '/src/connections/MemberPressConnect/Membership.php',
+        'MailOptin\\MemberPressConnect\\WP_MemberPress_Mail_BG_Process' => __DIR__ . '/../..' . '/src/connections/MemberPressConnect/WP_MemberPress_Mail_BG_Process.php',
         'MailOptin\\MoosendConnect\\APIClass' => __DIR__ . '/../..' . '/src/connections/MoosendConnect/APIClass.php',
         'MailOptin\\MoosendConnect\\AbstractMoosendConnect' => __DIR__ . '/../..' . '/src/connections/MoosendConnect/AbstractMoosendConnect.php',
         'MailOptin\\MoosendConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/MoosendConnect/Connect.php',
@@ -946,7 +1100,6 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         'MailOptin\\NinjaFormsConnect\\Integrations\\GetResponseConnect' => __DIR__ . '/../..' . '/src/connections/NinjaFormsConnect/Integrations/GetResponseConnect.php',
         'MailOptin\\NinjaFormsConnect\\Integrations\\HubspotConnect' => __DIR__ . '/../..' . '/src/connections/NinjaFormsConnect/Integrations/HubspotConnect.php',
         'MailOptin\\NinjaFormsConnect\\Integrations\\InfusionsoftConnect' => __DIR__ . '/../..' . '/src/connections/NinjaFormsConnect/Integrations/InfusionsoftConnect.php',
-        'MailOptin\\NinjaFormsConnect\\Integrations\\JiltConnect' => __DIR__ . '/../..' . '/src/connections/NinjaFormsConnect/Integrations/JiltConnect.php',
         'MailOptin\\NinjaFormsConnect\\Integrations\\KlaviyoConnect' => __DIR__ . '/../..' . '/src/connections/NinjaFormsConnect/Integrations/KlaviyoConnect.php',
         'MailOptin\\NinjaFormsConnect\\Integrations\\MailChimpConnect' => __DIR__ . '/../..' . '/src/connections/NinjaFormsConnect/Integrations/MailChimpConnect.php',
         'MailOptin\\NinjaFormsConnect\\Integrations\\MailPoetConnect' => __DIR__ . '/../..' . '/src/connections/NinjaFormsConnect/Integrations/MailPoetConnect.php',
@@ -954,6 +1107,7 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         'MailOptin\\NinjaFormsConnect\\Integrations\\MailjetConnect' => __DIR__ . '/../..' . '/src/connections/NinjaFormsConnect/Integrations/MailjetConnect.php',
         'MailOptin\\NinjaFormsConnect\\Integrations\\MailsterConnect' => __DIR__ . '/../..' . '/src/connections/NinjaFormsConnect/Integrations/MailsterConnect.php',
         'MailOptin\\NinjaFormsConnect\\Integrations\\MoosendConnect' => __DIR__ . '/../..' . '/src/connections/NinjaFormsConnect/Integrations/MoosendConnect.php',
+        'MailOptin\\NinjaFormsConnect\\Integrations\\NewsmanConnect' => __DIR__ . '/../..' . '/src/connections/NinjaFormsConnect/Integrations/NewsmanConnect.php',
         'MailOptin\\NinjaFormsConnect\\Integrations\\OntraportConnect' => __DIR__ . '/../..' . '/src/connections/NinjaFormsConnect/Integrations/OntraportConnect.php',
         'MailOptin\\NinjaFormsConnect\\Integrations\\RegisteredUsersConnect' => __DIR__ . '/../..' . '/src/connections/NinjaFormsConnect/Integrations/RegisteredUsersConnect.php',
         'MailOptin\\NinjaFormsConnect\\Integrations\\SendFoxConnect' => __DIR__ . '/../..' . '/src/connections/NinjaFormsConnect/Integrations/SendFoxConnect.php',
@@ -963,7 +1117,6 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         'MailOptin\\NinjaFormsConnect\\Integrations\\SendyConnect' => __DIR__ . '/../..' . '/src/connections/NinjaFormsConnect/Integrations/SendyConnect.php',
         'MailOptin\\NinjaFormsConnect\\Integrations\\VerticalResponseConnect' => __DIR__ . '/../..' . '/src/connections/NinjaFormsConnect/Integrations/VerticalResponseConnect.php',
         'MailOptin\\NinjaFormsConnect\\Integrations\\WeMailConnect' => __DIR__ . '/../..' . '/src/connections/NinjaFormsConnect/Integrations/WeMailConnect.php',
-        'MailOptin\\NinjaFormsConnect\\Integrations\\WebHookConnect' => __DIR__ . '/../..' . '/src/connections/NinjaFormsConnect/Integrations/WebHookConnect.php',
         'MailOptin\\NinjaFormsConnect\\Integrations\\WordPressUserRegistrationConnect' => __DIR__ . '/../..' . '/src/connections/NinjaFormsConnect/Integrations/WordPressUserRegistrationConnect.php',
         'MailOptin\\NinjaFormsConnect\\Integrations\\ZohoCRMConnect' => __DIR__ . '/../..' . '/src/connections/NinjaFormsConnect/Integrations/ZohoCRMConnect.php',
         'MailOptin\\NinjaFormsConnect\\Integrations\\ZohoCampaignsConnect' => __DIR__ . '/../..' . '/src/connections/NinjaFormsConnect/Integrations/ZohoCampaignsConnect.php',
@@ -972,6 +1125,16 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         'MailOptin\\OntraportConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/OntraportConnect/Connect.php',
         'MailOptin\\OntraportConnect\\ConnectSettingsPage' => __DIR__ . '/../..' . '/src/connections/OntraportConnect/ConnectSettingsPage.php',
         'MailOptin\\OntraportConnect\\Subscription' => __DIR__ . '/../..' . '/src/connections/OntraportConnect/Subscription.php',
+        'MailOptin\\PmProConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/PmProConnect/Connect.php',
+        'MailOptin\\PmProConnect\\Mail_BG_Process' => __DIR__ . '/../..' . '/src/connections/PmProConnect/Mail_BG_Process.php',
+        'MailOptin\\PmProConnect\\Membership' => __DIR__ . '/../..' . '/src/connections/PmProConnect/Membership.php',
+        'MailOptin\\PmProConnect\\PMPROInit' => __DIR__ . '/../..' . '/src/connections/PmProConnect/PMPROInit.php',
+        'MailOptin\\PmProConnect\\PMPROSettings' => __DIR__ . '/../..' . '/src/connections/PmProConnect/PMPROSettings.php',
+        'MailOptin\\RCPConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/RCPConnect/Connect.php',
+        'MailOptin\\RCPConnect\\Mail_BG_Process' => __DIR__ . '/../..' . '/src/connections/RCPConnect/Mail_BG_Process.php',
+        'MailOptin\\RCPConnect\\Membership' => __DIR__ . '/../..' . '/src/connections/RCPConnect/Membership.php',
+        'MailOptin\\RCPConnect\\RCPInit' => __DIR__ . '/../..' . '/src/connections/RCPConnect/RCPInit.php',
+        'MailOptin\\RCPConnect\\RCPSettings' => __DIR__ . '/../..' . '/src/connections/RCPConnect/RCPSettings.php',
         'MailOptin\\RegisteredUsersConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/RegisteredUsersConnect/Connect.php',
         'MailOptin\\RegisteredUsersConnect\\WP_Mail_BG_Process' => __DIR__ . '/../..' . '/src/connections/RegisteredUsersConnect/WP_Mail_BG_Process.php',
         'MailOptin\\SendFoxConnect\\APIClass' => __DIR__ . '/../..' . '/src/connections/SendFoxConnect/APIClass.php',
@@ -1002,6 +1165,9 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         'MailOptin\\SendyConnect\\SendCampaign' => __DIR__ . '/../..' . '/src/connections/SendyConnect/SendCampaign.php',
         'MailOptin\\SendyConnect\\SendyPHP' => __DIR__ . '/../..' . '/src/connections/SendyConnect/SendyPHP.php',
         'MailOptin\\SendyConnect\\Subscription' => __DIR__ . '/../..' . '/src/connections/SendyConnect/Subscription.php',
+        'MailOptin\\UserRegistrationOptinConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/UserRegistrationOptinConnect/Connect.php',
+        'MailOptin\\UserRegistrationOptinConnect\\UserRegisterInit' => __DIR__ . '/../..' . '/src/connections/UserRegistrationOptinConnect/UserRegisterInit.php',
+        'MailOptin\\UserRegistrationOptinConnect\\UserRegisterSettings' => __DIR__ . '/../..' . '/src/connections/UserRegistrationOptinConnect/UserRegisterSettings.php',
         'MailOptin\\VerticalResponseConnect\\AbstractVerticalResponseConnect' => __DIR__ . '/../..' . '/src/connections/VerticalResponseConnect/AbstractVerticalResponseConnect.php',
         'MailOptin\\VerticalResponseConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/VerticalResponseConnect/Connect.php',
         'MailOptin\\VerticalResponseConnect\\ConnectSettingsPage' => __DIR__ . '/../..' . '/src/connections/VerticalResponseConnect/ConnectSettingsPage.php',
@@ -1022,6 +1188,11 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         'MailOptin\\WooCommerceConnect\\Tags' => __DIR__ . '/../..' . '/src/connections/WooCommerceConnect/Tags.php',
         'MailOptin\\WooCommerceConnect\\WooInit' => __DIR__ . '/../..' . '/src/connections/WooCommerceConnect/WooInit.php',
         'MailOptin\\WooCommerceConnect\\WooSettings' => __DIR__ . '/../..' . '/src/connections/WooCommerceConnect/WooSettings.php',
+        'MailOptin\\WooCommerceConnect\\WoocommerceMailBGProcess' => __DIR__ . '/../..' . '/src/connections/WooCommerceConnect/WoocommerceMailBGProcess.php',
+        'MailOptin\\WooMembershipConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/WooMembershipConnect/Connect.php',
+        'MailOptin\\WooMembershipConnect\\WCMembershipMailBGProcess' => __DIR__ . '/../..' . '/src/connections/WooMembershipConnect/WCMembershipMailBGProcess.php',
+        'MailOptin\\WooSubscriptionsConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/WooSubscriptionsConnect/Connect.php',
+        'MailOptin\\WooSubscriptionsConnect\\MailBGProcess' => __DIR__ . '/../..' . '/src/connections/WooSubscriptionsConnect/MailBGProcess.php',
         'MailOptin\\WordPressUserRegistrationConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/WordPressUserRegistrationConnect/Connect.php',
         'MailOptin\\WordPressUserRegistrationConnect\\Subscription' => __DIR__ . '/../..' . '/src/connections/WordPressUserRegistrationConnect/Subscription.php',
         'MailOptin\\ZohoCRMConnect\\AbstractZohoCRMConnect' => __DIR__ . '/../..' . '/src/connections/ZohoCRMConnect/AbstractZohoCRMConnect.php',
@@ -1046,16 +1217,57 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         'Mailchimp\\http\\MailchimpGuzzleHttpClient' => __DIR__ . '/..' . '/mailoptin/mailchimp-api-php/src/http/MailchimpGuzzleHttpClient.php',
         'Mailchimp\\http\\MailchimpHttpClientInterface' => __DIR__ . '/..' . '/mailoptin/mailchimp-api-php/src/http/MailchimpHttpClientInterface.php',
         'PAnD' => __DIR__ . '/..' . '/collizo4sky/persist-admin-notices-dismissal/persist-admin-notices-dismissal.php',
-        'Pelago\\Emogrifier' => __DIR__ . '/..' . '/pelago/emogrifier/src/Emogrifier.php',
-        'Pelago\\Emogrifier\\CssInliner' => __DIR__ . '/..' . '/pelago/emogrifier/src/Emogrifier/CssInliner.php',
-        'Pelago\\Emogrifier\\HtmlProcessor\\AbstractHtmlProcessor' => __DIR__ . '/..' . '/pelago/emogrifier/src/Emogrifier/HtmlProcessor/AbstractHtmlProcessor.php',
-        'Pelago\\Emogrifier\\HtmlProcessor\\CssToAttributeConverter' => __DIR__ . '/..' . '/pelago/emogrifier/src/Emogrifier/HtmlProcessor/CssToAttributeConverter.php',
-        'Pelago\\Emogrifier\\HtmlProcessor\\HtmlNormalizer' => __DIR__ . '/..' . '/pelago/emogrifier/src/Emogrifier/HtmlProcessor/HtmlNormalizer.php',
-        'Pelago\\Emogrifier\\HtmlProcessor\\HtmlPruner' => __DIR__ . '/..' . '/pelago/emogrifier/src/Emogrifier/HtmlProcessor/HtmlPruner.php',
-        'Pelago\\Emogrifier\\Utilities\\ArrayIntersector' => __DIR__ . '/..' . '/pelago/emogrifier/src/Emogrifier/Utilities/ArrayIntersector.php',
-        'Pelago\\Emogrifier\\Utilities\\CssConcatenator' => __DIR__ . '/..' . '/pelago/emogrifier/src/Emogrifier/Utilities/CssConcatenator.php',
+        'Pelago\\Emogrifier\\Caching\\SimpleStringCache' => __DIR__ . '/..' . '/pelago/emogrifier/src/Caching/SimpleStringCache.php',
+        'Pelago\\Emogrifier\\CssInliner' => __DIR__ . '/..' . '/pelago/emogrifier/src/CssInliner.php',
+        'Pelago\\Emogrifier\\Css\\CssDocument' => __DIR__ . '/..' . '/pelago/emogrifier/src/Css/CssDocument.php',
+        'Pelago\\Emogrifier\\Css\\StyleRule' => __DIR__ . '/..' . '/pelago/emogrifier/src/Css/StyleRule.php',
+        'Pelago\\Emogrifier\\HtmlProcessor\\AbstractHtmlProcessor' => __DIR__ . '/..' . '/pelago/emogrifier/src/HtmlProcessor/AbstractHtmlProcessor.php',
+        'Pelago\\Emogrifier\\HtmlProcessor\\CssToAttributeConverter' => __DIR__ . '/..' . '/pelago/emogrifier/src/HtmlProcessor/CssToAttributeConverter.php',
+        'Pelago\\Emogrifier\\HtmlProcessor\\HtmlNormalizer' => __DIR__ . '/..' . '/pelago/emogrifier/src/HtmlProcessor/HtmlNormalizer.php',
+        'Pelago\\Emogrifier\\HtmlProcessor\\HtmlPruner' => __DIR__ . '/..' . '/pelago/emogrifier/src/HtmlProcessor/HtmlPruner.php',
+        'Pelago\\Emogrifier\\Utilities\\ArrayIntersector' => __DIR__ . '/..' . '/pelago/emogrifier/src/Utilities/ArrayIntersector.php',
+        'Pelago\\Emogrifier\\Utilities\\CssConcatenator' => __DIR__ . '/..' . '/pelago/emogrifier/src/Utilities/CssConcatenator.php',
         'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
         'RequestException' => __DIR__ . '/../..' . '/src/connections/ActiveCampaignConnect/APIClass/includes/exceptions/RequestException.php',
+        'Sabberworm\\CSS\\CSSList\\AtRuleBlockList' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/CSSList/AtRuleBlockList.php',
+        'Sabberworm\\CSS\\CSSList\\CSSBlockList' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/CSSList/CSSBlockList.php',
+        'Sabberworm\\CSS\\CSSList\\CSSList' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/CSSList/CSSList.php',
+        'Sabberworm\\CSS\\CSSList\\Document' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/CSSList/Document.php',
+        'Sabberworm\\CSS\\CSSList\\KeyFrame' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/CSSList/KeyFrame.php',
+        'Sabberworm\\CSS\\Comment\\Comment' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/Comment/Comment.php',
+        'Sabberworm\\CSS\\Comment\\Commentable' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/Comment/Commentable.php',
+        'Sabberworm\\CSS\\OutputFormat' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/OutputFormat.php',
+        'Sabberworm\\CSS\\OutputFormatter' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/OutputFormatter.php',
+        'Sabberworm\\CSS\\Parser' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/Parser.php',
+        'Sabberworm\\CSS\\Parsing\\OutputException' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/Parsing/OutputException.php',
+        'Sabberworm\\CSS\\Parsing\\ParserState' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/Parsing/ParserState.php',
+        'Sabberworm\\CSS\\Parsing\\SourceException' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/Parsing/SourceException.php',
+        'Sabberworm\\CSS\\Parsing\\UnexpectedEOFException' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/Parsing/UnexpectedEOFException.php',
+        'Sabberworm\\CSS\\Parsing\\UnexpectedTokenException' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/Parsing/UnexpectedTokenException.php',
+        'Sabberworm\\CSS\\Property\\AtRule' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/Property/AtRule.php',
+        'Sabberworm\\CSS\\Property\\CSSNamespace' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/Property/CSSNamespace.php',
+        'Sabberworm\\CSS\\Property\\Charset' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/Property/Charset.php',
+        'Sabberworm\\CSS\\Property\\Import' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/Property/Import.php',
+        'Sabberworm\\CSS\\Property\\KeyframeSelector' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/Property/KeyframeSelector.php',
+        'Sabberworm\\CSS\\Property\\Selector' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/Property/Selector.php',
+        'Sabberworm\\CSS\\Renderable' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/Renderable.php',
+        'Sabberworm\\CSS\\RuleSet\\AtRuleSet' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/RuleSet/AtRuleSet.php',
+        'Sabberworm\\CSS\\RuleSet\\DeclarationBlock' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/RuleSet/DeclarationBlock.php',
+        'Sabberworm\\CSS\\RuleSet\\RuleSet' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/RuleSet/RuleSet.php',
+        'Sabberworm\\CSS\\Rule\\Rule' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/Rule/Rule.php',
+        'Sabberworm\\CSS\\Settings' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/Settings.php',
+        'Sabberworm\\CSS\\Value\\CSSFunction' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/Value/CSSFunction.php',
+        'Sabberworm\\CSS\\Value\\CSSString' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/Value/CSSString.php',
+        'Sabberworm\\CSS\\Value\\CalcFunction' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/Value/CalcFunction.php',
+        'Sabberworm\\CSS\\Value\\CalcRuleValueList' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/Value/CalcRuleValueList.php',
+        'Sabberworm\\CSS\\Value\\Color' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/Value/Color.php',
+        'Sabberworm\\CSS\\Value\\LineName' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/Value/LineName.php',
+        'Sabberworm\\CSS\\Value\\PrimitiveValue' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/Value/PrimitiveValue.php',
+        'Sabberworm\\CSS\\Value\\RuleValueList' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/Value/RuleValueList.php',
+        'Sabberworm\\CSS\\Value\\Size' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/Value/Size.php',
+        'Sabberworm\\CSS\\Value\\URL' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/Value/URL.php',
+        'Sabberworm\\CSS\\Value\\Value' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/Value/Value.php',
+        'Sabberworm\\CSS\\Value\\ValueList' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/Value/ValueList.php',
         'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
         'Symfony\\Component\\CssSelector\\CssSelectorConverter' => __DIR__ . '/..' . '/symfony/css-selector/CssSelectorConverter.php',
         'Symfony\\Component\\CssSelector\\Exception\\ExceptionInterface' => __DIR__ . '/..' . '/symfony/css-selector/Exception/ExceptionInterface.php',
@@ -1109,6 +1321,9 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         'Symfony\\Component\\Translation\\Catalogue\\MergeOperation' => __DIR__ . '/..' . '/symfony/translation/Catalogue/MergeOperation.php',
         'Symfony\\Component\\Translation\\Catalogue\\OperationInterface' => __DIR__ . '/..' . '/symfony/translation/Catalogue/OperationInterface.php',
         'Symfony\\Component\\Translation\\Catalogue\\TargetOperation' => __DIR__ . '/..' . '/symfony/translation/Catalogue/TargetOperation.php',
+        'Symfony\\Component\\Translation\\Command\\TranslationPullCommand' => __DIR__ . '/..' . '/symfony/translation/Command/TranslationPullCommand.php',
+        'Symfony\\Component\\Translation\\Command\\TranslationPushCommand' => __DIR__ . '/..' . '/symfony/translation/Command/TranslationPushCommand.php',
+        'Symfony\\Component\\Translation\\Command\\TranslationTrait' => __DIR__ . '/..' . '/symfony/translation/Command/TranslationTrait.php',
         'Symfony\\Component\\Translation\\Command\\XliffLintCommand' => __DIR__ . '/..' . '/symfony/translation/Command/XliffLintCommand.php',
         'Symfony\\Component\\Translation\\DataCollectorTranslator' => __DIR__ . '/..' . '/symfony/translation/DataCollectorTranslator.php',
         'Symfony\\Component\\Translation\\DataCollector\\TranslationDataCollector' => __DIR__ . '/..' . '/symfony/translation/DataCollector/TranslationDataCollector.php',
@@ -1129,23 +1344,26 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         'Symfony\\Component\\Translation\\Dumper\\XliffFileDumper' => __DIR__ . '/..' . '/symfony/translation/Dumper/XliffFileDumper.php',
         'Symfony\\Component\\Translation\\Dumper\\YamlFileDumper' => __DIR__ . '/..' . '/symfony/translation/Dumper/YamlFileDumper.php',
         'Symfony\\Component\\Translation\\Exception\\ExceptionInterface' => __DIR__ . '/..' . '/symfony/translation/Exception/ExceptionInterface.php',
+        'Symfony\\Component\\Translation\\Exception\\IncompleteDsnException' => __DIR__ . '/..' . '/symfony/translation/Exception/IncompleteDsnException.php',
         'Symfony\\Component\\Translation\\Exception\\InvalidArgumentException' => __DIR__ . '/..' . '/symfony/translation/Exception/InvalidArgumentException.php',
         'Symfony\\Component\\Translation\\Exception\\InvalidResourceException' => __DIR__ . '/..' . '/symfony/translation/Exception/InvalidResourceException.php',
         'Symfony\\Component\\Translation\\Exception\\LogicException' => __DIR__ . '/..' . '/symfony/translation/Exception/LogicException.php',
+        'Symfony\\Component\\Translation\\Exception\\MissingRequiredOptionException' => __DIR__ . '/..' . '/symfony/translation/Exception/MissingRequiredOptionException.php',
         'Symfony\\Component\\Translation\\Exception\\NotFoundResourceException' => __DIR__ . '/..' . '/symfony/translation/Exception/NotFoundResourceException.php',
+        'Symfony\\Component\\Translation\\Exception\\ProviderException' => __DIR__ . '/..' . '/symfony/translation/Exception/ProviderException.php',
+        'Symfony\\Component\\Translation\\Exception\\ProviderExceptionInterface' => __DIR__ . '/..' . '/symfony/translation/Exception/ProviderExceptionInterface.php',
         'Symfony\\Component\\Translation\\Exception\\RuntimeException' => __DIR__ . '/..' . '/symfony/translation/Exception/RuntimeException.php',
+        'Symfony\\Component\\Translation\\Exception\\UnsupportedSchemeException' => __DIR__ . '/..' . '/symfony/translation/Exception/UnsupportedSchemeException.php',
         'Symfony\\Component\\Translation\\Extractor\\AbstractFileExtractor' => __DIR__ . '/..' . '/symfony/translation/Extractor/AbstractFileExtractor.php',
         'Symfony\\Component\\Translation\\Extractor\\ChainExtractor' => __DIR__ . '/..' . '/symfony/translation/Extractor/ChainExtractor.php',
         'Symfony\\Component\\Translation\\Extractor\\ExtractorInterface' => __DIR__ . '/..' . '/symfony/translation/Extractor/ExtractorInterface.php',
         'Symfony\\Component\\Translation\\Extractor\\PhpExtractor' => __DIR__ . '/..' . '/symfony/translation/Extractor/PhpExtractor.php',
         'Symfony\\Component\\Translation\\Extractor\\PhpStringTokenParser' => __DIR__ . '/..' . '/symfony/translation/Extractor/PhpStringTokenParser.php',
-        'Symfony\\Component\\Translation\\Formatter\\ChoiceMessageFormatterInterface' => __DIR__ . '/..' . '/symfony/translation/Formatter/ChoiceMessageFormatterInterface.php',
         'Symfony\\Component\\Translation\\Formatter\\IntlFormatter' => __DIR__ . '/..' . '/symfony/translation/Formatter/IntlFormatter.php',
         'Symfony\\Component\\Translation\\Formatter\\IntlFormatterInterface' => __DIR__ . '/..' . '/symfony/translation/Formatter/IntlFormatterInterface.php',
         'Symfony\\Component\\Translation\\Formatter\\MessageFormatter' => __DIR__ . '/..' . '/symfony/translation/Formatter/MessageFormatter.php',
         'Symfony\\Component\\Translation\\Formatter\\MessageFormatterInterface' => __DIR__ . '/..' . '/symfony/translation/Formatter/MessageFormatterInterface.php',
         'Symfony\\Component\\Translation\\IdentityTranslator' => __DIR__ . '/..' . '/symfony/translation/IdentityTranslator.php',
-        'Symfony\\Component\\Translation\\Interval' => __DIR__ . '/..' . '/symfony/translation/Interval.php',
         'Symfony\\Component\\Translation\\Loader\\ArrayLoader' => __DIR__ . '/..' . '/symfony/translation/Loader/ArrayLoader.php',
         'Symfony\\Component\\Translation\\Loader\\CsvFileLoader' => __DIR__ . '/..' . '/symfony/translation/Loader/CsvFileLoader.php',
         'Symfony\\Component\\Translation\\Loader\\FileLoader' => __DIR__ . '/..' . '/symfony/translation/Loader/FileLoader.php',
@@ -1163,14 +1381,23 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         'Symfony\\Component\\Translation\\LoggingTranslator' => __DIR__ . '/..' . '/symfony/translation/LoggingTranslator.php',
         'Symfony\\Component\\Translation\\MessageCatalogue' => __DIR__ . '/..' . '/symfony/translation/MessageCatalogue.php',
         'Symfony\\Component\\Translation\\MessageCatalogueInterface' => __DIR__ . '/..' . '/symfony/translation/MessageCatalogueInterface.php',
-        'Symfony\\Component\\Translation\\MessageSelector' => __DIR__ . '/..' . '/symfony/translation/MessageSelector.php',
         'Symfony\\Component\\Translation\\MetadataAwareInterface' => __DIR__ . '/..' . '/symfony/translation/MetadataAwareInterface.php',
-        'Symfony\\Component\\Translation\\PluralizationRules' => __DIR__ . '/..' . '/symfony/translation/PluralizationRules.php',
+        'Symfony\\Component\\Translation\\Provider\\AbstractProviderFactory' => __DIR__ . '/..' . '/symfony/translation/Provider/AbstractProviderFactory.php',
+        'Symfony\\Component\\Translation\\Provider\\Dsn' => __DIR__ . '/..' . '/symfony/translation/Provider/Dsn.php',
+        'Symfony\\Component\\Translation\\Provider\\FilteringProvider' => __DIR__ . '/..' . '/symfony/translation/Provider/FilteringProvider.php',
+        'Symfony\\Component\\Translation\\Provider\\NullProvider' => __DIR__ . '/..' . '/symfony/translation/Provider/NullProvider.php',
+        'Symfony\\Component\\Translation\\Provider\\NullProviderFactory' => __DIR__ . '/..' . '/symfony/translation/Provider/NullProviderFactory.php',
+        'Symfony\\Component\\Translation\\Provider\\ProviderFactoryInterface' => __DIR__ . '/..' . '/symfony/translation/Provider/ProviderFactoryInterface.php',
+        'Symfony\\Component\\Translation\\Provider\\ProviderInterface' => __DIR__ . '/..' . '/symfony/translation/Provider/ProviderInterface.php',
+        'Symfony\\Component\\Translation\\Provider\\TranslationProviderCollection' => __DIR__ . '/..' . '/symfony/translation/Provider/TranslationProviderCollection.php',
+        'Symfony\\Component\\Translation\\Provider\\TranslationProviderCollectionFactory' => __DIR__ . '/..' . '/symfony/translation/Provider/TranslationProviderCollectionFactory.php',
+        'Symfony\\Component\\Translation\\PseudoLocalizationTranslator' => __DIR__ . '/..' . '/symfony/translation/PseudoLocalizationTranslator.php',
         'Symfony\\Component\\Translation\\Reader\\TranslationReader' => __DIR__ . '/..' . '/symfony/translation/Reader/TranslationReader.php',
         'Symfony\\Component\\Translation\\Reader\\TranslationReaderInterface' => __DIR__ . '/..' . '/symfony/translation/Reader/TranslationReaderInterface.php',
+        'Symfony\\Component\\Translation\\TranslatableMessage' => __DIR__ . '/..' . '/symfony/translation/TranslatableMessage.php',
         'Symfony\\Component\\Translation\\Translator' => __DIR__ . '/..' . '/symfony/translation/Translator.php',
+        'Symfony\\Component\\Translation\\TranslatorBag' => __DIR__ . '/..' . '/symfony/translation/TranslatorBag.php',
         'Symfony\\Component\\Translation\\TranslatorBagInterface' => __DIR__ . '/..' . '/symfony/translation/TranslatorBagInterface.php',
-        'Symfony\\Component\\Translation\\TranslatorInterface' => __DIR__ . '/..' . '/symfony/translation/TranslatorInterface.php',
         'Symfony\\Component\\Translation\\Util\\ArrayConverter' => __DIR__ . '/..' . '/symfony/translation/Util/ArrayConverter.php',
         'Symfony\\Component\\Translation\\Util\\XliffUtils' => __DIR__ . '/..' . '/symfony/translation/Util/XliffUtils.php',
         'Symfony\\Component\\Translation\\Writer\\TranslationWriter' => __DIR__ . '/..' . '/symfony/translation/Writer/TranslationWriter.php',
@@ -1184,10 +1411,6 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
         'Symfony\\Polyfill\\Php80\\Php80' => __DIR__ . '/..' . '/symfony/polyfill-php80/Php80.php',
         'Symfony\\Polyfill\\Php80\\PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/PhpToken.php',
         'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
-        'UpdateHelper\\ComposerPlugin' => __DIR__ . '/..' . '/kylekatarnls/update-helper/src/UpdateHelper/ComposerPlugin.php',
-        'UpdateHelper\\NotUpdateInterfaceInstanceException' => __DIR__ . '/..' . '/kylekatarnls/update-helper/src/UpdateHelper/NotUpdateInterfaceInstanceException.php',
-        'UpdateHelper\\UpdateHelper' => __DIR__ . '/..' . '/kylekatarnls/update-helper/src/UpdateHelper/UpdateHelper.php',
-        'UpdateHelper\\UpdateHelperInterface' => __DIR__ . '/..' . '/kylekatarnls/update-helper/src/UpdateHelper/UpdateHelperInterface.php',
         'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
         'WP_Async_Request' => __DIR__ . '/..' . '/deliciousbrains/wp-background-processing/classes/wp-async-request.php',
         'WP_Background_Process' => __DIR__ . '/..' . '/deliciousbrains/wp-background-processing/classes/wp-background-process.php',
@@ -1196,11 +1419,9 @@ class ComposerStaticInit4c48858b398ed8810651adbe80572abc
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit4c48858b398ed8810651adbe80572abc::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit4c48858b398ed8810651adbe80572abc::$prefixDirsPsr4;
-            $loader->fallbackDirsPsr4 = ComposerStaticInit4c48858b398ed8810651adbe80572abc::$fallbackDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit4c48858b398ed8810651adbe80572abc::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit4c48858b398ed8810651adbe80572abc::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInite27686d2fdf5de1fb75575a70fb62b06::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInite27686d2fdf5de1fb75575a70fb62b06::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInite27686d2fdf5de1fb75575a70fb62b06::$classMap;
 
         }, null, ClassLoader::class);
     }

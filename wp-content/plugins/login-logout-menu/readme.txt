@@ -1,10 +1,10 @@
 === Login Logout Menu ===
 Requires at least: 4.0
-Tested up to: 6.0
+Tested up to: 6.1
 Contributors: hiddenpearls, WPBrigade, AbdulWahab610
-Author URI: https://wpbrigade.com
+Author URI: https://WPBrigade.com/?utm_source=login-logout-menu
 Tags: menu, login menu, logout menu, register menu, profile menu, login menu items
-Stable tag: 1.3.2
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -51,7 +51,17 @@ Check out our documentation to implement the [shortcodes](https://loginpress.pro
 
 == Changelog ==
 
-= 1.3.2. - 2022-05-19 =
+= 1.4.0 - 2022-12-26 =
+* Bugfix: Apply escaping on the login menu shortcode attributes for security.
+* Compatibility: Compatible with Theme My Login
+* Compatibility: Compatible with WordPress 6.1
+* Compatibility: Compatible with PHP 8.1
+
+= 1.3.3 - 2022-06-22 =
+* Compatibility: Compatible with OceanWP theme.
+* Compatibility: Compatible with WordPress 6.0
+
+= 1.3.2 - 2022-05-19 =
 * Enhancement: Added a filter `before_login_logout_menu_items` to change the menu item behavior.
 * Compatibility: Compatible with WordPress 6.0
 
@@ -87,5 +97,5 @@ Check out our documentation to implement the [shortcodes](https://loginpress.pro
 
 == Upgrade Notice ==
 
-= 1.3.2 =
-Upgrade immediately - 
+= 1.4.0 =
+Upgrade immediately - Compatible with WordPress 6.1

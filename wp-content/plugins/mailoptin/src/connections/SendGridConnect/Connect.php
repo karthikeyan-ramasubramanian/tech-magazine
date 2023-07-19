@@ -30,8 +30,6 @@ class Connect extends AbstractSendGridConnect implements ConnectionInterface
     }
 
     /**
-     * Register Constant Contact Connection.
-     *
      * @param array $connections
      *
      * @return array

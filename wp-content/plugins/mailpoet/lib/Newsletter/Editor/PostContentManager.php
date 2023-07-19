@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Newsletter\Editor;
 
@@ -25,7 +25,7 @@ class PostContentManager {
   ) {
     $this->wp = new WPFunctions;
     $this->maxExcerptLength = $this->wp->applyFilters('mailpoet_newsletter_post_excerpt_length', $this->maxExcerptLength);
-    $this->woocommerceHelper = $woocommerceHelper ?: new WooCommerceHelper();
+    $this->woocommerceHelper = $woocommerceHelper ?: new WooCommerceHelper($this->wp);
   }
 
   public function getContent($post, $displayType) {
@@ -66,7 +66,7 @@ class PostContentManager {
       '<a>', '<ul>', '<ol>', '<li>', '<br>', '<blockquote>',
     ];
     if ($displayType === 'full') {
-      $tagsNotBeingStripped = array_merge($tagsNotBeingStripped, ['<figure>', '<img>', '<h1>', '<h2>', '<h3>']);
+      $tagsNotBeingStripped = array_merge($tagsNotBeingStripped, ['<figure>', '<img>', '<h1>', '<h2>', '<h3>', '<hr>']);
     }
 
     if (is_array($content)) {

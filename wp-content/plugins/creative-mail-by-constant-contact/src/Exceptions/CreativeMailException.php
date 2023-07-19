@@ -4,11 +4,14 @@ namespace CreativeMail\Exceptions;
 
 use Exception;
 
-class CreativeMailException extends Exception {
+final class CreativeMailException extends Exception {
 
-    public function __construct ( $message )
-    {
-        parent::__construct( '[Creative Mail] ' . $message );
-    }
-
+	/**
+	 * Constructs the message of the CreativeMailException class.
+	 *
+	 * @param string $message Receives the message of the exception.
+	 */
+	public function __construct( string $message ) {
+		parent::__construct( '[Creative Mail] ' . $message );
+	}
 }

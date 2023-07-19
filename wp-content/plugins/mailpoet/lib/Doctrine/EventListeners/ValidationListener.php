@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Doctrine\EventListeners;
 
@@ -13,7 +13,9 @@ class ValidationListener {
   /** @var ValidatorInterface */
   private $validator;
 
-  public function __construct(ValidatorInterface $validator) {
+  public function __construct(
+    ValidatorInterface $validator
+  ) {
     $this->validator = $validator;
   }
 

@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 namespace MailPoet\Config\PopulatorData\Templates;
 
 if (!defined('ABSPATH')) exit;
@@ -19,7 +19,7 @@ class Fitness {
 
   public function get() {
     return [
-      'name' => WPFunctions::get()->__("Abandoned Cart – Fitness", 'mailpoet'),
+      'name' => __("Abandoned Cart – Fitness", 'mailpoet'),
       'categories' => json_encode(['woocommerce', 'all']),
       'readonly' => 1,
       'thumbnail' => $this->getThumbnail(),
@@ -552,29 +552,40 @@ class Fitness {
 <p style="text-align: center;"><strong>Here\'s 20% off your order if you complete it right now. We\'re nice like that.</strong></p>',
                                 ],
                               2 =>
-                                 [
-                                  'type' => 'button',
-                                  'text' => 'COUPONCODE',
-                                  'url' => '',
-                                  'styles' =>
-                                     [
-                                      'block' =>
-                                         [
-                                          'backgroundColor' => '#afd147',
-                                          'borderColor' => '#56741d',
-                                          'borderWidth' => '3px',
-                                          'borderRadius' => '5px',
-                                          'borderStyle' => 'solid',
-                                          'width' => '219px',
-                                          'lineHeight' => '50px',
-                                          'fontColor' => '#56741d',
-                                          'fontFamily' => 'Courier New',
-                                          'fontSize' => '26px',
-                                          'fontWeight' => 'bold',
-                                          'textAlign' => 'center',
-                                        ],
-                                    ],
-                                ],
+                                [
+                                  'productIds' => [],
+                                  'excludedProductIds' => [],
+                                  'productCategoryIds' => [],
+                                  'excludedProductCategoryIds' => [],
+                                  'type' => 'coupon',
+                                  'amount' => 10,
+                                  'amountMax' => 100,
+                                  'discountType' => 'percent',
+                                  'expiryDay' => 10,
+                                  'usageLimit' => '',
+                                  'usageLimitPerUser' => '',
+                                  'minimumAmount' => '',
+                                  'maximumAmount' => '',
+                                  'emailRestrictions' => '',
+                                  'styles' => [
+                                   'block' => [
+                                     'backgroundColor' => '#afd147',
+                                     'borderColor' => '#56741d',
+                                     'borderWidth' => '3px',
+                                     'borderRadius' => '5px',
+                                     'borderStyle' => 'solid',
+                                     'width' => '219px',
+                                     'lineHeight' => '50px',
+                                     'fontColor' => '#56741d',
+                                     'fontFamily' => 'Courier New',
+                                     'fontSize' => '26px',
+                                     'fontWeight' => 'bold',
+                                     'textAlign' => 'center',
+                                   ],
+                                  ],
+                                  'source' => 'createNew',
+                                  'code' => 'XXXX-XXXXXXX-XXXX',
+                               ],
                               3 =>
                                  [
                                   'type' => 'spacer',
@@ -707,7 +718,7 @@ class Fitness {
                                  [
                                   'type' => 'text',
                                   'text' => '<p style="text-align: center;"><span style="color: #999999;">Address Line 1, Address Line 2, City, Country</span></p>
-<p style="text-align: center;"><span style="color: #999999;"><strong><a href="[link:subscription_unsubscribe_url]" style="color: #999999;">'.WPFunctions::get()->__("Unsubscribe", 'mailpoet').'</a><span>&nbsp;</span>|<span>&nbsp;</span><a href="[link:subscription_manage_url]" style="color: #999999;">'.WPFunctions::get()->__("Manage your subscription", 'mailpoet').'</a></strong></span></p>',
+<p style="text-align: center;"><span style="color: #999999;"><strong><a href="[link:subscription_unsubscribe_url]" style="color: #999999;">'.__("Unsubscribe", 'mailpoet').'</a><span>&nbsp;</span>|<span>&nbsp;</span><a href="[link:subscription_manage_url]" style="color: #999999;">'.__("Manage your subscription", 'mailpoet').'</a></strong></span></p>',
                                  ],
                               4 =>
                                  [
@@ -981,7 +992,7 @@ class Fitness {
              ],
           'footer' =>
              [
-              'text' => '<p><a href="[link:subscription_unsubscribe_url]">'.WPFunctions::get()->__("Unsubscribe", 'mailpoet').'</a> | <a href="[link:subscription_manage_url]">'.WPFunctions::get()->__("Manage your subscription", 'mailpoet').'</a><br />'.WPFunctions::get()->__("Add your postal address here!", 'mailpoet').'</p>',
+              'text' => '<p><a href="[link:subscription_unsubscribe_url]">'.__("Unsubscribe", 'mailpoet').'</a> | <a href="[link:subscription_manage_url]">'.__("Manage your subscription", 'mailpoet').'</a><br />'.__("Add your postal address here!", 'mailpoet').'</p>',
               'styles' =>
                  [
                   'block' =>
@@ -1164,7 +1175,7 @@ class Fitness {
              ],
           'header' =>
              [
-              'text' => '<a href="[link:newsletter_view_in_browser_url]">'.WPFunctions::get()->__("View this in your browser.", 'mailpoet').'</a>',
+              'text' => '<a href="[link:newsletter_view_in_browser_url]">'.__("View this in your browser.", 'mailpoet').'</a>',
               'styles' =>
                  [
                   'block' =>

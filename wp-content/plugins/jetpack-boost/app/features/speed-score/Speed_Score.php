@@ -9,19 +9,21 @@
 
 namespace Automattic\Jetpack_Boost\Features\Speed_Score;
 
-use Automattic\Jetpack_Boost\Features\Optimizations\Optimizations;
 use Automattic\Jetpack_Boost\Lib\Utils;
+use Automattic\Jetpack_Boost\Modules\Modules_Setup;
 
 /**
  * Class Speed_Score
  */
 class Speed_Score {
-
-	public function __construct( Optimizations $modules ) {
+	public function __construct( Modules_Setup $modules ) {
 		$this->modules = $modules;
 
 		add_action( 'rest_api_init', array( $this, 'register_rest_routes' ) );
 		add_action( 'jetpack_boost_deactivate', array( $this, 'clear_speed_score_request_cache' ) );
+
+		add_action( 'handle_environment_change', array( Speed_Score_History::class, 'mark_stale' ) );
+		add_action( 'jetpack_boost_deactivate', array( Speed_Score_History::class, 'mark_stale' ) );
 	}
 
 	/**
@@ -86,16 +88,13 @@ class Speed_Score {
 			return $url;
 		}
 
-		$score_request = $this->get_score_request_by_url( $url );
-		if ( empty( $score_request ) || ! $score_request->is_pending() ) {
-			// Create and store the Speed Score request.
-			$active_modules = array_keys( array_filter( $this->modules->get_status(), 'strlen' ) );
-			$score_request  = new Speed_Score_Request( $url, $active_modules );
-			$score_request->store( 1800 ); // Keep the request for 30 minutes even if no one access the results.
+		// Create and store the Speed Score request.
+		$active_modules = array_keys( array_filter( $this->modules->get_status(), 'strlen' ) );
+		$score_request  = new Speed_Score_Request( $url, $active_modules );
+		$score_request->store( 1800 ); // Keep the request for 30 minutes even if no one access the results.
 
-			// Send the request.
-			$score_request->execute();
-		}
+		// Send the request.
+		$score_request->execute();
 
 		$score_request_no_boost = $this->maybe_dispatch_no_boost_score_request( $url );
 
@@ -174,19 +173,13 @@ class Speed_Score {
 
 		$url_no_boost = $this->get_boost_modules_disabled_url( $url );
 
-		$history        = new Speed_Score_History( $url_no_boost );
-		$latest_history = $history->latest();
-		$score_request  = $this->get_score_request_by_url( $url_no_boost );
-
+		$history       = new Speed_Score_History( $url_no_boost );
+		$score_request = $this->get_score_request_by_url( $url_no_boost );
 		if (
 			// If there isn't already a pending request.
 			( empty( $score_request ) || ! $score_request->is_pending() )
 			&& $this->modules->have_enabled_modules()
-			&& (
-				null === $latest_history
-				|| $latest_history['timestamp'] < strtotime( '- 24 hours' ) // Refetch if it is older than a day.
-				|| wp_get_theme()->get( 'Name' ) !== $latest_history['theme'] // Refetch if then theme was changed.
-			)
+			&& $history->is_stale()
 		) {
 			$score_request = new Speed_Score_Request( $url_no_boost ); // Dispatch a new speed score request to measure score without boost.
 			$score_request->store( 3600 ); // Keep the request for 1 hour even if no one access the results. The value is persisted for 1 hour in wp.com from initial request.
@@ -263,27 +256,24 @@ class Speed_Score {
 				'noBoost' => null,
 			);
 
-			// Only include noBoost scores if at least one modules is enabled.
-			$latest_history = $history->latest();
-			if ( ! empty( $this->modules->available_modules() ) ) {
+			// Only include noBoost scores if at least one module is enabled.
+			if ( $this->modules->have_enabled_modules() ) {
 				$response['scores']['noBoost'] = $history_no_boost->latest_scores();
 			}
 
-			$response['scores']['isStale'] = wp_get_theme()->get( 'Name' ) !== $latest_history['theme'];
+			$response['scores']['isStale'] = $history->is_stale();
 
-		} else {
+		} elseif ( ( $score_request && $score_request->is_error() ) || ( $score_request_no_boost && $score_request_no_boost->is_error() ) ) {
 			// If either request ended up in error, we can just return the one with error so front-end can take action. The relevent url is available on the serialized object.
-			if ( ( $score_request && $score_request->is_error() ) || ( $score_request_no_boost && $score_request_no_boost->is_error() ) ) {
-				if ( $score_request->is_error() ) {
-					// Serialized version of score request contains the status property and error description if any.
-					$response = $score_request->jsonSerialize();
-				} else {
-					$response = $score_request_no_boost->jsonSerialize();
-				}
+			if ( $score_request->is_error() ) {
+				// Serialized version of score request contains the status property and error description if any.
+				$response = $score_request->jsonSerialize();
 			} else {
-				// If no request ended up in error/success as previous conditions dictate, it means that either of them are in pending state.
-				$response['status'] = 'pending';
+				$response = $score_request_no_boost->jsonSerialize();
 			}
+		} else {
+			// If no request ended up in error/success as previous conditions dictate, it means that either of them are in pending state.
+			$response['status'] = 'pending';
 		}
 
 		return rest_ensure_response( $response );

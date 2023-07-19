@@ -4,205 +4,173 @@ namespace CreativeMail\Modules\Contacts\Models;
 
 use Exception;
 
-class ContactModel
-{
-    public $email;
-    public $phone;
-    public $companyName;
-    public $name;
-    public $firstName;
-    public $lastName;
-    public $optIn;
-    public $optOut;
-    public $optActionBy;
-    public $contactAddresses;
-    public $eventType;
-    public $numberOfOrders;
-    private $birthday;
-    private $listId;
+class ContactModel {
 
-    function __construct()
-    {
-    }
+	public $email;
+	public $phone;
+	public $companyName;
+	public $name;
+	public $firstName;
+	public $lastName;
+	public $optIn;
+	public $optOut;
+	public $optActionBy;
+	public $contactAddresses;
+	public $eventType;
+	public $numberOfOrders;
+	private $birthday;
+	private $listId;
 
-    public function setEmail($email)
-    {
-        if (isset($email) && !empty($email)) {
-            $this->email = $email;
-        }
-        else {
-            throw new Exception('invalid value for email');
-        }
-    }
+	public function __construct() {
+	}
 
-    public function getEmail()
-    {
-        return $this->email;
-    }
+	public function setEmail( $email ) {
+		if ( isset($email) && ! empty($email) ) {
+			$this->email = $email;
+		} else {
+			throw new Exception('invalid value for email');
+		}
+	}
 
-    public function setPhone($phone)
-    {
-        $this->phone = $phone;
-    }
+	public function getEmail() {
+		return $this->email;
+	}
 
-    public function getPhone()
-    {
-        return $this->phone;
-    }
+	public function setPhone( $phone ) {
+		$this->phone = $phone;
+	}
 
-    public function setCompanyName($companyName)
-    {
-        $this->companyName = $companyName;
-    }
+	public function getPhone() {
+		return $this->phone;
+	}
 
-    public function getCompanyName()
-    {
-        return $this->companyName;
-    }
+	public function setCompanyName( $companyName ) {
+		$this->companyName = $companyName;
+	}
 
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
+	public function getCompanyName() {
+		return $this->companyName;
+	}
 
-    public function getName()
-    {
-        return $this->name;
-    }
+	public function setName( $name ) {
+		$this->name = $name;
+	}
 
-    public function setFirstName($firstName)
-    {
-        $this->firstName = $firstName;
-    }
+	public function getName() {
+		return $this->name;
+	}
 
-    public function getFirstName()
-    {
-        return $this->firstName;
-    }
+	public function setFirstName( $firstName ) {
+		$this->firstName = $firstName;
+	}
 
-    public function setLastName($lastName)
-    {
-        $this->lastName = $lastName;
-    }
+	public function getFirstName() {
+		return $this->firstName;
+	}
 
-    public function getLastName()
-    {
-        return $this->lastName;
-    }
+	public function setLastName( $lastName ) {
+		$this->lastName = $lastName;
+	}
 
-    public function setOptIn($optIn)
-    {
-        $this->optIn = $optIn;
-    }
+	public function getLastName() {
+		return $this->lastName;
+	}
 
-    public function setOptOut($optOut)
-    {
-        $this->optOut = $optOut;
-    }
+	public function setOptIn( $optIn ) {
+		$this->optIn = $optIn;
+	}
 
-    public function getOptIn()
-    {
-        return $this->optIn;
-    }
+	public function setOptOut( $optOut ) {
+		$this->optOut = $optOut;
+	}
 
-    public function getOptOut()
-    {
-        return $this->optOut;
-    }
+	public function getOptIn() {
+		return $this->optIn;
+	}
 
-    public function setOptActionBy($optActionBy)
-    {
-        $this->optActionBy = $optActionBy;
-    }
+	public function getOptOut() {
+		return $this->optOut;
+	}
 
-    public function getOptActionBy()
-    {
-        return $this->optActionBy;
-    }
+	public function setOptActionBy( $optActionBy ) {
+		$this->optActionBy = $optActionBy;
+	}
 
-    public function setNumberOfOrders($numberOfOrders)
-    {
-        $this->numberOfOrders = $numberOfOrders;
-    }
+	public function getOptActionBy() {
+		return $this->optActionBy;
+	}
 
-    public function getNumberOfOrders()
-    {
-        return $this->numberOfOrders;
-    }
+	public function setNumberOfOrders( $numberOfOrders ) {
+		$this->numberOfOrders = $numberOfOrders;
+	}
 
-    public function setContactAddress(ContactAddressModel $contactAddresses)
-    {
-        $this->contactAddresses = $contactAddresses;
-    }
+	public function getNumberOfOrders() {
+		return $this->numberOfOrders;
+	}
 
-    /**
-     * The address model for the contact.
-     *
-     * @return ContactAddressModel
-     */
-    public function getContactAddress()
-    {
-        return $this->contactAddresses;
-    }
+	public function setContactAddress( ?ContactAddressModel $contactAddresses ) {
+		$this->contactAddresses = $contactAddresses;
+	}
 
-    public function setEventType($eventType)
-    {
-        $this->eventType = $eventType;
-    }
+	/**
+	 * The address model for the contact.
+	 *
+	 * @return ContactAddressModel
+	 */
+	public function getContactAddress() {
+		return $this->contactAddresses;
+	}
 
-    public function getEventType()
-    {
-        return $this->eventType;
-    }
+	public function setEventType( $eventType ) {
+		$this->eventType = $eventType;
+	}
 
-    public function getBirthday()
-    {
-        return $this->birthday;
-    }
+	public function getEventType() {
+		return $this->eventType;
+	}
 
-    public function setBirthday($birthday)
-    {
-        $this->birthday = $birthday;
-    }
+	public function getBirthday() {
+		return $this->birthday;
+	}
 
-    public function getListId()
-    {
-        return $this->listId;
-    }
+	public function setBirthday( $birthday ) {
+		$this->birthday = $birthday;
+	}
 
-    public function setListId($listId)
-    {
-        $this->listId = $listId;
-    }
+	public function getListId() {
+		return $this->listId;
+	}
 
-    function toArray()
-    {
-        $result = array(
-            "email" => $this->getEmail(),
-            "phone" => $this->getPhone(),
-            "birthday" => $this->getBirthday(),
-            "company_name" => $this->getCompanyName(),
-            "name" => $this->getName(),
-            "first_name" => $this->getFirstName(),
-            "last_name" => $this->getLastName(),
-            "opt_in" => $this->getOptIn(),
-            "opt_out" => $this->getOptOut(),
-            "opt_action_by" => $this->getOptActionBy(),
-            "event_type" => $this->getEventType(),
-            "list_id" => $this->getListId(),
-            "number_of_orders" => $this->getNumberOfOrders(),
-        );
+	public function setListId( $listId ) {
+		$this->listId = $listId;
+	}
 
-        $address = $this->getContactAddress();
-        if(isset($address)) {
-            $result["addresses"] = array($address->toArray());
-        }
+	public function toArray() {
+		$result = array(
+			'email'            => $this->getEmail(),
+			'phone'            => $this->getPhone(),
+			'birthday'         => $this->getBirthday(),
+			'company_name'     => $this->getCompanyName(),
+			'name'             => $this->getName(),
+			'first_name'       => $this->getFirstName(),
+			'last_name'        => $this->getLastName(),
+			'opt_in'           => $this->getOptIn(),
+			'opt_out'          => $this->getOptOut(),
+			'opt_action_by'    => $this->getOptActionBy(),
+			'event_type'       => $this->getEventType(),
+			'list_id'          => $this->getListId(),
+			'number_of_orders' => $this->getNumberOfOrders(),
+		);
 
-        return $result;
-    }
+		$address = $this->getContactAddress();
+		if ( null != $address ) {
+			$result['addresses'] = array( $address->toArray() );
+		}
 
-    function toJson()
-    {
-        return wp_json_encode($this->toArray());
-    }
+		return $result;
+	}
+
+	public function toJson() {
+		return wp_json_encode($this->toArray());
+	}
 }

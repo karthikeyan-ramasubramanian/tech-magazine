@@ -321,6 +321,36 @@ jQuery(document).ready(function() {
             jQuery('#heateor_sss_vertical_youtube_options').css('display', 'none');
         }
     });
+    // rutube url option
+    jQuery('input#heateor_sss_rutube').click(function(){
+        if(jQuery(this).is(':checked')){
+            jQuery('#heateor_sss_rutube_options').css('display', 'table-row-group');
+        }else{
+            jQuery('#heateor_sss_rutube_options').css('display', 'none');
+        }
+    });
+    jQuery('input#heateor_sss_vertical_sharing_rutube').click(function(){
+        if(jQuery(this).is(':checked')){
+            jQuery('#heateor_sss_vertical_rutube_options').css('display', 'table-row-group');
+        }else{
+            jQuery('#heateor_sss_vertical_rutube_options').css('display', 'none');
+        }
+    });
+    // Google News option
+    jQuery('input#heateor_sss_Google_News').click(function(){
+        if(jQuery(this).is(':checked')){
+            jQuery('#heateor_sss_google_news_options').css('display', 'table-row-group');
+        }else{
+            jQuery('#heateor_sss_google_news_options').css('display', 'none');
+        }
+    });
+    jQuery('input#heateor_sss_vertical_sharing_Google_News').click(function(){
+        if(jQuery(this).is(':checked')){
+            jQuery('#heateor_sss_vertical_google_news_options').css('display', 'table-row-group');
+        }else{
+            jQuery('#heateor_sss_vertical_google_news_options').css('display', 'none');
+        }
+    });
     // facebook share count option
     jQuery('input#heateor_sss_facebook').click(function(){
         if(jQuery(this).is(':checked')){

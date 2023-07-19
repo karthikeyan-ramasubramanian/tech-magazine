@@ -20,6 +20,7 @@ $search_for = $instance['search_for'] ?? '';
 		} ?>
     </h2>
     <form action="" method="post" name="wis-feed-add-form" id="wis-feed-add-form">
+	    <?php wp_nonce_field('wis_edit_feed','csrf_check'); ?>
         <div class="jr-container">
             <div class="isw-common-settings">
                 <div class="wis-flex-content">
@@ -28,7 +29,7 @@ $search_for = $instance['search_for'] ?? '';
                             <label for="title" class="form-label"><?php _e( 'Title:', 'instagram-slider-widget' ); ?></label>
                             <input class="form-input" id="title"
                                    name="title"
-                                   value="<?php echo $instance['title']; ?>"/>
+                                   value="<?php echo esc_html($instance['title'] ); ?>"/>
                         </div>
                         <div class="form-group">
                             <label for="title"
@@ -109,7 +110,7 @@ $search_for = $instance['search_for'] ?? '';
                             <div class="input-group">
                                 <span class="input-group-addon">instagram.com/</span>
                                 <input id="username" class="form-input" name="username"
-                                       value="<?php echo $instance['username']; ?>"/>
+                                       value="<?php echo esc_attr( $instance['username'] ); ?>"/>
                             </div>
                         </div>
                         <div class="form-group" id="wis-feed-hashtag"
@@ -118,7 +119,7 @@ $search_for = $instance['search_for'] ?? '';
                             <div class="input-group">
                                 <span class="input-group-addon">#</span>
                                 <input id="hashtag" class="form-input" name="hashtag"
-                                       value="<?php echo $instance['hashtag']; ?>"/>
+                                       value="<?php echo esc_attr( $instance['hashtag'] ); ?>"/>
                             </div>
 
                             <div class="jr-description hashtag-problem-info <?php echo 'hashtag' !== $search_for ? 'hidden' : ''; ?>">
@@ -128,7 +129,7 @@ $search_for = $instance['search_for'] ?? '';
                             <label class="form-label"
                                    for="blocked_users"><?php _e( 'Block Users', 'instagram-slider-widget' ); ?></label>
                             <input class="form-input" id="blocked_users" name="blocked_users"
-                                   value="<?php echo $instance['blocked_users']; ?>"/>
+                                   value="<?php echo esc_attr( $instance['blocked_users'] ); ?>"/>
                             <div class="jr-description"><?php _e( 'Enter words separated by commas whose images you don\'t want to show', 'instagram-slider-widget' ); ?></div>
                         </div>
                         <div class="form-group">
@@ -161,13 +162,13 @@ $search_for = $instance['search_for'] ?? '';
 
             <div class="isw-tabs">
                 <ul>
-                    <li class="desk_tab active" id="desk_tab_<?= $feed_id ?>" data-tab-id="<?= $feed_id ?>"><?php _e( 'Desktop', 'instagram-slider-widget' ); ?></li>
-                    <li class="mob_tab" id="mob_tab_<?= $feed_id ?>" data-tab-id="<?= $feed_id ?>"><?php _e( 'Mobile', 'instagram-slider-widget' ); ?></li>
+                    <li class="desk_tab active" id="desk_tab_<?php echo $feed_id ?>" data-tab-id="<?php echo $feed_id ?>"><?php _e( 'Desktop', 'instagram-slider-widget' ); ?></li>
+                    <li class="mob_tab" id="mob_tab_<?php echo $feed_id ?>" data-tab-id="<?php echo $feed_id ?>"><?php _e( 'Mobile', 'instagram-slider-widget' ); ?></li>
                 </ul>
             </div>
 
-            <div class="isw-tabs-content" id="widget_tabs_<?= $feed_id ?>" data-widget-id="<?= $feed_id ?>">
-                <div id="desk_tab_content_<?= $feed_id ?>" class="desk_settings">
+            <div class="isw-tabs-content" id="widget_tabs_<?php echo $feed_id ?>" data-widget-id="<?php echo $feed_id ?>">
+                <div id="desk_tab_content_<?php echo $feed_id ?>" class="desk_settings">
                     <h3 style="width: 100%; text-align: center"><?php _e( 'Desktop settings', 'instagram-slider-widget' ); ?></h3>
                     <div class="wis-flex-content">
                         <div class="wis-flex-content-column">
@@ -239,7 +240,7 @@ $search_for = $instance['search_for'] ?? '';
                             </div>
                             <div id="wis-field-custom_url" class="form-group" <?php echo 'custom_url' !== $instance['images_link'] ? 'style="display:none;' : '' ?>>
                                 <label class="form-label" for="custom_url"><?php _e( 'Custom link:', 'instagram-slider-widget' ); ?></label>
-                                <input class="form-input" id="custom_url" name="custom_url" value="<?php echo $instance['custom_url']; ?>"/>
+                                <input class="form-input" id="custom_url" name="custom_url" value="<?php echo esc_url_raw($instance['custom_url'] ); ?>"/>
                                 <span class="jr-description"><?php _e( '* use this field only if the above option is set to <strong>Custom Link</strong>', 'instagram-slider-widget' ); ?></span>
                             </div>
                             <div id="wis-field-show_feed_header" class="form-group"
@@ -284,22 +285,22 @@ $search_for = $instance['search_for'] ?? '';
                                 </label>
                             </div>
                             <div id="wis-field-blocked_words" class="form-group"
-								<?php echo 'hashtag' == $search_for ? 'style="display:none;"' : ''; ?>>
+								<?php echo 'hashtag' === $search_for ? 'style="display:none;"' : ''; ?>>
                                 <label class="form-label" for="blocked_words">
 									<?php _e( 'Block words', 'instagram-slider-widget' ); ?>
                                 </label>
                                 <input class="form-input" id="blocked_words" name="blocked_words"
-                                       value="<?php echo $instance['blocked_words']; ?>"/>
+                                       value="<?php echo esc_attr( $instance['blocked_words'] ); ?>"/>
                                 <div class="jr-description"><?php _e( 'Enter comma-separated words. If one of them occurs in the image description, the image will not be displayed', 'instagram-slider-widget' ); ?></div>
                             </div>
                             <div id="wis-field-allowed_words" class="form-group"
-								<?php echo 'hashtag' == $search_for ? 'style="display:none;"' : ''; ?>>
+								<?php echo 'hashtag' === $search_for ? 'style="display:none;"' : ''; ?>>
                                 <label class="form-label" for="allowed_words">
 									<?php _e( 'Allow words', 'instagram-slider-widget' ); ?>
                                 </label>
                                 <input class="form-input" id="allowed_words"
                                        name="allowed_words"
-                                       value="<?php echo $instance['allowed_words']; ?>"/>
+                                       value="<?php echo esc_attr( $instance['allowed_words'] ); ?>"/>
                                 <div class="jr-description"><?php _e( 'Enter comma-separated words. If one of them occurs in the image description, the image will be displayed', 'instagram-slider-widget' ); ?></div>
                             </div>
                         </div>
@@ -371,7 +372,7 @@ $search_for = $instance['search_for'] ?? '';
                                     </div>
                                 </div>
                             </div>
-                            <div class="masonry_lite_settings" <?php echo 'masonry_lite' != $instance['template'] ? 'style="display:none;"' : ''; ?>>
+                            <div class="masonry_lite_settings" <?php echo 'masonry_lite' !== $instance['template'] ? 'style="display:none;"' : ''; ?>>
                                 <div id="wis-field-masonry-cols" class="form-group">
                                     <div class="input-group">
                                         <label class="form-label form-inline" for="masonry_lite_cols">
@@ -402,7 +403,7 @@ $search_for = $instance['search_for'] ?? '';
                                 </div>
 
                             </div>
-                            <div class="slick_settings" <?php echo 'slick_slider' != $instance['template'] ? 'style="display:none;"' : ''; ?>>
+                            <div class="slick_settings" <?php echo 'slick_slider' !== $instance['template'] ? 'style="display:none;"' : ''; ?>>
                                 <div id="wis-field-enable_control_buttons" class="form-group">
                                     <label class="form-switch" for="enable_control_buttons">
                                         <input class="form-input" id="enable_control_buttons" name="enable_control_buttons" type="checkbox" value="1"
@@ -492,7 +493,7 @@ $search_for = $instance['search_for'] ?? '';
                                 </div>
 
                             </div>
-                            <div class="shopifeed_settings" <?php echo 'showcase' != $instance['template'] ? 'style="display:none;"' : ''; ?>>
+                            <div class="shopifeed_settings" <?php echo 'showcase' !== $instance['template'] ? 'style="display:none;"' : ''; ?>>
                                 <div id="wis-field-shopifeed_phone" class="form-group">
                                     <label class="form-label" for="shopifeed_phone">
 										<?php _e( 'Phone', 'instagram-slider-widget' ); ?>
@@ -567,7 +568,7 @@ $search_for = $instance['search_for'] ?? '';
                                     <label class="form-label" for="description"><?php _e( 'Slider Text Description:', 'instagram-slider-widget' ); ?></label>
                                     <select size='3' class='form-select' id="description" name="description[]" multiple="multiple">
                                         <option value='username' <?php $this_feed->selected( $instance['description'], 'username' ); ?>
-                                                class="<?php echo 'hashtag' == $search_for ? 'hidden' : '' ?>"><?php _e( 'Username', 'instagram-slider-widget' ); ?></option>
+                                                class="<?php echo 'hashtag' === $search_for ? 'hidden' : '' ?>"><?php _e( 'Username', 'instagram-slider-widget' ); ?></option>
                                         <option value='time'<?php $this_feed->selected( $instance['description'], 'time' ); ?>><?php _e( 'Time', 'instagram-slider-widget' ); ?></option>
                                         <option value='caption'<?php $this_feed->selected( $instance['description'], 'caption' ); ?>><?php _e( 'Caption', 'instagram-slider-widget' ); ?></option>
                                     </select>
@@ -577,7 +578,7 @@ $search_for = $instance['search_for'] ?? '';
                         </div>
                     </div>
                 </div>
-                <div id="mob_tab_content_<?= $feed_id ?>" class="mob_settings" style="display: none;">
+                <div id="mob_tab_content_<?php echo $feed_id ?>" class="mob_settings" style="display: none;">
                     <h3 style="width: 100%; text-align: center"><?php _e( 'Mobile settings', 'instagram-slider-widget' ); ?></h3>
 					<?php if ( defined( 'WISP_PLUGIN_ACTIVE' ) && $this->plugin->is_premium() ) :
 						echo apply_filters( 'wis/mob_settings', '', $this_feed, $instance, $sliders, $options_linkto, $feed_id );

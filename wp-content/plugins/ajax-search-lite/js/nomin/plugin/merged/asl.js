@@ -5,11 +5,8 @@
 
     window.WPD = typeof window.WPD !== 'undefined' ? window.WPD : {};
 
-    // Newer version added?
     if ( typeof WPD.dom != "undefined" ) {
-        if ( WPD.dom.version > version ) {
-            return false;	// Terminate
-        }
+        return false;	// Terminate
     }
 
     WPD.dom = function() {
@@ -425,6 +422,14 @@
                             parseInt( this.css('marginBottom') )
                         );
                 },
+                innerWidth: function() {
+                    let el = this.get(0);
+                    if ( el != null ) {
+                        let cs = window.getComputedStyle(el);
+                        return this.outerWidth() - parseFloat(cs.borderLeftWidth) - parseFloat(cs.borderRightWidth);
+                    }
+                    return 0;
+                },
                 width: function() {
                     return this.outerWidth();
                 },
@@ -433,7 +438,7 @@
                 },
                 on: function() {
                     let args = arguments,
-                        func1 = function(args, e) {
+                        func = function(args, e) {
                             let $el;
                             if ( e.type == 'mouseenter' || e.type == 'mouseleave' || e.type == 'hover' ) {
                                 let el = document.elementFromPoint(e.clientX, e.clientY);
@@ -460,16 +465,6 @@
                                 }
                                 args[2].apply($el.get(0), argd);
                             }
-                        },
-                        func2 = function(args, e) {
-                            let argd = [];
-                            argd.push(e);
-                            if ( typeof args[3] != 'undefined' ) {
-                                for (let i=3; i<args.length; i++) {
-                                    argd.push(args[i]);
-                                }
-                            }
-                            args[1].apply(this, argd);
                         };
                     let events = args[0].split(' ');
                     for (let i=0;i<events.length;i++) {
@@ -477,7 +472,7 @@
                         if ( typeof args[1] == "string" ) {
                             this.forEach(function(el){
                                 if ( !WPD.dom._fn.hasEventListener(el, type, args[2]) ) {
-                                    let f = func1.bind(el, args);
+                                    let f = func.bind(el, args);
                                     el.addEventListener(type, f, args[3]);
                                     // Store the trigger in the selected elements, not the parent node
                                     el._wpd_el = typeof el._wpd_el == "undefined" ? [] : el._wpd_el;
@@ -491,19 +486,21 @@
                                 }
                             });
                         } else {
-                            this.forEach(function (el) {
-                                if ( !WPD.dom._fn.hasEventListener(el, type, args[1]) ) {
-                                    let f = func2.bind(el, args);
-                                    el.addEventListener(type, f, args[2]);
-                                    el._wpd_el = typeof el._wpd_el == "undefined" ? [] : el._wpd_el;
-                                    el._wpd_el.push({
-                                        'type': type,
-                                        'func': f,
-                                        'trigger': args[1],
-                                        'args': args[2]
-                                    });
-                                }
-                            });
+                            for (let i=0;i<events.length;i++) {
+                                let type = events[i];
+                                this.forEach(function (el) {
+                                    if ( !WPD.dom._fn.hasEventListener(el, type, args[1]) ) {
+                                        el.addEventListener(type, args[1], args[2]);
+                                        el._wpd_el = typeof el._wpd_el == "undefined" ? [] : el._wpd_el;
+                                        el._wpd_el.push({
+                                            'type': type,
+                                            'func': args[1],
+                                            'trigger': args[1],
+                                            'args': args[2]
+                                        });
+                                    }
+                                });
+                            }
                         }
                     }
                     return this;
@@ -699,18 +696,28 @@
                 }
             }
             WPD.dom._fn = {
-                bodyTransformY: function() {
+                bodyTransform: function() {
+                    let x = 0, y = 0;
                     if ( typeof WebKitCSSMatrix !== 'undefined' ) {
                         let style = window.getComputedStyle(document.body);
                         if ( typeof style.transform != 'undefined' ) {
                             let matrix = new WebKitCSSMatrix(style.transform);
+                            if ( matrix.m41 != 'undefined' ) {
+                                x = matrix.m41;
+                            }
                             if ( matrix.m42 != 'undefined' ) {
-                                return matrix.m42;
+                                y = matrix.m42;
                             }
                         }
                     }
 
-                    return 0;
+                    return {x: x, y: y};
+                },
+                bodyTransformY: function() {
+                    return this.bodyTransform().y;
+                },
+                bodyTransformX: function() {
+                    return this.bodyTransform().x;
                 },
                 hasFixedParent: function(el) {
                     /**
@@ -727,6 +734,7 @@
                     } while( el = el.parentElement );
                     return false;
                 },
+
                 hasEventListener: function(el, type, trigger) {
                     if (typeof el._wpd_el == "undefined") {
                         return false;
@@ -800,6 +808,10 @@
     WPD.dom();
     document.dispatchEvent(new Event('wpd-dom-core-loaded'));
 }());(function() {
+    // Prevent duplicate loading
+    if ( typeof WPD.dom.fn.animate != "undefined" ) {
+        return false;	// Terminate
+    }
     WPD.dom.fn._animate = {
         "easing": {
             "linear": function(x) { return x; },
@@ -870,7 +882,7 @@
     };
     document.dispatchEvent(new Event('wpd-dom-animate-loaded'));
 }());/*
- * jQuery Highlight plugin
+ * WPD.dom Highlight plugin
  *
  * Based on highlight v3 by Johann Burkard
  * http://johannburkard.de/blog/programming/javascript/highlight-javascript-text-higlighting-jquery-plugin.html
@@ -882,9 +894,14 @@
 (function() {
     let $ = WPD.dom;
 
+    // Prevent duplicate loading
+    if ( typeof WPD.dom.fn.unhighlight != "undefined" ) {
+        return false;	// Terminate
+    }
+
     WPD.dom.fn.unhighlight = function (options) {
         let settings = {className: 'highlight', element: 'span'};
-        $.extend(settings, options);
+        $.fn.extend(settings, options);
 
         return this.find(settings.element + "." + settings.className).each(function () {
             let parent = this.parentNode;
@@ -910,7 +927,7 @@
             return el != '';
         });
         words.forEach(function(w, i, o){
-            o[i].replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            o[i] = w.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
         });
 
         if (words.length == 0) {
@@ -923,7 +940,6 @@
             pattern = "(?:,|^|\\s)" + pattern + "(?:,|$|\\s)";
         }
         let re = new RegExp(pattern, flag);
-
         function highlight(node, re, nodeName, className, excludeParents) {
             excludeParents = excludeParents == '' ? '.exhghttt' : excludeParents;
             if (node.nodeType === 3) {
@@ -960,6 +976,10 @@
         });
     };
 }());(function() {
+    // Prevent duplicate loading
+    if ( typeof WPD.dom.fn.serialize != "undefined" ) {
+        return false;	// Terminate
+    }
     WPD.dom.fn.serialize = function() {
         let form = this.get(0);
         if ( !form || form.nodeName !== "FORM" ) {
@@ -1037,6 +1057,10 @@
     };
     document.dispatchEvent(new Event('wpd-dom-serialize-loaded'));
 }());(function() {
+    // Prevent duplicate loading
+    if ( typeof WPD.dom.fn.inViewPort != "undefined" ) {
+        return false;	// Terminate
+    }
     WPD.dom.fn.inViewPort = function (tolerance, viewport) {
         "use strict";
         let element = this.get(0), vw, vh;
@@ -1082,6 +1106,10 @@
     };
     document.dispatchEvent(new Event('wpd-dom-viewport-loaded'));
 }());(function() {
+    // Prevent duplicate loading
+    if ( typeof WPD.dom.fn.ajax != "undefined" ) {
+        return false;	// Terminate
+    }
     WPD.dom.fn.ajax = function(args) {
         let defaults = {
             'url': '',
@@ -1310,6 +1338,18 @@ window.WPD.Base64 = {
             args.splice(0, 2);
             filters.forEach( function( hooks ) {
                 hooks.forEach( function( obj ) {
+                    /**
+                     * WARNING!
+                     * If, this function is called with a referanced parameter like OBJECT or ARRAY argument
+                     * as the first argument - then the callback function MUST return that value, otherwise
+                     * it is overwritten with NULL!
+                     * Ex.:
+                     * Hooks.applyFilters('my_filter', object);
+                     * Hooks.addFilter('my_filter', function(obj){
+                     *     do things..
+                     *     return obj; <--- IMPORTANT IN EVERY CASE
+                     * });
+                     */
                     value = obj.callback.apply( obj.scope, [value].concat(args) );
                 } );
             } );
@@ -1385,28 +1425,28 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
         // If only google source is used, this is much faster..
         autocompleteGoogleOnly: function () {
             let $this = this,
-                val = $this.n.text.val();
-            if ($this.n.text.val() == '') {
-                $this.n.textAutocomplete.val('');
+                val = $this.n('text').val();
+            if ($this.n('text').val() == '') {
+                $this.n('textAutocomplete').val('');
                 return;
             }
-            let autocompleteVal = $this.n.textAutocomplete.val();
+            let autocompleteVal = $this.n('textAutocomplete').val();
             if (autocompleteVal != '' && autocompleteVal.indexOf(val) == 0) {
                 return;
             } else {
-                $this.n.textAutocomplete.val('');
+                $this.n('textAutocomplete').val('');
             }
             let lang = $this.o.autocomplete.lang;
             ['wpml_lang', 'polylang_lang', 'qtranslate_lang'].forEach( function(v){
                 if (
-                    $('input[name="'+v+'"]', $this.n.searchsettings).length > 0 &&
-                    $('input[name="'+v+'"]', $this.n.searchsettings).val().length > 1
+                    $('input[name="'+v+'"]', $this.n('searchsettings')).length > 0 &&
+                    $('input[name="'+v+'"]', $this.n('searchsettings')).val().length > 1
                 ) {
-                    lang = $('input[name="' + v + '"]', $this.n.searchsettings).val();
+                    lang = $('input[name="' + v + '"]', $this.n('searchsettings')).val();
                 }
             });
             // noinspection JSUnresolvedVariable
-            if ( $this.n.text.val().length >= $this.o.autocomplete.trigger_charcount ) {
+            if ( $this.n('text').val().length >= $this.o.autocomplete.trigger_charcount ) {
                 $.fn.ajax({
                     url: 'https://clients1.google.com/complete/search',
                     cors: 'no-cors',
@@ -1422,7 +1462,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                             let response = data[1][0][0].replace(/(<([^>]+)>)/ig, "");
                             response = $('<textarea />').html(response).text();
                             response = response.substr(val.length);
-                            $this.n.textAutocomplete.val(val + response);
+                            $this.n('textAutocomplete').val(val + response);
                             $this.fixAutocompleteScrollLeft();
                         }
                     }
@@ -1431,7 +1471,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
         },
 
         fixAutocompleteScrollLeft: function() {
-            this.n.textAutocomplete.get(0).scrollLeft = this.n.text.get(0).scrollLeft;
+            this.n('textAutocomplete').get(0).scrollLeft = this.n('text').get(0).scrollLeft;
         }
     }
     $.fn.extend(window.WPD.ajaxsearchlite.plugin, functions);
@@ -1445,10 +1485,10 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                 timeout = 65;
             }
             let process = function(){
-                if ( JSON.stringify($this.originalFormData) != JSON.stringify(helpers.formData($('form', $this.n.searchsettings)) ) )
-                    $this.n.searchsettings.find('input[name=filters_initial]').val(0);
+                if ( JSON.stringify($this.originalFormData) != JSON.stringify(helpers.formData($('form', $this.n('searchsettings'))) ) )
+                    $this.n('searchsettings').find('input[name=filters_initial]').val(0);
                 else
-                    $this.n.searchsettings.find('input[name=filters_initial]').val(1);
+                    $this.n('searchsettings').find('input[name=filters_initial]').val(1);
             };
             if ( timeout == 0 ) {
                 process();
@@ -1488,17 +1528,23 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                 if ( _gtag !== false ) {
                     if ( tracking_id !== false ) {
                         // noinspection JSUnresolvedVariable
-                        _gtag('config', tracking_id, {'page_path': url + ASL.analytics.string.replace("{asl_term}", term)});
+                        tracking_id.forEach(function(id) {
+                            _gtag('config', id, {'page_path': url + ASL.analytics.string.replace("{asl_term}", term)});
+                        });
                     }
                 } else if ( _ga !== false ) {
-                    if ( tracking_id !== false ) {
-                        _ga('create', tracking_id, 'auto');
-                    }
-                    // noinspection JSUnresolvedVariable
-                    _ga('send', 'pageview', {
+                    let params = {
                         'page': url + ASL.analytics.string.replace("{asl_term}", term),
                         'title': 'Ajax Search'
-                    });
+                    };
+                    if ( tracking_id !== false ) {
+                        tracking_id.forEach(function(id) {
+                            _ga('create', id, 'auto');
+                            _ga('send', 'pageview', params);
+                        });
+                    } else {
+                        _ga('send', 'pageview', params);
+                    }
                 }
             }
         },
@@ -1516,7 +1562,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
             let _ga = typeof window.__gaTracker == "function" ? window.__gaTracker :
                 (typeof window.ga == "function" ? window.ga : false);
 
-            if ( _gtag === false && _ga === false )
+            if ( _gtag === false && _ga === false && typeof window.dataLayer == 'undefined'  )
                 return false;
 
             // noinspection JSUnresolvedVariable
@@ -1527,7 +1573,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                 let def_data = {
                     "search_id": $this.o.id,
                     "search_name": $this.o.name,
-                    "phrase": $this.n.text.val(),
+                    "phrase": $this.n('text').val(),
                     "option_name": '',
                     "option_value": '',
                     "result_title": '',
@@ -1549,7 +1595,8 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                         event[kk] = event[kk].replace(regex, v);
                     });
                 });
-                if ( _gtag === false ) {
+
+                if ( _ga !== false ) {
                     if ( tracking_id !== false ) {
                         tracking_id.forEach(function(id){
                             _ga('create', id, 'auto');
@@ -1570,7 +1617,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                             event.value
                         );
                     }
-                } else {
+                } else if ( _gtag !== false ) {
                     if ( tracking_id !== false ) {
                         tracking_id.forEach(function(id){
                             event.send_to = id;
@@ -1581,6 +1628,13 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                         // noinspection JSUnresolvedVariable
                         _gtag('event', ASL.analytics.event[which].action, event);
                     }
+                } else if ( typeof window.dataLayer.push != 'undefined' ) {
+                    window.dataLayer.push({
+                        'event': 'gaEvent',
+                        'eventCategory': event.event_category,
+                        'eventAction': ASL.analytics.event[which].action,
+                        'eventLabel': event.event_label
+                    });
                 }
             }
         },
@@ -1645,7 +1699,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
 
                 // noinspection JSUnresolvedVariable
                 if ( $this.o.statistics ) {
-                    $this.stat_addKeyword($this.o.id, $this.n.text.val());
+                    $this.stat_addKeyword($this.o.id, $this.n('text').val());
                 }
                 if ( data != '' && $dataNode.length > 0 && $dataNode.find(selector).length > 0 ) {
                     data = data.replace(/&asl_force_reset_pagination=1/gmi, '');
@@ -1685,9 +1739,9 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                     if ( $this.o.singleHighlight == 1 ) {
                         $(selector).find('a').on('click', function(){
                             localStorage.removeItem('asl_phrase_highlight');
-                            if ( helpers.unqoutePhrase( $this.n.text.val() ) != '' )
+                            if ( helpers.unqoutePhrase( $this.n('text').val() ) != '' )
                                 localStorage.setItem('asl_phrase_highlight', JSON.stringify({
-                                    'phrase': helpers.unqoutePhrase( $this.n.text.val() )
+                                    'phrase': helpers.unqoutePhrase( $this.n('text').val() )
                                 }));
                         });
                     }
@@ -1696,17 +1750,17 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
 
                     // noinspection JSUnresolvedVariable
                     ASL.initialize();
-                    $this.lastSuccesfulSearch = $('form', $this.n.searchsettings).serialize() + $this.n.text.val().trim();
+                    $this.lastSuccesfulSearch = $('form', $this.n('searchsettings')).serialize() + $this.n('text').val().trim();
                     $this.lastSearchData = data;
                 }
-                $this.n.s.trigger("asl_search_end", [$this.o.id, $this.o.iid, $this.n.text.val(), data], true, true);
+                $this.n('s').trigger("asl_search_end", [$this.o.id, $this.o.iid, $this.n('text').val(), data], true, true);
                 $this.gaEvent?.('search_end', {'results_count': 'unknown'});
-                $this.gaPageview?.($this.n.text.val());
+                $this.gaPageview?.($this.n('text').val());
                 $this.hideLoader();
                 $el.css('opacity', 1);
                 $this.searching = false;
-                if ( $this.n.text.val() != '' ) {
-                    $this.n.proclose.css({
+                if ( $this.n('text').val() != '' ) {
+                    $this.n('proclose').css({
                         display: "block"
                     });
                 }
@@ -1750,8 +1804,8 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
 
             if (
                 !forceAjax &&
-                $this.n.searchsettings.find('input[name=filters_initial]').val() == 1 &&
-                $this.n.text.val() == ''
+                $this.n('searchsettings').find('input[name=filters_initial]').val() == 1 &&
+                $this.n('text').val() == ''
             ) {
                 window.WPD.intervalUntilExecute(function(){
                     process(ASL.pageHTML);
@@ -1775,7 +1829,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                         $el.html("This request has failed. Please check your connection.");
                         $this.hideLoader();
                         $this.searching = false;
-                        $this.n.proclose.css({
+                        $this.n('proclose').css({
                             display: "block"
                         });
                     }
@@ -1784,7 +1838,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
         },
         getCurrentLiveURL: function() {
             let $this = this;
-            let url = 'asl_ls=' + helpers.nicePhrase( $this.n.text.val() ),
+            let url = 'asl_ls=' + helpers.nicePhrase( $this.n('text').val() ),
                 start = '&',
                 location = window.location.href;
 
@@ -1801,7 +1855,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
             }
 
             let final = location + start + url + "&asl_active=1&asl_force_reset_pagination=1&p_asid=" +
-                $this.o.id + "&p_asl_data=1&" + $('form', $this.n.searchsettings).serialize();
+                $this.o.id + "&p_asl_data=1&" + $('form', $this.n('searchsettings')).serialize();
             // Possible issue when the URL ends with '?' and the start is '&'
             final = final.replace('?&', '?');
 
@@ -1813,7 +1867,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
     "use strict";
     let functions = {
         showLoader: function( ) {
-            this.n.proloading.css({
+            this.n('proloading').css({
                 display: "block"
             });
         },
@@ -1821,16 +1875,43 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
         hideLoader: function( ) {
             let $this = this;
 
-            $this.n.proloading.css({
+            $this.n('proloading').css({
                 display: "none"
             });
-            $this.n.results.css("display", "");
+            $this.n('results').css("display", "");
         },
     }
     $.fn.extend(window.WPD.ajaxsearchlite.plugin, functions);
 })(WPD.dom);(function($){
     "use strict";
     let functions = {
+        loadASLFonts: function() {
+            if ( ASL.font_url !== false ) {
+                let font = new FontFace(
+                    'aslsicons2',
+                    'url(' + ASL.font_url + ')',
+                    { style: 'normal', weight: 'normal', 'font-display': 'swap' }
+                );
+                font.load().then(function(loaded_face) {
+                    document.fonts.add(loaded_face);
+                }).catch(function(er) {});
+                ASL.font_url = false;
+            }
+        },
+
+        /**
+         * Updates the document address bar with the ajax live search attributes, without push state
+         */
+        updateHref: function( ) {
+            if ( this.o.trigger.update_href && !this.usingLiveLoader ) {
+                if (!window.location.origin) {
+                    window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
+                }
+                let url = this.getStateURL() + (this.resultsOpened ? '&asl_s=' : '&asl_ls=') + this.n('text').val();
+                history.replaceState('', '', url.replace(location.origin, ''));
+            }
+        },
+
         /**
          * Checks if an element with the same ID and Instance was already registered
          */
@@ -1847,36 +1928,35 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
             // oof, this was cloned
             if ( oldInstanceId != $this.o.iid ) {
                 $this.o.rid = $this.o.id + '_' + $this.o.iid;
-                $this.n.search.get(0).id = "ajaxsearchlite" + $this.o.rid;
-                $this.n.search.removeClass('asl_m_' + oldRID).addClass('asl_m_' + $this.o.rid);
-                $this.n.searchsettings.get(0).id = $this.n.searchsettings.get(0).id.replace('settings'+ oldRID, 'settings' + $this.o.rid);
-                if ( $this.n.searchsettings.hasClass('asl_s_' + oldRID) ) {
-                    $this.n.searchsettings.removeClass('asl_s_' + oldRID)
+                $this.n('search').get(0).id = "ajaxsearchlite" + $this.o.rid;
+                $this.n('search').removeClass('asl_m_' + oldRID).addClass('asl_m_' + $this.o.rid).data('instance', $this.o.iid);
+                $this.n('searchsettings').get(0).id = $this.n('searchsettings').get(0).id.replace('settings'+ oldRID, 'settings' + $this.o.rid);
+                if ( $this.n('searchsettings').hasClass('asl_s_' + oldRID) ) {
+                    $this.n('searchsettings').removeClass('asl_s_' + oldRID)
                         .addClass('asl_s_' + $this.o.rid).data('instance', $this.o.iid);
                 } else {
-                    $this.n.searchsettings.removeClass('asl_sb_' + oldRID)
+                    $this.n('searchsettings').removeClass('asl_sb_' + oldRID)
                         .addClass('asl_sb_' + $this.o.rid).data('instance', $this.o.iid);
                 }
-                $this.n.resultsDiv.get(0).id = $this.n.resultsDiv.get(0).id.replace('prores'+ oldRID, 'prores' + $this.o.rid);
-                $this.n.resultsDiv.removeClass('asl_r_' + oldRID)
+                $this.n('resultsDiv').get(0).id = $this.n('resultsDiv').get(0).id.replace('prores'+ oldRID, 'prores' + $this.o.rid);
+                $this.n('resultsDiv').removeClass('asl_r_' + oldRID)
                     .addClass('asl_r_' + $this.o.rid).data('instance', $this.o.iid);
-                $this.n.container.find('.asl_init_data').data('instance', $this.o.iid);
-                $this.n.container.find('.asl_init_data').get(0).id =
-                    $this.n.container.find('.asl_init_data').get(0).id.replace('asl_init_id_'+ oldRID, 'asl_init_id_' + $this.o.rid);
+                $this.n('container').find('.asl_init_data').data('instance', $this.o.iid);
+                $this.n('container').find('.asl_init_data').get(0).id =
+                    $this.n('container').find('.asl_init_data').get(0).id.replace('asl_init_id_'+ oldRID, 'asl_init_id_' + $this.o.rid);
 
-                $this.n.prosettings.data('opened', 0);
+                $this.n('prosettings').data('opened', 0);
             }
         },
         destroy: function () {
             let $this = this;
-            Object.keys($this.n).forEach(function(k){
-               $this.n[k].off();
+            Object.keys($this.nodes).forEach(function(k){
+               $this.nodes[k].off?.();
             });
-            $this.n.searchsettings.remove();
-            $this.n.resultsDiv.remove();
-            $this.n.trythis.remove();
-            $this.n.search.remove();
-            $this.n.container.remove();
+            $this.n('searchsettings').remove?.();
+            $this.n('resultsDiv').remove?.();
+            $this.n('search').remove?.();
+            $this.n('container').remove?.();
             $this.documentEventHandlers.forEach(function(h){
                 $(h.node).off(h.event, h.handler);
             });
@@ -1893,7 +1973,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
             let $this = this;
             // noinspection JSUnresolvedVariable
             return (
-                    $('.asl_res_url', $this.n.resultsDiv).length > 0 ||
+                    $('.asl_res_url', $this.n('resultsDiv')).length > 0 ||
                     $('.asl_es_' + $this.o.id + ' a').length > 0 ||
                     ( $this.o.resPage.useAjax && $($this.o.resPage.selector + 'a').length > 0)
                 ) &&
@@ -1913,8 +1993,8 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                 _loc = $this.o.trigger.return_location;
             }
 
-            if ( $('.asl_res_url', $this.n.resultsDiv).length > 0 ) {
-                url =  $( $('.asl_res_url', $this.n.resultsDiv).get(0) ).attr('href');
+            if ( $('.asl_res_url', $this.n('resultsDiv')).length > 0 ) {
+                url =  $( $('.asl_res_url', $this.n('resultsDiv')).get(0) ).attr('href');
             } else if ( $('.asl_es_' + $this.o.id + ' a').length > 0 ) {
                 url =  $( $('.asl_es_' + $this.o.id + ' a').get(0) ).attr('href');
             } else if ( $this.o.resPage.useAjax && $($this.o.resPage.selector + 'a').length > 0 ) {
@@ -1962,7 +2042,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                 if ( $this.o.override_method == "post") {
                     helpers.submitToUrl(url, 'post', {
                         asl_active: 1,
-                        p_asl_data: $('form', $this.n.searchsettings).serialize()
+                        p_asl_data: $('form', $this.n('searchsettings')).serialize()
                     }, _loc);
                 } else {
                     if ( _loc == 'same' ) {
@@ -1974,11 +2054,11 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
             } else {
                 // The method is not important, just send the data to memorize settings
                 helpers.submitToUrl(url, 'post', {
-                    np_asl_data: $('form', $this.n.searchsettings).serialize()
+                    np_asl_data: $('form', $this.n('searchsettings')).serialize()
                 }, _loc);
             }
 
-            $this.n.proloading.css('display', 'none');
+            $this.n('proloading').css('display', 'none');
             $this.hideLoader();
             $this.hideResults();
             $this.searchAbort();
@@ -1995,12 +2075,12 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
             }
 
             if ( source == 'results_page' || source == 'ajax_search' ) {
-                url = '?s=' + helpers.nicePhrase( $this.n.text.val() );
+                url = '?s=' + helpers.nicePhrase( $this.n('text').val() );
             } else if ( source == 'woo_results_page' ) {
-                url = '?post_type=product&s=' + helpers.nicePhrase( $this.n.text.val() );
+                url = '?post_type=product&s=' + helpers.nicePhrase( $this.n('text').val() );
             } else {
                 base_url = $this.o.trigger.redirect_url;
-                url = base_url.replace(/{phrase}/g, helpers.nicePhrase( $this.n.text.val() ));
+                url = base_url.replace(/{phrase}/g, helpers.nicePhrase( $this.n('text').val() ));
             }
             // Is this an URL like xy.com/?x=y
             if ( $this.o.homeurl.indexOf('?') > 1 && url.indexOf('?') === 0 ) {
@@ -2014,7 +2094,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                 if ( $this.o.homeurl.indexOf('?') === -1 && url.indexOf('?') === -1 ) {
                     start = '?';
                 }
-                let addUrl = url + start + "asl_active=1&p_asl_data=1&" + $('form', $this.n.searchsettings).serialize();
+                let addUrl = url + start + "asl_active=1&p_asl_data=1&" + $('form', $this.n('searchsettings')).serialize();
                 final = $this.o.homeurl + addUrl;
             } else {
                 final = $this.o.homeurl + url;
@@ -2041,23 +2121,25 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
         showResults: function( ) {
             let $this = this;
 
+            $this.initResults();
+
             // Create the scrollbars if needed
             $this.createVerticalScroll();
             $this.showVerticalResults();
 
             $this.hideLoader();
 
-            $this.n.proclose.css({
+            $this.n('proclose').css({
                 display: "block"
             });
 
-            if ($this.n.showmore != null) {
-                if ($this.n.items.length > 0) {
-                    $this.n.showmore.css({
+            if ($this.n('showmore') != null) {
+                if ($this.n('items').length > 0) {
+                    $this.n('showmore').css({
                         'display': 'block'
                     });
                 } else {
-                    $this.n.showmore.css({
+                    $this.n('showmore').css({
                         'display': 'none'
                     });
                 }
@@ -2070,12 +2152,6 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                 }, 100)
             }
 
-            if ( $this.is_scroll && typeof $this.scroll.recalculate !== 'undefined' ) {
-                setTimeout(function(){
-                    $this.scroll.recalculate();
-                }, 500);
-            }
-
             $this.resultsOpened = true;
         },
 
@@ -2085,12 +2161,12 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
 
             if ( !$this.resultsOpened ) return false;
 
-            $this.n.resultsDiv.removeClass($this.resAnim.showClass).addClass($this.resAnim.hideClass);
+            $this.n('resultsDiv').removeClass($this.resAnim.showClass).addClass($this.resAnim.hideClass);
             setTimeout(function(){
-                $this.n.resultsDiv.css($this.resAnim.hideCSS);
+                $this.n('resultsDiv').css($this.resAnim.hideCSS);
             }, $this.resAnim.duration);
 
-            $this.n.proclose.css({
+            $this.n('proclose').css({
                 display: "none"
             });
 
@@ -2099,21 +2175,21 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
 
             $this.resultsOpened = false;
 
-            $this.n.s.trigger("asl_results_hide", [$this.o.id, $this.o.iid], true, true);
+            $this.n('s').trigger("asl_results_hide", [$this.o.id, $this.o.iid], true, true);
         },
 
         showResultsBox: function() {
             let $this = this;
 
-            $this.n.s.trigger("asl_results_show", [$this.o.id, $this.o.iid], true, true);
+            $this.n('s').trigger("asl_results_show", [$this.o.id, $this.o.iid], true, true);
 
-            $this.n.resultsDiv.css({
+            $this.n('resultsDiv').css({
                 display: 'block',
                 height: 'auto'
             });
 
-            $this.n.resultsDiv.css($this.resAnim.showCSS);
-            $this.n.resultsDiv.removeClass($this.resAnim.hideClass).addClass($this.resAnim.showClass);
+            $this.n('resultsDiv').css($this.resAnim.showCSS);
+            $this.n('resultsDiv').removeClass($this.resAnim.hideClass).addClass($this.resAnim.showClass);
 
             $this.fixResultsPosition(true);
         },
@@ -2126,13 +2202,13 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
             if (
                 !$this.resultsOpened ||
                 $this.o.scrollToResults.enabled !=1 ||
-                $this.n.resultsDiv.inViewPort(tolerance)
+                $this.n('resultsDiv').inViewPort(tolerance)
             ) return;
 
             if ($this.o.resultsposition == "hover") {
-                stop = $this.n.probox.offset().top - 20;
+                stop = $this.n('probox').offset().top - 20;
             } else {
-                stop = $this.n.resultsDiv.offset().top - 20;
+                stop = $this.n('resultsDiv').offset().top - 20;
             }
             stop = stop + $this.o.scrollToResults.offset;
 
@@ -2152,16 +2228,16 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
 
             $this.showResultsBox();
 
-            if ($this.n.items.length > 0) {
+            if ($this.n('items').length > 0) {
                 // noinspection JSUnresolvedVariable
-                let count = (($this.n.items.length < $this.o.itemscount) ? $this.n.items.length : $this.o.itemscount);
+                let count = (($this.n('items').length < $this.o.itemscount) ? $this.n('items').length : $this.o.itemscount);
                 count = count <= 0 ? 9999 : count;
-                let groups = $('.asl_group_header', $this.n.resultsDiv);
+                let groups = $('.asl_group_header', $this.n('resultsDiv'));
 
                 // So if the result list is short, we dont even need to do the match
                 // noinspection JSUnresolvedVariable
-                if ($this.o.itemscount == 0 || $this.n.items.length <= $this.o.itemscount) {
-                    $this.n.results.css({
+                if ($this.o.itemscount == 0 || $this.n('items').length <= $this.o.itemscount) {
+                    $this.n('results').css({
                         height: 'auto'
                     });
                 } else {
@@ -2169,7 +2245,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                     // Set the height to a fictive value to refresh the scrollbar
                     // .. otherwise the height is not calculated correctly, because of the scrollbar width.
                     if ( $this.call_num < 1 )
-                        $this.n.results.css({
+                        $this.n('results').css({
                             height: "30px"
                         });
 
@@ -2180,7 +2256,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                             final_h = 0,
                             highest = 0;
 
-                        $this.n.items.forEach(function () {
+                        $this.n('items').forEach(function () {
                             h += $(this).outerHeight(true);
                             if ($(this).outerHeight(true) > highest)
                                 highest = $(this).outerHeight(true);
@@ -2212,7 +2288,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                                 }
                             });
                         }
-                        $this.n.results.css({
+                        $this.n('results').css({
                             height: final_h + 'px'
                         });
 
@@ -2220,12 +2296,12 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                 }
 
                 // Mark the last item
-                $this.n.items.last().addClass('asl_last_item');
+                $this.n('items').last().addClass('asl_last_item');
                 // Before groups as well
-                $this.n.results.find('.asl_group_header').prev('.item').addClass('asl_last_item');
+                $this.n('results').find('.asl_group_header').prev('.item').addClass('asl_last_item');
                 if ($this.o.highlight == 1) {
                     // noinspection JSUnresolvedVariable
-                    $("div.item", $this.n.resultsDiv).highlight($this.n.text.val().split(" "), {
+                    $("div.item", $this.n('resultsDiv')).highlight($this.n('text').val().split(" "), {
                         element: 'span', className: 'highlighted', wordsOnly: $this.o.highlightWholewords
                     });
                 }
@@ -2233,19 +2309,17 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
 
             }
             $this.resize();
-            if ($this.n.items.length == 0) {
-                $this.n.results.css({
+            if ($this.n('items').length == 0) {
+                $this.n('results').css({
                     height: 'auto'
                 });
             }
-            $this.n.results.css({
+            $this.n('results').css({
                 'overflowY': 'auto'
             });
 
             // Scroll to top
-            let $container = $this.is_scroll && typeof $this.scroll.recalculate !== 'undefined' ?
-                $($this.scroll.getScrollElement()) : $this.n.results;
-            $container.get(0).scrollTop = 0;
+            $this.n('results').get(0).scrollTop = 0;
 
             $this.fixResultsPosition(true);
             $this.searching = false;
@@ -2255,22 +2329,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
 })(WPD.dom);(function($){
     "use strict";
     let functions = {
-        createVerticalScroll: function () {
-            let $this = this,
-                $resScroll = $this.n.results;
-            // noinspection JSUnresolvedVariable
-            if ($this.o.itemscount > 0 && $this.is_scroll && typeof $this.scroll.recalculate === 'undefined') {
-                // noinspection JSPotentiallyInvalidConstructorUsage,JSUnresolvedFunction,JSUnresolvedVariable
-                $this.scroll = new asp_SimpleBar($this.n.results.get(0), {
-                    direction: $('body').hasClass('rtl') ? 'rtl' : 'ltr',
-                    autoHide: true
-                });
-                $resScroll = $resScroll.add($this.scroll.getScrollElement());
-            }
-            $resScroll.on('scroll', function() {
-                document.dispatchEvent(new Event('wpd-lazy-trigger'));
-            });
-        }
+        createVerticalScroll: function () {}
     }
     $.fn.extend(window.WPD.ajaxsearchlite.plugin, functions);
 })(WPD.dom);// noinspection JSUnresolvedVariable
@@ -2291,7 +2350,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
             if ( typeof timeout == 'undefined' )
                 timeout = 50;
 
-            if ($this.n.text.val().length < $this.o.charcount) return;
+            if ($this.n('text').val().length < $this.o.charcount) return;
             $this.searchAbort();
 
             clearTimeout($this.timeouts.searchWithCheck);
@@ -2304,21 +2363,21 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
             let $this = this;
 
             if ($this.searching && 0) return;
-            if ($this.n.text.val().length < $this.o.charcount) return;
+            if ($this.n('text').val().length < $this.o.charcount) return;
 
             $this.searching = true;
-            $this.n.proloading.css({
+            $this.n('proloading').css({
                 display: "block"
             });
-            $this.n.proclose.css({
+            $this.n('proclose').css({
                 display: "none"
             });
 
             let data = {
                 action: 'ajaxsearchlite_search',
-                aslp: $this.n.text.val(),
+                aslp: $this.n('text').val(),
                 asid: $this.o.id,
-                options: $('form', $this.n.searchsettings).serialize()
+                options: $('form', $this.n('searchsettings')).serialize()
             };
 
             data = helpers.Hooks.applyFilters('asl/search/data', data);
@@ -2348,26 +2407,26 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                     'data': data,
                     'success': function (response) {
                         response = response.replace(/^\s*[\r\n]/gm, "");
-                        response = response.match(/!!ASLSTART!!(.*[\s\S]*)!!ASLEND!!/)[1];
+                        response = response.match(/___ASLSTART___(.*[\s\S]*)___ASLEND___/)[1];
 
                         response = helpers.Hooks.applyFilters('asl/search/html', response);
                         response = helpers.wp_hooks_apply_filters('asl/search/html', response);
 
-                        $this.n.resdrg.html("");
-                        $this.n.resdrg.html(response);
+                        $this.n('resdrg').html("");
+                        $this.n('resdrg').html(response);
 
-                        $(".asl_keyword", $this.n.resdrg).on('click', function () {
-                            $this.n.text.val($(this).html());
-                            $('input.orig', $this.n.container).val($(this).html()).trigger('keydown');
-                            $('form', $this.n.container).trigger('submit', 'ajax');
+                        $(".asl_keyword", $this.n('resdrg')).on('click', function () {
+                            $this.n('text').val($(this).html());
+                            $('input.orig', $this.n('container')).val($(this).html()).trigger('keydown');
+                            $('form', $this.n('container')).trigger('submit', 'ajax');
                             $this.search();
                         });
 
-                        $this.n.items = $('.item', $this.n.resultsDiv);
+                        $this.nodes.items = $('.item', $this.n('resultsDiv'));
 
-                        $this.gaEvent?.('search_end', {'results_count': $this.n.items.length});
+                        $this.gaEvent?.('search_end', {'results_count': $this.n('items').length});
 
-                        $this.gaPageview?.($this.n.text.val());
+                        $this.gaPageview?.($this.n('text').val());
 
                         if ($this.isRedirectToFirstResult()) {
                             $this.doRedirectToFirstResult();
@@ -2377,41 +2436,43 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                         $this.hideLoader();
                         $this.showResults();
                         $this.scrollToResults();
-                        $this.lastSuccesfulSearch = $('form', $this.n.searchsettings).serialize() + $this.n.text.val().trim();
+                        $this.lastSuccesfulSearch = $('form', $this.n('searchsettings')).serialize() + $this.n('text').val().trim();
                         $this.lastSearchData = data;
 
-                        if ($this.n.items.length == 0) {
-                            if ($this.n.showmore != null) {
-                                $this.n.showmore.css('display', 'none');
+                        $this.updateHref();
+
+                        if ($this.n('items').length == 0) {
+                            if ($this.n('showmore') != null) {
+                                $this.n('showmore').css('display', 'none');
                             }
                         } else {
-                            if ($this.n.showmore != null) {
-                                $this.n.showmore.css('display', 'block');
+                            if ($this.n('showmore') != null) {
+                                $this.n('showmore').css('display', 'block');
 
-                                $('a', $this.n.showmore).off();
-                                $('a', $this.n.showmore).on('click', function () {
-                                    let source = $this.o.trigger.click_location, url;
+                                $('a', $this.n('showmore')).off();
+                                $('a', $this.n('showmore')).on('click', function () {
+                                    let source = $this.o.trigger.click, url;
 
                                     if (source == 'results_page') {
-                                        url = '?s=' + helpers.nicePhrase($this.n.text.val());
+                                        url = '?s=' + helpers.nicePhrase($this.n('text').val());
                                     } else if (source == 'woo_results_page') {
-                                        url = '?post_type=product&s=' + helpers.nicePhrase($this.n.text.val());
+                                        url = '?post_type=product&s=' + helpers.nicePhrase($this.n('text').val());
                                     } else {
-                                        url = $this.o.trigger.redirect_url.replace('{phrase}', helpers.nicePhrase($this.n.text.val()));
+                                        url = $this.o.trigger.redirect_url.replace('{phrase}', helpers.nicePhrase($this.n('text').val()));
                                     }
 
                                     if ($this.o.overridewpdefault) {
                                         if ($this.o.override_method == "post") {
                                             helpers.submitToUrl($this.o.homeurl + url, 'post', {
                                                 asl_active: 1,
-                                                p_asl_data: $('form', $this.n.searchsettings).serialize()
+                                                p_asl_data: $('form', $this.n('searchsettings')).serialize()
                                             });
                                         } else {
-                                            location.href = $this.o.homeurl + url + "&asl_active=1&p_asid=" + $this.o.id + "&p_asl_data=1&" + $('form', $this.n.searchsettings).serialize()
+                                            location.href = $this.o.homeurl + url + "&asl_active=1&p_asid=" + $this.o.id + "&p_asl_data=1&" + $('form', $this.n('searchsettings')).serialize()
                                         }
                                     } else {
                                         helpers.submitToUrl($this.o.homeurl + url, 'post', {
-                                            np_asl_data: $('form', $this.n.searchsettings).serialize()
+                                            np_asl_data: $('form', $this.n('searchsettings')).serialize()
                                         });
                                     }
                                 });
@@ -2421,9 +2482,9 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                     'fail': function (jqXHR) {
                         if (jqXHR.aborted)
                             return;
-                        $this.n.resdrg.html("");
-                        $this.n.resdrg.html('<div class="asl_nores">The request failed. Please check your connection! Status: ' + jqXHR.status + '</div>');
-                        $this.n.items = $('.item', $this.n.resultsDiv);
+                        $this.n('resdrg').html("");
+                        $this.n('resdrg').html('<div class="asl_nores">The request failed. Please check your connection! Status: ' + jqXHR.status + '</div>');
+                        $this.nodes.items = $('.item', $this.n('resultsDiv'));
                         $this.hideLoader();
                         $this.showResults();
                         $this.scrollToResults();
@@ -2439,35 +2500,91 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
         showSettings: function () {
             let $this = this;
 
-            $this.n.searchsettings.css($this.settAnim.showCSS);
-            $this.n.searchsettings.removeClass($this.settAnim.hideClass).addClass($this.settAnim.showClass);
+            $this.initSettings?.();
 
-            if ($this.settScroll == null && ($this.is_scroll) ) {
-                $this.settScroll = [];
-                $('.asl_sett_scroll', $this.n.searchsettings).forEach(function(o, i){
-                    let _this = this;
-                    // Small delay to fix a rendering issue
-                    setTimeout(function(){
-                        // noinspection JSUnresolvedFunction,JSUnresolvedVariable,JSPotentiallyInvalidConstructorUsage
-                        $this.settScroll[i] = new asp_SimpleBar($(_this).get(0), {
-                            direction: $('body').hasClass('rtl') ? 'rtl' : 'ltr',
-                            autoHide: true
-                        });
-                    }, 20);
-                });
-            }
-            $this.n.prosettings.data('opened', 1);
+            $this.n('searchsettings').css($this.settAnim.showCSS);
+            $this.n('searchsettings').removeClass($this.settAnim.hideClass).addClass($this.settAnim.showClass);
+
+            $this.n('prosettings').data('opened', 1);
             $this.fixSettingsPosition(true);
         },
         hideSettings: function () {
             let $this = this;
 
-            $this.n.searchsettings.removeClass($this.settAnim.showClass).addClass($this.settAnim.hideClass);
+            $this.initSettings?.();
+
+            $this.n('searchsettings').removeClass($this.settAnim.showClass).addClass($this.settAnim.hideClass);
             setTimeout(function(){
-                $this.n.searchsettings.css($this.settAnim.hideCSS);
+                $this.n('searchsettings').css($this.settAnim.hideCSS);
             }, $this.settAnim.duration);
 
-            $this.n.prosettings.data('opened', 0);
+            $this.n('prosettings').data('opened', 0);
+        }
+    }
+    $.fn.extend(window.WPD.ajaxsearchlite.plugin, functions);
+})(WPD.dom);(function($){
+    "use strict";
+    let helpers = window.WPD.ajaxsearchlite.helpers;
+    let functions = {
+        searchFor: function( phrase ) {
+            if ( typeof phrase != 'undefined' ) {
+                this.n('text').val(phrase);
+            }
+            this.n('textAutocomplete').val('');
+            this.search(false, false, false, true);
+        },
+
+        toggleSettings: function( state ) {
+            // state explicitly given, force behavior
+            if (typeof state != 'undefined') {
+                if ( state == "show") {
+                    this.showSettings();
+                } else {
+                    this.hideSettings();
+                }
+            } else {
+                if ( this.n('prosettings').data('opened') == 1 ) {
+                    this.hideSettings();
+                } else {
+                    this.showSettings();
+                }
+            }
+        },
+
+        closeResults: function( clear ) {
+            if (typeof(clear) != 'undefined' && clear) {
+                this.n('text').val("");
+                this.n('textAutocomplete').val("");
+            }
+            this.hideResults();
+            this.n('proloading').css('display', 'none');
+            this.hideLoader();
+            this.searchAbort();
+        },
+
+        getStateURL: function() {
+            let url = location.href,
+                sep;
+            url = url.split('p_asid');
+            url = url[0];
+            url = url.replace('&asl_active=1', '');
+            url = url.replace('?asl_active=1', '');
+            url = url.slice(-1) == '?' ? url.slice(0, -1) : url;
+            url = url.slice(-1) == '&' ? url.slice(0, -1) : url;
+            sep = url.indexOf('?') > 1 ? '&' :'?';
+            return url + sep + "p_asid=" + this.o.id + "&p_asl_data=1&" + $('form', this.n('searchsettings')).serialize();
+        },
+
+        resetSearch: function() {
+            this.resetSearchFilters();
+        },
+
+        filtersInitial: function() {
+            return this.n('searchsettings').find('input[name=filters_initial]').val() == 1;
+        },
+
+        filtersChanged: function() {
+            return this.n('searchsettings').find('input[name=filters_changed]').val() == 1;
         }
     }
     $.fn.extend(window.WPD.ajaxsearchlite.plugin, functions);
@@ -2736,7 +2853,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
         detectAndFixFixedPositioning: function() {
             let $this = this,
                 fixedp = false,
-                n = $this.n.search.get(0);
+                n = $this.n('search').get(0);
 
             while (n) {
                 n = n.parentElement;
@@ -2746,31 +2863,63 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                 }
             }
 
-            if ( fixedp || $this.n.search.css('position') == 'fixed' ) {
-                if ( $this.n.resultsDiv.css('position') == 'absolute' )
-                    $this.n.resultsDiv.css('position', 'fixed');
-                if ( !$this.o.blocking )
-                    $this.n.searchsettings.css('position', 'fixed');
+            if ( fixedp || $this.n('search').css('position') == 'fixed' ) {
+                if ( $this.n('resultsDiv').css('position') == 'absolute' ) {
+                    $this.n('resultsDiv').css({
+                        'position':'fixed',
+                        'z-index': 2147483647
+                    });
+                }
+                if ( !$this.o.blocking ) {
+                    $this.n('searchsettings').css({
+                        'position':'fixed',
+                        'z-index': 2147483647
+                    });
+                }
             } else {
-                if ( $this.n.resultsDiv.css('position') == 'fixed' )
-                    $this.n.resultsDiv.css('position', 'absolute');
+                if ( $this.n('resultsDiv').css('position') == 'fixed' )
+                    $this.n('resultsDiv').css('position', 'absolute');
                 if ( !$this.o.blocking )
-                    $this.n.searchsettings.css('position', 'absolute');
+                    $this.n('searchsettings').css('position', 'absolute');
             }
         },
 
         fixResultsPosition: function(ignoreVisibility) {
             ignoreVisibility = typeof ignoreVisibility == 'undefined' ? false : ignoreVisibility;
             let $this = this,
-                rpos = $this.n.resultsDiv.css('position');
+                $body = $('body'),
+                bodyTop = 0,
+                rpos = $this.n('resultsDiv').css('position');
+
+            if ( $._fn.bodyTransformY() != 0 || $body.css("position") != "static" ) {
+                bodyTop = $body.offset().top;
+            }
+
+            /**
+             * When CSS transform is present, then Fixed element are no longer fixed
+             * even if the CSS declaration says. It is better to change them to absolute then.
+             */
+            if ( $._fn.bodyTransformY() != 0 && rpos == 'fixed' ) {
+                rpos = 'absolute';
+                $this.n('resultsDiv').css('position', 'absolute');
+            }
+
+            // If still fixed, no need to remove the body position
+            if ( rpos == 'fixed' ) {
+                bodyTop = 0;
+            }
 
             if ( rpos != 'fixed' && rpos != 'absolute' ) {
                 return;
             }
 
-            if (ignoreVisibility == true || $this.n.resultsDiv.css('visibility') == 'visible') {
-                let _rposition = $this.n.search.offset(),
-                    bodyTop = 0;
+            if (ignoreVisibility == true || $this.n('resultsDiv').css('visibility') == 'visible') {
+                let _rposition = $this.n('search').offset(),
+                    bodyLeft = 0;
+
+                if ( $._fn.bodyTransformX() != 0 || $body.css("position") != "static" ) {
+                    bodyLeft = $body.offset().left;
+                }
 
                 if ( typeof _rposition != 'undefined' ) {
                     let vwidth, adjust = 0;
@@ -2782,18 +2931,18 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                         vwidth = $this.o.results.width;
                     }
                     if ( vwidth == 'auto') {
-                        vwidth = $this.n.search.outerWidth() < 240 ? 240 : $this.n.search.outerWidth();
+                        vwidth = $this.n('search').outerWidth() < 240 ? 240 : $this.n('search').outerWidth();
                     }
-                    $this.n.resultsDiv.css('width', !isNaN(vwidth) ? vwidth + 'px' : vwidth);
+                    $this.n('resultsDiv').css('width', !isNaN(vwidth) ? vwidth + 'px' : vwidth);
                     if ( $this.o.resultsSnapTo == 'right' ) {
-                        adjust = $this.n.resultsDiv.outerWidth() - $this.n.search.outerWidth();
+                        adjust = $this.n('resultsDiv').outerWidth() - $this.n('search').outerWidth();
                     } else if (( $this.o.resultsSnapTo == 'center' )) {
-                        adjust = Math.floor( ($this.n.resultsDiv.outerWidth() - parseInt($this.n.search.outerWidth())) / 2 );
+                        adjust = Math.floor( ($this.n('resultsDiv').outerWidth() - parseInt($this.n('search').outerWidth())) / 2 );
                     }
 
-                    $this.n.resultsDiv.css({
-                        top: (_rposition.top + $this.n.search.outerHeight(true) - bodyTop) + 'px',
-                        left: (_rposition.left - adjust) + 'px'
+                    $this.n('resultsDiv').css({
+                        top: (_rposition.top + $this.n('search').outerHeight(true) - bodyTop) + 'px',
+                        left: (_rposition.left - adjust - bodyLeft) + 'px'
                     });
                 }
             }
@@ -2801,25 +2950,52 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
 
         fixSettingsPosition: function(ignoreVisibility) {
             ignoreVisibility = typeof ignoreVisibility == 'undefined' ? false : ignoreVisibility;
-            let $this = this;
+            let $this = this,
+                $body = $('body'),
+                bodyTop = 0,
+                settPos = $this.n('searchsettings').css('position');
 
-            if ( ( ignoreVisibility == true || $this.n.prosettings.data('opened') != 0 ) && $this.o.blocking != true ) {
-                let $n, sPosition, top, left, bodyTop = 0, settPos = $this.n.searchsettings.css('position');
+            if ( $._fn.bodyTransformY() != 0 || $body.css("position") != "static" ) {
+                bodyTop = $body.offset().top;
+            }
+
+            /**
+             * When CSS transform is present, then Fixed element are no longer fixed
+             * even if the CSS declaration says. It is better to change them to absolute then.
+             */
+            if ( $._fn.bodyTransformY() != 0 && settPos == 'fixed' ) {
+                settPos = 'absolute';
+                $this.n('searchsettings').css('position', 'absolute');
+            }
+
+            // If still fixed, no need to remove the body position
+            if ( settPos == 'fixed' ) {
+                bodyTop = 0;
+            }
+
+            if ( ignoreVisibility == true || $this.n('prosettings').data('opened') != 0 ) {
+                let $n, sPosition, top, left,
+                    bodyLeft = 0;
+
+                if ( $._fn.bodyTransformX() != 0 || $body.css("position") != "static" ) {
+                    bodyLeft = $body.offset().left;
+                }
                 $this.fixSettingsWidth();
 
-                if ( $this.n.prosettings.css('display') != 'none' ) {
-                    $n = $this.n.prosettings;
+                if ( $this.n('prosettings').css('display') != 'none' ) {
+                    $n = $this.n('prosettings');
                 } else {
-                    $n = $this.n.promagnifier;
+                    $n = $this.n('promagnifier');
                 }
 
                 sPosition = $n.offset();
 
                 top = (sPosition.top + $n.height() - 2 - bodyTop) + 'px';
                 left = ($this.o.settingsimagepos == 'left' ?
-                    sPosition.left : (sPosition.left + $n.width() - $this.n.searchsettings.width()) ) + 'px';
+                    sPosition.left : (sPosition.left + $n.width() - $this.n('searchsettings').width()) );
+                left = left - bodyLeft + 'px';
 
-                $this.n.searchsettings.css({
+                $this.n('searchsettings').css({
                     display: "block",
                     top: top,
                     left: left
@@ -2835,8 +3011,8 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
             let $this = this;
             if (
                 $this.o.detectVisibility == 1 &&
-                !$this.n.search.hasClass('hiddend') &&
-                ($this.n.search.is(':hidden') || !$this.n.search.is(':visible'))
+                !$this.n('search').hasClass('hiddend') &&
+                ($this.n('search').is(':hidden') || !$this.n('search').is(':visible'))
             ) {
                 $this.hideSettings?.();
                 $this.hideResults();
@@ -2852,16 +3028,16 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
         initAutocompleteEvent: function () {
             let $this = this;
             if ( $this.o.autocomplete.enabled == 1 ) {
-                $this.n.text.on('keyup', function (e) {
+                $this.n('text').on('keyup', function (e) {
                     $this.keycode = e.keyCode || e.which;
                     $this.ktype = e.type;
                     let thekey = 39;
                     // Lets change the keykode if the direction is rtl
                     if ($('body').hasClass('rtl'))
                         thekey = 37;
-                    if ($this.keycode == thekey && $this.n.textAutocomplete.val() != "") {
+                    if ($this.keycode == thekey && $this.n('textAutocomplete').val() != "") {
                         e.preventDefault();
-                        $this.n.text.val($this.n.textAutocomplete.val());
+                        $this.n('text').val($this.n('textAutocomplete').val());
                         if ($this.post != null) $this.post.abort();
                         $this.search();
                     } else {
@@ -2869,7 +3045,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                         $this.autocompleteGoogleOnly();
                     }
                 });
-                $this.n.text.on('keyup mouseup input blur select', function(){
+                $this.n('text').on('keyup mouseup input blur select', function(){
                    $this.fixAutocompleteScrollLeft();
                 });
             }
@@ -2882,8 +3058,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
     let functions = {
         initMagnifierEvents: function() {
             let $this = this, t;
-            $this.n.promagnifier.on('click', function (e) {
-                let compact = $this.n.search.attr('asl-compact')  || 'closed';
+            $this.n('promagnifier').on('click', function (e) {
                 $this.keycode = e.keyCode || e.which;
                 $this.ktype = e.type;
 
@@ -2892,7 +3067,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                 // If redirection is set to the results page, or custom URL
                 // noinspection JSUnresolvedVariable
                 if (
-                    $this.n.text.val().length >= $this.o.charcount &&
+                    $this.n('text').val().length >= $this.o.charcount &&
                     $this.o.redirectOnClick == 1 &&
                     $this.o.trigger.click != 'first_result'
                 ) {
@@ -2907,12 +3082,12 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
 
                 $this.searchAbort();
                 clearTimeout($this.timeouts.search);
-                $this.n.proloading.css('display', 'none');
+                $this.n('proloading').css('display', 'none');
 
                 $this.timeouts.search = setTimeout(function () {
                     // If the user types and deletes, while the last results are open
                     if (
-                        ($('form', $this.n.searchsettings).serialize() + $this.n.text.val().trim()) != $this.lastSuccesfulSearch ||
+                        ($('form', $this.n('searchsettings')).serialize() + $this.n('text').val().trim()) != $this.lastSuccesfulSearch ||
                         (!$this.resultsOpened && !$this.usingLiveLoader)
                     ) {
                         $this.search();
@@ -2920,7 +3095,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                         if ( $this.isRedirectToFirstResult() )
                             $this.doRedirectToFirstResult();
                         else
-                            $this.n.proclose.css('display', 'block');
+                            $this.n('proclose').css('display', 'block');
                     }
                 }, $this.o.trigger.delay);
             });
@@ -2932,9 +3107,9 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
     let functions = {
         initFacetEvents: function() {
             let $this = this;
-            $('input[type=checkbox]', $this.n.searchsettings).on('asl_chbx_change', function(e){
+            $('input[type=checkbox]', $this.n('searchsettings')).on('asl_chbx_change', function(e){
                 $this.ktype = e.type;
-                $this.n.searchsettings.find('input[name=filters_changed]').val(1);
+                $this.n('searchsettings').find('input[name=filters_changed]').val(1);
                 $this.gaEvent?.('facet_change', {
                     'option_label': $(this).closest('fieldset').find('legend').text(),
                     'option_value': $(this).closest('.asl_option').find('.asl_option_label').text() + ($(this).prop('checked') ? '(checked)' : '(unchecked)')
@@ -2950,19 +3125,28 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
     let helpers = window.WPD.ajaxsearchlite.helpers;
     let functions = {
         initInputEvents: function() {
-            this._initFocusInput();
-            if ( this.o.trigger.type ) {
-                this._initSearchInput();
-            }
-            this._initEnterEvent();
-            this._initFormEvent();
+            let $this = this, initialized = false;
+            let initTriggers = function() {
+                $this.n('text').off('mousedown touchstart keydown', initTriggers);
+                if ( !initialized ) {
+                    $this._initFocusInput();
+                    if ( $this.o.trigger.type ) {
+                        $this._initSearchInput();
+                    }
+                    $this._initEnterEvent();
+                    $this._initFormEvent();
+                    $this.initAutocompleteEvent?.();
+                    initialized = true;
+                }
+            };
+            $this.n('text').on('mousedown touchstart keydown', initTriggers, {passive: true});
         },
 
         _initFocusInput: function() {
             let $this = this;
 
             // Some kind of crazy rev-slider fix
-            $this.n.text.on('click', function(e){
+            $this.n('text').on('click', function(e){
                 /**
                  * In some menus the input is wrapped in an <a> tag, which has an event listener attached.
                  * When clicked, the input is blurred. This prevents that.
@@ -2975,7 +3159,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
 
                 // Show the results if the query does not change
                 if (
-                    ($('form', $this.n.searchsettings).serialize() + $this.n.text.val().trim()) == $this.lastSuccesfulSearch
+                    ($('form', $this.n('searchsettings')).serialize() + $this.n('text').val().trim()) == $this.lastSuccesfulSearch
                 ) {
                     if ( !$this.resultsOpened && !$this.usingLiveLoader ) {
                         $this._no_animations = true;
@@ -2985,14 +3169,14 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                     return false;
                 }
             });
-            $this.n.text.on('focus input', function(e){
+            $this.n('text').on('focus input', function(e){
                 if ( $this.searching ) {
                     return;
                 }
                 if ( $(this).val() != '' ) {
-                    $this.n.proclose.css('display', 'block');
+                    $this.n('proclose').css('display', 'block');
                 } else {
-                    $this.n.proclose.css({
+                    $this.n('proclose').css({
                         display: "none"
                     });
                 }
@@ -3001,23 +3185,25 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
 
         _initSearchInput: function() {
             let $this = this,
-                previousInputValue = $this.n.text.val();
+                previousInputValue = $this.n('text').val();
 
-            $this.n.text.on('input', function(e){
+            $this.n('text').on('input', function(e){
                 $this.keycode =  e.keyCode || e.which;
                 $this.ktype = e.type;
                 if ( helpers.detectIE() ) {
-                    if ( previousInputValue == $this.n.text.val() ) {
+                    if ( previousInputValue == $this.n('text').val() ) {
                         return false;
                     } else {
-                        previousInputValue = $this.n.text.val();
+                        previousInputValue = $this.n('text').val();
                     }
                 }
 
+                $this.updateHref();
+
                 // Is the character count sufficient?
                 // noinspection JSUnresolvedVariable
-                if ( $this.n.text.val().length < $this.o.charcount ) {
-                    $this.n.proloading.css('display', 'none');
+                if ( $this.n('text').val().length < $this.o.charcount ) {
+                    $this.n('proloading').css('display', 'none');
                     if ($this.o.blocking == false) {
                         $this.hideSettings?.();
                     }
@@ -3029,12 +3215,12 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
 
                 $this.searchAbort();
                 clearTimeout($this.timeouts.search);
-                $this.n.proloading.css('display', 'none');
+                $this.n('proloading').css('display', 'none');
 
                 $this.timeouts.search = setTimeout(function () {
                     // If the user types and deletes, while the last results are open
                     if (
-                        ($('form', $this.n.searchsettings).serialize() + $this.n.text.val().trim()) != $this.lastSuccesfulSearch ||
+                        ($('form', $this.n('searchsettings')).serialize() + $this.n('text').val().trim()) != $this.lastSuccesfulSearch ||
                         (!$this.resultsOpened && !$this.usingLiveLoader)
                     ) {
                         $this.search();
@@ -3042,7 +3228,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                         if ( $this.isRedirectToFirstResult() )
                             $this.doRedirectToFirstResult();
                         else
-                            $this.n.proclose.css('display', 'block');
+                            $this.n('proclose').css('display', 'block');
                     }
                 }, $this.o.trigger.delay);
             });
@@ -3052,7 +3238,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
             let $this = this,
                 rt, enterRecentlyPressed = false;
             // The return event has to be dealt with on a keyup event, as it does not trigger the input event
-            $this.n.text.on('keyup', function(e) {
+            $this.n('text').on('keyup', function(e) {
                 $this.keycode =  e.keyCode || e.which;
                 $this.ktype = e.type;
 
@@ -3071,7 +3257,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
 
                 let isInput = $(this).hasClass("orig");
                 // noinspection JSUnresolvedVariable
-                if ( $this.n.text.val().length >= $this.o.charcount && isInput && $this.keycode == 13 ) {
+                if ( $this.n('text').val().length >= $this.o.charcount && isInput && $this.keycode == 13 ) {
                     $this.gaEvent?.('return');
                     if ( $this.o.redirectOnEnter == 1 ) {
                         if ($this.o.trigger.return != 'first_result') {
@@ -3081,7 +3267,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                         }
                     } else if ( $this.o.trigger.return == 'ajax_search' ) {
                         if (
-                            ($('form', $this.n.searchsettings).serialize() + $this.n.text.val().trim()) != $this.lastSuccesfulSearch ||
+                            ($('form', $this.n('searchsettings')).serialize() + $this.n('text').val().trim()) != $this.lastSuccesfulSearch ||
                             (!$this.resultsOpened && !$this.usingLiveLoader)
                         ) {
                             $this.search();
@@ -3095,14 +3281,14 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
         _initFormEvent: function(){
             let $this = this;
             // Handle the submit/mobile search button event
-            $($this.n.text.closest('form').get(0)).on('submit', function (e, args) {
+            $($this.n('text').closest('form').get(0)).on('submit', function (e, args) {
                 e.preventDefault();
                 // Mobile keyboard search icon and search button
                 if ( helpers.isMobile() ) {
                     if ( $this.o.redirectOnEnter ) {
                         let event = new Event("keyup");
                         event.keyCode = event.which = 13;
-                        this.n.text.get(0).dispatchEvent(event);
+                        this.n('text').get(0).dispatchEvent(event);
                     } else {
                         $this.search();
                         document.activeElement.blur();
@@ -3111,6 +3297,68 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                     $this.search();
                 }
             });
+        }
+    }
+    $.fn.extend(window.WPD.ajaxsearchlite.plugin, functions);
+})(WPD.dom);(function($){
+    "use strict";
+    let functions = {
+        initNavigationEvents: function () {
+            let $this = this;
+
+            let handler = function (e) {
+                let keycode =  e.keyCode || e.which;
+                // noinspection JSUnresolvedVariable
+                if (
+                    $('.item', $this.n('resultsDiv')).length > 0 && $this.n('resultsDiv').css('display') != 'none' &&
+                    $this.o.resultstype == "vertical"
+                ) {
+                    if ( keycode == 40 || keycode == 38 ) {
+                        let $hovered = $this.n('resultsDiv').find('.item.hovered');
+                        $this.n('text').trigger('blur');
+                        if ( $hovered.length == 0 ) {
+                            $this.n('resultsDiv').find('.item').first().addClass('hovered');
+                        } else {
+                            if (keycode == 40) {
+                                if ( $hovered.next('.item').length == 0 ) {
+                                    $this.n('resultsDiv').find('.item').removeClass('hovered').first().addClass('hovered');
+                                } else {
+                                    $hovered.removeClass('hovered').next('.item').addClass('hovered');
+                                }
+                            }
+                            if (keycode == 38) {
+                                if ( $hovered.prev('.item').length == 0 ) {
+                                    $this.n('resultsDiv').find('.item').removeClass('hovered').last().addClass('hovered');
+                                } else {
+                                    $hovered.removeClass('hovered').prev('.item').addClass('hovered');
+                                }
+                            }
+                        }
+                        e.stopPropagation();
+                        e.preventDefault();
+                        if ( !$this.n('resultsDiv').find('.resdrg .item.hovered').inViewPort(50, $this.n('resultsDiv').get(0)) ) {
+                            let n = $this.n('resultsDiv').find('.resdrg .item.hovered').get(0);
+                            if ( n != null && typeof n.scrollIntoView != "undefined" ) {
+                                n.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+                            }
+                        }
+                    }
+
+                    // Trigger click on return key
+                    if ( keycode == 13 && $('.item.hovered', $this.n('resultsDiv')).length > 0 ) {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        $('.item.hovered a.asl_res_url', $this.n('resultsDiv')).get(0).click();
+                    }
+
+                }
+            };
+            $this.documentEventHandlers.push({
+                'node': document,
+                'event': 'keydown',
+                'handler': handler
+            });
+            $(document).on('keydown', handler);
         }
     }
     $.fn.extend(window.WPD.ajaxsearchlite.plugin, functions);
@@ -3127,22 +3375,22 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                  * Memorize the scroll top when the input is focused on IOS
                  * as fixed elements scroll freely, resulting in incorrect scroll value
                  */
-                $this.n.text.on('touchstart', function () {
+                $this.n('text').on('touchstart', function () {
                     $this.savedScrollTop = window.scrollY;
-                    $this.savedContainerTop = $this.n.search.offset().top;
+                    $this.savedContainerTop = $this.n('search').offset().top;
                 });
             }
 
-            $this.n.proclose.on($this.clickTouchend, function (e) {
+            $this.n('proclose').on($this.clickTouchend, function (e) {
                 //if ($this.resultsOpened == false) return;
                 e.preventDefault();
                 e.stopImmediatePropagation();
-                $this.n.text.val("");
-                $this.n.textAutocomplete.val("");
+                $this.n('text').val("");
+                $this.n('textAutocomplete').val("");
                 $this.hideResults();
-                $this.n.text.trigger('focus');
+                $this.n('text').trigger('focus');
 
-                $this.n.proloading.css('display', 'none');
+                $this.n('proloading').css('display', 'none');
                 $this.hideLoader();
                 $this.searchAbort();
 
@@ -3154,7 +3402,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                     $this.liveLoad($this.o.resPage.selector, $this.getRedirectURL());
                 }
 
-                $this.n.text.get(0).focus();
+                $this.n('text').get(0).focus();
             });
 
             if ( helpers.isMobile() ) {
@@ -3203,8 +3451,8 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                         let $input = $(_this).find('input.orig');
                         $input = $input.length == 0 ? $(_this).next().find('input.orig') : $input;
                         $input = $input.length == 0 ? $(_this).parent().find('input.orig') : $input;
-                        $input = $input.length == 0 ? $this.n.text : $input;
-                        if ( $this.n.search.is(':visible') ) {
+                        $input = $input.length == 0 ? $this.n('text') : $input;
+                        if ( $this.n('search').inViewPort() ) {
                             $input.get(0).focus();
                         }
                     }, 300);
@@ -3213,9 +3461,9 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
 
             // Prevent zoom on IOS
             if ( helpers.detectIOS() && helpers.isMobile() && helpers.isTouchDevice() ) {
-                if ( parseInt($this.n.text.css('font-size')) < 16 ) {
-                    $this.n.text.data('fontSize', $this.n.text.css('font-size')).css('font-size', '16px');
-                    $this.n.textAutocomplete.css('font-size', '16px');
+                if ( parseInt($this.n('text').css('font-size')) < 16 ) {
+                    $this.n('text').data('fontSize', $this.n('text').css('font-size')).css('font-size', '16px');
+                    $this.n('textAutocomplete').css('font-size', '16px');
                     $('body').append('<style>#ajaxsearchlite'+$this.o.rid+' input.orig::-webkit-input-placeholder{font-size: 16px !important;}</style>');
                 }
             }
@@ -3227,7 +3475,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
             $this.fixSettingsPosition();
             $this.fixResultsPosition();
 
-            if ( $this.o.resultstype == "isotopic" && $this.n.resultsDiv.css('visibility') == 'visible' ) {
+            if ( $this.o.resultstype == "isotopic" && $this.n('resultsDiv').css('visibility') == 'visible' ) {
                 $this.calculateIsotopeRows();
                 $this.showPagination(true);
                 $this.removeAnimation();
@@ -3240,7 +3488,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
             $this.fixSettingsPosition();
             $this.fixResultsPosition();
 
-            if ( $this.o.resultstype == "isotopic" && $this.n.resultsDiv.css('visibility') == 'visible' ) {
+            if ( $this.o.resultstype == "isotopic" && $this.n('resultsDiv').css('visibility') == 'visible' ) {
                 $this.calculateIsotopeRows();
                 $this.showPagination(true);
                 $this.removeAnimation();
@@ -3258,86 +3506,21 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
         initTryThisEvents: function() {
             let $this = this;
             // Try these search button events
-            $this.n.trythis.find('a').on('click touchend', function(e){
-                e.preventDefault();
-                e.stopImmediatePropagation();
+            if ( $this.n('trythis').find('a').length > 0 ) {
+                $this.n('trythis').find('a').on('click touchend', function (e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
 
-                document.activeElement.blur();
-                $this.n.textAutocomplete.val('');
-                $this.n.text.val($(this).html());
-                $this.gaEvent?.('try_this');
-                setTimeout(function(){
-                    $this.n.text.trigger('input');
-                }, 50);
-            });
-        },
-
-        initPrevState: function() {
-            let $this = this;
-
-            // Browser back button check first, only on first init iteration
-            if ( _static.firstIteration && _static.prevState == null ) {
-                _static.prevState = localStorage.getItem('asl-' + WPD.Base64.encode(location.href));
-                if ( _static.prevState != null ) {
-                    _static.prevState = JSON.parse(_static.prevState);
-                    _static.prevState.settings = WPD.Base64.decode(_static.prevState.settings);
-                }
+                    document.activeElement.blur();
+                    $this.n('textAutocomplete').val('');
+                    $this.n('text').val($(this).html());
+                    $this.gaEvent?.('try_this');
+                    $this.searchWithCheck(80);
+                });
+                $this.n('trythis').css({
+                    visibility: "visible"
+                });
             }
-            if ( _static.prevState != null && typeof _static.prevState.id != 'undefined' ) {
-                if ( _static.prevState.trigger && _static.prevState.id == $this.o.id && _static.prevState.instance == $this.o.iid ) {
-                    if (_static.prevState.phrase != '') {
-                        $this.triggerPrevState = true;
-                        $this.n.text.val(_static.prevState.phrase);
-                    }
-                    if ( helpers.formData($('form', $this.n.searchsettings)) != _static.prevState.settings ) {
-                        $this.triggerPrevState = true;
-                        $this.settingsChanged = true;
-                        helpers.formData( $('form', $this.n.searchsettings), _static.prevState.settings );
-                    }
-                    if ( _static.prevState.settingsOriginal !== null ) {
-                        $this.originalFormData = WPD.Base64.decode(_static.prevState.settingsOriginal);
-                        $this.setFilterStateInput(0);
-                    }
-                }
-                // Scroll to the last clicked result on results block mode
-                if ( $this.o.resultsposition == 'block' ) {
-                    let run = true, handler = function(){
-                        if ( run ) {
-                            run = false;
-                            setTimeout(function(){
-                                let scrollTo = $(_static.prevState.scrollTo).length > 0 ? $(_static.prevState.scrollTo).offset().top : $this.n.resultsDiv.find('.item').last().offset().top;
-                                window.scrollTo({top: scrollTo, behavior:"instant"});
-                            }, 500);
-                        }
-                    };
-                    $this.n.search.on('asl_results_show', handler);
-                }
-            }
-
-            // Reset storage
-            localStorage.removeItem('asl-' + WPD.Base64.encode(location.href));
-
-            let handler = function() {
-                let phrase = $this.n.text.val();
-                let stateObj = {
-                    'id': $this.o.id,
-                    'trigger': phrase != '' || $this.settingsChanged,
-                    'instance': $this.o.iid,
-                    'phrase': phrase,
-                    'settingsOriginal': typeof $this.originalFormData === 'undefined' ? null :  WPD.Base64.encode( $this.originalFormData ),
-                    'settings': WPD.Base64.encode( helpers.formData($('form', $this.n.searchsettings)) )
-                };
-                localStorage.setItem('asl-' + WPD.Base64.encode(location.href), JSON.stringify(stateObj));
-            };
-            // Set the event
-            $('.asl_es_' + $this.o.id).on('click', 'a', handler);
-            $this.n.resultsDiv.on('click', '.results .item', handler);
-            $this.documentEventHandlers.push({
-                'node': document.body,
-                'event': 'asl_memorize_state_' + $this.o.id,
-                'handler': handler
-            });
-            $('body').on('asl_memorize_state_' + $this.o.id, handler);
         }
     }
     $.fn.extend(window.WPD.ajaxsearchlite.plugin, functions);
@@ -3347,21 +3530,15 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
         initResultsEvents: function() {
             let $this = this;
 
-            $this.n.resultsDiv.css({
+            $this.n('resultsDiv').css({
                 opacity: "0"
             });
+
             let handler = function (e) {
                 let keycode =  e.keyCode || e.which,
                     ktype = e.type;
 
                 if ( $(e.target).closest('.asl_w').length == 0 ) {
-                    if (
-                        $this.o.blocking == false &&
-                        !$this.dragging
-                    ) {
-                        $this.hideSettings?.();
-                    }
-
                     $this.hideOnInvisibleBox();
 
                     // If not right click
@@ -3383,32 +3560,36 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                 'handler': handler
             });
             $(document).on($this.clickTouchend, handler);
+
+            // GTAG on results click
+            $this.n('resultsDiv').on('click', '.results .item', function() {
+                $this.gaEvent?.('result_click', {
+                    'result_title': $(this).find('a.asl_res_url').text(),
+                    'result_url': $(this).find('a.asl_res_url').attr('href')
+                });
+
+                // Results highlight on results page
+                // noinspection JSUnresolvedVariable
+                if ( $this.o.singleHighlight == 1 ) {
+                    localStorage.removeItem('asl_phrase_highlight');
+                    if (  $this.n('text').val().replace(/["']/g, '')  != '' ) {
+                        localStorage.setItem('asl_phrase_highlight', JSON.stringify({
+                            'phrase': $this.n('text').val().replace(/["']/g, '')
+                        }));
+                    }
+                }
+            });
         }
     }
     $.fn.extend(window.WPD.ajaxsearchlite.plugin, functions);
 })(WPD.dom);(function($){
     "use strict";
+    let helpers = window.WPD.ajaxsearchlite.helpers;
     let functions = {
-        initSettingsEvents: function() {
+        initSettingsSwitchEvents: function() {
             let $this = this;
-
-            // Note if the settings have changed
-            $this.n.searchsettings.on('click', function(){
-                $this.settingsChanged = true;
-            });
-
-            $this.n.searchsettings.on($this.clickTouchend, function (e) {
-                /**
-                 * Stop propagation on settings clicks, except the noUiSlider handler event.
-                 * If noUiSlider event propagation is stopped, then the: set, end, change events does not fire properly.
-                 */
-                if ( typeof e.target != 'undefined' && !$(e.target).hasClass('noUi-handle') ) {
-                    e.stopImmediatePropagation();
-                }
-            });
-
-            $this.n.prosettings.on("click", function () {
-                if ($this.n.prosettings.data('opened') == 0) {
+            $this.n('prosettings').on("click", function () {
+                if ($this.n('prosettings').data('opened') == 0) {
                     $this.showSettings();
                 } else {
                     $this.hideSettings();
@@ -3418,14 +3599,112 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
             if ($this.o.settingsVisible == 1) {
                 $this.showSettings(false);
             }
+        },
+
+        initSettingsEvents: function() {
+            let $this = this, t;
+
+            let formDataHandler = function(){
+                // Let everything initialize (datepicker etc..), then get the form data
+                if ( typeof $this.originalFormData === 'undefined' ) {
+                    $this.originalFormData = helpers.formData($('form', $this.n('searchsettings')));
+                }
+                $this.n('searchsettings').off('mousedown touchstart mouseover', formDataHandler);
+            };
+            $this.n('searchsettings').on('mousedown touchstart mouseover', formDataHandler);
+
+            let handler = function (e) {
+                if ( $(e.target).closest('.asl_w').length == 0 ) {
+                    if ( !$this.dragging ) {
+                        $this.hideSettings?.();
+                    }
+                }
+            };
+            $this.documentEventHandlers.push({
+                'node': document,
+                'event': $this.clickTouchend,
+                'handler': handler
+            });
+            $(document).on($this.clickTouchend, handler);
+
+            // Note if the settings have changed
+            $this.n('searchsettings').on('click', function(){
+                $this.settingsChanged = true;
+            });
+
+            $this.n('searchsettings').on($this.clickTouchend, function (e) {
+                $this.updateHref();
+
+                /**
+                 * Stop propagation on settings clicks, except the noUiSlider handler event.
+                 * If noUiSlider event propagation is stopped, then the: set, end, change events does not fire properly.
+                 */
+                if ( typeof e.target != 'undefined' && !$(e.target).hasClass('noUi-handle') ) {
+                    e.stopImmediatePropagation();
+                } else {
+                    // For noUI case, still cancel if this is a click (desktop device)
+                    if ( e.type == 'click' )
+                        e.stopImmediatePropagation();
+                }
+            });
 
             // Category level automatic checking and hiding
-            $('.asl_option_cat input[type="checkbox"]', $this.n.searchsettings).on('asl_chbx_change', function(){
+            $('.asl_option_cat input[type="checkbox"]', $this.n('searchsettings')).on('asl_chbx_change', function(){
                 $this.settingsCheckboxToggle( $(this).closest('.asl_option_cat') );
             });
             // Init the hide settings
-            $('.asl_option_cat', $this.n.searchsettings).forEach(function(el){
+            $('.asl_option_cat', $this.n('searchsettings')).forEach(function(el){
                 $this.settingsCheckboxToggle( $(el), false );
+            });
+
+            // Emulate click on checkbox on the whole option
+            //$('div.asl_option', $this.n('searchsettings')).on('mouseup touchend', function(e){
+            $('div.asl_option', $this.n('searchsettings')).on($this.mouseupTouchend, function(e){
+                e.preventDefault(); // Stop firing twice on mouseup and touchend on mobile devices
+                e.stopImmediatePropagation();
+
+                if ( $this.dragging ) {
+                    return false;
+                }
+                $(this).find('input[type="checkbox"]').prop("checked", !$(this).find('input[type="checkbox"]').prop("checked"));
+                // Trigger a custom change event, for max compatibility
+                // .. the original change is buggy for some installations.
+                clearTimeout(t);
+                let _this = this;
+                t = setTimeout(function() {
+                    $(_this).find('input[type="checkbox"]').trigger('asl_chbx_change');
+                }, 50);
+
+            });
+
+            $('div.asl_option label', $this.n('searchsettings')).on('click', function(e){
+                e.preventDefault(); // Let the previous handler handle the events, disable this
+            });
+
+            // Change the state of the choose any option if all of them are de-selected
+            $('fieldset.asl_checkboxes_filter_box', $this.n('searchsettings')).forEach(function(){
+                let all_unchecked = true;
+                $(this).find('.asl_option:not(.asl_option_selectall) input[type="checkbox"]').forEach(function(){
+                    if ($(this).prop('checked') == true) {
+                        all_unchecked = false;
+                        return false;
+                    }
+                });
+                if ( all_unchecked ) {
+                    $(this).find('.asl_option_selectall input[type="checkbox"]').prop('checked', false).removeAttr('data-origvalue');
+                }
+            });
+
+            // Mark last visible options
+            $('fieldset' ,$this.n('searchsettings')).forEach(function(){
+                $(this).find('.asl_option:not(.hiddend)').last().addClass("asl-o-last");
+            });
+
+            // Select all checkboxes
+            $('.asl_option_cat input[type="checkbox"], .asl_option_cff input[type="checkbox"]', $this.n('searchsettings')).on('asl_chbx_change', function(){
+                let className = $(this).data("targetclass");
+                if ( typeof className == 'string' && className != '')
+                    $("input." + className, $this.n('searchsettings')).prop("checked", $(this).prop("checked"));
             });
         }
     }
@@ -3446,87 +3725,45 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
     $.fn.extend(window.WPD.ajaxsearchlite.plugin, functions);
 })(WPD.dom);(function($){
     "use strict";
+    let functions = {
+        initAutop: function () {
+            let $this = this;
+
+            if ( $this.o.autop.state == "disabled" ) return false;
+
+            let location = window.location.href;
+            // Correct previous query arguments (in case of paginated results)
+            let stop = location.indexOf('asl_ls=') > -1 || location.indexOf('asl_ls&') > -1;
+
+            if ( stop ) {
+                return false;
+            }
+            // noinspection JSUnresolvedVariable
+            let count = $this.o.autop.count;
+            window.WPD.intervalUntilExecute(function(){
+                    $this.isAutoP = true;
+                    if ($this.o.autop.state == "phrase") {
+                        if ( !$this.o.is_results_page ) {
+                            $this.n('text').val($this.o.autop.phrase);
+                        }
+                        $this.search(count);
+                    } else if ($this.o.autop.state == "latest") {
+                        $this.search(count, 1);
+                    } else {
+                        $this.search(count, 2);
+                    }
+                },
+                function() { return (!window.ASL.css_async || typeof window.ASL.css_loaded != 'undefined') }
+            );
+        }
+    }
+    $.fn.extend(window.WPD.ajaxsearchlite.plugin, functions);
+})(WPD.dom);(function($){
+    "use strict";
     let helpers = window.WPD.ajaxsearchlite.helpers;
     let functions = {
         initEtc: function() {
-            let $this = this,
-                t = null;
-
-            // Make the try-these keywords visible, this makes sure that the styling occurs before visibility
-            $this.n.trythis.css({
-                visibility: "visible"
-            });
-
-            // Emulate click on checkbox on the whole option
-            //$('div.asl_option', $this.n.searchsettings).on('mouseup touchend', function(e){
-            $('div.asl_option', $this.n.searchsettings).on($this.mouseupTouchend, function(e){
-                e.preventDefault(); // Stop firing twice on mouseup and touchend on mobile devices
-                e.stopImmediatePropagation();
-
-                if ( $this.dragging ) {
-                    return false;
-                }
-                $(this).find('input[type="checkbox"]').prop("checked", !$(this).find('input[type="checkbox"]').prop("checked"));
-                // Trigger a custom change event, for max compatibility
-                // .. the original change is buggy for some installations.
-                clearTimeout(t);
-                let _this = this;
-                t = setTimeout(function() {
-                    $(_this).find('input[type="checkbox"]').trigger('asl_chbx_change');
-                }, 50);
-
-            });
-
-            $('div.asl_option label', $this.n.searchsettings).on('click', function(e){
-                e.preventDefault(); // Let the previous handler handle the events, disable this
-            });
-
-            // Change the state of the choose any option if all of them are de-selected
-            $('fieldset.asl_checkboxes_filter_box', $this.n.searchsettings).forEach(function(){
-                let all_unchecked = true;
-                $(this).find('.asl_option:not(.asl_option_selectall) input[type="checkbox"]').forEach(function(){
-                    if ($(this).prop('checked') == true) {
-                        all_unchecked = false;
-                        return false;
-                    }
-                });
-                if ( all_unchecked ) {
-                    $(this).find('.asl_option_selectall input[type="checkbox"]').prop('checked', false).removeAttr('data-origvalue');
-                }
-            });
-
-            // Mark last visible options
-            $('fieldset' ,$this.n.searchsettings).forEach(function(){
-                $(this).find('.asl_option:not(.hiddend)').last().addClass("asl-o-last");
-            });
-
-            // Select all checkboxes
-            $('.asl_option_cat input[type="checkbox"], .asl_option_cff input[type="checkbox"]', $this.n.searchsettings).on('asl_chbx_change', function(){
-                let className = $(this).data("targetclass");
-                if ( typeof className == 'string' && className != '')
-                    $("input." + className, $this.n.searchsettings).prop("checked", $(this).prop("checked"));
-            });
-
-            // GTAG on results click
-            $this.n.resultsDiv.on('click', '.results .item', function() {
-                $this.gaEvent?.('result_click', {
-                    'result_title': $(this).find('a.asl_res_url').text(),
-                    'result_url': $(this).find('a.asl_res_url').attr('href')
-                });
-
-                // Results highlight on results page
-                // noinspection JSUnresolvedVariable
-                if ( $this.o.singleHighlight == 1 ) {
-                    localStorage.removeItem('asl_phrase_highlight');
-                    if (  $this.n.text.val().replace(/["']/g, '')  != '' ) {
-                        localStorage.setItem('asl_phrase_highlight', JSON.stringify({
-                            'phrase': $this.n.text.val().replace(/["']/g, '')
-                        }));
-                    }
-                }
-            });
-
-            helpers.Hooks.addFilter('asl/init/etc', $this);
+            helpers.Hooks.addFilter('asl/init/etc', this);
         }
     }
     $.fn.extend(window.WPD.ajaxsearchlite.plugin, functions);
@@ -3547,6 +3784,8 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
             $this.autopStartedTheSearch = false;
             $this.autopData = {};
 
+            $this.settingsInitialized = false;
+            $this.resultsInitialized = false;
             $this.settingsChanged = false;
             $this.resultsOpened = false;
             $this.post = null;
@@ -3554,7 +3793,6 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
             $this.scroll = {};
             $this.savedScrollTop = 0;   // Save the window scroll on IOS devices
             $this.savedContainerTop = 0;
-            $this.is_scroll = typeof asp_SimpleBar != "undefined";
             $this.disableMobileScroll = false;
             /**
              * on IOS touch (iPhone, iPad etc..) the 'click' event does not fire, when not bound to a clickable element
@@ -3596,10 +3834,8 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
             // this.n and this.o available afterwards
             // also, it corrects the clones and fixes the node varialbes
             $this.o = $.fn.extend({}, options);
-            $this.n = {};
-            $this.n.search = $(elem);
-            // Fill up the this.n and correct the cloned notes as well
-            $this.initNodeVariables();
+            $this.nodes = {};
+            $this.nodes.search = $(elem);
 
             // Make parsing the animation settings easier
             if ( helpers.isMobile() ) {
@@ -3607,6 +3843,10 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
             } else {
                 $this.animOptions = $this.o.animations.pc;
             }
+
+            // Fill up the this.n and correct the cloned notes as well
+            $this.initNodeVariables();
+
             /**
              * Default animation opacity. 0 for IN types, 1 for all the other ones. This ensures the fluid
              * animation. Wrong opacity causes flashes.
@@ -3630,34 +3870,14 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                 }
             }
 
-            // A weird way of fixing HTML entity decoding from the parameter
-            $this.o.trigger.redirect_url = helpers.decodeHTMLEntities($this.o.trigger.redirect_url);
-
-            // Reset autocomplete
-            $this.n.textAutocomplete.val('');
-
-            // Browser back button detection and
-            // noinspection JSUnresolvedVariable
-            if (ASL.js_retain_popstate == 1) {
-                $this.initPrevState();
-            }
-
-            // Try detecting a parent fixed position, and change the results and settings position accordingly
-            $this.detectAndFixFixedPositioning();
-
             // Sets $this.dragging to true if the user is dragging on a touch device
             $this.monitorTouchMove();
 
-            if ( typeof $this.initSettingsAnimations !== 'undefined' ) {
-                // Calculates the settings animation attributes
-                $this.initSettingsAnimations();
-            }
-
-            // Calculates the results animation attributes
-            $this.initResultsAnimations();
-
             // Rest of the events
             $this.initEvents();
+
+            // Auto populate
+            $this.initAutop();
 
             // Etc stuff..
             $this.initEtc();
@@ -3665,71 +3885,102 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
             // After the first execution, this stays false
             _static.firstIteration = false;
 
-            // Let everything initialize (datepicker etc..), then get the form data
-            if ( typeof $this.originalFormData === 'undefined' ) {
-                $this.originalFormData = helpers.formData($('form', $this.n.searchsettings));
-            }
-
             // Init complete event trigger
-            $this.n.s.trigger("asl_init_search_bar", [$this.o.id, $this.o.iid], true, true);
+            $this.n('s').trigger("asl_init_search_bar", [$this.o.id, $this.o.iid], true, true);
 
             return this;
+        },
+
+        n: function(k){
+            if ( typeof this.nodes[k] !== 'undefined' ) {
+                return this.nodes[k];
+            } else {
+                switch( k ) {
+                    case 's':
+                        this.nodes[k] = this.nodes.search;
+                        break;
+                    case 'container':
+                        this.nodes[k] = this.nodes.search.closest('.asl_w_container');
+                        break;
+                    case 'searchsettings':
+                        this.nodes[k] = $('.asl_s', this.n('container'));
+                        break;
+                    case 'resultsDiv':
+                        this.nodes[k] = $('.asl_r', this.n('container'));
+                        break;
+                    case 'probox':
+                        this.nodes[k] = $('.probox', this.nodes.search);
+                        break;
+                    case 'proinput':
+                        this.nodes[k] = $('.proinput', this.nodes.search);
+                        break;
+                    case 'text':
+                        this.nodes[k] = $('.proinput input.orig', this.nodes.search);
+                        break;
+                    case 'textAutocomplete':
+                        this.nodes[k] = $('.proinput input.autocomplete', this.nodes.search);
+                        break;
+                    case 'proloading':
+                        this.nodes[k] = $('.proloading', this.nodes.search);
+                        break;
+                    case 'proclose':
+                        this.nodes[k] = $('.proclose', this.nodes.search);
+                        break;
+                    case 'promagnifier':
+                        this.nodes[k] = $('.promagnifier', this.nodes.search);
+                        break;
+                    case 'prosettings':
+                        this.nodes[k] = $('.prosettings', this.nodes.search);
+                        break;
+                    case 'settingsAppend':
+                        this.nodes[k] = $('#wpdreams_asl_settings_' + this.o.id);
+                        break;
+                    case 'resultsAppend':
+                        this.nodes[k] = $('#wpdreams_asl_results_' + this.o.id);
+                        break;
+                    case 'trythis':
+                        this.nodes[k] = $("#asp-try-" + this.o.rid);
+                        break;
+                    case 'hiddenContainer':
+                        this.nodes[k] = $('.asl_hidden_data', this.n('container'));
+                        break;
+                    case 'aspItemOverlay':
+                        this.nodes[k] = $('.asl_item_overlay', this.n('hiddenContainer'));
+                        break;
+                    case 'showmore':
+                        this.nodes[k] = $('.showmore', this.n('resultsDiv'));
+                        break;
+                    case 'items':
+                        this.nodes[k] = $('.item', this.n('resultsDiv')).length > 0 ? $('.item', this.n('resultsDiv')) : $('.photostack-flip', this.n('resultsDiv'));
+                        break;
+                    case 'results':
+                        this.nodes[k] = $('.results', this.n('resultsDiv'));
+                        break;
+                    case 'resdrg':
+                        this.nodes[k] = $('.resdrg', this.n('resultsDiv'));
+                        break;
+                }
+                return this.nodes[k];
+            }
         },
 
         initNodeVariables: function(){
             let $this = this;
 
-            $this.n.s = $this.n.search;
-            $this.n.container = $this.n.search.closest('.asl_w_container');
-            $this.o.id = $this.n.search.data('id');
-            $this.o.iid = $this.n.search.data('instance');
-            $this.o.rid = $this.o.id;
-            $this.o.name = $this.n.search.data('name');
-            $this.n.searchsettings = $('.asl_s', $this.n.container);
-            $this.n.resultsDiv = $('.asl_r', $this.n.container);
-            $this.n.probox = $('.probox', $this.n.search);
-            $this.n.proinput = $('.proinput', $this.n.search);
-            $this.n.text = $('.proinput input.orig', $this.n.search);
-            $this.n.textAutocomplete = $('.proinput input.autocomplete', $this.n.search);
-            $this.n.loading = $('.proinput .loading', $this.n.search);
-            $this.n.proloading = $('.proloading', $this.n.search);
-            $this.n.proclose = $('.proclose', $this.n.search);
-            $this.n.promagnifier = $('.promagnifier', $this.n.search);
-            $this.n.prosettings = $('.prosettings', $this.n.search);
+            $this.o.id = $this.nodes.search.data('id');
+            $this.o.iid = $this.nodes.search.data('instance');
+            $this.o.rid = $this.o.id + "_" + $this.o.iid;
             // Fix any potential clones and adjust the variables
             $this.fixClonedSelf();
-
-            $this.n.settingsAppend = $('#wpdreams_asl_settings_' + $this.o.id);
-            $this.o.blocking = $this.n.searchsettings.hasClass('asl_sb');
-            if ( typeof $this.initSettingsBox !== "undefined" ) {
-                $this.initSettingsBox();
-            }
-            $this.n.trythis = $("#asl-try-" + $this.o.rid);
-            $this.n.resultsAppend = $('#wpdreams_asl_results_' + $this.o.id);
-            $this.initResultsBox();
-
-            $this.n.hiddenContainer = $('.asl_hidden_data', $this.n.container);
-            $this.n.aslItemOverlay = $('.asp_item_overlay', $this.n.hiddenContainer);
-
-            $this.n.showmore = $('.showmore', $this.n.resultsDiv);
-            $this.n.items = $('.item', $this.n.resultsDiv).length > 0 ? $('.item', $this.n.resultsDiv) : $('.photostack-flip', $this.n.resultsDiv);
-            $this.n.results = $('.results', $this.n.resultsDiv);
-            $this.n.resdrg = $('.resdrg', $this.n.resultsDiv);
         },
 
-        initEvents: function () {
-            if ( typeof this.initSettingsEvents !== "undefined" ) {
-                this.initSettingsEvents();
-            }
-            this.initResultsEvents();
-            this.initOtherEvents();
-            this.initTryThisEvents();
 
+        initEvents: function () {
+            this.initSettingsSwitchEvents?.();
+            this.initOtherEvents();
+            //this.initTryThisEvents();
             this.initMagnifierEvents();
             this.initInputEvents();
-
-            this.initAutocompleteEvent?.();
-            this.initFacetEvents?.();
         }
     }
     $.fn.extend(window.WPD.ajaxsearchlite.plugin, functions);
@@ -3737,44 +3988,61 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
     "use strict";
     let helpers = window.WPD.ajaxsearchlite.helpers;
     let functions = {
+        /**
+         * This function should be called on-demand to init the results events and all. Do not call on init, only when needed.
+         */
+        initResults: function() {
+            if ( !this.resultsInitialized ) {
+                this.initResultsBox();
+                this.initResultsEvents();
+                this.initNavigationEvents?.();
+            }
+        },
         initResultsBox: function() {
             let $this = this;
 
+            // Calculates the results animation attributes
+            $this.initResultsAnimations();
+
             if ( helpers.isMobile() && $this.o.mobile.force_res_hover == 1) {
                 $this.o.resultsposition = 'hover';
-                //$('body').append($this.n.resultsDiv.detach());
-                $this.n.resultsDiv = $this.n.resultsDiv.clone();
-                $('body').append($this.n.resultsDiv);
-                $this.n.resultsDiv.css({
+                //$('body').append($thisn('resultsDiv').detach());
+                $this.nodes.resultsDiv = $this.n('resultsDiv').clone();
+                $('body').append($this.nodes.resultsDiv);
+                $this.nodes.resultsDiv.css({
                     'position': 'absolute'
                 });
                 $this.detectAndFixFixedPositioning();
             } else {
                 // Move the results div to the correct position
-                if ($this.o.resultsposition == 'hover' && $this.n.resultsAppend.length <= 0) {
-                    $this.n.resultsDiv = $this.n.resultsDiv.clone();
-                    $('body').append($this.n.resultsDiv);
+                if ($this.o.resultsposition == 'hover' && $this.n('resultsAppend').length <= 0) {
+                    $this.nodes.resultsDiv = $this.n('resultsDiv').clone();
+                    $('body').append($this.n('resultsDiv'));
                 } else  {
                     $this.o.resultsposition = 'block';
-                    $this.n.resultsDiv.css({
+                    $this.n('resultsDiv').css({
                         'position': 'static'
                     });
-                    if ( $this.n.resultsAppend.length > 0  ) {
-                        if ( $this.n.resultsAppend.find('.asl_w').length > 0 ) {
-                            $this.n.resultsDiv = $this.n.resultsAppend.find('.asl_w');
-                            $this.n.showmore = $('.showmore', $this.n.resultsDiv);
-                            $this.n.items = $('.item', $this.n.resultsDiv).length > 0 ? $('.item', $this.n.resultsDiv) : $('.photostack-flip', $this.n.resultsDiv);
-                            $this.n.results = $('.results', $this.n.resultsDiv);
-                            $this.n.resdrg = $('.resdrg', $this.n.resultsDiv);
+                    if ( $this.n('resultsAppend').length > 0  ) {
+                        if ( $this.n('resultsAppend').find('.asl_w').length > 0 ) {
+                            $this.nodes.resultsDiv = $this.n('resultsAppend').find('.asl_w');
                         } else {
-                            $this.n.resultsDiv = $this.n.resultsDiv.clone();
-                            $this.n.resultsAppend.append($this.n.resultsDiv);
+                            $this.nodes.resultsDiv = $this.n('resultsDiv').clone();
+                            $this.nodes.resultsAppend.append($this.n('resultsDiv'));
                         }
                     }
                 }
             }
 
-            $this.n.resultsDiv.get(0).id = $this.n.resultsDiv.get(0).id.replace('__original__', '');
+            $this.nodes.showmore = $('.showmore', $this.n('resultsDiv'));
+            $this.nodes.items = $('.item', $this.n('resultsDiv')).length > 0 ? $('.item', $this.n('resultsDiv')) : $('.photostack-flip', $this.n('resultsDiv'));
+            $this.nodes.results = $('.results', $this.n('resultsDiv'));
+            $this.nodes.resdrg = $('.resdrg', $this.n('resultsDiv'));
+
+            $this.n('resultsDiv').get(0).id = $this.n('resultsDiv').get(0).id.replace('__original__', '');
+            $this.detectAndFixFixedPositioning();
+
+            $this.resultsInitialized = true;
         },
 
         initResultsAnimations: function() {
@@ -3798,7 +4066,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                 "duration": animDur
             };
 
-            $this.n.resultsDiv.css({
+            $this.n('resultsDiv').css({
                 "-webkit-animation-duration": animDur + "ms",
                 "animation-duration": animDur + "ms"
             });
@@ -3809,12 +4077,24 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
     "use strict";
     let helpers = window.WPD.ajaxsearchlite.helpers;
     let functions = {
+        /**
+         * This function should be called on-demand to init the settings. Do not call on init, only when needed.
+         */
+        initSettings: function() {
+            if ( !this.settingsInitialized ) {
+                this.loadASLFonts?.();
+                this.initSettingsBox?.();
+                this.initSettingsEvents?.();
+                this.initFacetEvents?.();
+            }
+        },
+
         initSettingsBox: function() {
             let $this = this;
             let appendSettingsTo = function($el) {
-                let old = $this.n.searchsettings.get(0);
-                $this.n.searchsettings = $this.n.searchsettings.clone();
-                $el.append($this.n.searchsettings);
+                let old = $this.n('searchsettings').get(0);
+                $this.nodes.searchsettings = $this.n('searchsettings').clone();
+                $el.append($this.n('searchsettings'));
 
 
                 $(old).find('*[id]').forEach(function(el){
@@ -3822,15 +4102,21 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                         el.id = '__original__' + el.id;
                     }
                 });
-                $this.n.searchsettings.find('*[id]').forEach(function(el){
+                $this.n('searchsettings').find('*[id]').forEach(function(el){
                     if ( el.id.indexOf('__original__') > -1 ) {
                         el.id =  el.id.replace('__original__', '');
                     }
                 });
             }
 
+            // Calculates the settings animation attributes
+            $this.initSettingsAnimations?.();
+
             appendSettingsTo($('body'));
-            $this.n.searchsettings.get(0).id = $this.n.searchsettings.get(0).id.replace('__original__', '');
+            $this.n('searchsettings').get(0).id = $this.n('searchsettings').get(0).id.replace('__original__', '');
+            $this.detectAndFixFixedPositioning();
+
+            $this.settingsInitialized = true;
         },
         initSettingsAnimations: function() {
             let $this = this;
@@ -3867,7 +4153,7 @@ window.WPD.intervalUntilExecute = function(f, criteria, interval, maxTries) {
                 $this.settAnim.hideClass = "asl_an_fadeOut";
             }
 
-            $this.n.searchsettings.css({
+            $this.n('searchsettings').css({
                 "-webkit-animation-duration": $this.settAnim.duration + "ms",
                 "animation-duration": $this.settAnim.duration + "ms"
             });
@@ -4006,68 +4292,88 @@ window.ASL.api = (function() {
     };
 
     window.ASL.initialized = false;
-    window.ASL.initializeById = function (id, ignoreViewport) {
-        let selector = ".asl_init_data";
-        ignoreViewport = typeof ignoreViewport == 'undefined' ? false : ignoreViewport;
-        if (typeof id !== 'undefined' && typeof id != 'object')
-            selector = "div[id*=asl_init_id_" + id + "]";
-
-        /**
-         * Getting around inline script declarations with this solution.
-         * So these new, invisible divs contains a JSON object with the parameters.
-         * Parse all of them and do the declaration.
-         */
+    window.ASL.initializeSearchByID = function (id) {
+        let instances = ASL.getInstances();
+        if (typeof id !== 'undefined' && typeof id != 'object' ) {
+            if ( typeof instances[id] !== 'undefined' ) {
+                let ni = [];
+                ni[id] = instances[id];
+                instances = ni;
+            } else {
+                return false;
+            }
+        }
         let initialized = 0;
-        $(selector).forEach(function (el) {
+        instances.forEach(function (data, i) {
             // noinspection JSUnusedAssignment
-            let $asl = $(el).closest('.asl_w_container').find('.asl_m');
-            // $asl.length == 0 -> when fixed compact layout mode is enabled
-            if ( $asl.length == 0 || typeof $asl.get(0).hasAsl != 'undefined') {
+            $('.asl_m_' + i).forEach(function(el){
+                let $el = $(el);
+                if ( typeof $el.get(0).hasAsl != 'undefined') {
+                    ++initialized;
+                    return true;
+                }
+                el.hasAsl = true;
                 ++initialized;
-                return true;
-            }
-
-            if (!ignoreViewport && !$asl.inViewPort(-100)) {
-                return true;
-            }
-
-            let jsonData = $(el).data("asldata");
-            if (typeof jsonData === "undefined") return true;   // Do not return false, it breaks the loop!
-
-            jsonData = WPD.Base64.decode(jsonData);
-            if (typeof jsonData === "undefined" || jsonData == "") return true; // Do not return false, it breaks the loop!
-
-            let args = JSON.parse(jsonData);
-            $asl.get(0).hasAsl = true;
-            ++initialized;
-            return $asl.ajaxsearchlite(args);
+                return $el.ajaxsearchlite(data);
+            });
         });
+    }
 
-        if ($(selector).length == initialized) {
-            document.removeEventListener('scroll', ASL.initializeById);
-            document.removeEventListener('resize', ASL.initializeById);
+    window.ASL.getInstances = function() {
+        // noinspection JSUnresolvedVariable
+        if ( typeof window.ASL_INSTANCES !== 'undefined' ) {
+            // noinspection JSUnresolvedVariable
+            return window.ASL_INSTANCES;
+        } else {
+            let instances = [];
+            $('.asl_init_data').forEach(function (el) {
+                if (typeof el.dataset['asldata'] === "undefined") return true;   // Do not return false, it breaks the loop!
+                let data = WPD.Base64.decode(el.dataset['asldata']);
+                if (typeof data === "undefined" || data == "") return true;
+
+                instances[el.dataset['aslId']] = JSON.parse(data);
+            });
+            return instances;
         }
     }
 
-// Call this function if you need to initialize an instance that is printed after an AJAX call
-// Calling without an argument initializes all instances found.
     window.ASL.initialize = function (id) {
-        // this here is either window.ASL or window._ASL
-        let _this = this;
-
         // Some weird ajax loader problem prevention
-        if (typeof _this.version == 'undefined')
+        if (typeof ASL.version == 'undefined')
             return false;
 
-        // noinspection JSUnresolvedVariable
-        if ( ASL.script_async_load ) {
-            document.addEventListener('scroll', ASL.initializeById, {passive: true});
-            document.addEventListener('resize', ASL.initializeById, {passive: true});
-            ASL.initializeById(id);
+        if( !!window.IntersectionObserver ){
+            if ( ASL.script_async_load || ASL.init_only_in_viewport ) {
+                let searches = document.querySelectorAll('.asl_w_container');
+                if ( searches.length ) {
+                    let observer = new IntersectionObserver(function(entries){
+                        entries.forEach(function(entry){
+                            if ( entry.isIntersecting ) {
+                                ASL.initializeSearchByID(entry.target.dataset.id);
+                                observer.unobserve(entry.target);
+                            }
+                        });
+                    });
+                    searches.forEach(function(search){
+                        observer.observe(search);
+                    });
+                }
+            } else {
+                ASL.initializeSearchByID(id);
+            }
         } else {
-            ASL.initializeById(id, true);
+            ASL.initializeSearchByID(id);
         }
 
+        ASL.initializeMutateDetector();
+        ASL.initializeHighlight();
+        ASL.initializeOtherEvents();
+
+        ASL.initialized = true;
+    };
+
+    window.ASL.initializeHighlight = function() {
+        let _this = this;
         if (_this.highlight.enabled) {
             let data = localStorage.getItem('asl_phrase_highlight');
             localStorage.removeItem('asl_phrase_highlight');
@@ -4101,56 +4407,10 @@ window.ASL.api = (function() {
                 });
             }
         }
-
-        _this.initialized = true;
     };
 
-    window.ASL.ready = function () {
-        let _this = this,
-            $body = $('body'),
-            t, tt, ttt, ts;
-
-        /**
-         * This function is triggered right after the script stack is loaded, when using the async loader.
-         * The DOMContentLoaded is already fired, so we need to force the init.
-         */
-        if ( ASL.script_async_load ) {
-            _this.initialize();
-        }
-
-        $(document).on('DOMContentLoaded', function() {
-            _this.initialize();
-        });
-
-        // DOM tree modification detection to re-initialize automatically if enabled
-        // noinspection JSUnresolvedVariable
-        if (typeof ASL.detect_ajax != "undefined" && ASL.detect_ajax == 1) {
-            let observer = new MutationObserver(function() {
-                clearTimeout(t);
-                t = setTimeout(function () {
-                    _this.initialize();
-                }, 500);
-            });
-            function addObserverIfDesiredNodeAvailable() {
-                let db = document.querySelector("body");
-                if( !db ) {
-                    //The node we need does not exist yet.
-                    //Wait 500ms and try again
-                    window.setTimeout(addObserverIfDesiredNodeAvailable,500);
-                    return;
-                }
-                observer.observe(db, {subtree: true, childList: true});
-            }
-            addObserverIfDesiredNodeAvailable();
-        }
-
-        $(window).on('resize', function () {
-            clearTimeout(tt);
-            tt = setTimeout(function () {
-                _this.initializeById();
-            }, 200);
-        });
-
+    window.ASL.initializeOtherEvents = function() {
+        let ttt, ts, $body = $('body'), _this = this;
         // Known slide-out and other type of menus to initialize on click
         ts = '#menu-item-search, .fa-search, .fa, .fas';
         // Avada theme
@@ -4179,7 +4439,7 @@ window.ASL.api = (function() {
         $body.on('click touchend', ts, function () {
             clearTimeout(ttt);
             ttt = setTimeout(function () {
-                _this.initializeById({}, true);
+                _this.initializeSearchByID();
             }, 300);
         });
 
@@ -4187,9 +4447,33 @@ window.ASL.api = (function() {
         if ( typeof jQuery != 'undefined' ) {
             jQuery(document).on('elementor/popup/show', function(){
                 setTimeout(function () {
-                    _this.initializeById({}, true);
+                    _this.initializeSearchByID();
                 }, 10);
             });
+        }
+    };
+
+    window.ASL.initializeMutateDetector = function() {
+        let t;
+        if ( typeof ASL.detect_ajax != "undefined" && ASL.detect_ajax == 1 ) {
+            let o = new MutationObserver(function() {
+                clearTimeout(t);
+                t = setTimeout(function () {
+                    ASL.initializeSearchByID();
+                }, 500);
+            });
+            o.observe(document.querySelector("body"), {subtree: true, childList: true});
+        }
+    };
+
+    window.ASL.ready = function () {
+        let _this = this;
+
+        if (document.readyState === "complete" || document.readyState === "loaded"  || document.readyState === "interactive") {
+            // document is already ready to go
+            _this.initialize();
+        } else {
+            $(document).on('DOMContentLoaded', _this.initialize);
         }
     };
 
@@ -4221,15 +4505,9 @@ window.ASL.api = (function() {
         }
     };
 
-    // noinspection JSUnresolvedVariable
-    if (
-        !window.ASL.css_async ||
-        typeof window.ASL.css_loaded != 'undefined' // CSS loader finished, but this script was not ready yet
-    ) {
-        window.WPD.intervalUntilExecute(window.ASL.init, function() {
-            return typeof window.ASL.version != 'undefined' && $.fn.ajaxsearchlite != 'undefined'
-        });
-    }
+    window.WPD.intervalUntilExecute(window.ASL.init, function() {
+        return typeof window.ASL.version != 'undefined' && $.fn.ajaxsearchlite != 'undefined'
+    });
 };
 // Run on document ready
 (function() {

@@ -5,60 +5,58 @@ namespace CreativeMail\Modules\Contacts\Handlers;
 use CreativeMail\Modules\Contacts\Services\ContactsSyncService;
 use Exception;
 
-abstract class BaseContactFormPluginHandler
-{
-    private $contactSyncService;
+abstract class BaseContactFormPluginHandler {
 
-    public abstract function convertToContactModel($contactForm);
-    public abstract function registerHooks();
-    public abstract function unregisterHooks();
-    public abstract function get_contacts($limit = null);
+	private $contactSyncService;
 
-    protected $birthdayFields = array('birthday', 'date-of-birth', 'date_of_birth', 'birth_date', 'birth-date', 'birth date', 'birth day', 'date of birth');
-    protected $phoneFields = array('phone', 'phone_number', 'telephone', 'tel', 'tel-number', 'tel_number', 'mobile_number', 'mobile number', 'phone number');
-    protected $emailFields = array('your-email', 'email', 'e-mail', 'emailaddress', 'email_address', 'email address', 'email-address', 'e-mail address', 'UserEmailAddress');
-    protected $firstnameFields = array('firstname', 'first_name', 'name', 'your-name', 'first name', 'first-name', 'first', 'UserFirstName');
-    protected $lastnameFields = array('lastname', 'last_name', 'last name', 'last-name', 'last', 'UserLastName');
-    protected $consentFields = array('accept-this', 'acceptance', 'consent');
+	abstract public function convertToContactModel( $contactForm);
+	abstract public function registerHooks();
+	abstract public function unregisterHooks();
+	abstract public function get_contacts( $limit = null);
 
-    public function upsertContact($model)
-    {
-        if (!isset($model)) {
-            throw new Exception('No model provided');
-        }
+	protected $birthdayFields  = array( 'birthday', 'date-of-birth', 'date_of_birth', 'birth_date', 'birth-date', 'birth date', 'birth day', 'date of birth' );
+	protected $phoneFields     = array( 'phone', 'phone_number', 'telephone', 'tel', 'tel-number', 'tel_number', 'mobile_number', 'mobile number', 'phone number' );
+	protected $emailFields     = array( 'your-email', 'email', 'e-mail', 'emailaddress', 'email_address', 'email address', 'email-address', 'e-mail address', 'UserEmailAddress' );
+	protected $firstnameFields = array( 'firstname', 'first_name', 'name', 'your-name', 'first name', 'first-name', 'first', 'UserFirstName' );
+	protected $lastnameFields  = array( 'lastname', 'last_name', 'last name', 'last-name', 'last', 'UserLastName' );
+	protected $consentFields   = array( 'accept-this', 'acceptance', 'consent' );
+	protected $cityFields      = array( 'your-city', 'city', 'UserCity' );
+	protected $stateFields     = array( 'your-state', 'state', 'StateDropDown' );
+	protected $countryFields   = array( 'your-country', 'country', 'CountryDropDown' );
+	protected $zipFields       = array( 'your-zip', 'zip', 'zipcode', 'UserZip' );
 
-        $contactModel = null;
-        if (!is_a($model, 'CreativeMail\Modules\Contacts\Models\ContactModel')) {
-            $contactModel = $this->convertToContactModel($model);
-        }
-        else {
-            $contactModel = $model;
-        }
-        $this->contactSyncService->upsertContact($contactModel);
-    }
+	public function upsertContact( $model ) {
+		if ( ! isset($model) ) {
+			throw new Exception('No model provided');
+		}
 
-    public function batchUpsertContacts($models)
-    {
-        if (!isset($models)) {
-            throw new Exception('No models provided');
-        }
+		$contactModel = null;
+		if ( ! is_a($model, 'CreativeMail\Modules\Contacts\Models\ContactModel') ) {
+			$contactModel = $this->convertToContactModel($model);
+		} else {
+			$contactModel = $model;
+		}
+		$this->contactSyncService->upsertContact($contactModel);
+	}
 
-        $this->contactSyncService->upsertContacts($models);
-    }
+	public function batchUpsertContacts( $models ) {
+		if ( ! isset($models) ) {
+			throw new Exception('No models provided');
+		}
 
-    protected function isNullOrEmpty($value)
-    {
-        return !isset($value) && empty($value);
-    }
+		$this->contactSyncService->upsertContacts($models);
+	}
 
-    function __construct()
-    {
-        $this->contactSyncService = new ContactsSyncService();
-        $this->registerHooks();
-    }
+	protected function isNullOrEmpty( $value ) {
+		return ! isset($value) && empty($value);
+	}
 
-    function __destruct()
-    {
-        $this->unregisterHooks();
-    }
+	public function __construct() {
+		$this->contactSyncService = new ContactsSyncService();
+		$this->registerHooks();
+	}
+
+	public function __destruct() {
+		$this->unregisterHooks();
+	}
 }

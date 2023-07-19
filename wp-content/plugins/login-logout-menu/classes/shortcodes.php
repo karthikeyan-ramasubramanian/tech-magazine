@@ -3,7 +3,7 @@
  * Login Logout Shortcode Class to implement the shortcode functionality.
  *
  * @since 1.3.0
- * @version 1.3.1
+ * @version 1.3.4
  * 
  */
 
@@ -45,7 +45,7 @@ if ( ! class_exists( 'Login_Logout_Menu_Shortcode' ) ):
 		 * @param string  $atts[login_logout_class]   	Custom CSS class for styling purpose.
 		 * 
 		 * @since 1.3.0
-		 * @version 1.3.1
+		 * @version 1.3.4
 		 * @return html Link to Login or logout
 		 */
 		function login_logout_menu__login_logout_link_callback( $atts ) {
@@ -64,9 +64,9 @@ if ( ! class_exists( 'Login_Logout_Menu_Shortcode' ) ):
 
 			//If user is logged in
 			if ( is_user_logged_in() ) {
-				return '<a href="' . wp_logout_url( $args['logout_url'] ) . '" class="' . $args['login_logout_class'] . ' "title="' . $args['logout_text'] . '">' . $args['logout_text'] . '</a>';
+				return '<a href="' . wp_logout_url( $args['logout_url'] ) . '" class="' . esc_attr( $args['login_logout_class'] ) . ' "title="' . esc_attr( $args['logout_text'] ) . '">' . esc_html( $args['logout_text'] ) . '</a>';
 			} else {
-				return '<a href="' . wp_login_url( $args['login_url'] ) . '" class="' . $args['login_logout_class'] . '"title="' . $args['login_text'] . '">' . $args['login_text'] . '</a>';
+				return '<a href="' . wp_login_url( $args['login_url'] ) . '" class="' . esc_attr( $args['login_logout_class'] ) . '"title="' . esc_attr( $args['login_text'] ) . '">' . esc_html( $args['login_text'] ) . '</a>';
 			}
 			
 		}
@@ -79,7 +79,7 @@ if ( ! class_exists( 'Login_Logout_Menu_Shortcode' ) ):
 		 * @param string  $atts[login_logout_class]   	Custom CSS class for styling purpose.
 		 * 
 		 * @since 1.3.0
-		 * @version 1.3.1
+		 * @version 1.3.4
 		 * @return html Link to Login
 		 */
 		function login_logout_menu__login_link_callback( $atts ) {
@@ -99,7 +99,7 @@ if ( ! class_exists( 'Login_Logout_Menu_Shortcode' ) ):
 
 			//If user is logged in
 			if ( ! is_user_logged_in() ) {
-				return '<a href="' . wp_login_url( $args['login_url'] ) . '" class="' . $args['login_logout_class'] . ' " title="' . $args['login_text'] . '">' . $args['login_text'] . '</a>';
+				return '<a href="' . wp_login_url( $args['login_url'] ) . '" class="' . esc_attr( $args['login_logout_class'] ) . ' " title="' . esc_attr( $args['login_text'] ) . '">' . esc_html( $args['login_text'] ) . '</a>';
 			}
 		}
 
@@ -111,7 +111,7 @@ if ( ! class_exists( 'Login_Logout_Menu_Shortcode' ) ):
 		 * @param string  $atts[login_logout_class]   	Custom CSS class for styling purpose.
 		 * 
 		 * @since 1.3.0
-		 * @version 1.3.1
+		 * @version 1.3.4
 		 * @return html Link to logout
 		 */
 		function login_logout_menu__logout_link_callback( $atts ) {
@@ -130,7 +130,7 @@ if ( ! class_exists( 'Login_Logout_Menu_Shortcode' ) ):
 			), $atts );
 
 			//If user is logged in
-			return '<a href="' . wp_logout_url( $args['logout_url'] ) . '" class="' . $args['login_logout_class'] . ' " title="' . $args['logout_text'] . '">' . $args['logout_text'] . '</a>';
+			return '<a href="' . wp_logout_url( $args['logout_url'] ) . '" class="' . esc_attr( $args['login_logout_class'] ) . ' " title="' . esc_attr( $args['logout_text'] ) . '">' . esc_html( $args['logout_text'] ) . '</a>';
 		}
 
 		/**
@@ -141,7 +141,7 @@ if ( ! class_exists( 'Login_Logout_Menu_Shortcode' ) ):
 		 * @param string  $atts[login_logout_class]   	Custom CSS class for styling purpose.
 		 * 
 		 * @since 1.3.0
-		 * @version 1.3.1
+		 * @version 1.3.4
 		 * @return html the link to Registration page
 		 */
 		function login_logout_menu__register_link_callback( $atts ) {
@@ -160,7 +160,7 @@ if ( ! class_exists( 'Login_Logout_Menu_Shortcode' ) ):
 			), $atts );
 
 			//If user is not logged in
-			return '<a href="' . wp_registration_url( $args['register_url'] ) . '" class="' . $args['login_logout_class'] . '">' . $args['register_text'] . '</a>';
+			return '<a href="' . wp_registration_url( $args['register_url'] ) . '" class="' . esc_attr( $args['login_logout_class'] ) . '">' . esc_html( $args['register_text'] ) . '</a>';
 		}
 
 		/**
@@ -171,7 +171,7 @@ if ( ! class_exists( 'Login_Logout_Menu_Shortcode' ) ):
 		 * @param string  $atts[login_logout_class]   		CSS class for styling purpose
 		 * 
 		 * @since 1.3.0
-		 * @version 1.3.1
+		 * @version 1.3.4
 		 * @return html the link to Lost Password form page
 		 */
 		function login_logout_menu__reset_pass_link_callback( $atts ) {
@@ -189,7 +189,7 @@ if ( ! class_exists( 'Login_Logout_Menu_Shortcode' ) ):
 				'login_logout_class'	=> 'login_logout_class',
 			), $atts );
 
-			return '<a href="' . wp_lostpassword_url( $args['lostpassword_url'] ) . '" class="' . $args['login_logout_class'] . '" title="' . $args['lostpassword_text'] . '">' . $args['lostpassword_text'] . '</a>';
+			return '<a href="' . wp_lostpassword_url( $args['lostpassword_url'] ) . '" class="' . esc_attr( $args['login_logout_class'] ) . '" title="' . esc_attr( $args['lostpassword_text'] ) . '">' . esc_html( $args['lostpassword_text'] ) . '</a>';
 		}
 
 		/**
@@ -213,11 +213,11 @@ if ( ! class_exists( 'Login_Logout_Menu_Shortcode' ) ):
 			
 			$args = shortcode_atts( array(
 				'url'					=> esc_url( apply_filters( 'login_logout_menu_username_url', Login_Logout_Menu::login_logout_menu_profile_link() ) ),
-				'username'				=> esc_html( $username ),
+				'username'				=> $username,
 				'login_logout_class'	=> 'login_logout_class',
 			), $atts );
 
-			return '<a href="' . $args['url'] . '" class="'.$args['login_logout_class'] . '" title="' . $args['username'] . '">' . $args['username'] . '</a>';
+			return '<a href="' . esc_url( $args['url'] ) . '" class="'.esc_attr( $args['login_logout_class'] ) . '" title="' . esc_attr( $args['username'] ) . '">' . esc_html( $args['username'] ) . '</a>';
 		}
 
 		
@@ -243,7 +243,7 @@ if ( ! class_exists( 'Login_Logout_Menu_Shortcode' ) ):
 				'login_logout_class'	=> 'login_logout_class',
 			), $atts );
 
-			return '<a href="' . $args['url'] . '" class="' . $args['login_logout_class'] . '" title="' . $args['edit_text'] . '">' . $args['edit_text'] . '</a>';
+			return '<a href="' . esc_url( $args['url'] ) . '" class="' . esc_attr( $args['login_logout_class'] ) . '" title="' . esc_attr( $args['edit_text'] ) . '">' . esc_html( $args['edit_text'] ) . '</a>';
 		}
 		
 	}

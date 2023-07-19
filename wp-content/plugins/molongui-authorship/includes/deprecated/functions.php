@@ -212,3 +212,21 @@ function authorship_get_customizer()
 
     return authorship_editor_url();
 }
+if ( !function_exists( 'authorship_guess_post_type' ) )
+{
+    function authorship_guess_post_type()
+    {
+        return authorship_get_post_type();
+    }
+}
+if ( !function_exists( 'isAuthor' ) )
+{
+    function isAuthor()
+    {
+        global $wp_query;
+
+        if ( !isset( $wp_query ) ) return;
+
+        return is_author();
+    }
+}

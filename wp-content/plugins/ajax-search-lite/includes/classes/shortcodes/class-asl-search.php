@@ -64,6 +64,13 @@ if (!class_exists("WD_ASL_Search_Shortcode")) {
                 w_isset_def($style['show_frontend_search_settings'], 1) == 1
             ) ? false : true);
 
+			// Triggered by URL
+			if ( isset($_GET['asl_s']) ) {
+				$style['auto_populate'] = "phrase";
+				$style['auto_populate_phrase'] = $_GET['asl_s'];
+				$style['auto_populate_count'] = intval($style['maxresults']);
+			}
+
             do_action('asl_layout_before_shortcode', $id);
 
             $out = "";

@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 namespace MailPoet\Config\PopulatorData\Templates;
 
 if (!defined('ABSPATH')) exit;
@@ -19,7 +19,7 @@ class Avocado {
 
   public function get() {
     return [
-      'name' => WPFunctions::get()->__("Avocado", 'mailpoet'),
+      'name' => __("Avocado", 'mailpoet'),
       'categories' => json_encode(['woocommerce', 'all']),
       'readonly' => 1,
       'thumbnail' => $this->getThumbnail(),
@@ -515,29 +515,40 @@ class Avocado {
                                   'text' => '<p style="text-align: center;">Send them your exclusive coupon code now and they\'ll receive 50% off their next order, and you\'ll get your next box for free!&nbsp;</p>',
                                  ],
                               1 =>
-                                 [
-                                  'type' => 'button',
-                                  'text' => 'AVOCADOSRULE',
-                                  'url' => '',
-                                  'styles' =>
-                                     [
-                                      'block' =>
-                                         [
-                                          'backgroundColor' => '#dbefb4',
-                                          'borderColor' => '#3d3d3d',
-                                          'borderWidth' => '3px',
-                                          'borderRadius' => '0px',
-                                          'borderStyle' => 'solid',
-                                          'width' => '254px',
-                                          'lineHeight' => '50px',
-                                          'fontColor' => '#3d3d3d',
-                                          'fontFamily' => 'Arial',
-                                          'fontSize' => '26px',
-                                          'fontWeight' => 'bold',
-                                          'textAlign' => 'center',
-                                         ],
-                                     ],
-                                 ],
+                                [
+                                  'productIds' => [],
+                                  'excludedProductIds' => [],
+                                  'productCategoryIds' => [],
+                                  'excludedProductCategoryIds' => [],
+                                  'type' => 'coupon',
+                                  'amount' => 10,
+                                  'amountMax' => 100,
+                                  'discountType' => 'percent',
+                                  'expiryDay' => 10,
+                                  'usageLimit' => '',
+                                  'usageLimitPerUser' => '',
+                                  'minimumAmount' => '',
+                                  'maximumAmount' => '',
+                                  'emailRestrictions' => '',
+                                  'styles' => [
+                                   'block' => [
+                                     'backgroundColor' => '#dbefb4',
+                                     'borderColor' => '#3d3d3d',
+                                     'borderWidth' => '3px',
+                                     'borderRadius' => '0px',
+                                     'borderStyle' => 'solid',
+                                     'width' => '254px',
+                                     'lineHeight' => '50px',
+                                     'fontColor' => '#3d3d3d',
+                                     'fontFamily' => 'Arial',
+                                     'fontSize' => '26px',
+                                     'fontWeight' => 'bold',
+                                     'textAlign' => 'center',
+                                   ],
+                                  ],
+                                  'source' => 'createNew',
+                                  'code' => 'XXXX-XXXXXXX-XXXX',
+                               ],
                               2 =>
                                  [
                                   'type' => 'spacer',
@@ -643,7 +654,7 @@ class Avocado {
                               2 =>
                                  [
                                   'type' => 'footer',
-                                  'text' => '<p><strong><span style="color: #9ecd2e;"><a href="[link:subscription_unsubscribe_url]" style="color: #9ecd2e;">'.WPFunctions::get()->__("Unsubscribe", 'mailpoet').'</a> | <a href="[link:subscription_manage_url]" style="color: #9ecd2e;">'.WPFunctions::get()->__("Manage your subscription", 'mailpoet').'</a></span></strong><br />'.WPFunctions::get()->__("Add your postal address here!", 'mailpoet').'</p>',
+                                  'text' => '<p><strong><span style="color: #9ecd2e;"><a href="[link:subscription_unsubscribe_url]" style="color: #9ecd2e;">'.__("Unsubscribe", 'mailpoet').'</a> | <a href="[link:subscription_manage_url]" style="color: #9ecd2e;">'.__("Manage your subscription", 'mailpoet').'</a></span></strong><br />'.__("Add your postal address here!", 'mailpoet').'</p>',
                                   'styles' =>
                                      [
                                       'block' =>
@@ -835,30 +846,6 @@ class Avocado {
               'backgroundColor' => '#ffffff',
               'backgroundColorAlternate' => '#eeeeee',
              ],
-          'button' =>
-             [
-              'text' => 'AVOCADOSRULE',
-              'url' => '',
-              'styles' =>
-                 [
-                  'block' =>
-                     [
-                      'backgroundColor' => '#dbefb4',
-                      'borderColor' => '#3d3d3d',
-                      'borderWidth' => '3px',
-                      'borderRadius' => '0px',
-                      'borderStyle' => 'solid',
-                      'width' => '254px',
-                      'lineHeight' => '50px',
-                      'fontColor' => '#3d3d3d',
-                      'fontFamily' => 'Arial',
-                      'fontSize' => '26px',
-                      'fontWeight' => 'bold',
-                      'textAlign' => 'center',
-                     ],
-                 ],
-              'type' => 'button',
-             ],
           'divider' =>
              [
               'styles' =>
@@ -876,7 +863,7 @@ class Avocado {
              ],
           'footer' =>
              [
-              'text' => '<p><a href="[link:subscription_unsubscribe_url]">'.WPFunctions::get()->__("Unsubscribe", 'mailpoet').'</a> | <a href="[link:subscription_manage_url]">'.WPFunctions::get()->__("Manage your subscription", 'mailpoet').'</a><br />'.WPFunctions::get()->__("Add your postal address here!", 'mailpoet').'</p>',
+              'text' => '<p><a href="[link:subscription_unsubscribe_url]">'.__("Unsubscribe", 'mailpoet').'</a> | <a href="[link:subscription_manage_url]">'.__("Manage your subscription", 'mailpoet').'</a><br />'.__("Add your postal address here!", 'mailpoet').'</p>',
               'styles' =>
                  [
                   'block' =>
@@ -1012,7 +999,7 @@ class Avocado {
              ],
           'header' =>
              [
-              'text' => '<a href="[link:newsletter_view_in_browser_url]">'.WPFunctions::get()->__("View this in your browser.", 'mailpoet').'</a>',
+              'text' => '<a href="[link:newsletter_view_in_browser_url]">'.__("View this in your browser.", 'mailpoet').'</a>',
               'styles' =>
                  [
                   'block' =>

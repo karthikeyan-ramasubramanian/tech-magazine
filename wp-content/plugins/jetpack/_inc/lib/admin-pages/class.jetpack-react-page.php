@@ -207,7 +207,7 @@ class Jetpack_React_Page extends Jetpack_Admin_Page {
 			// If we still have nothing, display an error.
 			echo '<p>';
 			esc_html_e( 'Error fetching static.html. Try running: ', 'jetpack' );
-			echo '<code>pnpm run distclean && pnpx jetpack build plugins/jetpack</code>';
+			echo '<code>pnpm run distclean && pnpm jetpack build plugins/jetpack</code>';
 			echo '</p>';
 		} else {
 			// We got the static.html so let's display it.
@@ -236,7 +236,7 @@ class Jetpack_React_Page extends Jetpack_Admin_Page {
 		);
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$target = sanitize_text_field( (string) $_GET['jp-react-redirect'] );
+		$target = sanitize_text_field( wp_unslash( $_GET['jp-react-redirect'] ) );
 		if ( isset( $allowed_paths[ $target ] ) ) {
 			wp_safe_redirect( $allowed_paths[ $target ] );
 			exit;
@@ -262,7 +262,7 @@ class Jetpack_React_Page extends Jetpack_Admin_Page {
 		$is_offline_mode     = $status->is_offline_mode();
 		$site_suffix         = $status->get_site_suffix();
 		$script_deps_path    = JETPACK__PLUGIN_DIR . '_inc/build/admin.asset.php';
-		$script_dependencies = array( 'wp-polyfill' );
+		$script_dependencies = array( 'jquery', 'wp-polyfill' );
 		$version             = JETPACK__VERSION;
 		if ( file_exists( $script_deps_path ) ) {
 			$asset_manifest      = include $script_deps_path;

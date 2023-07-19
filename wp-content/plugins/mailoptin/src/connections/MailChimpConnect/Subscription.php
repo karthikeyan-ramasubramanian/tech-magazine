@@ -3,6 +3,7 @@
 namespace MailOptin\MailChimpConnect;
 
 use MailOptin\Core\Repositories\OptinCampaignsRepository as OCR;
+use function MailOptin\Core\get_ip_address;
 use function MailOptin\Core\strtotime_utc;
 
 class Subscription extends AbstractMailChimpConnect
@@ -40,7 +41,7 @@ class Subscription extends AbstractMailChimpConnect
         $optin_campaign_id = absint($this->extras['optin_campaign_id']);
 
         //external forms
-        if($optin_campaign_id == 0) {
+        if ($optin_campaign_id == 0) {
             $setting = $this->extras['is_double_optin'];
         }
 
@@ -211,7 +212,7 @@ class Subscription extends AbstractMailChimpConnect
                 'interests'     => $this->interests(),
                 'status_if_new' => $optin_status,
                 'status'        => 'subscribed',
-                'ip_signup'     => \MailOptin\Core\get_ip_address()
+                'ip_signup'     => parse_url('http://' . get_ip_address(), PHP_URL_HOST) // strip ports and stuff
             ];
 
             $parameters = apply_filters('mo_connections_mailchimp_subscription_parameters', array_filter($parameters, [$this, 'data_filter']), $this);
@@ -252,7 +253,7 @@ class Subscription extends AbstractMailChimpConnect
             return parent::ajax_failure(__('There was an error saving your contact. Please try again.', 'mailoptin'));
 
         } catch (\Exception $e) {
-            self::save_optin_error_log($e->getCode() . ': ' . $e->getMessage(), 'mailchimp', $this->extras['optin_campaign_id']);
+            self::save_optin_error_log($e->getCode() . ': ' . $e->getMessage(), 'mailchimp', $this->extras['optin_campaign_id'], $this->extras['optin_campaign_type']);
 
             return parent::ajax_failure(__('There was an error saving your contact. Please try again.', 'mailoptin'));
         }

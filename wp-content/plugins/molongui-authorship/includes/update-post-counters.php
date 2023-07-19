@@ -14,7 +14,7 @@ class Update_Post_Counters
     }
     public function handle_all( $post_types = array() )
     {
-        if ( \defined( 'DISABLE_WP_CRON' ) and DISABLE_WP_CRON ) return false;
+        if ( \apply_filters( 'authorship/check_wp_cron', true ) and ( \defined( 'DISABLE_WP_CRON' ) and DISABLE_WP_CRON ) ) return false;
         $users = \molongui_get_users( array( 'fields' => 'ids' ) );
         $guests = \molongui_get_guests( array( 'fields' => 'ids' ) );
         foreach ( $post_types as $post_type )

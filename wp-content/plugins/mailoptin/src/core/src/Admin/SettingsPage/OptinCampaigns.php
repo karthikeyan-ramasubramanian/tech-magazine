@@ -155,9 +155,10 @@ class OptinCampaigns extends AbstractSettingsPage
 
             $instance->option_name(MO_OPTIN_CAMPAIGN_WP_OPTION_NAME);
             $instance->page_header(__('Optin Campaigns', 'mailoptin'));
+            $instance->sidebar($this->sidebar_args());
             $this->register_core_settings($instance);
             echo '<div class="mailoptin-data-listing">';
-            $instance->build(true);
+            $instance->build(defined('MAILOPTIN_DETACH_LIBSODIUM'));
             echo '</div>';
 
             $this->ab_split_test_form();

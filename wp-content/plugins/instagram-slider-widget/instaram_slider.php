@@ -2,7 +2,7 @@
 /*
 Plugin Name: Social Slider Feed
 Plugin URI: https://cm-wp.com/instagram-slider-widget
-Version: 2.0.3
+Version: 2.1.0
 Description: Shows Instagram, Facebook and YouTube responsive feeds in widgets, posts, pages, or anywhere else using shortcodes
 Author: creativemotion
 Author URI: https://cm-wp.com/
@@ -30,12 +30,12 @@ $plugin_info = [
 
 	// Служба поддержки
 	'support_details'    => [
-		'url'       => 'https://cm-wp.com/instagram-slider-widget',// Ссылка на сайт плагина
+		'url'       => 'https://cm-wp.com/instagram-slider-widget', // Ссылка на сайт плагина
 		'pages_map' => [
 			'features' => 'premium-features', // {site}/premium-features "страница возможности"
 			'pricing'  => 'pricing', // {site}/prices страница "цены"
 			'support'  => 'support', // {site}/support страница "служба поддержки"
-			'docs'     => 'docs' // {site}/docs страница "документация"
+			'docs'     => 'docs', // {site}/docs страница "документация"
 		],
 	],
 
@@ -80,19 +80,19 @@ $plugin_info = [
 	'subscribe_settings' => [ 'group_id' => '105407119' ],
 
 	'load_factory_modules' => [
-		[ 'libs/factory/bootstrap', 'factory_bootstrap_454', 'admin' ],
-		[ 'libs/factory/forms', 'factory_forms_450', 'admin' ],
-		[ 'libs/factory/pages', 'factory_pages_452', 'admin' ],
-		[ 'libs/factory/freemius', 'factory_freemius_140', 'all' ],
-		[ 'libs/factory/adverts', 'factory_adverts_130', 'admin' ],
-		[ 'libs/factory/templates', 'factory_templates_106', 'admin' ],
-		[ 'libs/factory/logger', 'factory_logger_118', 'all' ],
+		[ 'libs/factory/bootstrap', 'factory_bootstrap_459', 'admin' ],
+		[ 'libs/factory/forms', 'factory_forms_455', 'admin' ],
+		[ 'libs/factory/pages', 'factory_pages_457', 'admin' ],
+		[ 'libs/factory/freemius', 'factory_freemius_145', 'all' ],
+		[ 'libs/factory/adverts', 'factory_adverts_135', 'admin' ],
+		[ 'libs/factory/templates', 'factory_templates_110', 'admin' ],
+		[ 'libs/factory/logger', 'factory_logger_123', 'all' ],
 	],
 ];
 
 global $wis_compatibility;
 
-$wis_compatibility = new Wbcr_Factory453_Requirements( __FILE__, array_merge( $plugin_info, [
+$wis_compatibility = new Wbcr_Factory458_Requirements( __FILE__, array_merge( $plugin_info, [
 	'plugin_already_activate'          => defined( 'WIS_PLUGIN_ACTIVE' ),
 	'required_php_version'             => '7.0',
 	'required_wp_version'              => '4.8.0',
@@ -116,8 +116,8 @@ define( 'WIS_PLUGIN_SLUG', dirname( plugin_basename( __FILE__ ) ) );
 define( 'WIS_PLUGIN_URL', plugins_url( null, __FILE__ ) );
 define( 'WIS_PLUGIN_DIR', dirname( __FILE__ ) );
 
-define( 'WIS_COMPONENTS_URL', WIS_PLUGIN_URL . "/components" );
-define( 'WIS_COMPONENTS_DIR', WIS_PLUGIN_DIR . "/components" );
+define( 'WIS_COMPONENTS_URL', WIS_PLUGIN_URL . '/components' );
+define( 'WIS_COMPONENTS_DIR', WIS_PLUGIN_DIR . '/components' );
 
 define( 'WIS_FEEDS_OPTION', 'feeds' );
 
@@ -147,7 +147,7 @@ try {
 	define( 'WIS_PLUGIN_THROW_ERROR', true );
 
 	$wis_plugin_error_func = function () use ( $e ) {
-		$error = sprintf( "The %s plugin has stopped. <b>Error:</b> %s Code: %s", 'Social Slider Feed', $e->getMessage(), $e->getCode() );
+		$error = sprintf( 'The %s plugin has stopped. <b>Error:</b> %s Code: %s', 'Social Slider Feed', $e->getMessage(), $e->getCode() );
 		echo '<div class="notice notice-error"><p>' . $error . '</p></div>';
 	};
 

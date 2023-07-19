@@ -6,28 +6,33 @@ if ( $message_count > 0 ) {
 	$offset = ( $current_page - 1 ) * $items_per_page;
 
 	foreach ( $messages as $key => $value ) {
-		if ( strlen( $value->subject ) > 100 ) {
-			$subject = implode( ' ', array_slice( explode( ' ', stripslashes( $value->subject ) ), 0, 20 ) ) . '&hellip;';
+		$subject = isset( $value->subject ) ? $value->subject : '';
+		$message = isset( $value->message ) ? $value->message : '';
+		$name    = isset( $value->name ) ? $value->name : '';
+		$email   = isset( $value->email ) ? $value->email : '';
+
+		if ( strlen( $subject ) > 100 ) {
+			$subject = implode( ' ', array_slice( explode( ' ', stripslashes( $subject ) ), 0, 20 ) ) . '&hellip;';
 		} else {
-			$subject = stripslashes( $value->subject );
+			$subject = stripslashes( $subject );
 		}
 
-		if ( strlen( $value->message ) > 100 ) {
-			$message = implode( ' ', array_slice( explode( ' ', stripslashes( $value->message ) ), 0, 20 ) ) . '&hellip;';
+		if ( strlen( $message ) > 100 ) {
+			$message = implode( ' ', array_slice( explode( ' ', stripslashes( $message ) ), 0, 20 ) ) . '&hellip;';
 		} else {
-			$message = stripslashes( $value->message );
+			$message = stripslashes( $message );
 		}
 
-		if ( strlen( $value->name ) > 100 ) {
-			$name = implode( ' ', array_slice( explode( ' ', stripslashes( $value->name ) ), 0, 20 ) ) . '&hellip;';
+		if ( strlen( $name ) > 100 ) {
+			$name = implode( ' ', array_slice( explode( ' ', stripslashes( $name ) ), 0, 20 ) ) . '&hellip;';
 		} else {
-			$name = stripslashes( $value->name );
+			$name = stripslashes( $name );
 		}
 
-		if ( strlen( $value->email ) > 100 ) {
-			$email = implode( ' ', array_slice( explode( ' ', stripslashes( $value->email ) ), 0, 20 ) ) . '&hellip;';
+		if ( strlen( $email ) > 100 ) {
+			$email = implode( ' ', array_slice( explode( ' ', stripslashes( $email ) ), 0, 20 ) ) . '&hellip;';
 		} else {
-			$email = stripslashes( $value->email );
+			$email = stripslashes( $email );
 		}
 		?>
 		<tr>

@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types = 1);
 
 namespace CreativeMail\Helpers;
 
@@ -10,71 +9,65 @@ use CreativeMail\Constants\EnvironmentNames;
  *
  * @package CreativeMail\Helpers
  */
-class EnvironmentHelper
-{
-    /**
-     * Determines if the plugin is currently pointing towards a test environment.
-     *
-     * @returns bool
-     */
-    public static function is_test_environment()
-    {
-        return self::get_environment() !== EnvironmentNames::PRODUCTION;
-    }
+final class EnvironmentHelper {
 
-    /**
-     * Gets the name of the environment this version of the plugin is build for.
-     *
-     * @return string
-     */
-    public static function get_environment()
-    {
+	/**
+	 * Determines if the plugin is currently pointing towards a test environment.
+	 *
+	 * @returns bool
+	 */
+	public static function is_test_environment(): bool {
+		return self::get_environment() !== EnvironmentNames::PRODUCTION;
+	}
 
-        $environment = CE4WP_ENVIRONMENT;
-        if ($environment === "{ENV}") {
-            return EnvironmentNames::DEVELOPMENT;
-        }
+	/**
+	 * Gets the name of the environment this version of the plugin is build for.
+	 *
+	 * @return string
+	 */
+	public static function get_environment(): string {
+		$environment = CE4WP_ENVIRONMENT;
 
-        return $environment;
-    }
+		if ( '{ENV}' === $environment ) {
+			$environment = EnvironmentNames::DEVELOPMENT;
+		}
 
-    /**
-     * Gets the url of the app-gateway.
-     *
-     * @param null $path
-     *
-     * @return string
-     */
-    public static function get_app_gateway_url($path = null)
-    {
-        $url = CE4WP_APP_GATEWAY_URL;
-        if ($url === '{GATEWAY_URL}') {
-            $url = 'https://app-gateway.creativemail.com/';
-        }
+		return $environment;
+	}
 
-        if (is_null($path)) {
-            return $url;
-        }
+	/**
+	 * Gets the url of the app-gateway.
+	 *
+	 * @param string $path Indicates the URL path that should be appended to the app-gateway URL.
+	 *
+	 * @return string
+	 */
+	public static function get_app_gateway_url( string $path = '' ): string {
+		$url = CE4WP_APP_GATEWAY_URL;
 
-        if (isset($path) && !empty($path)) {
-            return $url.$path;
-        }
+		if ( '{GATEWAY_URL}' === $url ) {
+			$url = 'https://app-gateway.creativemail.com/';
+		}
 
-        return $url;
-    }
+		if ( ! empty($path) ) {
+			$url .= $path;
+		}
 
-    /**
-     * Gets the url of the app.
-     *
-     * @return string
-     */
-    public static function get_app_url()
-    {
-        $url = CE4WP_APP_URL;
-        if ($url === '{APP_URL}') {
-            return 'https://app.creativemail.com/';
-        }
+		return $url;
+	}
 
-        return $url;
-    }
+	/**
+	 * Gets the url of the app.
+	 *
+	 * @return string
+	 */
+	public static function get_app_url(): string {
+		$url = CE4WP_APP_URL;
+
+		if ( '{APP_URL}' === $url ) {
+			$url = 'https://app.creativemail.com/';
+		}
+
+		return $url;
+	}
 }

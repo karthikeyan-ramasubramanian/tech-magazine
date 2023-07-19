@@ -125,6 +125,9 @@ if (!class_exists('ASL_Search')) {
 			else
 				$keyword = $this->args['s'];
 
+			// This is the "japanese" ideographic space character, replaced by the regular space
+			$keyword = preg_replace("@[ 　]@u", ' ', $keyword);
+
 			$keyword = $this->compatibility($keyword);
 			$keyword_rev = ASL_Helpers::reverseString($keyword);
 
@@ -168,6 +171,14 @@ if (!class_exists('ASL_Search')) {
 				if ( ASL_mb::strlen($w) < $this->args['min_word_length'] ) {
 					unset($this->_sr[$k]);
 				}
+			}
+
+			/**
+			 * Reindex the arrays, in case there are missing keys from the previous removals
+			 */
+			if ( count($this->_s) > 0 ) {
+				$this->_s = array_values($this->_s);
+				$this->_sr = array_values($this->_sr);
 			}
 		}
 

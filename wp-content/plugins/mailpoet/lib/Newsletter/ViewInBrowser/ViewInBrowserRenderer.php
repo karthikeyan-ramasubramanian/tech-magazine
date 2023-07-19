@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Newsletter\ViewInBrowser;
 
@@ -18,8 +18,8 @@ class ViewInBrowserRenderer {
   /** @var Emoji */
   private $emoji;
 
-  /** @var bool */
-  private $isTrackingEnabled;
+  /** @var TrackingConfig */
+  private $trackingConfig;
 
   /** @var Renderer */
   private $renderer;
@@ -38,7 +38,7 @@ class ViewInBrowserRenderer {
     Links $links
   ) {
     $this->emoji = $emoji;
-    $this->isTrackingEnabled = $trackingConfig->isEmailTrackingEnabled();
+    $this->trackingConfig = $trackingConfig;
     $this->renderer = $renderer;
     $this->shortcodes = $shortcodes;
     $this->links = $links;
@@ -51,6 +51,8 @@ class ViewInBrowserRenderer {
     SendingQueueEntity $queue = null
   ) {
     $wpUserPreview = $isPreview;
+    $isTrackingEnabled = $this->trackingConfig->isEmailTrackingEnabled();
+
     if ($queue && $queue->getNewsletterRenderedBody()) {
       $body = $queue->getNewsletterRenderedBody();
       if (is_array($body)) {
@@ -81,12 +83,12 @@ class ViewInBrowserRenderer {
     }
     $this->prepareShortcodes(
       $newsletter,
-      $subscriber ?: false,
-      $queue ?: false,
+      $subscriber,
+      $queue,
       $wpUserPreview
     );
     $renderedNewsletter = $this->shortcodes->replace($newsletterBody);
-    if (!$wpUserPreview && $queue && $subscriber && $this->isTrackingEnabled) {
+    if (!$wpUserPreview && $queue && $subscriber && $isTrackingEnabled) {
       $renderedNewsletter = $this->links->replaceSubscriberData(
         $subscriber->getId(),
         $queue->getId(),
@@ -96,19 +98,15 @@ class ViewInBrowserRenderer {
     return $renderedNewsletter;
   }
 
-  private function prepareShortcodes($newsletter, $subscriber, $queue, $wpUserPreview) {
-    if ($queue instanceof SendingQueueEntity) {
-      $this->shortcodes->setQueue($queue);
-    }
-
-    if ($newsletter instanceof NewsletterEntity) {
-      $this->shortcodes->setNewsletter($newsletter);
-    }
-
+  private function prepareShortcodes(
+    NewsletterEntity $newsletter,
+    ?SubscriberEntity $subscriber,
+    ?SendingQueueEntity $queue,
+    bool $wpUserPreview
+  ) {
+    $this->shortcodes->setQueue($queue);
+    $this->shortcodes->setNewsletter($newsletter);
     $this->shortcodes->setWpUserPreview($wpUserPreview);
-
-    if ($subscriber instanceof SubscriberEntity) {
-      $this->shortcodes->setSubscriber($subscriber);
-    }
+    $this->shortcodes->setSubscriber($subscriber);
   }
 }

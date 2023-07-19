@@ -33,10 +33,10 @@
     box-shadow: rgba(0,0,0,0.1) 0px 0px 8px;
     -moz-box-shadow: rgba(0,0,0,0.1) 0px 0px 8px;
     -webkit-box-shadow: rgba(0,0,0,0.1) 0px 0px 8px;
-    padding: 10px 10px 0 10px;
+    padding: 14px 14px 0 14px;
     margin: 10px;
     width: auto;
-    max-width: 300px;
+    max-width: 340px;
     float: left;
 }
 

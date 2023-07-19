@@ -63,13 +63,13 @@ if (!class_exists("WD_ASL_Search_Handler")) {
 
 			$final_output = "";
 			/* Clear output buffer, possible warnings */
-			$final_output .= "!!ASLSTART!!" . $html_results . "!!ASLEND!!";
-			$final_output .= "!!ASLSTART_DATA!!";
+			$final_output .= "___ASLSTART___" . $html_results . "___ASLEND___";
+			$final_output .= "___ASLSTART_DATA___";
 			$final_output .= json_encode(array(
 				'results_count' => isset($results["keywords"]) ? 0 : count($results),
 				'full_results_count' => $asl_query->found_posts
 			));
-			$final_output .= "!!ASLEND_DATA!!";
+			$final_output .= "___ASLEND_DATA___";
 
 			ASL_Helpers::prepareAjaxHeaders();
 			print_r($final_output);

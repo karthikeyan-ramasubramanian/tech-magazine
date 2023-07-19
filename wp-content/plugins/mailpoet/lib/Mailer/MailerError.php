@@ -1,11 +1,9 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Mailer;
 
 if (!defined('ABSPATH')) exit;
 
-
-use MailPoet\WP\Functions as WPFunctions;
 
 class MailerError {
   const OPERATION_CONNECT = 'connect';
@@ -17,12 +15,6 @@ class MailerError {
 
   const LEVEL_HARD = 'hard';
   const LEVEL_SOFT = 'soft';
-
-  const MESSAGE_EMAIL_FORBIDDEN_ACTION = 'Key is valid, but the action is forbidden';
-  const MESSAGE_EMAIL_INSUFFICIENT_PRIVILEGES = 'Insufficient privileges';
-  const MESSAGE_EMAIL_NOT_AUTHORIZED = 'The email address is not authorized';
-  const MESSAGE_EMAIL_VOLUME_LIMIT_REACHED = 'Email volume limit reached';
-  const MESSAGE_PENDING_APPROVAL = 'Key is valid, but not approved yet; you can send only to authorized email addresses at the moment';
 
   /** @var string */
   private $operation;
@@ -104,9 +96,9 @@ class MailerError {
     $message .= $this->message ? ' ' : '';
 
     if (count($this->subscribersErrors) === 1) {
-      $message .= WPFunctions::get()->__('Unprocessed subscriber:', 'mailpoet') . ' ';
+      $message .= __('Unprocessed subscriber:', 'mailpoet') . ' ';
     } else {
-      $message .= WPFunctions::get()->__('Unprocessed subscribers:', 'mailpoet') . ' ';
+      $message .= __('Unprocessed subscribers:', 'mailpoet') . ' ';
     }
 
     $message .= implode(

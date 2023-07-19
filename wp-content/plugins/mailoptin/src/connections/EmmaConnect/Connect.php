@@ -162,6 +162,7 @@ class Connect extends AbstractEmmaConnect implements ConnectionInterface
     public function get_email_list()
     {
         try {
+
             $response = $this->emma_instance()->make_request('groups');
 
             if (self::is_http_code_not_success($response['status_code'])) {

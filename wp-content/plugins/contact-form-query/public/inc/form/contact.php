@@ -2,6 +2,7 @@
 defined( 'ABSPATH' ) || die();
 
 wp_enqueue_style( 'stcfq', STCFQ_PLUGIN_URL . 'assets/css/stcfq.min.css', array(), STCFQ_PLUGIN_VERSION, 'all' );
+wp_style_add_data( 'stcfq', 'rtl', 'replace' );
 wp_enqueue_script( 'stcfq', STCFQ_PLUGIN_URL . 'assets/js/stcfq.min.js', array( 'jquery', 'jquery-form' ), STCFQ_PLUGIN_VERSION, true );
 wp_add_inline_script(
 	'stcfq',
@@ -93,6 +94,9 @@ if ( ! empty( $css ) ) {
 		</p>
 			<?php
 		}
+		$data_cpt       = '';
+		$data_site_key  = '';
+		$data_cpt_theme = '';
 		if ( 'google_recaptcha_v2' === $captcha ) {
 			$google_recaptcha_v2 = STCFQ_Helper::google_recaptcha_v2();
 			if ( ! empty( $google_recaptcha_v2['site_key'] ) && ! empty( $google_recaptcha_v2['secret_key'] ) ) {
@@ -104,9 +108,29 @@ if ( ! empty( $css ) ) {
 			</p>
 				<?php
 			}
+		} elseif ( 'cf_turnstile' === $captcha ) {
+			$cf_turnstile = STCFQ_Helper::cf_turnstile();
+			if ( ! empty( $cf_turnstile['site_key'] ) && ! empty( $cf_turnstile['secret_key'] ) ) {
+				$data_cpt       = 'cf_turnstile';
+				$data_site_key  = $cf_turnstile['site_key'];
+				$data_cpt_theme = $cf_turnstile['theme'];
+				add_filter( 'script_loader_tag', array( 'STCFQ_Helper', 'add_async_defer_attribute' ), 10, 2 );
+				wp_enqueue_script( 'cf-turnstile', 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit', array(), null );
+				?>
+			<p>
+				<div id="stcfq-cf-turnstile"></div>
+			</p>
+			<?php
+			}
 		}
 		?>
 
-		<button type="submit" class="stcfq-save-contact-btn <?php echo esc_attr( $submit_button['classes'] ); ?>"><?php echo esc_html( $submit_button['text'] ); ?></button>
+		<div class="stcfq-save-contact-btn-wrap<?php echo esc_attr( ( '' !== $submit_button['parent_classes'] ) ? ( ' ' . $submit_button['parent_classes'] ) : '' ); ?>">
+			<button type="submit" class="stcfq-save-contact-btn<?php echo esc_attr( ( '' !== $submit_button['classes'] ) ? ( ' ' . $submit_button['classes'] ) : '' ); ?>" <?php
+			if ( '' !== $data_cpt ) { echo ( 'data-cpt="' . esc_attr( $data_cpt ) . '"' ); }
+			if ( '' !== $data_site_key ) { echo ( ' data-site-key="' . esc_attr( $data_site_key ) . '"' ); }
+			if ( '' !== $data_cpt_theme ) { echo ( ' data-cpt-theme="' . esc_attr( $data_cpt_theme ) . '"' ); }
+			?>><?php echo esc_html( $submit_button['text'] ); ?></button>
+		</div>
 	</form>
 </div>

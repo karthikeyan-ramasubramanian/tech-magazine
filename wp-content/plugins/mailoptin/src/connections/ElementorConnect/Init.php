@@ -3,7 +3,7 @@
 namespace MailOptin\ElementorConnect;
 
 use Elementor\Controls_Manager;
-use ElementorPro\Modules\Forms\Module;
+use ElementorPro\Modules\Forms\Registrars\Form_Actions_Registrar;
 use MailOptin\Core\Connections\ConnectionFactory;
 use MailOptin\SendinblueConnect\Connect as SendinblueConnect;
 
@@ -19,21 +19,19 @@ class Init
 {
     public function __construct()
     {
-        add_action('elementor_pro/init', [$this, 'load_integration']);
+        add_action('elementor_pro/forms/actions/register', function (Form_Actions_Registrar $actions_registrar) {
+            $actions_registrar->register(new Elementor(), 'mailoptin');
+        });
+
         add_action('elementor/controls/controls_registered', [$this, 'register_custom_control']);
         add_action('elementor/editor/after_enqueue_scripts', [$this, 'enqueue_script']);
         add_action('wp_ajax_mo_elementor_fetch_custom_fields', [$this, 'fetch_custom_fields']);
         add_action('wp_ajax_mo_elementor_fetch_tags', [$this, 'fetch_tags']);
     }
 
-    public function load_integration()
-    {
-        Module::instance()->add_form_action('mailoptin', new Elementor());
-    }
-
     public function register_custom_control(Controls_Manager $control_manager)
     {
-        $control_manager->register_control('moselect', new CustomSelect());
+        $control_manager->register(new CustomSelect(), 'moselect');
     }
 
     public function enqueue_script()
@@ -60,6 +58,8 @@ class Init
         if (empty($_POST['connection'])) wp_send_json_error([]);
 
         $instance = ConnectionFactory::make(sanitize_text_field($_POST['connection']));
+
+        if ( ! is_object($instance) || ! method_exists($instance, 'get_optin_fields')) wp_send_json_error();
 
         if ( ! in_array($instance::OPTIN_CUSTOM_FIELD_SUPPORT, $instance::features_support())) wp_send_json_error([]);
 
@@ -94,7 +94,7 @@ class Init
 
         $instance = ConnectionFactory::make(sanitize_text_field($_POST['connection']));
 
-        if ( ! method_exists($instance, 'get_tags')) wp_send_json_error();
+        if ( ! is_object($instance) || ! method_exists($instance, 'get_tags')) wp_send_json_error();
 
         $tags = $instance->get_tags();
 

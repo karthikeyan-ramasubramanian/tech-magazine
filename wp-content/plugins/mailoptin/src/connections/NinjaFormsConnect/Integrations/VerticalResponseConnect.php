@@ -54,7 +54,7 @@ class VerticalResponseConnect extends \NF_Abstracts_ActionNewsletter
         $optin_data->payload             = $action_settings;
         $optin_data->name                = Init::return_name($name, $first_name, $last_name);
         $optin_data->email               = moVar($action_settings, 'moEmail');
-        $optin_data->optin_campaign_type = esc_html__('Ninja Forms', 'mailoptin');
+        $optin_data->optin_campaign_type = 'Ninja Forms';
 
         $optin_data->connection_service    = $connection_service;
         $optin_data->connection_email_list = $list_id;
@@ -209,7 +209,7 @@ class VerticalResponseConnect extends \NF_Abstracts_ActionNewsletter
             );
         }
 
-        if (in_array($this->connection, Init::select2_tag_connections()) && method_exists($instance, 'get_tags')) {
+        if (in_array($this->connection, Init::select2_tag_connections()) && is_object($instance) && method_exists($instance, 'get_tags')) {
 
             $tags = $instance->get_tags();
 

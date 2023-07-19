@@ -11,6 +11,9 @@ add_filter( 'plugin_action_links_' . STCFQ_PLUGIN_BASENAME, array( 'STCFQ_Settin
 /* Action to redirect after activation */
 add_action( 'admin_notices', array( 'STCFQ_Setting', 'redirect' ) );
 
+/* Action to register assets */
+add_action( 'init', array( 'STCFQ_Admin_Menu', 'register_assets' ) );
+
 /* Action to create menu pages */
 add_action( 'admin_menu', array( 'STCFQ_Admin_Menu', 'create_menu' ) );
 

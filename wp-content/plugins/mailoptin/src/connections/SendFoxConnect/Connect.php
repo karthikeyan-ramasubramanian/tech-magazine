@@ -28,8 +28,6 @@ class Connect extends AbstractSendFoxConnect implements ConnectionInterface
     }
 
     /**
-     * Register Constant Contact Connection.
-     *
      * @param array $connections
      *
      * @return array
@@ -42,13 +40,13 @@ class Connect extends AbstractSendFoxConnect implements ConnectionInterface
     }
 
     /**
-     * Replace placeholder tags with actual SendFox tags.
+     * Fulfill interface contract.
      *
      * {@inheritdoc}
      */
     public function replace_placeholder_tags($content, $type = 'html')
     {
-        return [];
+        return $this->replace_footer_placeholder_tags($content);
     }
 
     /**
@@ -62,15 +60,31 @@ class Connect extends AbstractSendFoxConnect implements ConnectionInterface
     {
         try {
 
-            $response = $this->sendfox_instance()->make_request('lists');
-            $response = $response['body'];
+            $page  = 1;
+            $loop  = true;
+            $limit = 10;
 
             $lists_array = [];
 
-            if (isset($response['data']) && is_array($response['data'])) {
+            while ($loop === true) {
 
-                foreach ($response['data'] as $list) {
-                    $lists_array[$list['id']] = $list['name'];
+                $response = $this->sendfox_instance()->make_request('lists', ['page' => $page]);
+                $response = $response['body'];
+
+                if (isset($response['data']) && is_array($response['data']) && ! empty($response['data'])) {
+
+                    foreach ($response['data'] as $list) {
+                        $lists_array[$list['id']] = $list['name'];
+                    }
+
+                    if (count($response['data']) < $limit) {
+                        $loop = false;
+                    }
+
+                    $page++;
+
+                } else {
+                    $loop = false;
                 }
             }
 

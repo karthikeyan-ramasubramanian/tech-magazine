@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Entities;
 
@@ -9,9 +9,11 @@ use DateTimeInterface;
 use MailPoet\Doctrine\EntityTraits\AutoincrementedIdTrait;
 use MailPoet\Doctrine\EntityTraits\CreatedAtTrait;
 use MailPoet\Doctrine\EntityTraits\DeletedAtTrait;
+use MailPoet\Doctrine\EntityTraits\SafeToOneAssociationLoadTrait;
 use MailPoet\Doctrine\EntityTraits\UpdatedAtTrait;
 use MailPoetVendor\Doctrine\Common\Collections\ArrayCollection;
 use MailPoetVendor\Doctrine\Common\Collections\Collection;
+use MailPoetVendor\Doctrine\Common\Collections\Criteria;
 use MailPoetVendor\Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -34,6 +36,7 @@ class ScheduledTaskEntity {
   use CreatedAtTrait;
   use UpdatedAtTrait;
   use DeletedAtTrait;
+  use SafeToOneAssociationLoadTrait;
 
   /**
    * @ORM\Column(type="string", nullable=true)
@@ -87,7 +90,13 @@ class ScheduledTaskEntity {
    * @ORM\OneToMany(targetEntity="MailPoet\Entities\ScheduledTaskSubscriberEntity", mappedBy="task", fetch="EXTRA_LAZY")
    * @var Collection<int, ScheduledTaskSubscriberEntity>
    */
-  public $subscribers;
+  private $subscribers;
+
+  /**
+   * @ORM\OneToOne(targetEntity="MailPoet\Entities\SendingQueueEntity", mappedBy="task", fetch="EAGER")
+   * @var SendingQueueEntity|null
+   */
+  private $sendingQueue;
 
   public function __construct() {
     $this->subscribers = new ArrayCollection();
@@ -204,5 +213,27 @@ class ScheduledTaskEntity {
    */
   public function getSubscribers(): Collection {
     return $this->subscribers;
+  }
+
+  /**
+   * @param int $processed ScheduledTaskSubscriberEntity::PROCESSED_* constant
+   * @return SubscriberEntity[]
+   */
+  public function getSubscribersByProcessed(int $processed): array {
+    $criteria = Criteria::create()
+      ->where(Criteria::expr()->eq('processed', $processed));
+    $subscribers = $this->subscribers->matching($criteria)->map(function (ScheduledTaskSubscriberEntity $taskSubscriber): ?SubscriberEntity {
+      return $taskSubscriber->getSubscriber();
+    });
+    return array_filter($subscribers->toArray());
+  }
+
+  public function getSendingQueue(): ?SendingQueueEntity {
+    $this->safelyLoadToOneAssociation('sendingQueue');
+    return $this->sendingQueue;
+  }
+
+  public function setSendingQueue(SendingQueueEntity $sendingQueue): void {
+    $this->sendingQueue = $sendingQueue;
   }
 }

@@ -1,7 +1,7 @@
 /*
  * UnderConstructionPage
  * Main backend JS
- * (c) WebFactory Ltd, 2015 - 2022
+ * (c) WebFactory Ltd, 2015 - 2023
  */
 
 
@@ -357,7 +357,7 @@ jQuery(document).ready(function($) {
       ad_name = '';
     }
 
-    $('.promo-button').each(function(ind, el) {
+    $('.promo-button, .promo-link').each(function(ind, el) {
       tmp = $(el).data('href-org');
       tmp = tmp.replace('pricing-table', ad_name);
       $(el).attr('href', tmp);
@@ -464,11 +464,11 @@ jQuery(document).ready(function($) {
   }
 
   function ucp_position_wpfssl_ad() {
-    pos_left = Math.round($('#ucp_tabs').width()) + 40;
-    pos_top = Math.round($('#ucp_tabs').offset().top) + 45;
+    pos_left = Math.round($('#ucp_tabs').width()) + 220;
+    pos_top = Math.round($('.ucp-logo').offset().top) + 10;
 
-    $('#wpfssl-ad').css('top', pos_top + 'px').css('left', pos_left + 'px');
-    $('#wpfssl-ad').show();
+    $('#ucp-sidebar-ads').css('top', pos_top + 'px').css('left', pos_left + 'px');
+    $('#ucp-sidebar-ads').show();
   } // ucp_position_wpfssl_ad
 
   ucp_position_wpfssl_ad();

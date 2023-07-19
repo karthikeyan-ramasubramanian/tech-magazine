@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Entities;
 
@@ -53,6 +53,17 @@ class NewsletterOptionEntity {
    */
   public function getValue() {
     return $this->value;
+  }
+
+  /**
+   * @return string|null
+   */
+  public function getName() {
+    $optionField = $this->getOptionField();
+    if ($optionField === null) {
+      return null;
+    }
+    return $optionField->getName();
   }
 
   /**

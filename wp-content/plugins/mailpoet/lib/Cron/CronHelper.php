@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Cron;
 
@@ -190,7 +190,9 @@ class CronHelper {
   public function getSiteUrl($siteUrl = false) {
     // additional check for some sites running inside a virtual machine or behind
     // proxy where there could be different ports (e.g., host:8080 => guest:80)
-    $siteUrl = ($siteUrl) ? $siteUrl : WPFunctions::get()->homeUrl();
+    if (!$siteUrl) {
+      $siteUrl = defined('MAILPOET_CRON_SITE_URL') ? MAILPOET_CRON_SITE_URL : $this->wp->homeUrl();
+    }
     $parsedUrl = parse_url($siteUrl);
     if (!is_array($parsedUrl)) {
       throw new \Exception(__('Site URL is unreachable.', 'mailpoet'));
@@ -219,8 +221,20 @@ class CronHelper {
 
   public function enforceExecutionLimit($timer) {
     $elapsedTime = microtime(true) - $timer;
-    if ($elapsedTime >= $this->getDaemonExecutionLimit()) {
-      throw new \Exception(__('Maximum execution time has been reached.', 'mailpoet'), self::DAEMON_EXECUTION_LIMIT_REACHED);
+    $limit = $this->getDaemonExecutionLimit();
+    if ($elapsedTime >= $limit) {
+      throw new \Exception(
+        sprintf(
+          // translators: %1$d is the number of seconds the daemon is allowed to run, %2$d is how many more seconds the daemon did run.
+          __(
+            'The maximum execution time of %1$d seconds was exceeded by %2$d seconds. This task will resume during the next run.',
+            'mailpoet'
+          ),
+          (int)round($limit),
+          (int)round($elapsedTime - $limit)
+        ),
+        self::DAEMON_EXECUTION_LIMIT_REACHED
+      );
     }
   }
 }

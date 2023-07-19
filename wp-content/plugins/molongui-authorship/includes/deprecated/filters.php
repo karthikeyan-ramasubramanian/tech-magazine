@@ -2,49 +2,6 @@
 
 use Molongui\Authorship\Includes\Author;
 defined( 'ABSPATH' ) or exit;
-if ( version_compare( get_bloginfo( 'version' ),'4.6.0', '<' ) )
-{
-    if ( !function_exists( 'apply_filters_deprecated' ) )
-    {
-        function apply_filters_deprecated( $tag, $args, $version, $replacement = '', $message = '' )
-        {
-            if ( !has_filter( $tag ) )
-            {
-                return $args[0];
-            }
-            if ( WP_DEBUG  )
-            {
-                $message = empty( $message ) ? '' : ' ' . $message;
-
-                if ( $replacement )
-                {
-                    trigger_error(
-                        sprintf(
-                            __( '%1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.' ),
-                            $tag,
-                            $version,
-                            $replacement
-                        ) . $message,
-                        E_USER_DEPRECATED
-                    );
-                }
-                else
-                {
-                    trigger_error(
-                        sprintf(
-                            __( '%1$s is <strong>deprecated</strong> since version %2$s with no alternative available.' ),
-                            $tag,
-                            $version
-                        ) . $message,
-                        E_USER_DEPRECATED
-                    );
-                }
-            }
-
-            return apply_filters_ref_array( $tag, $args );
-        }
-    }
-}
 function authorship_deprecated_filter_get_author( $author, $author_id, $author_type )
 {
     return apply_filters_deprecated( 'molongui_authorship_get_author', array( $author, $author_id, $author_type ), '4.2.0', 'authorship/author/get' );
@@ -131,4 +88,22 @@ function authorship_deprecated_filter_box_hide( $value, $post )
 {
     return !apply_filters_deprecated( 'authorship/box/hide', array( $value, $post ), '4.5.4', 'authorship/render_box' );
 }
-//add_filter( 'authorship/render_box', 'authorship_deprecated_filter_box_hide', 0, 2 );
+function authorship_deprecated_filter_gub_no_loop( $value, $user, $args )
+{
+    return apply_filters_deprecated( '_authorship/filter/get_user_by/archive/no_loop', array( $value, $user, $args ), '4.6.7', '_authorship/get_user_by/aim' );
+}
+function authorship_deprecated_filter_gub_guest_loop( $value, $user, $args )
+{
+    $byline_name = ( 'byline' === $value ? true : false );
+    return apply_filters_deprecated( '_authorship/get_user_by/guest/archive/loop', array( $byline_name, $args ), '4.6.7', '_authorship/get_user_by/aim' );
+}
+add_filter( '_authorship/get_user_by/aim', 'authorship_deprecated_filter_gub_guest_loop', 0, 3 );
+function authorship_deprecated_filter_gub_archive_post_id( $post_id, $user, $args )
+{
+    return apply_filters_deprecated( 'authorship/override/get_user_by/archive/post_id', array( $post_id, null, $user, $args['dbt'] ), '4.6.7', '_authorship/get_user_by/post_id' );
+}
+function authorship_deprecated_filter_gub_post_id( $post_id, $user, $args )
+{
+    return apply_filters_deprecated( 'molongui_authorship_override_get_user_by_post_id', array( $post_id, get_post( $post_id ), $user ), '4.6.7', '_authorship/get_user_by/post_id' );
+}
+add_filter( '_authorship/get_user_by/post_id', 'authorship_deprecated_filter_gub_post_id', 0, 3 );

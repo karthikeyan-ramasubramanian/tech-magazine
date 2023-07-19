@@ -1,7 +1,7 @@
 <?php
 defined( 'ABSPATH' ) || die();
 
-$menu_tab = ( ! empty( $_GET['tab'] ) ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'captcha';
+$menu_tab = ( isset( $_GET['tab'] ) && ! empty( $_GET['tab'] ) ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'captcha';
 
 $menu_tabs = array(
 	'captcha'    => esc_html__( 'Captcha', 'login-security-recaptcha' ),
@@ -12,28 +12,23 @@ $menu_tabs = array(
 
 <div class="wrap stlsr">
 	<?php if ( ! class_exists( 'STLSP_Login_Security_Pro' ) ) { ?>
-	<div class="stlsr-pro stlsr-pro--top">
-		<div class="stlsr-pro-description">
-			<div class="stlsr-pro-heading">
-			<?php
-			echo wp_kses(
-				__( '<span class="stlsr-pro-light">GET</span> <span class="stlsr-pro-bold">Login Security <span class="stlsr-pro-bold stlsr-pro-underline">Pro</span>', 'login-security-recaptcha' ),
-				array( 'span' => array( 'class' => array() ) )
-			);
-			?>
+	<div class="stlsr-pro-main">
+		<a href="<?php echo esc_url( STLSR_Helper::get_pro_url() ); ?>" target="_blank" class="stlsr-pro-main-link">
+			<img src="<?php echo esc_url( STLSR_PLUGIN_URL . 'assets/images/Login-Security-Pro.png' ); ?>" alt="<?php esc_attr_e( 'Upgrade to Login Security Pro', 'login-security-recaptcha' ); ?>" class="stlsr-pro-main-img">
+		</a>
+		<div class="stlsr-pro-main-desc">
+			<div class="stlsr-pro-main-title"><?php echo wp_kses( __( 'Upgrade to <span>Pro</span> Version', 'login-security-recaptcha' ), array( 'span' => array() ) ); ?></div>
+			<div class="stlsr-pro-main-btn-group">
+				<a href="<?php echo esc_url( STLSR_Helper::get_pro_url() ); ?>" target="_blank" class="stlsr-pro-main-btn stlsr-pro-main-btn--highlight"><?php esc_html_e( 'Buy Now', 'login-security-recaptcha' ); ?></a>
+				<a href="<?php echo esc_url( STLSR_Helper::get_pro_detail_url() ); ?>" target="_blank" class="stlsr-pro-main-btn"><?php esc_html_e( 'More Detail', 'login-security-recaptcha' ); ?></a>
 			</div>
-			<p class="stlsr-pro-desc"><?php esc_html_e( 'Limit Login Attempts by IP Address, Secure WooCommerce Login, Registration and Checkout Form, Check Login History by Username, Check and Monitor Last Login, Role-Based Redirection after Login and Logout, Plugin Documentation.', 'login-security-recaptcha' ); ?></p>
-		</div>
-		<div class="stlsr-pro-links">
-			<a target="_blank" href="<?php echo esc_url( STLSR_Helper::get_pro_url() ); ?>" class="stlsr-pro-link stlsr-pro-link--signup stlsr-pro-bold"><?php esc_html_e( 'Buy Now', 'login-security-recaptcha' ); ?></a>
-			<a target="_blank" href="<?php echo esc_url( STLSR_Helper::get_pro_detail_url() ); ?>" class="stlsr-pro-link stlsr-pro-link--detail"><?php esc_html_e( 'More Info', 'login-security-recaptcha' ); ?></a>
 		</div>
 	</div>
 	<?php } ?>
 
-	<div class="stlsr-page-heading"><?php esc_html_e( 'Login Security reCAPTCHA', 'login-security-recaptcha' ); ?></div>
+	<div class="stlsr-page-heading"><?php esc_html_e( 'Login Security Captcha', 'login-security-recaptcha' ); ?></div>
 
-	<h2 class="nav-tab-wrapper">
+	<div class="nav-tab-wrapper">
 	<?php
 	foreach ( $menu_tabs as $key => $value ) {
 		$class = ( $menu_tab === $key ) ? ' nav-tab-active' : '';
@@ -44,7 +39,7 @@ $menu_tabs = array(
 		<?php
 	}
 	?>
-	</h2>
+	</div>
 
 	<div class="stlsr-section">
 	<?php

@@ -188,7 +188,7 @@ class Connect extends AbstractHubspotConnect implements ConnectionInterface
      */
     public function replace_placeholder_tags($content, $type = 'html')
     {
-        return $content;
+        return $this->replace_footer_placeholder_tags($content);
     }
 
     /**

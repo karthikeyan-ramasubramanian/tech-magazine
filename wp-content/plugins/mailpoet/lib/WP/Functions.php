@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\WP;
 
@@ -58,26 +58,6 @@ class Functions {
    */
   public function addAction($tag, $functionToAdd, $priority = 10, $acceptedArgs = 1) {
     return call_user_func_array('add_action', func_get_args());
-  }
-
-  public function __($text, $domain = 'default') {
-    return __($text, $domain);
-  }
-
-  // phpcs:disable WordPress.Security.EscapeOutput.UnsafePrintingFunction, WordPress.Security.EscapeOutput.OutputNotEscaped
-  public function _e($text, $domain = 'default') {
-    return _e($text, $domain);
-  }
-
-  // phpcs:enable WordPress.Security.EscapeOutput.UnsafePrintingFunction, WordPress.Security.EscapeOutput.OutputNotEscaped
-
-
-  public function _n($single, $plural, $number, $domain = 'default') {
-    return _n($single, $plural, $number, $domain);
-  }
-
-  public function _x($text, $context, $domain = 'default') {
-    return _x($text, $context, $domain);
   }
 
   public function addCommentMeta($commentId, $metaKey, $metaValue, $unique = false) {
@@ -143,6 +123,10 @@ class Functions {
     return delete_comment_meta($commentId, $metaKey, $metaValue);
   }
 
+  public function addOption($option, $value) {
+    return add_option($option, $value);
+  }
+
   public function deleteOption($option) {
     return delete_option($option);
   }
@@ -161,6 +145,10 @@ class Functions {
 
   public function escSql($sql) {
     return esc_sql($sql);
+  }
+
+  public function escUrl($url): string {
+    return esc_url($url);
   }
 
   public function getBloginfo($show = '', $filter = 'raw') {
@@ -400,6 +388,10 @@ class Functions {
     return register_activation_hook($file, $function);
   }
 
+  public function registerDeactivationHook($file, $function) {
+    return register_deactivation_hook($file, $function);
+  }
+
   public function registerPostType($postType, $args = []) {
     return register_post_type($postType, $args);
   }
@@ -410,7 +402,7 @@ class Functions {
 
     /**
    * @param string $tag
-   * @param callable $functionToRemove
+   * @param callable|string|array $functionToRemove
    * @param int $priority
    */
   public function removeAction($tag, $functionToRemove, $priority = 10) {
@@ -475,10 +467,6 @@ class Functions {
 
   public function stripslashesDeep($value) {
     return stripslashes_deep($value);
-  }
-
-  public function translate($text, $domain = 'default') {
-    return translate($text, $domain);
   }
 
   public function unloadTextdomain($domain) {
@@ -646,6 +634,10 @@ class Functions {
     return is_main_query();
   }
 
+  public function getPrivacyPolicyUrl(): string {
+    return get_privacy_policy_url();
+  }
+
   /**
    * @param string $action
    * @param array|object $args
@@ -678,6 +670,29 @@ class Functions {
    */
   public function isSingular($postTypes = ''): bool {
     return is_singular($postTypes);
+  }
+
+  /**
+   * Determines whether the query is for an existing archive page.
+   *
+   * Archive pages include category, tag, author, date, custom post type,
+   * and custom taxonomy based archives.
+   *
+   * @return bool Whether the query is for an existing archive page.
+   */
+  public function isArchive(): bool {
+    return is_archive();
+  }
+
+  /**
+   * Determines whether the query is for an existing post type archive page.
+   *
+   * @param string|string[] $postTypes Optional. Post type or array of posts types
+   *                                    to check against. Default empty.
+   * @return bool Whether the query is for an existing post type archive page.
+   */
+  public function isPostTypeArchive($postTypes = ''): bool {
+    return is_post_type_archive($postTypes);
   }
 
   /**
@@ -785,6 +800,10 @@ class Functions {
     return rest_url($path, $scheme);
   }
 
+  public function registerRestRoute(string $namespace, string $route, array $args = [], bool $override = false): bool {
+    return register_rest_route($namespace, $route, $args, $override);
+  }
+
   /**
    * @param mixed $value
    * @return true|WP_Error
@@ -842,5 +861,21 @@ class Functions {
 
   public function isWpError($value): bool {
     return is_wp_error($value);
+  }
+
+  public function wpIsSiteUrlUsingHttps(): bool {
+    return wp_is_site_url_using_https();
+  }
+
+  public function getPostMeta(int $postId, string $key, bool $single = false) {
+    return get_post_meta($postId, $key, $single);
+  }
+
+  public function getFileData(string $file, array $default_headers, string $context = 'plugin'): array {
+    return get_file_data($file, $default_headers, $context);
+  }
+
+  public function getPluginData(string $plugin_file, bool $markup = true, bool $translate = true): array {
+    return get_plugin_data($plugin_file, $markup, $translate);
   }
 }

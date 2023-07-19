@@ -1,6 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or exit;
-add_filter( 'molongui_authorship_override_get_user_by_post_id', function( $post_id, $post, $user )
+add_filter( '_authorship/get_user_by/post_id', function( $post_id, $user, $args )
 {
     $dbt = debug_backtrace( DEBUG_BACKTRACE_PROVIDE_OBJECT, 7 );
     $fn    = 'get_author';

@@ -1,28 +1,18 @@
 <% extends 'layout.html' %>
 
 <% block content %>
-
 <div class="wrap">
-  <h1 class="mailpoet-h1">Automation</h1>
-
-  <div class="mailpoet_notice notice notice-error">
-    <p>
-      <strong>This is a testing page for MailPoet automation.</strong>
-    </p>
-  </div>
+  <div id="mailpoet_automation"></div>
 </div>
 
-<div>
-  <a href="<%= admin_url('admin.php?page=mailpoet-automation-editor') %>">Automation Editor</a>
-</div>
-
-<div id="mailpoet_automation"></div>
-
+<script type="text/javascript">
+  var mailpoet_locale_full = <%= json_encode(locale_full) %>;
+  var mailpoet_automation_api = <%= json_encode(api) %>;
+  var mailpoet_automation_count = <%= json_encode(automationCount) %>;
+  var mailpoet_automation_templates = <%= json_encode(templates) %>;
+</script>
 <% endblock %>
 
-<% block after_javascript %>
-  <script type="text/javascript">
-    var mailpoet_automation_api = <%= json_encode(api) %>;
-  </script>
-  <%= javascript('automation.js')%>
+<% block after_css %>
+<%= stylesheet('mailpoet-automation.css') %>
 <% endblock %>

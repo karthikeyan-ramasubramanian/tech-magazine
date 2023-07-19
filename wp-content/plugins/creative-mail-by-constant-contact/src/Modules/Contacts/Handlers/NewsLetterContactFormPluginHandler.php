@@ -4,122 +4,135 @@ namespace CreativeMail\Modules\Contacts\Handlers;
 
 define('CE4WP_NL_EVENTTYPE', 'WordPress - NewsLetter');
 
-use CreativeMail\Managers\RaygunManager;
+use CreativeMail\Managers\Logs\DatadogManager;
 use CreativeMail\Modules\Contacts\Models\ContactModel;
 use CreativeMail\Modules\Contacts\Models\OptActionBy;
+use Exception;
 
-class NewsLetterContactFormPluginHandler extends BaseContactFormPluginHandler
-{
-    public function convertToContactModel($user)
-    {
-        $contactModel = new ContactModel();
+final class NewsLetterContactFormPluginHandler extends BaseContactFormPluginHandler {
 
-        $contactModel->setEventType(CE4WP_NL_EVENTTYPE);
-        $contactModel->setOptIn(true);
-        $contactModel->setOptActionBy(OptActionBy::Visitor);
+	public function __construct() {
+		parent::__construct();
+	}
 
-        $email = $user->email;
-        if (!empty($email)) {
-            $contactModel->setEmail($email);
-        }
+	/**
+	 * Converts to contact model.
+	 *
+	 * @param object $user The user.
+	 *
+	 * @return ContactModel
+	 * @throws Exception
+	 */
+	public function convertToContactModel( $user ) {
+		$contactModel = new ContactModel();
+		$contactModel->setEventType(CE4WP_NL_EVENTTYPE);
+		$contactModel->setOptIn(true);
+		$contactModel->setOptActionBy(OptActionBy::VISITOR);
 
-        $name = $user->name;
-        if (!empty($name)) {
-            $contactModel->setFirstName($name);
-        }
+		$email = $user->email;
 
-        $surname = $user->surname;
-        if (!empty($surname)) {
-            $contactModel->setLastName($surname);
-        }
+		if ( ! empty($email) ) {
+			$contactModel->setEmail($email);
+		}
 
-        return $contactModel;
-    }
+		$name = $user->name;
 
-    public function ceHandleContactNewsletterSubmit($user)
-    {
-        try {
-            $this->upsertContact($this->convertToContactModel($user));
-        }
-        catch (\Exception $exception) {
-            RaygunManager::get_instance()->exception_handler($exception);
-        }
-    }
+		if ( ! empty($name) ) {
+			$contactModel->setFirstName($name);
+		}
 
-    public function registerHooks()
-    {
-        add_action('newsletter_user_confirmed', array($this, 'ceHandleContactNewsletterSubmit'));
-    }
+		$surname = $user->surname;
 
-    public function unregisterHooks()
-    {
-        remove_action('newsletter_user_confirmed', array($this, 'ceHandleContactNewsletterSubmit'));
-    }
+		if ( ! empty($surname) ) {
+			$contactModel->setLastName($surname);
+		}
 
-    public function get_contacts($limit = null)
-    {
-        if (!is_int($limit) || $limit <= 0) {
-            $limit = null;
-        }
+		return $contactModel;
+	}
 
-        global $wpdb;
+	/**
+	 * Handles the contact form submission.
+	 *
+	 * @param object $user The user.
+	 *
+	 * @return void
+	 */
+	public function ceHandleContactNewsletterSubmit( $user ) {
+		try {
+			$this->upsertContact($this->convertToContactModel($user));
+		} catch ( Exception $exception ) {
+			DatadogManager::get_instance()->exception_handler($exception);
+		}
+	}
 
-        $query = 'select * from wp_newsletter order by id desc';
+	public function registerHooks() {
+		add_action('newsletter_user_confirmed', array( $this, 'ceHandleContactNewsletterSubmit' ));
+	}
 
-        if ($limit != null) {
-            $query .= " LIMIT %d";
-            $query = $wpdb->prepare($query, $limit);
-        } else {
-            $query = $wpdb->prepare($query);
-        }
+	public function unregisterHooks() {
+		remove_action('newsletter_user_confirmed', array( $this, 'ceHandleContactNewsletterSubmit' ));
+	}
 
-        $result = $wpdb->get_results($query);
+	/**
+	 * Get all the contacts.
+	 *
+	 * @param ?int $limit The limit of contacts to be sent.
+	 *
+	 * @return array|null
+	 */
+	public function get_contacts( $limit = null ) {
+		global $wpdb;
 
-        $backfillArray = array();
+		$backfillArray = array();
 
-        if (isset($result) && !empty($result)) {
-            foreach ($result as $contact) {
-                $contactModel = new ContactModel();
-                try {
-                    $contactModel->setEventType(CE4WP_NL_EVENTTYPE);
-                    $contactModel->setOptIn($contact->status !== "U");
-                    $contactModel->setOptOut($contact->status === "U");
-                    $contactModel->setOptActionBy(OptActionBy::Visitor);
+		if ( ! is_int($limit) || $limit <= 0 ) {
+			$limit = null;
+		}
 
-                    $email = $contact->email;
-                    if (!empty($email)) {
-                        $contactModel->setEmail($email);
-                    }
+		if ( null != $limit ) {
+			$result = $wpdb->get_results($wpdb->prepare('select * from wp_newsletter order by id desc LIMIT %d', $limit));
+		} else {
+			$result = $wpdb->get_results($wpdb->prepare('select * from wp_newsletter order by id desc'));
+		}
 
-                    $name = $contact->name;
-                    if (!empty($name)) {
-                        $contactModel->setFirstName($name);
-                    }
+		if ( isset($result) && ! empty($result) ) {
+			foreach ( $result as $contact ) {
+				$contactModel = new ContactModel();
+				try {
+					$contactModel->setEventType(CE4WP_NL_EVENTTYPE);
+					$contactModel->setOptIn( 'U' !== $contact->status );
+					$contactModel->setOptOut( 'U' === $contact->status );
+					$contactModel->setOptActionBy(OptActionBy::VISITOR);
 
-                    $surname = $contact->surname;
-                    if (!empty($surname)) {
-                        $contactModel->setLastName($surname);
-                    }
-                } catch (\Exception $exception) {
-                    RaygunManager::get_instance()->exception_handler($exception);
-                    continue;
-                }
+					$email = $contact->email;
+					if ( ! empty($email) ) {
+						$contactModel->setEmail($email);
+					}
 
-                if (!empty($contactModel->getEmail())) {
-                    array_push($backfillArray, $contactModel);
-                }
-            }
-        }
+					$name = $contact->name;
+					if ( ! empty($name) ) {
+						$contactModel->setFirstName($name);
+					}
 
-        if (!empty($backfillArray)) {
-            return $backfillArray;
-        }
+					$surname = $contact->surname;
+					if ( ! empty($surname) ) {
+						$contactModel->setLastName($surname);
+					}
+				} catch ( Exception $exception ) {
+					DatadogManager::get_instance()->exception_handler($exception);
+					continue;
+				}
 
-        return null;
-    }
+				if ( ! empty($contactModel->getEmail()) ) {
+					array_push($backfillArray, $contactModel);
+				}
+			}
+		}
 
-    function __construct()
-    {
-        parent::__construct();
-    }
+		if ( ! empty($backfillArray) ) {
+			return $backfillArray;
+		}
+
+		return null;
+	}
 }

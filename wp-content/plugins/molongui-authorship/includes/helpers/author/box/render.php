@@ -4,15 +4,18 @@ use Molongui\Authorship\Includes\Author;
 defined( 'ABSPATH' ) or exit;
 function authorship_render_box( $content )
 {
-    global $post;
+    $post = authorship_get_post();
+
+    $post_id = !empty( $post->ID ) ? $post->ID : null;
+    if ( empty( $post_id ) ) return $content;
     if ( !apply_filters( 'authorship/render_box', true, $post ) ) return $content;
-    $post_authors = get_post_authors( $post->ID );
+    $post_authors = get_post_authors( $post_id );
     if ( empty( $post_authors ) or $post_authors[0]->id == 0 ) return $content;
     $options = authorship_get_options();
     $html = authorship_box_markup( $post, $post_authors, $options );
     if ( empty( $html ) ) return $content;
     global $multipage, $page, $numpages;
-    $box_position = get_post_meta( $post->ID, '_molongui_author_box_position', true );
+    $box_position = get_post_meta( $post_id, '_molongui_author_box_position', true );
     if ( empty( $box_position ) or $box_position == 'default' )
     {
         $box_position = !empty( $options['box_position'] ) ? $options['box_position'] : 'below';

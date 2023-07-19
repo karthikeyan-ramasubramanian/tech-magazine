@@ -29,6 +29,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 					'meta',
 					'description',
 					'required',
+					'required_field_message_setting',
 					'required_field_message',
 				),
 			),
@@ -53,6 +54,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	 */
 	public function init_hooks() {
 		add_filter( 'everest_forms_field_properties_' . $this->type, array( $this, 'field_properties' ), 5, 3 );
+		add_filter( 'everest_forms_field_exporter_' . $this->type, array( $this, 'field_exporter' ) );
 	}
 
 	/**
@@ -200,6 +202,19 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	}
 
 	/**
+	 * Filter callback for outputting formatted data.
+	 *
+	 * @param array $field Field Data.
+	 * @return array Data for field exporter PDF or Email.
+	 */
+	public function field_exporter( $field ) {
+		return array(
+			'label' => ! empty( $field['name'] ) ? $field['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
+			'value' => ! empty( $field['value'] ) || is_numeric( $field['value'] ) ? sanitize_text_field( $field['value'] ) : false,
+		);
+	}
+
+	/**
 	 * Field preview inside the builder.
 	 *
 	 * @since 1.0.0
@@ -274,14 +289,20 @@ class EVF_Field_Number extends EVF_Form_Fields {
 	 * @param array  $form_data All Form Data.
 	 */
 	public function validate( $field_id, $field_submit, $form_data ) {
-		$form_id            = absint( $form_data['id'] );
-		$min_value          = isset( $form_data['form_fields'][ $field_id ]['min_value'] ) ? floatval( $form_data['form_fields'][ $field_id ]['min_value'] ) : 0;
-		$max_value          = isset( $form_data['form_fields'][ $field_id ]['max_value'] ) ? floatval( $form_data['form_fields'][ $field_id ]['max_value'] ) : 0;
-		$conditional_status = isset( $form_data['form_fields'][ $field_id ]['conditional_logic_status'] ) ? $form_data['form_fields'][ $field_id ]['conditional_logic_status'] : 0;
+		$form_id          = absint( $form_data['id'] );
+		$min_value        = isset( $form_data['form_fields'][ $field_id ]['min_value'] ) ? floatval( $form_data['form_fields'][ $field_id ]['min_value'] ) : 0;
+		$max_value        = isset( $form_data['form_fields'][ $field_id ]['max_value'] ) ? floatval( $form_data['form_fields'][ $field_id ]['max_value'] ) : 0;
+		$entry            = $form_data['entry'];
+		$visible          = apply_filters( 'everest_forms_visible_fields', true, $form_data['form_fields'][ $field_id ], $entry, $form_data );
+		$field_type       = isset( $form_data['form_fields'][ $field_id ]['type'] ) ? $form_data['form_fields'][ $field_id ]['type'] : '';
+		$required_message = isset( $form_data['form_fields'][ $field_id ]['required-field-message'], $form_data['form_fields'][ $field_id ]['required_field_message_setting'] ) && ! empty( $form_data['form_fields'][ $field_id ]['required-field-message'] ) && 'individual' == $form_data['form_fields'][ $field_id ]['required_field_message_setting'] ? $form_data['form_fields'][ $field_id ]['required-field-message'] : get_option( 'everest_forms_' . $field_type . '_validation' );
+		if ( false === $visible ) {
+			return;
+		}
 
 		// Basic required check - If field is marked as required, check for entry data.
-		if ( ! empty( $form_data['form_fields'][ $field_id ]['required'] ) && '1' !== $conditional_status && empty( $field_submit ) && '0' !== $field_submit ) {
-			evf()->task->errors[ $form_id ][ $field_id ] = evf_get_required_label();
+		if ( ! empty( $form_data['form_fields'][ $field_id ]['required'] ) && empty( $field_submit ) && '0' !== $field_submit ) {
+			evf()->task->errors[ $form_id ][ $field_id ] = $required_message;
 			update_option( 'evf_validation_error', 'yes' );
 		}
 

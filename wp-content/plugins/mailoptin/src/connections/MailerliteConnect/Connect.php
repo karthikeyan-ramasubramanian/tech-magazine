@@ -30,7 +30,7 @@ class Connect extends AbstractMailerliteConnect implements ConnectionInterface
     }
 
     /**
-     * Register MailerLite Connection.
+     * Register MailerLite Classic Connection.
      *
      * @param array $connections
      *
@@ -38,13 +38,13 @@ class Connect extends AbstractMailerliteConnect implements ConnectionInterface
      */
     public function register_connection($connections)
     {
-        $connections[self::$connectionName] = __('MailerLite', 'mailoptin');
+        $connections[self::$connectionName] = __('MailerLite Classic', 'mailoptin');
 
         return $connections;
     }
 
     /**
-     * Replace placeholder tags with actual MailerLite tags.
+     * Replace placeholder tags with actual MailerLite Classic tags.
      *
      * {@inheritdoc}
      */

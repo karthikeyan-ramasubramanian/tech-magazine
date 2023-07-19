@@ -87,7 +87,7 @@ class Subscription extends AbstractConnect
 
             if (is_wp_error($subscriber_id)) {
                 /** @var \WP_Error $subscriber_id */
-                return self::save_optin_error_log($subscriber_id->get_error_message(), 'mailster', $this->extras['optin_campaign_id']);
+                return self::save_optin_error_log($subscriber_id->get_error_message(), 'mailster', $this->extras['optin_campaign_id'], $this->extras['optin_campaign_type']);
             }
 
             mailster('subscribers')->assign_lists($subscriber_id, [$this->list_id]);
@@ -95,7 +95,7 @@ class Subscription extends AbstractConnect
             return parent::ajax_success();
 
         } catch (\Exception $e) {
-            self::save_optin_error_log($e->getCode() . ': ' . $e->getMessage(), 'mailster', $this->extras['optin_campaign_id']);
+            self::save_optin_error_log($e->getCode() . ': ' . $e->getMessage(), 'mailster', $this->extras['optin_campaign_id'], $this->extras['optin_campaign_type']);
 
             return parent::ajax_failure(__('There was an error saving your contact. Please try again.', 'mailoptin'));
         }

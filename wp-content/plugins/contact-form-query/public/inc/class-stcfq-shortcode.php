@@ -16,7 +16,7 @@ class STCFQ_Shortcode {
 
 			$error_message = esc_html__( 'Error occurred while sending your message. Please try again after some time.', 'contact-form-query' );
 
-			if ( ! wp_verify_nonce( $_POST['save-contact'], 'save-contact' ) ) {
+			if ( ! isset( $_POST['save-contact'] ) || ! wp_verify_nonce( $_POST['save-contact'], 'save-contact' ) ) {
 				die();
 			}
 
@@ -27,21 +27,45 @@ class STCFQ_Shortcode {
 			if ( 'google_recaptcha_v2' === $captcha ) {
 				$google_recaptcha_v2 = STCFQ_Helper::google_recaptcha_v2();
 				if ( ! empty( $google_recaptcha_v2['site_key'] ) && ! empty( $google_recaptcha_v2['secret_key'] ) ) {
-					if ( isset( $_POST['g-recaptcha-response'] ) ) {
+					if ( isset( $_POST['g-recaptcha-response'] ) && ! empty( $_POST['g-recaptcha-response'] ) ) {
 						$response = wp_remote_post(
 							'https://www.google.com/recaptcha/api/siteverify',
 							array(
 								'body' => array(
 									'secret'   => $google_recaptcha_v2['secret_key'],
 									'response' => $_POST['g-recaptcha-response'],
-								)
+								),
 							)
 						);
 
 						$data = wp_remote_retrieve_body( $response );
 						$data = json_decode( $data );
 
-						if ( ! ( isset( $data->success ) && true === $data->success ) ) {
+						if ( ! ( isset( $data->success ) && ( true === $data->success ) ) ) {
+							throw new Exception( wp_kses( __( '<strong>ERROR:</strong> Please confirm you are not a robot.', 'contact-form-query' ), array( 'strong' => array() ) ) );
+						}
+					} else {
+						throw new Exception( wp_kses( __( '<strong>ERROR:</strong> Please confirm you are not a robot.', 'contact-form-query' ), array( 'strong' => array() ) ) );
+					}
+				}
+			} elseif ( 'cf_turnstile' === $captcha ) {
+				$cf_turnstile = STCFQ_Helper::cf_turnstile();
+				if ( ! empty( $cf_turnstile['site_key'] ) && ! empty( $cf_turnstile['secret_key'] ) ) {
+					if ( isset( $_POST['cf-turnstile-response'] ) && ! empty( $_POST['cf-turnstile-response'] ) ) {
+						$response = wp_remote_post(
+							'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+							array(
+								'body' => array(
+									'secret'   => $cf_turnstile['secret_key'],
+									'response' => $_POST['cf-turnstile-response'],
+								),
+							)
+						);
+
+						$data = wp_remote_retrieve_body( $response );
+						$data = json_decode( $data );
+
+						if ( ! ( isset( $data->success ) && ( true === $data->success ) ) ) {
 							throw new Exception( wp_kses( __( '<strong>ERROR:</strong> Please confirm you are not a robot.', 'contact-form-query' ), array( 'strong' => array() ) ) );
 						}
 					} else {
@@ -121,7 +145,6 @@ class STCFQ_Shortcode {
 					$errors['consent'] = $consent_field['msg'];
 				}
 			}
-
 		} catch ( Exception $exception ) {
 			$buffer = ob_get_clean();
 			if ( ! empty( $buffer ) ) {
@@ -133,9 +156,15 @@ class STCFQ_Shortcode {
 		}
 
 		if ( count( $errors ) < 1 ) {
-			try {
-				$wpdb->query( 'BEGIN;' );
+			$block_keywords = (string) get_option( 'stcfq_block_keywords' );
+			if ( '' !== $block_keywords ) {
+				$block_keywords = (array) preg_split( "/\r\n|\n|\r/", $block_keywords );
+				if ( STCFQ_Helper::keyword_found( $block_keywords, $subject ) || STCFQ_Helper::keyword_found( $block_keywords, $email ) || STCFQ_Helper::keyword_found( $block_keywords, $name ) || STCFQ_Helper::keyword_found( $block_keywords, $message ) ) {
+					wp_send_json_success( array( 'message' => $feedback_messages['success'] ) );
+				}
+			}
 
+			try {
 				$data = array(
 					'name'       => $name,
 					'email'      => $email,
@@ -145,7 +174,6 @@ class STCFQ_Shortcode {
 				);
 
 				$success = $wpdb->insert( "{$wpdb->prefix}stcfq_queries", $data );
-				$message = $feedback_messages['success'];
 
 				$buffer = ob_get_clean();
 				if ( ! empty( $buffer ) ) {
@@ -155,8 +183,6 @@ class STCFQ_Shortcode {
 				if ( false === $success ) {
 					throw new Exception( $error_message );
 				}
-
-				$wpdb->query( 'COMMIT;' );
 
 				STCFQ_Helper::cache_unanswered_messages_count();
 
@@ -191,9 +217,8 @@ class STCFQ_Shortcode {
 					STCFQ_Helper::send_email( $receiver_email, $subject_to_admin, $body_to_admin );
 				}
 
-				wp_send_json_success( array( 'message' => $message ) );
+				wp_send_json_success( array( 'message' => $feedback_messages['success'] ) );
 			} catch ( Exception $exception ) {
-				$wpdb->query( 'ROLLBACK;' );
 				wp_send_json_error( $error_message );
 			}
 		}

@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Segments\DynamicSegments\Exceptions;
 
@@ -24,4 +24,5 @@ class InvalidFilterException extends InvalidStateException {
   const MISSING_FILTER = 14;
   const MISSING_OPERATOR = 15;
   const MISSING_PLAN_ID = 16;
+  const MISSING_SINGLE_ORDER_VALUE_FIELDS = 17;
 };

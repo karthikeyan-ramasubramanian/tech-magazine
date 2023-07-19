@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\API\JSON\v1;
 
@@ -12,7 +12,6 @@ use MailPoet\Entities\SubscriberEntity;
 use MailPoet\Newsletter\Statistics\WooCommerceRevenue;
 use MailPoet\Subscribers\Statistics\SubscriberStatisticsRepository;
 use MailPoet\Subscribers\SubscribersRepository;
-use MailPoet\WP\Functions as WPFunctions;
 
 class SubscriberStats extends APIEndpoint {
   public $permissions = [
@@ -39,7 +38,7 @@ class SubscriberStats extends APIEndpoint {
       : null;
     if (!$subscriber instanceof SubscriberEntity) {
       return $this->errorResponse([
-        APIError::NOT_FOUND => WPFunctions::get()->__('This subscriber does not exist.', 'mailpoet'),
+        APIError::NOT_FOUND => __('This subscriber does not exist.', 'mailpoet'),
       ]);
     }
     $statistics = $this->subscribersStatisticsRepository->getStatistics($subscriber);

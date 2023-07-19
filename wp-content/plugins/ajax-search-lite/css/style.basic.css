@@ -174,7 +174,7 @@ div.asl_m .probox {
 }
 
 div.asl_m .probox .proinput {
-    width: auto;
+    width: 1px;
     height: 100%;
     margin: 0 0 0 10px;
     padding: 0 5px;
@@ -205,6 +205,8 @@ div.asl_m .probox .proinput input {
     left: 0;
     line-height: normal !important;
     display: block;
+    min-height: unset;
+    max-height: unset;
 }
 
 div.asl_m .probox .proinput input::-webkit-input-placeholder {
@@ -323,6 +325,7 @@ div.asl_m .probox .proclose .innericon {
     height: 100%;
     text-align: center;
     overflow: hidden;
+    line-height: initial;
 }
 
 div.asl_m .probox .promagnifier .innericon svg,
@@ -487,12 +490,7 @@ div.asl_r .results .item {
     -webkit-backface-visibility: hidden;
 }
 
-div.asl_r.vertical .results .item:first-child {
-    border-radius: 3px 3px 0 0;
-}
-
 div.asl_r.vertical .results .item:last-child {
-    border-radius: 0 0 3px 3px;
     margin-bottom: 0;
 }
 
@@ -588,6 +586,8 @@ div.asl_r p.showmore a {
 div.asl_r .resdrg {
     height: auto;
 }
+
+
 
 div.asl_w .group:first-of-type {
     margin: 0 0 -3px;
@@ -686,9 +686,54 @@ div.asl_s.searchsettings .asl_option_inner label {
     color: rgba(0, 0, 0, 0);
 }
 
-div.asl_s.searchsettings.ie78 .asl_option_inner label {
-    display: none;
+/* MODERN BROWSER SCROLL START */
+div.asl_r.vertical .results,
+div.asl_s.searchsettings .asl_sett_scroll {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.5) transparent;
 }
+
+div.asl_r.vertical .results::-webkit-scrollbar {
+    width: 10px;
+}
+div.asl_s.searchsettings .asl_sett_scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+div.asl_s.searchsettings .asl_sett_scroll::-webkit-scrollbar-track {
+    background: transparent;
+    box-shadow: inset 0 0 12px 12px transparent;
+    border: none;
+}
+
+div.asl_r.vertical .results::-webkit-scrollbar-track {
+    background: rgb(255, 255, 255);
+    box-shadow: inset 0 0 12px 12px transparent;
+    border: solid 2px transparent;
+}
+
+div.asl_r.vertical .results::-webkit-scrollbar-thumb,
+div.asl_s.searchsettings .asl_sett_scroll::-webkit-scrollbar-thumb {
+    background: transparent;
+    box-shadow: inset 0 0 12px 12px rgba(0, 0, 0, 0);
+    border: solid 2px transparent;
+    border-radius: 12px;
+}
+div.asl_s.searchsettings .asl_sett_scroll::-webkit-scrollbar-thumb {
+    border: none;
+}
+
+div.asl_r.vertical:hover .results::-webkit-scrollbar-thumb,
+div.asl_s.searchsettings:hover .asl_sett_scroll::-webkit-scrollbar-thumb {
+    box-shadow: inset 0 0 12px 12px rgba(0, 0, 0, 0.5);
+}
+@media (hover: none), (max-width: 500px) {
+    div.asl_r.vertical .results::-webkit-scrollbar-thumb,
+    div.asl_s.searchsettings .asl_sett_scroll::-webkit-scrollbar-thumb {
+        box-shadow: inset 0 0 12px 12px rgba(0, 0, 0, 0.5);
+    }
+}
+/* MODERN BROWSER SCROLL END */
 
 div.asl_s.searchsettings .asl_option_inner label:after {
     opacity: 0;
@@ -748,222 +793,6 @@ div.asl_s.searchsettings fieldset .asl_option_label {
 div.asl_s.searchsettings form fieldset legend {
     padding: 5px 0 8px 10px;
 }
-
-/*[simplebar]*/
-
-[data-asp_simplebar] {
-    position: relative;
-    flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-content: flex-start;
-    align-items: flex-start;
-}
-
-.asp_simplebar-wrapper {
-    overflow: hidden;
-    width: inherit;
-    height: inherit;
-    max-width: inherit;
-    max-height: inherit;
-}
-
-.asp_simplebar-mask {
-    direction: inherit;
-    position: absolute;
-    overflow: hidden;
-    padding: 0;
-    margin: 0;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    width: auto !important;
-    height: auto !important;
-    z-index: 0;
-}
-
-.asp_simplebar-offset {
-    direction: inherit !important;
-    box-sizing: inherit !important;
-    resize: none !important;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    padding: 0;
-    margin: 0;
-    -webkit-overflow-scrolling: touch;
-}
-
-.asp_simplebar-content-wrapper {
-    direction: inherit;
-    box-sizing: border-box !important;
-    position: relative;
-    display: block;
-    height: 100%;
-    width: auto;
-    visibility: visible;
-    max-width: 100%;
-    max-height: 100%;
-    scrollbar-width: none;
-}
-
-.asp_simplebar-content-wrapper::-webkit-scrollbar,
-.asp_simplebar-hide-scrollbar::-webkit-scrollbar {
-    display: none;
-}
-
-.asp_simplebar-content:before,
-.asp_simplebar-content:after {
-    content: ' ';
-    display: table;
-}
-
-.asp_simplebar-placeholder {
-    max-height: 100%;
-    max-width: 100%;
-    width: 100%;
-    pointer-events: none;
-}
-
-.asp_simplebar-height-auto-observer-wrapper {
-    box-sizing: inherit !important;
-    height: 100%;
-    width: 100%;
-    max-width: 1px;
-    position: relative;
-    float: left;
-    max-height: 1px;
-    overflow: hidden;
-    z-index: -1;
-    padding: 0;
-    margin: 0;
-    pointer-events: none;
-    flex-grow: inherit;
-    flex-shrink: 0;
-    flex-basis: 0;
-}
-
-.asp_simplebar-height-auto-observer {
-    box-sizing: inherit;
-    display: block;
-    opacity: 0;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 1000%;
-    width: 1000%;
-    min-height: 1px;
-    min-width: 1px;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: -1;
-}
-
-.asp_simplebar-track {
-    z-index: 1;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    pointer-events: none;
-    overflow: hidden;
-}
-
-[data-asp_simplebar].asp_simplebar-dragging .asp_simplebar-content {
-    pointer-events: none;
-    user-select: none;
-    -webkit-user-select: none;
-}
-
-[data-asp_simplebar].asp_simplebar-dragging .asp_simplebar-track {
-    pointer-events: all;
-}
-
-.asp_simplebar-scrollbar {
-    position: absolute;
-    right: 2px;
-    width: 7px;
-    min-height: 10px;
-}
-
-.asp_simplebar-scrollbar:before {
-    position: absolute;
-    content: '';
-    background: rgba(0, 0, 0, .5);
-    border-radius: 7px;
-    left: 0;
-    right: 0;
-    opacity: 0;
-    transition: opacity .2s linear;
-}
-
-.asp_simplebar-scrollbar.asp_simplebar-visible:before {
-    opacity: 1;
-    transition: opacity 0s linear;
-}
-
-.asp_simplebar-track.asp_simplebar-vertical {
-    top: 0;
-    width: 11px;
-    margin-top: 4px !important;
-    margin-bottom: 4px !important;
-}
-
-.asp_simplebar-track.asp_simplebar-vertical .asp_simplebar-scrollbar:before {
-    top: 2px;
-    bottom: 2px;
-}
-
-.asp_simplebar-track.asp_simplebar-horizontal {
-    left: 0;
-    height: 11px;
-    margin-left: 12px !important;
-    margin-right: 12px !important;
-}
-
-.asp_simplebar-track.asp_simplebar-horizontal .asp_simplebar-scrollbar:before {
-    height: 100%;
-    left: 2px;
-    right: 2px;
-}
-
-.asp_simplebar-track.asp_simplebar-horizontal .asp_simplebar-scrollbar {
-    right: auto;
-    left: 0;
-    top: 2px;
-    height: 7px;
-    min-height: 0;
-    min-width: 10px;
-    width: auto;
-}
-
-[data-asp_simplebar-direction='rtl'] .asp_simplebar-track.asp_simplebar-vertical {
-    right: auto;
-    left: 0;
-}
-
-.hs-dummy-scrollbar-size {
-    direction: rtl;
-    position: fixed;
-    opacity: 0;
-    visibility: hidden;
-    height: 500px;
-    width: 500px;
-    overflow-y: hidden;
-    overflow-x: scroll;
-}
-
-.asp_simplebar-hide-scrollbar {
-    position: fixed;
-    left: 0;
-    visibility: hidden;
-    overflow-y: scroll;
-    scrollbar-width: none;
-}
-
-/*[simplebar]*/
 
 #asl_hidden_data {
     display: none !important;

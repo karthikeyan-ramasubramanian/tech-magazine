@@ -92,7 +92,7 @@ class Connect extends AbstractSendinblueConnect implements ConnectionInterface
             'label'       => __('First Name Attribute', 'mailoptin'),
             'description' => sprintf(
                 __('If subscribers first names are missing, change this to the correct attribute name. %sLearn more%s', 'mailoptin'),
-                '<a href="https://mailoptin.io/?p=21482" target="_blank">', '</a>'
+                '<a href="https://mailoptin.io/article/subscriber-name-missing-fix/" target="_blank">', '</a>'
             )
         ];
         $controls[] = [
@@ -101,7 +101,7 @@ class Connect extends AbstractSendinblueConnect implements ConnectionInterface
             'label'       => __('Last Name Attribute', 'mailoptin'),
             'description' => sprintf(
                 __('If subscribers last names are missing, change this to the correct attribute name. %sLearn more%s', 'mailoptin'),
-                '<a href="https://mailoptin.io/?p=21482" target="_blank">', '</a>'
+                '<a href="https://mailoptin.io/article/subscriber-name-missing-fix/" target="_blank">', '</a>'
             )
         ];
 
@@ -134,8 +134,6 @@ class Connect extends AbstractSendinblueConnect implements ConnectionInterface
     }
 
     /**
-     * Register Constant Contact Connection.
-     *
      * @param array $connections
      *
      * @return array
@@ -185,37 +183,30 @@ class Connect extends AbstractSendinblueConnect implements ConnectionInterface
 
             $list_array = [];
 
-            if (empty($list_array) || false === $list_array) {
+            $offset = 0;
+            $limit  = 50;
+            $loop   = true;
 
-                $offset = 0;
-                $limit  = 50;
-                $loop   = true;
+            while ($loop === true) {
 
-                $list_array = get_transient($cache_key);
+                // note any value > 50 results in {"code":"out_of_range","message":"Limit exceeds max value"}
+                $response = $this->sendinblue_instance()->make_request('contacts/lists', ['offset' => $offset, 'limit' => $limit]);
 
-                while ($loop === true) {
+                if (isset($response['body']->lists) && is_array($response['body']->lists)) {
 
-                    // note any value > 50 results in {"code":"out_of_range","message":"Limit exceeds max value"}
-                    $response = $this->sendinblue_instance()->make_request('contacts/lists', ['offset' => $offset, 'limit' => $limit]);
-
-                    if (isset($response['body']->lists) && is_array($response['body']->lists)) {
-
-                        foreach ($response['body']->lists as $list) {
-                            $list_array[$list->id] = $list->name;
-                        }
-
-                        if (count($response['body']->lists) < $limit) {
-                            $loop = false;
-                        }
-
-                        $offset += $limit;
-                    } else {
-                        $loop = false;
-                        self::save_optin_error_log(json_encode($response['body']), 'sendinblue');
+                    foreach ($response['body']->lists as $list) {
+                        $list_array[$list->id] = $list->name;
                     }
-                }
 
-                set_transient($cache_key, $list_array, 10 * MINUTE_IN_SECONDS);
+                    if (count($response['body']->lists) < $limit) {
+                        $loop = false;
+                    }
+
+                    $offset += $limit;
+                } else {
+                    $loop = false;
+                    self::save_optin_error_log(json_encode($response['body']), 'sendinblue');
+                }
             }
 
             return $list_array;

@@ -56,13 +56,6 @@
 	</div>
 
 	<div class="stuffbox">
-		<h3><label><?php _e( 'Testimonial', 'sassy-social-share' );?></label></h3>
-		<div class="inside">
-		<p><?php _e( 'You can send us testimonial at <a href="mailto:testimonials@heateor.com">testimonials@heateor.com</a>', 'sassy-social-share' ); ?></p>
-		</div>
-	</div>
-
-	<div class="stuffbox">
 		<h3><label><?php _e( 'Support Us', 'sassy-social-share' );?></label></h3>
 		<div class="inside" style="padding-top: 10px">
 		<div style="height: 24px;">

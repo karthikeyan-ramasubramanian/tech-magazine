@@ -26,7 +26,7 @@ $profile_url     = "https://youtube.com/channel/" . $account->snippet->channelId
         </div>
         <div class="wyt-subscribe-button-container">
             <div class="wyt-subscribe-button">
-                <a href="https://youtube.com/channel/<?= $account->snippet->channelId ?>" target="_blank" style=" text-decoration: none;color: white; font-size: 1rem"><?= __('subscribe', 'instagram-slider-widget') ?></a>
+                <a href="https://youtube.com/channel/<?php echo $account->snippet->channelId ?>" target="_blank" style=" text-decoration: none;color: white; font-size: 1rem"><?php echo __('subscribe', 'instagram-slider-widget') ?></a>
             </div>
         </div>
     </div>

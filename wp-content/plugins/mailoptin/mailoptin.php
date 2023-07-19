@@ -4,8 +4,8 @@
 Plugin Name: MailOptin - Lite
 Plugin URI: https://mailoptin.io
 Description: Best lead generation, email automation & newsletter plugin.
-Version: 1.2.47.1
-Author: MailOptin Team
+Version: 1.2.58.0
+Author: MailOptin Popup Builder Team
 Contributors: collizo4sky
 Author URI: https://mailoptin.io
 Text Domain: mailoptin
@@ -16,7 +16,7 @@ License: GPL2
 require __DIR__ . '/vendor/autoload.php';
 
 define('MAILOPTIN_SYSTEM_FILE_PATH', __FILE__);
-define('MAILOPTIN_VERSION_NUMBER', '1.2.47.1');
+define('MAILOPTIN_VERSION_NUMBER', '1.2.58.0');
 
 add_action('init', 'mo_mailoptin_load_plugin_textdomain', 0);
 function mo_mailoptin_load_plugin_textdomain()

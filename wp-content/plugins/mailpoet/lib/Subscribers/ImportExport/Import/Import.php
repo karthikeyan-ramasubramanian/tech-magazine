@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Subscribers\ImportExport\Import;
 
@@ -10,6 +10,7 @@ use MailPoet\Entities\CustomFieldEntity;
 use MailPoet\Entities\SubscriberCustomFieldEntity;
 use MailPoet\Entities\SubscriberEntity;
 use MailPoet\Entities\SubscriberSegmentEntity;
+use MailPoet\Entities\SubscriberTagEntity;
 use MailPoet\Models\ModelValidator;
 use MailPoet\Newsletter\Options\NewsletterOptionsRepository;
 use MailPoet\Segments\WP;
@@ -17,6 +18,7 @@ use MailPoet\Subscribers\ImportExport\ImportExportFactory;
 use MailPoet\Subscribers\ImportExport\ImportExportRepository;
 use MailPoet\Subscribers\Source;
 use MailPoet\Subscribers\SubscribersRepository;
+use MailPoet\Tags\TagRepository;
 use MailPoet\Util\DateConverter;
 use MailPoet\Util\Helpers;
 use MailPoet\Util\Security;
@@ -24,16 +26,29 @@ use MailPoet\WP\Functions as WPFunctions;
 use MailPoetVendor\Carbon\Carbon;
 
 class Import {
+  /** @var array */
   public $subscribersData;
+  /** @var array */
   public $segmentsIds;
+  /** @var string[] */
+  public $tags;
+  /** @var string */
   public $newSubscribersStatus;
+  /** @var string */
   public $existingSubscribersStatus;
+  /** @var bool */
   public $updateSubscribers;
+  /** @var array */
   public $subscribersFields;
+  /** @var array */
   public $subscribersCustomFields;
+  /** @var int */
   public $subscribersCount;
+  /** @var Carbon */
   public $createdAt;
+  /** @var Carbon */
   public $updatedAt;
+  /** @var array<string, mixed> */
   public $requiredSubscribersFields;
   const DB_QUERY_CHUNK_SIZE = 100;
   const STATUS_DONT_UPDATE = 'dont_update';
@@ -56,12 +71,16 @@ class Import {
   /** @var SubscribersRepository */
   private $subscriberRepository;
 
+  /** @var TagRepository */
+  private $tagRepository;
+
   public function __construct(
     WP $wpSegment,
     CustomFieldsRepository $customFieldsRepository,
     ImportExportRepository $importExportRepository,
     NewsletterOptionsRepository $newsletterOptionsRepository,
     SubscribersRepository $subscriberRepository,
+    TagRepository $tagRepository,
     array $data
   ) {
     $this->wpSegment = $wpSegment;
@@ -69,12 +88,14 @@ class Import {
     $this->importExportRepository = $importExportRepository;
     $this->newsletterOptionsRepository = $newsletterOptionsRepository;
     $this->subscriberRepository = $subscriberRepository;
+    $this->tagRepository = $tagRepository;
     $this->validateImportData($data);
     $this->subscribersData = $this->transformSubscribersData(
       $data['subscribers'],
       $data['columns']
     );
     $this->segmentsIds = $data['segments'];
+    $this->tags = $data['tags'];
     $this->newSubscribersStatus = $data['newSubscribersStatus'];
     $this->existingSubscribersStatus = $data['existingSubscribersStatus'];
     $this->updateSubscribers = $data['updateSubscribers'];
@@ -84,7 +105,7 @@ class Import {
     $this->subscribersCustomFields = $this->getCustomSubscribersFields(
       array_keys($data['columns'])
     );
-    $this->subscribersCount = count(reset($this->subscribersData));
+    $this->subscribersCount = (reset($this->subscribersData) === false) ? 0 : count(reset($this->subscribersData));
     $this->createdAt = Carbon::createFromTimestamp(WPFunctions::get()->currentTime('timestamp'));
     $this->updatedAt = Carbon::createFromTimestamp(WPFunctions::get()->currentTime('timestamp') + 1);
     $this->requiredSubscribersFields = [
@@ -95,7 +116,7 @@ class Import {
     ];
   }
 
-  public function validateImportData($data) {
+  public function validateImportData(array $data): void {
     $requiredDataFields = [
       'subscribers',
       'columns',
@@ -104,6 +125,7 @@ class Import {
       'newSubscribersStatus',
       'existingSubscribersStatus',
       'updateSubscribers',
+      'tags',
     ];
     // 1. data should contain all required fields
     // 2. column names should only contain alphanumeric & underscore characters
@@ -115,7 +137,11 @@ class Import {
     }
   }
 
-  public function process() {
+  /**
+   * @return array{created: int, updated:int, segments: array, added_to_segment_with_welcome_notification:bool}
+   * @throws \Exception
+   */
+  public function process(): array {
     // validate data based on field validation rules
     $subscribersData = $this->validateSubscribersData($this->subscribersData);
     if (!$subscribersData) {
@@ -182,15 +208,19 @@ class Import {
         false;
 
     return [
-      'created' => count($createdSubscribers),
-      'updated' => count($updatedSubscribers),
+      'created' => is_array($createdSubscribers) ? count($createdSubscribers) : 0,
+      'updated' => is_array($updatedSubscribers) ? count($updatedSubscribers) : 0,
       'segments' => $segments,
       'added_to_segment_with_welcome_notification' =>
         ($welcomeNotificationsInSegments) ? true : false,
     ];
   }
 
-  public function validateSubscribersData($subscribersData) {
+  /**
+   * @param array $subscribersData
+   * @return false|array
+   */
+  public function validateSubscribersData(array $subscribersData) {
     $invalidRecords = [];
     $validator = new ModelValidator();
     foreach ($subscribersData as $column => &$data) {
@@ -298,7 +328,7 @@ class Import {
     return $dateTimeDates;
   }
 
-  public function transformSubscribersData($subscribers, $columns) {
+  public function transformSubscribersData(array $subscribers, array $columns): array {
     $transformedSubscribers = [];
     foreach ($columns as $column => $data) {
       $transformedSubscribers[$column] = array_column($subscribers, $data['index']);
@@ -306,7 +336,11 @@ class Import {
     return $transformedSubscribers;
   }
 
-  public function splitSubscribersData($subscribersData) {
+  /**
+   * @param array $subscribersData
+   * @return array{array|false,array,array|false}
+   */
+  public function splitSubscribersData(array $subscribersData): array {
     // $subscribers_data is an two-dimensional associative array
     // of all subscribers being imported: [field => [value1, value2], field => [value1, value2], ...]
     $tempExistingSubscribers = [];
@@ -350,7 +384,7 @@ class Import {
     ];
   }
 
-  public function deleteExistingTrashedSubscribers($subscribersData) {
+  public function deleteExistingTrashedSubscribers(array $subscribersData): void {
     $existingTrashedRecords = array_filter(
       array_map(function($subscriberEmails) {
         return $this->subscriberRepository->findIdsOfDeletedByEmails($subscriberEmails);
@@ -365,14 +399,20 @@ class Import {
     }
   }
 
-  public function addMissingRequiredFields($subscribers) {
+  public function addMissingRequiredFields(array $subscribers): array {
     foreach (array_keys($this->requiredSubscribersFields) as $requiredField) {
       $subscribers = $this->addField($subscribers, $requiredField, $this->requiredSubscribersFields[$requiredField]);
     }
     return $subscribers;
   }
 
-  private function addField($subscribers, $fieldName, $fieldValue) {
+  /**
+   * @param array $subscribers
+   * @param string $fieldName
+   * @param mixed $fieldValue
+   * @return array
+   */
+  private function addField(array $subscribers, string $fieldName, $fieldValue): array {
     if (in_array($fieldName, $subscribers['fields'])) return $subscribers;
 
     $subscribersCount = count($subscribers['data'][key($subscribers['data'])]);
@@ -387,7 +427,7 @@ class Import {
     return $subscribers;
   }
 
-  private function setSubscriptionStatusToDefault($subscribersData, $defaultStatus) {
+  private function setSubscriptionStatusToDefault(array $subscribersData, string $defaultStatus): array {
     if (!in_array('status', $subscribersData['fields'])) return $subscribersData;
     $subscribersData['data']['status'] = array_map(function() use ($defaultStatus) {
       return $defaultStatus;
@@ -404,7 +444,7 @@ class Import {
     return $subscribersData;
   }
 
-  private function setSource($subscribersData) {
+  private function setSource(array $subscribersData): array {
     $subscribersCount = count($subscribersData['data'][key($subscribersData['data'])]);
     $subscribersData['fields'][] = 'source';
     $subscribersData['data']['source'] = array_fill(
@@ -415,7 +455,7 @@ class Import {
     return $subscribersData;
   }
 
-  private function setLinkToken($subscribersData) {
+  private function setLinkToken(array $subscribersData): array {
     $subscribersCount = count($subscribersData['data'][key($subscribersData['data'])]);
     $subscribersData['fields'][] = 'link_token';
     $subscribersData['data']['link_token'] = array_map(
@@ -426,7 +466,7 @@ class Import {
     return $subscribersData;
   }
 
-  public function getSubscribersFields($subscribersFields) {
+  public function getSubscribersFields(array $subscribersFields): array {
     return array_values(
       array_filter(
         array_map(function($field) {
@@ -436,7 +476,11 @@ class Import {
     );
   }
 
-  public function getCustomSubscribersFields($subscribersFields) {
+  /**
+   * @param array $subscribersFields
+   * @return int[]
+   */
+  public function getCustomSubscribersFields(array $subscribersFields): array {
     return array_values(
       array_filter(
         array_map(function($field) {
@@ -450,7 +494,7 @@ class Import {
     string $action,
     array $subscribersData,
     array $subscribersCustomFields = []
-  ) {
+  ): ?array {
     $subscribersCount = count($subscribersData['data'][key($subscribersData['data'])]);
     $subscribers = array_map(function($index) use ($subscribersData) {
       return array_map(function($field) use ($index, $subscribersData) {
@@ -482,6 +526,8 @@ class Import {
       }
     }
     if (empty($createdOrUpdatedSubscribers)) return null;
+
+    $this->subscriberRepository->invalidateTotalSubscribersCache();
     $createdOrUpdatedSubscribersIds = array_column($createdOrUpdatedSubscribers, 'id');
     if ($subscribersCustomFields) {
       $this->createOrUpdateCustomFields(
@@ -495,6 +541,10 @@ class Import {
       $createdOrUpdatedSubscribersIds,
       $this->segmentsIds
     );
+    $this->addTagsToSubscribers(
+      $createdOrUpdatedSubscribersIds,
+      $this->tags
+    );
     return $createdOrUpdatedSubscribers;
   }
 
@@ -503,7 +553,7 @@ class Import {
     array $createdOrUpdatedSubscribers,
     array $subscribersData,
     array $subscribersCustomFieldsIds
-  ) {
+  ): void {
     // check if custom fields exist in the database
     $subscribersCustomFieldsIds = array_map(function(CustomFieldEntity $customField): int {
       return (int)$customField->getId();
@@ -553,19 +603,25 @@ class Import {
     }
   }
 
-  public function synchronizeWPUsers($wpUsers) {
-    return array_map([$this->wpSegment, 'synchronizeUser'], $wpUsers);
+  /**
+   * @param int[] $wpUsers
+   * @return array
+   */
+  public function synchronizeWPUsers(array $wpUsers): array {
+    $users = array_map([$this->wpSegment, 'synchronizeUser'], $wpUsers);
+    $this->subscriberRepository->invalidateTotalSubscribersCache();
+    return $users;
   }
 
-  public function addSubscribersToSegments($subscribersIds, $segmentsIds) {
+  public function addSubscribersToSegments(array $subscribersIds, array $segmentsIds): void {
     $columns = [
       'subscriber_id',
       'segment_id',
       'created_at',
     ];
-    foreach (array_chunk($subscribersIds, self::DB_QUERY_CHUNK_SIZE) as $subscriberIdsChunk) {
-      $data = [];
-      foreach ($segmentsIds as $segmentId) {
+    foreach ($segmentsIds as $segmentId) {
+      foreach (array_chunk($subscribersIds, self::DB_QUERY_CHUNK_SIZE) as $subscriberIdsChunk) {
+        $data = [];
         $data = array_merge($data, array_map(function ($subscriberId) use ($segmentId): array {
           return [
             $subscriberId,
@@ -573,12 +629,52 @@ class Import {
             $this->createdAt,
           ];
         }, $subscriberIdsChunk));
+
+        $this->importExportRepository->insertMultiple(
+          SubscriberSegmentEntity::class,
+          $columns,
+          $data
+        );
       }
-      $this->importExportRepository->insertMultiple(
-        SubscriberSegmentEntity::class,
-        $columns,
-        $data
-      );
+    }
+  }
+
+  /**
+   * @param int[] $subscribersIds
+   * @param string[] $tagNames
+   */
+  public function addTagsToSubscribers(array $subscribersIds, array $tagNames): void {
+    $tagIds = [];
+    foreach ($tagNames as $tagName) {
+      $tag = $this->tagRepository->findOneBy(['name' => $tagName]);
+      if (!$tag) {
+        $tag = $this->tagRepository->createOrUpdate(['name' => $tagName]);
+      }
+      $tagIds[] = $tag->getId();
+    }
+
+    $columns = [
+      'subscriber_id',
+      'tag_id',
+      'created_at',
+    ];
+    foreach ($tagIds as $tagId) {
+      foreach (array_chunk($subscribersIds, self::DB_QUERY_CHUNK_SIZE) as $subscriberIdsChunk) {
+        $data = [];
+        $data = array_merge($data, array_map(function ($subscriberId) use ($tagId): array {
+          return [
+            $subscriberId,
+            $tagId,
+            $this->createdAt,
+          ];
+        }, $subscriberIdsChunk));
+
+        $this->importExportRepository->insertMultiple(
+          SubscriberTagEntity::class,
+          $columns,
+          $data
+        );
+      }
     }
   }
 }

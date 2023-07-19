@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) or exit;
 function authorship_register_box_styles()
 {
-    $file = apply_filters( 'authorship/box/styles', MOLONGUI_AUTHORSHIP_FOLDER . ( is_rtl() ? '/assets/css/author-box-rtl.50b9.min.css' : '/assets/css/author-box.90e1.min.css' ) );
+    $file = apply_filters( 'authorship/box/styles', MOLONGUI_AUTHORSHIP_FOLDER . ( is_rtl() ? '/assets/css/author-box-rtl.1795.min.css' : '/assets/css/author-box.0a47.min.css' ) );
 
     authorship_register_style( $file, 'box' );
 }
@@ -11,7 +11,7 @@ add_action( 'admin_enqueue_scripts', 'authorship_register_box_styles' );
 function authorship_enqueue_box_styles()
 {
     if ( !authorship_is_feature_enabled( 'box' ) or !authorship_is_feature_enabled( 'box_styles' ) ) return;
-    $file = apply_filters( 'authorship/box/styles', MOLONGUI_AUTHORSHIP_FOLDER . ( is_rtl() ? '/assets/css/author-box-rtl.50b9.min.css' : '/assets/css/author-box.90e1.min.css' ) );
+    $file = apply_filters( 'authorship/box/styles', MOLONGUI_AUTHORSHIP_FOLDER . ( is_rtl() ? '/assets/css/author-box-rtl.1795.min.css' : '/assets/css/author-box.0a47.min.css' ) );
 
     authorship_enqueue_style( $file, 'box' );
 }
@@ -20,10 +20,10 @@ function authorship_box_extra_styles()
     $options = authorship_get_options();
     $css = '';
     $bp  = empty( $options['breakpoint'] ) ? '600' : $options['breakpoint'];
-    $css .= ":root{ --m-a-box-bp: " . $bp . "px; --m-a-box-bp-l: " . --$bp . "px; }";
+    $bp_low_limit = $bp - 1;
+    $css .= ":root{ --m-a-box-bp: " . $bp . "px; --m-a-box-bp-l: " . $bp_low_limit . "px; }";
     if ( $options['enable_cdn_compat'] )
     {
-        $bp_low_limit = $bp - 1;
         $item_spacing = '20';
         $eqcss        = '';
         $eqcss .= '.m-a-box-container[min-width~="'.$bp.'px"] .m-a-box-content .m-a-box-content-top,
@@ -34,12 +34,25 @@ function authorship_box_extra_styles()
                    .m-a-box-container[max-width~="'.$bp_low_limit.'px"] .m-a-box-meta { text-align: center !important; }
                   ';
 
-        $eqcss .= '.m-a-box-container[min-width~="'.$bp.'px"] .m-a-box-content.m-a-box-profile .m-a-box-avatar { flex: 0 0 auto; align-self: center; padding: 0 '.$item_spacing.'px 0 0; min-width: auto; }
-                   .m-a-box-container[min-width~="'.$bp.'px"] .m-a-box-content.m-a-box-profile .m-a-box-social { display: flex; flex-direction: column; margin-top: 0; padding: 0 '.$item_spacing.'px 0 0; }     
-                   .m-a-box-container[min-width~="'.$bp.'px"] .m-a-box-content.m-a-box-profile .m-a-box-data { flex: 1 0; margin-top: 0; }     
-                   .m-a-box-container[min-width~="'.$bp.'px"] .m-a-box-content.m-a-box-profile .m-a-box-data .m-a-box-name > :first-child { text-align: left; }     
-                   .m-a-box-container[min-width~="'.$bp.'px"] .m-a-box-content.m-a-box-profile .m-a-box-data .m-a-box-meta { text-align: left; }     
+        $eqcss .= '.m-a-box-container[min-width~="'.$bp.'px"] .m-a-box-content.m-a-box-profile .m-a-box-data { flex: 1 0; margin-top: 0; }
+                   .m-a-box-container[min-width~="'.$bp.'px"] .m-a-box-content.m-a-box-profile .m-a-box-data .m-a-box-name * { text-align: '.$options['author_box_name_text_align'].'; }
+                   .m-a-box-container[min-width~="'.$bp.'px"] .m-a-box-content.m-a-box-profile .m-a-box-data .m-a-box-meta { text-align: '.$options['author_box_meta_text_align'].'; }
                   ';
+
+        if ( is_rtl() )
+        {
+            $eqcss .= '.rtl .m-a-box-container[min-width~="'.$bp.'px"] .m-a-box-content.m-a-box-profile .m-a-box-avatar { flex: 0 0 auto; align-self: center; padding: 0 0 0 '.$item_spacing.'px; min-width: auto; }
+                       .rtl .m-a-box-container[min-width~="'.$bp.'px"] .m-a-box-content.m-a-box-profile .m-a-box-social { display: flex; flex-direction: column; margin-top: 0; padding: 0 0 0 '.$item_spacing.'px; }
+                       .rtl .m-a-box-container[min-width~="'.$bp.'px"] .m-a-box-content[data-profile-layout="layout-7"].m-a-box-profile .m-a-box-social,
+                       .rtl .m-a-box-container[min-width~="'.$bp.'px"] .m-a-box-content[data-profile-layout="layout-8"].m-a-box-profile .m-a-box-social { display: flex; flex-direction: row; margin: 10px 0; padding: 0 '.$item_spacing.'px; }
+                      ';
+        }
+        else
+        {
+            $eqcss .= '.m-a-box-container[min-width~="'.$bp.'px"] .m-a-box-content.m-a-box-profile .m-a-box-avatar { flex: 0 0 auto; align-self: center; padding: 0 '.$item_spacing.'px 0 0; min-width: auto; }
+                       .m-a-box-container[min-width~="'.$bp.'px"] .m-a-box-content.m-a-box-profile .m-a-box-social { display: flex; flex-direction: column; margin-top: 0; padding: 0 '.$item_spacing.'px 0 0; }
+                      ';
+        }
         $eqcss .= '.m-a-box-container[min-width~="'.$bp.'px"] .m-a-box-content .m-a-box-social .m-a-box-social-icon { margin: 0.4em 0; }';
         $eqcss = apply_filters( 'authorship/eqcss/fallback', $eqcss, $bp, $item_spacing );
 
@@ -198,9 +211,9 @@ function authorship_get_box_styles( $options = array(), $box_id = '' )
     $styles .= !empty( $options['author_box_name_font_weight'] ) ? 'font-weight:'.$options['author_box_name_font_weight'].';' : '';
     $styles .= !empty( $options['author_box_name_text_transform'] ) ? 'text-transform:'.$options['author_box_name_text_transform'].';' : '';
     $styles .= !empty( $options['author_box_name_font_style'] ) ? 'font-style:'.$options['author_box_name_font_style'].';' : '';
-    $styles .= !empty( $options['author_box_name_text_decoration'] ) ? 'text-decoration:'.$options['author_box_name_text_decoration'].';' : '';
+    $styles .= !empty( $options['author_box_name_text_decoration'] ) ? 'text-decoration:'.$options['author_box_name_text_decoration'].' !important;' : '';
     $styles .= !empty( $options['author_box_name_text_align'] ) ? 'text-align:'.$options['author_box_name_text_align'].';' : '';
-    $styles .= !empty( $options['author_box_name_color'] ) ? 'color:'.$options['author_box_name_color'].';' : '';
+    $styles .= !empty( $options['author_box_name_color'] ) ? 'color:'.$options['author_box_name_color'].' !important;' : '';
     if ( !empty( $styles ) ) $css .= $box_id.' .m-a-box-name *  {' . $styles . '}';
 
     $styles  = '';
@@ -211,15 +224,18 @@ function authorship_get_box_styles( $options = array(), $box_id = '' )
     }
     if ( !empty( $styles ) ) $css .= $box_id.' .m-a-box-container[min-width~="600px"] .m-a-box-content.m-a-box-profile .m-a-box-data .m-a-box-name * {' . $styles . '}';
     $styles  = '';
+    $styles .= !empty( $options['author_box_meta_text_align'] ) ? 'text-align:'.$options['author_box_meta_text_align'].';' : '';
+    if ( !empty( $styles ) ) $css .= $box_id.' .m-a-box-content.m-a-box-profile .m-a-box-data .m-a-box-meta {' . $styles . '}';
+
+    $styles  = '';
     $styles .=  isset( $options['author_box_meta_font_size'] ) ? 'font-size:'.$options['author_box_meta_font_size'].'px;' : '';
     $styles .=  isset( $options['author_box_meta_line_height'] ) ? 'line-height:'.$options['author_box_meta_line_height'].'px;' : '';
     $styles .= !empty( $options['author_box_meta_font_weight'] ) ? 'font-weight:'.$options['author_box_meta_font_weight'].';' : '';
     $styles .= !empty( $options['author_box_meta_text_transform'] ) ? 'text-transform:'.$options['author_box_meta_text_transform'].';' : '';
     $styles .= !empty( $options['author_box_meta_font_style'] ) ? 'font-style:'.$options['author_box_meta_font_style'].';' : '';
     $styles .= !empty( $options['author_box_meta_text_decoration'] ) ? 'text-decoration:'.$options['author_box_meta_text_decoration'].';' : '';
-    $styles .= !empty( $options['author_box_meta_text_align'] ) ? 'text-align:'.$options['author_box_meta_text_align'].';' : '';
     $styles .= !empty( $options['author_box_meta_color'] ) ? 'color:'.$options['author_box_meta_color'].';' : '';
-    if ( !empty( $styles ) ) $css .= $box_id.' .m-a-box-meta * {' . $styles . '}';
+    if ( !empty( $styles ) ) $css .= $box_id.' .m-a-box-content.m-a-box-profile .m-a-box-data .m-a-box-meta * {' . $styles . '}';
 
     $styles  = '';
     $styles .= !empty( $options['author_box_meta_divider_spacing'] ) ? 'padding:0 '.$options['author_box_meta_divider_spacing'].'em;' : '';
@@ -244,13 +260,13 @@ function authorship_get_box_styles( $options = array(), $box_id = '' )
             case 'branded-squared':
             case 'branded-circled':
 
-                $styles .= 'background-color: ' . $options['author_box_social_color'] . '; border-color: ' . $options['author_box_social_color'] .'; color: inherit;';
+                $styles .= 'background-color: ' . $options['author_box_social_color'] . ' !important; border-color: ' . $options['author_box_social_color'] .' !important; color: inherit;';
 
             break;
 
             case 'boxed':
 
-                $styles .= 'background-color: inherit; border-color: ' . $options['author_box_social_color'] .'; color: ' . $options['author_box_social_color'] . ';';
+                $styles .= 'background-color: inherit; border-color: ' . $options['author_box_social_color'] .' !important; color: ' . $options['author_box_social_color'] . ' !important;';
 
             break;
 
@@ -262,7 +278,7 @@ function authorship_get_box_styles( $options = array(), $box_id = '' )
 
             case 'branded-boxed':
 
-                $styles .= 'background-color: inherit; border-color: ' . $options['author_box_social_color'] .'; color: inherit;';
+                $styles .= 'background-color: inherit; border-color: ' . $options['author_box_social_color'] .' !important; color: inherit;';
 
             break;
 
@@ -271,7 +287,7 @@ function authorship_get_box_styles( $options = array(), $box_id = '' )
             case 'default':
             default:
 
-                $styles .= 'background-color: inherit; border-color: inherit; color: ' . $options['author_box_social_color'] . ';';
+                $styles .= 'background-color: inherit; border-color: inherit; color: ' . $options['author_box_social_color'] . ' !important;';
 
             break;
         }

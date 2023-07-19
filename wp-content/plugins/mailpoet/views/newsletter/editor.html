@@ -321,6 +321,18 @@
     'newsletter_editor_template_unknown_block_fallback_widget',
     'newsletter/templates/blocks/unknownBlockFallback/widget.hbs'
   ) %>
+  <%= partial(
+  'newsletter_editor_template_coupon_block',
+  'newsletter/templates/blocks/coupon/block.hbs'
+  ) %>
+  <%= partial(
+  'newsletter_editor_template_coupon_widget',
+  'newsletter/templates/blocks/coupon/widget.hbs'
+  ) %>
+  <%= partial(
+  'newsletter_editor_template_coupon_settings',
+  'newsletter/templates/blocks/coupon/settings.hbs'
+  ) %>
 <% endblock %>
 
 <% block content %>
@@ -357,68 +369,13 @@
     ];
   </script>
 <% endif %>
-<% endblock %>
 
-<% block translations %>
-  <%= localize({
-    'stepNameTypeStandard': __('Newsletter'),
-    'stepNameTypeWelcome': __('Welcome Email'),
-    'stepNameTypeNotification': __('Post Notification'),
-    'stepNameTypeWooCommerce': __('WooCommerce'),
-    'stepNameTypeReEngagement': __('Re-engagement'),
-    'stepNameTemplate': __('Template'),
-    'stepNameDesign': __('Design'),
-    'stepNameSend': __('Send'),
-    'stepNameActivate': __('Activate'),
+<script type="text/javascript">
+  var mailpoet_email_editor_tutorial_seen  = '<%= editor_tutorial_seen %>';
+  var mailpoet_email_editor_tutorial_url = '<%= cdn_url('newsletter-editor/editor-drag-demo.20190226-1505.mp4') %>';
+  var mailpoet_installed_at = '<%= settings.installed_at %>';
+</script>
 
-    'close': __('Close'),
-    'failedToFetchAvailablePosts': __('Failed to fetch available posts'),
-    'failedToFetchRenderedPosts': __('Failed to fetch rendered posts'),
-    'shortcodesWindowTitle': __('Select a shortcode'),
-    'newsletterSavingError': __('The email could not be saved. Please, clear browser cache and reload the page. If the problem persists, duplicate the email and try again.'),
-    'unsubscribeLinkMissing': __('All emails must include an "Unsubscribe" link. Add a footer widget to your email to continue.'),
-    'reEngageLinkMissing': __('A re-engagement email must include a link with [link:subscription_re_engage_url] shortcode.'),
-    'newsletterIsEmpty': __('Poet, please add prose to your masterpiece before you send it to your followers.'),
-    'emailAlreadySent': __('This email has already been sent. It can be edited, but not sent again. Duplicate this email if you want to send it again.'),
-    'automatedLatestContentMissing': _x('Please add an “Automatic Latest Content” widget to the email from the right sidebar.', '(Please reuse the current translation used for the string “Automatic Latest Content”) This Error message is displayed when a user tries to send a “Post Notification” email without any “Automatic Latest Content” widget inside'),
-    'newsletterPreviewEmailMissing': __('Enter an email address to send the preview newsletter to.'),
-    'newsletterPreviewError': __('Sorry, there was an error, please try again later.'),
-    'newsletterPreviewErrorNotice': __('The email could not be sent due to a technical issue with %1$s'),
-    'newsletterPreviewErrorCheckConfiguration': __('Please check your sending method configuration, you may need to consult with your hosting company.'),
-    'newsletterPreviewErrorUseSendingService': __('The easy alternative is to <b>send emails with MailPoet Sending Service</b> instead, like thousands of other users do.'),
-    'newsletterPreviewErrorSignUpForSendingService': __('Sign up for free in minutes'),
-    'newsletterPreviewErrorCheckSettingsNotice': __('Check your [link]sending method settings[/link].'),
-    'templateNameMissing': __('Please add a template name'),
-    'helpTooltipDesignerSubjectLine': __("You can add MailPoet shortcodes here. For example, you can add your subscribers' first names by using this shortcode: [subscriber:firstname | default:reader]. Simply copy and paste the shortcode into the field."),
-    'helpTooltipDesignerPreheader': __("This optional text will appear in your subscribers' inboxes, beside the subject line. Write something enticing!"),
-    'helpTooltipDesignerPreheaderWarning': __("Max length is 250 characters, however, we recommend 80 characters."),
-    'helpTooltipDesignerFullWidth': __("This option eliminates padding around the image."),
-    'helpTooltipDesignerIdealWidth': __("Use images with widths of at least 1,000 pixels to ensure sharp display on high density screens, like mobile devices."),
-    'templateSaved': __('Template has been saved.'),
-    'templateSaveFailed': __('Template has not been saved, please try again'),
-    'categoriesAndTags': __('Categories & tags'),
-    'noPostsToDisplay': __('There is no content to display.'),
-    'previewShouldOpenInNewTab': __('Your preview should open in a new tab. Please ensure your browser is not blocking popups from this page.'),
-    'newsletterPreview': __('Newsletter Preview'),
-    'newsletterBodyIsCorrupted': __('Contents of this newsletter are corrupted and may be lost, you may need to add new content to this newsletter, or create a new one. If possible, please contact us and report this issue.'),
-    'saving': __('Saving...'),
-    'unsavedChangesWillBeLost': __('There are unsaved changes which will be lost if you leave this page.'),
-    'selectColor': _x('Select', 'select color'),
-    'cancelColorSelection': _x('Cancel', 'cancel color selection'),
-    'newsletterIsPaused': __('Email sending has been paused.'),
-    'emailWasDeactivated': __('This email was deactivated.'),
-    'tutorialVideoTitle': __('Before you start, this is how you drag and drop in MailPoet'),
-    'selectType': __('Select type'),
-    'events': __('Events'),
-    'conditions': _x('Conditions', 'Configuration options for automatic email events'),
-    'template': __('Template'),
-    'designer': __('Designer'),
-    'send': __('Send'),
-    'canUndo': _x('Undo', 'A button title when user can undo the change in editor', 'mailpoet'),
-    'canNotUndo': _x('No actions available to undo.', "A button title when user can't undo the change in editor", 'mailpoet'),
-    'canRedo': _x('Redo', 'A button title when user can redo the change in editor', 'mailpoet'),
-    'canNotRedo': _x('No actions available to redo.', "A button title when user can't redo the change in editor", 'mailpoet'),
-  }) %>
 <% endblock %>
 
 <% block after_css %>
@@ -426,7 +383,6 @@
 <% endblock %>
 
 <% block after_javascript %>
-  <%= javascript('newsletter_editor.js') %>
 
   <%= do_action('mailpoet_newsletter_editor_after_javascript') %>
 
@@ -706,12 +662,20 @@
       unknownBlockFallbackInsertion: Handlebars.compile(
         jQuery('#newsletter_editor_template_unknown_block_fallback_widget').html()
       ),
+      couponBlock: Handlebars.compile(
+        jQuery('#newsletter_editor_template_coupon_block').html()
+      ),
+      couponInsertion: Handlebars.compile(
+        jQuery('#newsletter_editor_template_coupon_widget').html()
+      ),
+      couponBlockSettings: Handlebars.compile(
+        jQuery('#newsletter_editor_template_coupon_settings').html()
+      ),
     };
 
-    var mailpoet_site_name = '<%= site_name %>';
-    var mailpoet_site_address = '<%= site_address %>';
-    var mailpoet_mss_key_pending_approval = '<%= mss_key_pending_approval %>';
     var currentUserEmail = '<%= current_wp_user.user_email %>';
+    var mailpoet_product_categories = <%= json_encode(product_categories)  %>;
+    var mailpoet_products = <%= json_encode(products) %>;
 
     var config = {
       availableStyles: {
@@ -742,6 +706,7 @@
             'Times New Roman',
             'Trebuchet MS',
             'Verdana'
+            <% if customFontsEnabled %>
           ],
           custom: [
             'Arvo',
@@ -758,6 +723,7 @@
             'Raleway',
             'Permanent Marker',
             'Pacifico',
+            <% endif %>
           ]
         },
         socialIconSets: {
@@ -1534,6 +1500,30 @@
         woocommerceHeading: {
           contents: <%= json_encode(woocommerce.email_headings) %>,
         },
+        coupon: {
+            type: 'coupon',
+            discountType: <%= json_encode(woocommerce.coupon.defaults.discountType) %>,
+            code: <%= json_encode(woocommerce.coupon.defaults.code) %>,
+            amountMax: <%= json_encode(woocommerce.coupon.defaults.amountMax) %>,
+            amount: 10,
+            expiryDay: 10,
+            styles: {
+              block: {
+                backgroundColor: '#ffffff',
+                borderColor: '#000000',
+                borderWidth: '1px',
+                borderRadius: '5px',
+                borderStyle: 'solid',
+                width: '200px',
+                lineHeight: '40px',
+                fontColor: '#000000',
+                fontFamily: 'Verdana',
+                fontSize: '18px',
+                fontWeight: 'normal',
+                textAlign: 'center',
+              },
+          },
+        },
       },
       shortcodes: <%= json_encode(shortcodes) %>,
       sidepanelWidth: '331px',
@@ -1543,8 +1533,9 @@
         previewTypeLocalStorageKey: 'newsletter_editor.preview_type'
       },
       validation: {
-        validateUnsubscribeLinkPresent: <%= mss_active and is_wc_transactional_email != true ? 'true' : 'false' %>,
-        validateReEngageLinkPresent: <%= mss_active and is_wc_transactional_email != true ? 'true' : 'false' %>,
+        validateUnsubscribeLinkPresent: <%= mss_active and is_wc_transactional_email != true and is_confirmation_email_template != true ? 'true' : 'false' %>,
+        validateReEngageLinkPresent: <%= mss_active and is_wc_transactional_email != true and is_confirmation_email_template != true ? 'true' : 'false' %>,
+        validateActivationLinkIsPresent: <%= is_confirmation_email_template ? 'true' : 'false' %>,
       },
       urls: {
         send: '<%= admin_url('admin.php?page=mailpoet-newsletters#/send/' ~ (params('id') | intval)) %>',
@@ -1552,12 +1543,10 @@
           "newsletter_editor/image-missing.svg"
         ) %>',
       },
-      dragDemoUrl: '<%= cdn_url('newsletter-editor/editor-drag-demo.20190226-1505.mp4') %>',
       currentUserId: '<%= current_wp_user.wp_user_id %>',
-      dragDemoUrlSettings: '<%= editor_tutorial_seen %>',
-      installedAt: '<%= settings["installed_at"] %>',
       mtaMethod: '<%= settings["mta"]["method"] %>',
       woocommerceCustomizerEnabled: <%= woocommerce.customizer_enabled ? 'true' : 'false' %>,
+      confirmationEmailCustomizerEnabled: <%= is_confirmation_email_customizer_enabled ? 'true' : 'false' %>,
       <% if is_wc_transactional_email %>
       overrideGlobalStyles: {
         text: {
@@ -1588,7 +1577,12 @@
       },
       hiddenWidgets: ['automatedLatestContentLayout', 'header', 'footer', 'posts', 'products'],
       <% endif %>
+      <% if is_confirmation_email_template %>
+      hiddenWidgets: ['automatedLatestContentLayout', 'header', 'footer', 'posts', 'products'],
+      <% endif %>
+      coupon: <%= json_encode(woocommerce.coupon.config) %>,
     };
+
     wp.hooks.doAction('mailpoet_newsletters_editor_initialize', config);
 
   </script>

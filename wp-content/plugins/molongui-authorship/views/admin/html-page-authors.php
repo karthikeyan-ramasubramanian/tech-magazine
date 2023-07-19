@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) or exit;
         <div id="nds-post-body">
             <form id="nds-user-list-form" method="get">
                 <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
-                <?php $authors_table->search_box( __( "Find author", 'molongui-authorship' ), 'author-search'); ?>
+                <?php $authors_table->search_box( __( "Find author", 'molongui-authorship' ), 'author-search' ); ?>
                 <?php $authors_table->display(); ?>
             </form>
         </div>

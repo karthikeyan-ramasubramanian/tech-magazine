@@ -10,7 +10,7 @@ class Connect extends \MailOptin\RegisteredUsersConnect\Connect implements Conne
     /**
      * @var WP_Leadbank_Mail_BG_Process
      */
-    public $bg_process_instance;
+    public $lb_process_instance;
 
     /**
      * @var string key of connection service. its important all connection name ends with "Connect"
@@ -22,15 +22,13 @@ class Connect extends \MailOptin\RegisteredUsersConnect\Connect implements Conne
         add_filter('mailoptin_registered_connections', array($this, 'register_connection'));
 
         add_action('plugins_loaded', array($this, 'init'));
-
         add_action('init', [$this, 'unsubscribe_handler']);
-
-        parent::__construct();
+        add_action('init', [$this, 'view_online_version']);
     }
 
     public function init()
     {
-        $this->bg_process_instance = new WP_Leadbank_Mail_BG_Process();
+        $this->lb_process_instance = new WP_Leadbank_Mail_BG_Process();
     }
 
     public static function features_support()
@@ -52,7 +50,6 @@ class Connect extends \MailOptin\RegisteredUsersConnect\Connect implements Conne
         return $connections;
     }
 
-
     /**
      * @param int $email_campaign_id
      * @param int $campaign_log_id
@@ -69,7 +66,10 @@ class Connect extends \MailOptin\RegisteredUsersConnect\Connect implements Conne
         $lead_bank = ConversionsRepository::get_conversions();
 
         // campaign log and email campaign IDs to each $users_data
-        $users_data = array_reduce($lead_bank, function ($carry, $item) use ($email_campaign_id, $campaign_log_id) {
+        $users_data = [];
+
+        foreach ($lead_bank as $item) {
+
             $email_address = $item['email'];
 
             $user_data['email_address']     = $email_address;
@@ -77,16 +77,14 @@ class Connect extends \MailOptin\RegisteredUsersConnect\Connect implements Conne
             $user_data['campaign_log_id']   = $campaign_log_id;
             // using email address as array key to prevent sending multiple email to one email
             // because leadbank can have one email address subscriber eg say subscribes via popup and sidebar.
-            $carry[$email_address] = $user_data;
-
-            return $carry;
-        }, []);
-
-        foreach ($users_data as $user_data) {
-            $this->bg_process_instance->push_to_queue($user_data);
+            $users_data[$email_address] = $user_data;
         }
 
-        $this->bg_process_instance->mo_save($campaign_log_id, $email_campaign_id)
+        foreach ($users_data as $user_data) {
+            $this->lb_process_instance->push_to_queue($user_data);
+        }
+
+        $this->lb_process_instance->mo_save($campaign_log_id, $email_campaign_id)
                                   ->mo_dispatch($campaign_log_id, $email_campaign_id);
 
         return ['success' => true];
@@ -103,18 +101,11 @@ class Connect extends \MailOptin\RegisteredUsersConnect\Connect implements Conne
 
         update_option('mo_leadbank_unsubscribers', $contacts, false);
 
-        if (apply_filters('mo_email_unsubscribe_delete_lead', false)) {
-            $emails = ConversionsRepository::get_conversions_by_email(base64_decode($email));
-            if (is_array($emails) && ! empty($emails)) {
-                foreach ($emails as $email) {
-                    ConversionsRepository::delete($email['id']);
-                }
-            }
-        }
+        $this->delete_unsubscribe_leadbank_contact($email);
 
-        do_action('mo_leadbank_unsubscribe', $contacts);
+        do_action('mo_leadbank_unsubscribe', $contacts, $email);
 
-        $success_message = apply_filters('mo_leadbank_unsubscribe_message', __('You\'ve successfully been unsubscribed.'));
+        $success_message = apply_filters('mo_leadbank_unsubscribe_message', esc_html__("You've successfully been unsubscribed.", 'mailoptin'));
 
         wp_die($success_message, $success_message, ['response' => 200]);
     }

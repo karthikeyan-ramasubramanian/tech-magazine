@@ -24,7 +24,9 @@ if ( function_exists('qtranxf_getLanguage') ) {
 	$qtr_lg = 0;
 }
 ?>
-<form name='options' autocomplete='off'>
+<form name='options'
+	  aria-label="<?php echo esc_attr(asl_icl_t('Search Settings form aria-Label', $style['aria_settings_form_label'])); ?>"
+	  autocomplete = 'off'>
 
 	<?php do_action('asl_layout_in_form', $id); ?>
 

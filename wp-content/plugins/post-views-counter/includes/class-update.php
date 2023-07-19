@@ -17,7 +17,7 @@ class Post_Views_Counter_Update {
 	 */
 	public function __construct() {
 		// actions
-		add_action( 'init', array( $this, 'check_update' ) );
+		add_action( 'init', [ $this, 'check_update' ] );
 	}
 
 	/**
@@ -29,27 +29,30 @@ class Post_Views_Counter_Update {
 		if ( ! current_user_can( 'manage_options' ) )
 			return;
 
+		// get main instance
+		$pvc = Post_Views_Counter();
+
 		// get current database version
 		$current_db_version = get_option( 'post_views_counter_version', '1.0.0' );
 
 		// update 1.2.4+
 		if ( version_compare( $current_db_version, '1.2.4', '<=' ) ) {
-			$general = Post_Views_Counter()->options['general'];
+			$general = $pvc->options['general'];
 
 			if ( $general['reset_counts']['number'] > 0 ) {
 				// unsupported data reset in minutes/hours
-				if ( in_array( $general['reset_counts']['type'], array( 'minutes', 'hours' ), true ) ) {
+				if ( in_array( $general['reset_counts']['type'], [ 'minutes', 'hours' ], true ) ) {
 					// set type to date
 					$general['reset_counts']['type'] = 'days';
 
 					// new number of days
 					if ( $general['reset_counts']['type'] === 'minutes' )
-						$general['reset_counts']['number'] = $general['reset_counts']['number'] * 60;
+						$general['reset_counts']['number'] = $general['reset_counts']['number'] * MINUTE_IN_SECONDS;
 					else
-						$general['reset_counts']['number'] = $general['reset_counts']['number'] * 3600;
+						$general['reset_counts']['number'] = $general['reset_counts']['number'] * HOUR_IN_SECONDS;
 
 					// how many days?
-					$general['reset_counts']['number'] = (int) round( ceil( $general['reset_counts']['number'] / 86400 ) );
+					$general['reset_counts']['number'] = (int) round( ceil( $general['reset_counts']['number'] / DAY_IN_SECONDS ) );
 
 					// force cron to update
 					$general['cron_run'] = true;
@@ -59,11 +62,11 @@ class Post_Views_Counter_Update {
 					update_option( 'post_views_counter_settings_general', $general );
 
 					// update general options
-					Post_Views_Counter()->options['general'] = $general;
+					$pvc->options['general'] = $general;
 				}
 
 				// update cron job for all users
-				Post_Views_Counter()->cron->check_cron();
+				$pvc->cron->check_cron();
 			}
 		}
 
@@ -72,7 +75,7 @@ class Post_Views_Counter_Update {
 				$this->update_1();
 
 				// update plugin version
-				update_option( 'post_views_counter_version', Post_Views_Counter()->defaults['version'], false );
+				update_option( 'post_views_counter_version', $pvc->defaults['version'], false );
 			}
 		}
 
@@ -87,18 +90,20 @@ class Post_Views_Counter_Update {
 		$current_db_version = get_option( 'post_views_counter_version', '1.0.0' );
 
 		// new version?
-		if ( version_compare( $current_db_version, Post_Views_Counter()->defaults['version'], '<' ) ) {
+		if ( version_compare( $current_db_version, $pvc->defaults['version'], '<' ) ) {
 			// is update 1 required?
 			if ( version_compare( $current_db_version, '1.2.4', '<=' ) )
-				Post_Views_Counter()->add_notice( $update_1_html, 'notice notice-info' );
+				$pvc->add_notice( $update_1_html, 'notice notice-info', false );
 			else
 				// update plugin version
-				update_option( 'post_views_counter_version', Post_Views_Counter()->defaults['version'], false );
+				update_option( 'post_views_counter_version', $pvc->defaults['version'], false );
 		}
 	}
 
 	/**
 	 * Database update for 1.2.4 and below.
+	 *
+	 * @global object $wpdb
 	 *
 	 * @return void
 	 */
@@ -123,6 +128,6 @@ class Post_Views_Counter_Update {
 			$wpdb->query( 'ALTER TABLE `' . $wpdb->prefix . 'post_views` ADD UNIQUE INDEX `id_type_period_count` (`id`, `type`, `period`, `count`) USING BTREE' );
 		}
 
-		Post_Views_Counter()->add_notice( __( 'Thank you! Datebase was succesfully updated.', 'post-views-counter' ), 'updated', true );
+		Post_Views_Counter()->add_notice( __( 'Thank you! Datebase was successfully updated.', 'post-views-counter' ), 'updated', true );
 	}
 }

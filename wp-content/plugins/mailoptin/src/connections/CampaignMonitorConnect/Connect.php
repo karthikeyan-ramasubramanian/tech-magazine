@@ -109,6 +109,7 @@ class Connect extends AbstractCampaignMonitorConnect implements ConnectionInterf
     public function get_email_list()
     {
         try {
+
             $response = $this->campaignmonitorInstance()->getEmailList($this->client_id);
 
             // an array with list id as key and name as value.
@@ -159,9 +160,9 @@ class Connect extends AbstractCampaignMonitorConnect implements ConnectionInterf
      * @param string $content_html
      * @param string $content_text
      *
+     * @return array
      * @throws \Exception
      *
-     * @return array
      */
     public function send_newsletter($email_campaign_id, $campaign_log_id, $subject, $content_html, $content_text)
     {

@@ -33,7 +33,7 @@ class Subscription extends AbstractNewsmanConnect
 
             $custom_field_mappings = $this->form_custom_field_mappings();
 
-            $properties = [];
+            $properties = ['via' => 'MailOptin'];
 
             if ( ! empty($custom_field_mappings)) {
 
@@ -71,7 +71,7 @@ class Subscription extends AbstractNewsmanConnect
                 'props'     => $properties
             ];
 
-            $payload = apply_filters('mo_connections_newsman_optin_payload', array_filter($payload, [$this, 'data_filter']), $this);
+            $payload = apply_filters('mo_connections_newsman_optin_payload', $payload, $this);
 
             $response = $this->newsmanInstance()->apiRequest('subscriber.saveSubscribe.json', 'POST', $payload);
 
@@ -82,7 +82,8 @@ class Subscription extends AbstractNewsmanConnect
             return parent::ajax_failure(__('There was an error saving your contact. Please try again.', 'mailoptin'));
 
         } catch (\Exception $e) {
-            self::save_optin_error_log($e->getCode() . ': ' . $e->getMessage(), 'newsman', $this->extras['optin_campaign_id']);
+            
+            self::save_optin_error_log($e->getCode() . ': ' . $e->getMessage(), 'newsman', $this->extras['optin_campaign_id'], $this->extras['optin_campaign_type']);
 
             return parent::ajax_failure(__('There was an error saving your contact. Please try again.', 'mailoptin'));
         }

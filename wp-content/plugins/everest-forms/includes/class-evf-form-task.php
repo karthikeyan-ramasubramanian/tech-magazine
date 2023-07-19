@@ -173,8 +173,10 @@ class EVF_Form_Task {
 			do_action( "everest_forms_process_before_{$form_id}", $entry, $this->form_data );
 
 			$ajax_form_submission = isset( $this->form_data['settings']['ajax_form_submission'] ) ? $this->form_data['settings']['ajax_form_submission'] : 0;
+			if ( isset( $this->form_data['payments']['stripe']['enable_stripe'] ) && '1' === $this->form_data['payments']['stripe']['enable_stripe'] ) {
+				$ajax_form_submission = '1';
+			}
 			if ( '1' === $ajax_form_submission ) {
-
 				// For the sake of validation we completely remove the validator option.
 				update_option( 'evf_validation_error', '' );
 
@@ -192,7 +194,7 @@ class EVF_Form_Task {
 						$field_submit = isset( $field_submit['signature_image'] ) ? $field_submit['signature_image'] : '';
 					}
 
-					$exclude = array( 'title', 'html', 'captcha', 'image-upload', 'file-upload', 'divider' );
+					$exclude = array( 'title', 'html', 'captcha', 'image-upload', 'file-upload', 'divider', 'reset' );
 
 					if ( ! in_array( $field_type, $exclude, true ) ) {
 
@@ -206,6 +208,8 @@ class EVF_Form_Task {
 					}
 				}
 			}
+
+			$this->form_data['entry'] = $entry;
 
 			// Validate fields.
 			foreach ( $this->form_data['form_fields'] as $field ) {
@@ -498,10 +502,11 @@ class EVF_Form_Task {
 			}
 		}
 
-		$settings = $this->form_data['settings'];
-		$message  = isset( $settings['successful_form_submission_message'] ) ? $settings['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
+		$settings       = $this->form_data['settings'];
+		$message        = isset( $settings['successful_form_submission_message'] ) ? $settings['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
+		$pdf_submission = isset( $settings['pdf_submission']['enable_pdf_submission'] ) && 0 !== $settings['pdf_submission']['enable_pdf_submission'] ? $settings['pdf_submission'] : '';
 
-		if ( defined( 'EVF_PDF_SUBMISSION_VERSION' ) && 'yes' === get_option( 'everest_forms_pdf_download_after_submit', 'no' ) ) {
+		if ( defined( 'EVF_PDF_SUBMISSION_VERSION' ) && ( 'yes' === get_option( 'everest_forms_pdf_download_after_submit', 'no' ) || ( isset( $pdf_submission['everest_forms_pdf_download_after_submit'] ) && 'yes' === $pdf_submission['everest_forms_pdf_download_after_submit'] ) ) ) {
 			global $__everest_form_id;
 			global $__everest_form_entry_id;
 			$__everest_form_id       = $form_id;
@@ -520,9 +525,14 @@ class EVF_Form_Task {
 			$response_data['form_id']  = $form_id;
 			$response_data['entry_id'] = $entry_id;
 
-			if ( defined( 'EVF_PDF_SUBMISSION_VERSION' ) && 'yes' === get_option( 'everest_forms_pdf_download_after_submit', 'no' ) ) {
+			if ( defined( 'EVF_PDF_SUBMISSION_VERSION' ) && ( 'yes' === get_option( 'everest_forms_pdf_download_after_submit', 'no' ) || ( isset( $pdf_submission['everest_forms_pdf_download_after_submit'] ) && 'yes' === $pdf_submission['everest_forms_pdf_download_after_submit'] ) ) ) {
 				$response_data['pdf_download'] = true;
 				$pdf_download_message          = get_option( 'everest_forms_pdf_custom_download_text', '' );
+
+				if ( isset( $pdf_submission['everest_forms_pdf_custom_download_text'] ) ) {
+					$pdf_download_message = $pdf_submission['everest_forms_pdf_custom_download_text'];
+				}
+
 				if ( empty( $pdf_download_message ) ) {
 					$pdf_download_message = __( 'Download your form submission in PDF format', 'everest-forms' );
 				}
@@ -720,9 +730,20 @@ class EVF_Form_Task {
 		}
 
 		if ( isset( $settings['redirect_to'] ) && 'custom_page' === $settings['redirect_to'] ) {
+			if ( isset( $settings['enable_redirect_query_string'] ) && '1' === $settings['enable_redirect_query_string'] ) {
+				parse_str( $settings['query_string'], $output );
+				$query_redirect_url = array();
+				foreach ( $output as $key => $value ) {
+					$query_redirect_url[ $key ] = apply_filters( 'everest_forms_process_smart_tags', $value, $this->form_data, $this->form_fields );
+				}
+				$redirect_url = add_query_arg( $query_redirect_url, esc_url( get_page_link( $settings['custom_page'] ) ) );
+			} else {
+				$redirect_url = get_page_link( $settings['custom_page'] );
+			}
+
 			?>
 				<script>
-				var redirect = '<?php echo esc_url( get_page_link( $settings['custom_page'] ) ); ?>';
+				var redirect = '<?php echo esc_url_raw( $redirect_url ); ?>';
 				window.setTimeout( function () {
 					window.location.href = redirect;
 				})
@@ -838,9 +859,8 @@ class EVF_Form_Task {
 			$email['sender_name']    = ! empty( $notification['evf_from_name'] ) ? $notification['evf_from_name'] : get_bloginfo( 'name' );
 			$email['sender_address'] = ! empty( $notification['evf_from_email'] ) ? $notification['evf_from_email'] : get_option( 'admin_email' );
 			$email['reply_to']       = ! empty( $notification['evf_reply_to'] ) ? $notification['evf_reply_to'] : $email['sender_address'];
-			$email['message']        = ! empty( $notification['evf_email_message'] ) ? $notification['evf_email_message'] : '{all_fields}';
+			$email['message']        = ! empty( $notification['evf_email_message'] ) ? evf_string_translation( $form_data['id'], 'evf_email_message', $notification['evf_email_message'] ) : '{all_fields}';
 			$email                   = apply_filters( 'everest_forms_entry_email_atts', $email, $fields, $entry, $form_data );
-
 			$attachment = '';
 
 			// Create new email.

@@ -129,12 +129,12 @@ class Subscription extends AbstractZohoCRMConnect
                 return parent::ajax_success();
             }
 
-            self::save_optin_error_log(json_encode($response), 'zohocrm', $this->extras['optin_campaign_id']);
+            self::save_optin_error_log(json_encode($response), 'zohocrm', $this->extras['optin_campaign_id'], $this->extras['optin_campaign_type']);
 
             return parent::ajax_failure(__('There was an error saving your contact. Please try again.', 'mailoptin'));
 
         } catch (\Exception $e) {
-            self::save_optin_error_log($e->getCode() . ': ' . $e->getMessage(), 'zohocrm', $this->extras['optin_campaign_id']);
+            self::save_optin_error_log($e->getCode() . ': ' . $e->getMessage(), 'zohocrm', $this->extras['optin_campaign_id'], $this->extras['optin_campaign_type']);
 
             return parent::ajax_failure(__('There was an error saving your contact. Please try again.', 'mailoptin'));
         }

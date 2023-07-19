@@ -936,8 +936,8 @@ body.everest-forms-builder {
 							content: '\e006';
 						}
 
-						&.validations::before {
-							content: '\e012';
+						&.validation::before {
+							content: '\e910';
 						}
 
 						&.pdf-submission::before {
@@ -981,6 +981,12 @@ body.everest-forms-builder {
 						}
 						&.geolocation::before {
 							content: '\e900';
+						}
+						&.delete::before {
+							content: '\e906';
+						}
+						&.misc::before {
+							content: '\e911';
 						}
 					}
 				}
@@ -1114,6 +1120,10 @@ body.everest-forms-builder {
 	.page-title-action {
 		top: 0;
 		margin-left: 16px;
+		&:active{
+			top:0;
+			margin-left:16px;
+		}
 	}
 
 	.everest-forms-setup-header {
@@ -1802,7 +1812,7 @@ p.search-box {
 
 		.input-group-col-2 {
 			display: flex;
-			flex-wrap: wrap;
+			flex-wrap: nowrap;
 
 			input[type='text'],
 			input[type='number'],
@@ -2263,11 +2273,13 @@ p.search-box {
 							}
 
 							.everest-forms-current-date-format,
+							.everest-forms-past-date-disable-format,
 							.everest-forms-min-max-date-format {
 								margin-bottom: 14px;
 							}
 
-							&.everest-forms-field-option-row-limit_controls {
+							&.everest-forms-field-option-row-limit_controls,
+							&.everest-forms-field-option-row-min_length_controls {
 								display: flex;
 								align-items: center;
 
@@ -3703,7 +3715,7 @@ p.search-box {
 					}
 				}
 			}
-			
+
 		}
 
 		.evf-registered-item {
@@ -4696,6 +4708,7 @@ p.search-box {
 /**
    * Import and Export
    */
+.evf-tools-export-entries,
 .everest-forms-import-form,
 .everest-forms-export-form {
 	background: $color-white;
@@ -5374,6 +5387,10 @@ img.ui-datepicker-trigger {
 .select2-drop,
 .select2-dropdown {
 	z-index: 999999 !important;
+
+	.everest-forms-btn {
+		margin: 8px 4px;
+	}
 }
 
 .select2-results {
@@ -6079,6 +6096,163 @@ img.ui-datepicker-trigger {
 					width: 40px;
 					border-radius: 2px;
 				}
+			}
+		}
+	}
+}
+
+.evf-btn-container {
+	a {
+		display: inline-block;
+		padding: 4px 8px;
+		border: 1px solid #3498DB;
+		margin-bottom: 8px;
+		border-radius: 2px;
+		background-color: #f5fbff;
+		line-height: 1.8em;
+
+		&:hover {
+			background-color: #3498DB;
+			color: #fff;
+			cursor: pointer;
+		}
+	}
+
+	.evf-btn-unselect-all {
+		margin-left: 8px;
+	}
+}
+
+// Customize Select2 style
+.select2-results__option .wrap:before {
+	content: "\2610";
+	width: 25px;
+	height: 25px;
+	padding-right: 10px;
+}
+
+.select2-results__option[data-selected="true"] .wrap:before {
+	content: "\2714";
+}
+
+.select2-drop,
+.select2-dropdown {
+	z-index: 999999 !important;
+}
+
+.select2-results {
+	line-height: 1.5em;
+
+	.select2-results__option,
+	.select2-results__group {
+		margin: 0;
+		padding: 8px;
+	}
+}
+
+.select2-dropdown {
+	border-color: gray;
+}
+
+.select2-dropdown--below {
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.select2-dropdown--above {
+	box-shadow: 0 -1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.select2-container {
+	.select2-selection__rendered.ui-sortable li {
+		cursor: move;
+	}
+
+	.select2-selection {
+		border-color: gray;
+	}
+
+	.select2-search__field {
+		min-width: 20px;
+	}
+
+	.select2-selection--single {
+		height: 32px;
+
+		.select2-selection__rendered {
+			display: block;
+			line-height: 32px;
+			padding-right: 24px;
+		}
+
+		.select2-selection__arrow {
+			right: 3px;
+			height: 30px;
+		}
+	}
+
+	.select2-selection--multiple {
+		min-height: 28px;
+		border-radius: 4px;
+		line-height: 1.5;
+		border: 1px solid #ddd !important;
+		padding-left: 4px;
+
+		li {
+			margin: 0;
+		}
+
+		.select2-selection__choice {
+			padding: 2px 6px;
+		}
+
+		.select2-selection__rendered {
+			// display: block;
+			display: flex;
+			margin: 0px;
+
+			.select2-selection__choice {
+				margin: 4px;
+				line-height: 1.4;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+
+				.select2-selection__choice__remove {
+					bottom: 0px;
+				}
+			}
+		}
+	}
+
+	.select2-selection__clear {
+		color: #999;
+		margin-top: -1px;
+	}
+
+	.select2-search--inline {
+		.select2-search__field {
+			font-family: inherit;
+			font-size: inherit;
+			font-weight: inherit;
+			padding: 3px 0;
+			margin: 0;
+			line-height: 1;
+			min-height: 26px;
+			height: 32px;
+		}
+	}
+}
+
+.everest-forms-form-template-wrapper {
+	.everest-forms-form-template {
+		&[data-filter-template="free"] {
+			.everest-forms-template-wrap[data-plan="premium"] {
+				display: none;
+			}
+		}
+		&[data-filter-template="premium"] {
+			.everest-forms-template-wrap[data-plan="free"] {
+				display: none;
 			}
 		}
 	}

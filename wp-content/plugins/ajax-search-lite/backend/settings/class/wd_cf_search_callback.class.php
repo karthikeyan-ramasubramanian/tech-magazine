@@ -12,12 +12,12 @@ if (!class_exists("wd_CFSearchCallBack")) {
      * @copyright Copyright (c) 2016, Ernest Marcinko
      */
     class wd_CFSearchCallBack extends wpdreamsType {
+        private static $delimiter = '!!!CFRES!!!';
         private $args = array(
             'callback' => '',       // javacsript function name in the windows scope | if empty, shows results
             'placeholder' => 'Search custom fields..',
             'search_values' => 0,
             'limit' => 100,
-            'delimiter' => '!!!CFRES!!!',
             'controls_position' => 'right',
             'class' => ''
         );
@@ -25,6 +25,7 @@ if (!class_exists("wd_CFSearchCallBack")) {
         public function getType() {
             parent::getType();
             $this->processData();
+            $this->args['delimiter'] = self::$delimiter;
             ?>
             <div class='wd_cf_search<?php echo $this->args['class'] != '' ? ' '.$this->args['class'] : "";?>'
                  id='wd_cf_search-<?php echo self::$_instancenumber; ?>'>
@@ -34,6 +35,7 @@ if (!class_exists("wd_CFSearchCallBack")) {
                                                    value="<?php echo (is_array($this->data) && isset($this->data['value'])) ? $this->data['value'] : $this->data; ?>"
                                                    placeholder="<?php echo $this->args['placeholder']; ?>"/>
                 <input type='hidden' value="<?php echo base64_encode(json_encode($this->args)); ?>" class="wd_args">
+				<input type="hidden" name="asl_cf_search_nonce" value="<?php echo wp_create_nonce('asl-cf-search-nonce'); ?>">
                 <?php if ($this->args['controls_position'] != 'left') $this->printControls(); ?>
                 <div class="wd_cf_search_res"></div>
             </div>
@@ -53,19 +55,30 @@ if (!class_exists("wd_CFSearchCallBack")) {
 
         public static function searchCF() {
             global $wpdb;
-            $phrase = '%'.trim($_POST['wd_phrase']).'%';
-            $data = json_decode(base64_decode($_POST['wd_args']), true);
-            if ( $data['search_values'] == 1)
-                $cf_query = $wpdb->prepare(
-                    "SELECT DISTINCT(meta_key) FROM $wpdb->postmeta WHERE meta_key LIKE '%s' OR meta_value LIKE '%s' LIMIT %d",
-                    $phrase, $phrase, $data['limit']);
-            else
-                $cf_query = $wpdb->prepare(
-                    "SELECT DISTINCT(meta_key) FROM $wpdb->postmeta WHERE meta_key LIKE '%s' LIMIT %d",
-                    $phrase, $data['limit']);
-            $cf_results = $wpdb->get_results( $cf_query, OBJECT );
+			if ( 
+                isset($_POST['wd_phrase'], $_POST['wd_args'], $_POST['asl_cf_search_nonce']) &&
+                current_user_can( 'administrator' )
+            ) {
+				$phrase = '%'.trim($_POST['wd_phrase']).'%';
+				$data = json_decode(base64_decode($_POST['wd_args']), true);
 
-            print_r($data['delimiter'] . json_encode($cf_results) . $data['delimiter']);
+				if ( wp_verify_nonce($_POST['asl_cf_search_nonce'], 'asl-cf-search-nonce') ) {
+					if ( $data['search_values'] == 1 )
+						$cf_query = $wpdb->prepare(
+							"SELECT DISTINCT(meta_key) FROM $wpdb->postmeta WHERE meta_key LIKE '%s' OR meta_value LIKE '%s' LIMIT %d",
+							$phrase, $phrase, $data['limit']);
+					else
+						$cf_query = $wpdb->prepare(
+							"SELECT DISTINCT(meta_key) FROM $wpdb->postmeta WHERE meta_key LIKE '%s' LIMIT %d",
+							$phrase, $data['limit']);
+					$cf_results = $wpdb->get_results($cf_query, OBJECT);
+					print_r(self::$delimiter . json_encode($cf_results) . self::$delimiter);
+				} else {
+					print_r(self::$delimiter . __('The nonce has expired or missing, please reload the page!', 'ajax-search-lite') . self::$delimiter);
+				}
+			} else {
+				print_r(__('Missing data.', 'ajax-search-lite') );
+			}
             die();
         }
 
@@ -86,5 +99,6 @@ if (!class_exists("wd_CFSearchCallBack")) {
     }
 }
 
-if ( !has_action('wp_ajax_wd_search_cf') )
+if ( !has_action('wp_ajax_wd_search_cf') ) {
     add_action('wp_ajax_wd_search_cf', 'wd_CFSearchCallBack::searchCF');
+}

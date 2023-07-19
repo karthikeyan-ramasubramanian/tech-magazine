@@ -22,8 +22,8 @@ function authorship_user_add_profile_fields( $user )
     elseif ( authorship_is_feature_enabled( 'avatar' ) ) include MOLONGUI_AUTHORSHIP_DIR . 'views/user/html-admin-profile-picture.php';
 }
 
-add_action( 'edit_user_profile', 'authorship_user_add_profile_fields' ); // Edit user screen
-add_action( 'show_user_profile', 'authorship_user_add_profile_fields' ); // Profile screen
+add_action( 'edit_user_profile', 'authorship_user_add_profile_fields', 0 ); // Edit user screen
+add_action( 'show_user_profile', 'authorship_user_add_profile_fields', 0 ); // Profile screen
 function authorship_user_filter_profile_picture_description( $description, $profileuser )
 {
     $add          = ' ';

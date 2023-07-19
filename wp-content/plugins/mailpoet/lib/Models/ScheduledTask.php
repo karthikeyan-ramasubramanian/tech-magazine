@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Models;
 
@@ -130,14 +130,6 @@ class ScheduledTask extends Model {
       throw $error;
     }
     return null;
-  }
-
-  public static function touchAllByIds(array $ids) {
-    ScheduledTask::rawExecute(
-      'UPDATE `' . ScheduledTask::$_table . '`' .
-      'SET `updated_at` = NOW() ' .
-      'WHERE `id` IN (' . join(',', $ids) . ')'
-    );
   }
 
   /**

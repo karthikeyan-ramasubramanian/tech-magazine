@@ -3,8 +3,11 @@
 namespace MailOptin\Core\Admin\SettingsPage;
 
 // Exit if accessed directly
+use MailOptin\Core\RegisterActivation\CreateDBTables;
 use MailOptin\Core\Repositories\OptinCampaignsRepository;
 use W3Guy\Custom_Settings_Page_Api;
+use function MailOptin\Core\moVar;
+use function MailOptin\Core\moVarGET;
 
 if ( ! defined('ABSPATH')) {
     exit;
@@ -18,6 +21,10 @@ class Settings extends AbstractSettingsPage
         add_action('admin_menu', array($this, 'register_settings_page'));
         add_action('wp_cspa_persist_settings', array($this, 'check_for_mailoptin_affiliate_check'), 10, 2);
         add_action('admin_init', [$this, 'clear_optin_cache']);
+
+        add_action('admin_init', [$this, 'install_missing_db_tables']);
+
+        add_action('mailoptin_admin_settings_page_general', [$this, 'settings_admin_page_callback']);
     }
 
     public function register_settings_page()
@@ -28,8 +35,24 @@ class Settings extends AbstractSettingsPage
             __('Settings', 'mailoptin'),
             \MailOptin\Core\get_capability(),
             MAILOPTIN_SETTINGS_SETTINGS_SLUG,
-            array($this, 'settings_admin_page_callback')
+            array($this, 'admin_page_callback')
         );
+    }
+
+    public function default_header_menu()
+    {
+        return apply_filters('mailoptin_settings_default_header_menu', 'general');
+    }
+
+    public function header_menu_tabs()
+    {
+        $tabs = apply_filters('mailoptin_settings_header_menu_tabs', [
+            10 => ['id' => 'general', 'url' => MAILOPTIN_SETTINGS_SETTINGS_GENERAL_PAGE, 'label' => esc_html__('Settings', 'wp-user-avatar')]
+        ]);
+
+        ksort($tabs);
+
+        return $tabs;
     }
 
     /**
@@ -37,12 +60,12 @@ class Settings extends AbstractSettingsPage
      */
     public function clear_optin_cache()
     {
-        if (defined('DOING_AJAX'))
-            return;
+        if (defined('DOING_AJAX')) return;
 
-        if (isset($_GET['clear-optin-cache']) && $_GET['clear-optin-cache'] == 'true') {
+        if (isset($_GET['clear-optin-cache']) && $_GET['clear-optin-cache'] == 'true' && \MailOptin\Core\current_user_has_privilege()) {
+            check_admin_referer('mo_clear_optin_cache');
             OptinCampaignsRepository::burst_all_cache();
-            wp_safe_redirect(add_query_arg('optin-cache', 'cleared', MAILOPTIN_SETTINGS_SETTINGS_PAGE));
+            wp_safe_redirect(add_query_arg('optin-cache', 'cleared', MAILOPTIN_SETTINGS_SETTINGS_GENERAL_PAGE));
             exit;
         }
     }
@@ -54,8 +77,11 @@ class Settings extends AbstractSettingsPage
     {
         // Send an initial check in on settings save
         $old_data = get_option(MAILOPTIN_SETTINGS_DB_OPTION_NAME, []);
-        $old_data = @$old_data['mailoptin_affiliate_url'];
-        $new_data = isset($input['mailoptin_affiliate_url']) ? $input['mailoptin_affiliate_url'] : '';
+        if ( ! is_array($old_data)) {
+            $old_data = [];
+        }
+        $old_data = moVar($old_data, 'mailoptin_affiliate_url', '');
+        $new_data = moVar($input, 'mailoptin_affiliate_url', '');
 
         if ($option_name == MAILOPTIN_SETTINGS_DB_OPTION_NAME && $old_data != $new_data) {
             OptinCampaignsRepository::burst_all_cache();
@@ -64,17 +90,44 @@ class Settings extends AbstractSettingsPage
 
     public function settings_admin_page_callback()
     {
-        $clear_optin_cache_url = add_query_arg('clear-optin-cache', 'true', MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE);
-        $args                  = [
+        $clear_optin_cache_url = wp_nonce_url(
+            add_query_arg('clear-optin-cache', 'true', MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE),
+            'mo_clear_optin_cache'
+        );
+
+        $fix_db_url = wp_nonce_url(
+            add_query_arg('mo-install-missing-db', 'true', MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE),
+            'mo_install_missing_db_tables'
+        );
+
+        $args = [
             'general_settings'        => apply_filters('mailoptin_settings_general_settings_page', [
-                    'tab_title'                => __('General', 'mailoptin'),
-                    'section_title'            => __('General Settings', 'mailoptin'),
-                    'remove_plugin_data'       => [
+                    'tab_title'                 => __('General', 'mailoptin'),
+                    'section_title'             => __('General Settings', 'mailoptin'),
+                    'remove_plugin_data'        => [
                         'type'        => 'checkbox',
                         'label'       => __('Remove Data on Uninstall', 'mailoptin'),
                         'description' => __('Check this box if you would like MailOptin to completely remove all of its data when uninstalled.', 'mailoptin'),
                     ],
-                    'mailoptin_affiliate_url'  => [
+                    'clear_optin_cache'         => [
+                        'type'        => 'custom_field_block',
+                        'label'       => __('Clear Cache', 'mailoptin'),
+                        'data'        => "<a href='$clear_optin_cache_url' class='button action'>" . __('Clear Cache', 'mailoptin') . '</a>',
+                        'description' => '<p class="description">' .
+                                         sprintf(
+                                             __('Each time you create and make changes to your %soptin campaigns%s, MailOptin caches the designs so it does not hurt your website speed and performance. If updates to your connected email marketing list or changes to your campaigns are not reflected on your website frontend, use this button to clear the cache.', 'mailoptin'),
+                                             '<a href="' . MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE . '">',
+                                             '</a>'
+                                         ) .
+                                         '</p>',
+                    ],
+                    'switch_customizer_loader'  => [
+                        'type'           => 'checkbox',
+                        'checkbox_label' => __('Enable', 'mailoptin'),
+                        'label'          => __('Switch Customizer Loader Method', 'mailoptin'),
+                        'description'    => __('Check this if you are having problem with Customizer not loading properly.', 'mailoptin'),
+                    ],
+                    'mailoptin_affiliate_url'   => [
                         'type'        => 'text',
                         'label'       => __('MailOptin Affiliate Link', 'mailoptin'),
                         'description' => sprintf(
@@ -83,42 +136,29 @@ class Settings extends AbstractSettingsPage
                             '</a>'
                         ),
                     ],
-                    'switch_customizer_loader' => [
-                        'type'           => 'checkbox',
-                        'checkbox_label' => __('Enable', 'mailoptin'),
-                        'label'          => __('Switch Customizer Loader Method', 'mailoptin'),
-                        'description'    => __('Check this if you are having problem with Customizer not loading properly.', 'mailoptin'),
-                    ],
+                    'install_missing_db_tables' => [
+                        'type'  => 'custom_field_block',
+                        'label' => __('Install Missing DB Tables', 'mailoptin'),
+                        'data'  => "<a href='$fix_db_url' class='button action ppress-confirm-delete'>" . __('Fix Database', 'mailoptin') . '</a>',
+                    ]
                 ]
             ),
             'optin_campaign_settings' => apply_filters('mailoptin_settings_optin_campaign_settings_page', [
                     'tab_title' => __('Optin Campaign', 'mailoptin'),
                     [
-                        'section_title'         => __('Optin Campaign Settings', 'mailoptin'),
-                        'clear_optin_cache'     => [
-                            'type'        => 'custom_field_block',
-                            'label'       => __('Clear Optin Cache', 'mailoptin'),
-                            'data'        => "<a href='$clear_optin_cache_url' class='button action'>" . __('Clear Cache', 'mailoptin') . '</a>',
-                            'description' => '<p class="description">' .
-                                             sprintf(
-                                                 __('Each time you create and make changes to your %soptin campaigns%s, MailOptin caches the designs so it doesn\'t hurt your website speed and performance. If for some reasons changes you made to your campaigns are not reflected on your website frontend, use this button to clear the cache.', 'mailoptin'),
-                                                 '<a href="' . MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE . '">',
-                                                 '</a>'
-                                             ) .
-                                             '</p>',
-                        ],
-                        'disable_impression_tracking'     => [
-                            'type'        => 'checkbox',
-                            'label'       => __('Disable Impression Tracking', 'mailoptin'),
+                        'section_title'               => __('Optin Campaign Settings', 'mailoptin'),
+                        'disable_impression_tracking' => [
+                            'type'           => 'checkbox',
+                            'label'          => __('Disable Impression Tracking', 'mailoptin'),
                             'checkbox_label' => __('Disable', 'mailoptin')
                         ],
-                        'dequeue_google_font'     => [
-                            'type'        => 'checkbox',
-                            'label'       => __('Disable Google Fonts', 'mailoptin'),
+                        'dequeue_google_font'         => [
+                            'type'           => 'checkbox',
+                            'label'          => __('Disable Google Fonts', 'mailoptin'),
                             'checkbox_label' => __('Disable', 'mailoptin'),
-                            'description' => esc_html__('Check to stop us from loading Google Fonts on your site.', 'mailoptin')
+                            'description'    => esc_html__('Check to stop us from loading Google Fonts on your site.', 'mailoptin')
                         ],
-                        'global_cookie'         => [
+                        'global_cookie'               => [
                             'type'        => 'number',
                             'value'       => 0,
                             'label'       => __('Global Interaction Cookie', 'mailoptin'),
@@ -128,7 +168,7 @@ class Settings extends AbstractSettingsPage
                                 'mailoptin'
                             ),
                         ],
-                        'global_success_cookie' => [
+                        'global_success_cookie'       => [
                             'type'        => 'number',
                             'value'       => 0,
                             'label'       => __('Global Success Cookie', 'mailoptin'),
@@ -221,7 +261,6 @@ class Settings extends AbstractSettingsPage
             }
 
             $instance->persist_plugin_settings();
-            $this->register_core_settings($instance);
             $instance->do_settings_errors();
             settings_errors('wp_csa_notice');
             echo '<div class="wrap">';
@@ -238,6 +277,39 @@ class Settings extends AbstractSettingsPage
             echo '</div>';
 
             do_action('mailoptin_after_settings_page', MAILOPTIN_SETTINGS_DB_OPTION_NAME);
+        }
+    }
+
+    public function sidebar_metaboxes()
+    {
+        $boxes = $this->sidebar_args();
+
+        foreach ($boxes as $box) :
+            ?>
+            <div class="postbox">
+                <div class="postbox-header">
+                    <h2 class="hndle is-non-sortable"><span><?= $box['section_title'] ?></span></h2>
+                </div>
+                <div class="inside"><?= $box['content'] ?></div>
+            </div>
+        <?php
+        endforeach;
+    }
+
+    public function install_missing_db_tables()
+    {
+        if (defined('DOING_AJAX')) return;
+
+        if (moVarGET('mo-install-missing-db') == 'true' && current_user_can('manage_options')) {
+
+            check_admin_referer('mo_install_missing_db_tables');
+
+            delete_option('mo_db_ver');
+
+            CreateDBTables::make();
+
+            wp_safe_redirect(add_query_arg('settings-updated', 'true', MAILOPTIN_SETTINGS_SETTINGS_GENERAL_PAGE));
+            exit;
         }
     }
 

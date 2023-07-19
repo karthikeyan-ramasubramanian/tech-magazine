@@ -217,7 +217,7 @@ class ConnectionFormSettingsPage extends Forminator_Addon_Form_Settings_Abstract
                 $tags = [];
                 if ( ! empty($connected_email_providers) && in_array($connected_email_providers, Init::select2_tag_connections())) {
                     $instance = ConnectionFactory::make($connected_email_providers);
-                    if (method_exists($instance, 'get_tags')) {
+                    if (is_object($instance) && method_exists($instance, 'get_tags')) {
                         $tags = $instance->get_tags();
                     }
                 }

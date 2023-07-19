@@ -184,7 +184,8 @@ class Connect extends AbstractCleverReachConnect implements ConnectionInterface
     public function get_forms()
     {
         try {
-            $forms_array = get_transient('mo_cleverreach_forms');
+
+            $forms_array = [];
 
             $forms = parent::cleverreachInstance()->getForms();
 
@@ -197,8 +198,6 @@ class Connect extends AbstractCleverReachConnect implements ConnectionInterface
                     foreach ($forms as $key => $form) {
                         $forms_array[$key] = $form;
                     }
-
-                    set_transient('mo_cleverreach_forms', $forms_array, 10 * MINUTE_IN_SECONDS);
                 }
             }
 

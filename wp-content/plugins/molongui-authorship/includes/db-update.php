@@ -6,7 +6,7 @@ class DB_Update
 {
     public function db_update_21()
     {
-        $options = \get_option( 'molongui_authorship_options' );
+        $options = \get_option( 'molongui_authorship_options', array() );
 
         if ( !empty( $options['author_box_avatar_link'] ) and 1 == $options['author_box_avatar_link'] )
         {
@@ -22,19 +22,19 @@ class DB_Update
     }
     public function db_update_20()
     {
-        $now = \get_option( 'molongui_authorship_installation' );
+        $now = \get_option( 'molongui_authorship_installation', array() );
 
         if ( !empty( $now ) )
         {
             $new = array
             (
-                'timestamp' => $now['install_date'],
-                'version'   => $now['install_version'],
+                'timestamp' => isset( $now['install_date'] ) ? $now['install_date'] : '',
+                'version'   => isset( $now['install_version'] ) ? $now['install_version'] : '',
             );
             \update_option( 'molongui_authorship_install', $new );
             \delete_option( 'molongui_authorship_installation' );
         }
-        $options = \get_option( 'molongui_authorship_options' );
+        $options = \get_option( 'molongui_authorship_options', array() );
         \add_option( 'molongui_authorship_options_backup_19', $options );
         require_once MOLONGUI_AUTHORSHIP_DIR . 'includes/helpers/options/update.php';
         $options = \authorship_options_update_20( $options );
@@ -104,12 +104,12 @@ class DB_Update
     }
     public function db_update_19()
     {
-        $main     = \get_option( 'molongui_authorship_main' );
-        $box      = \get_option( 'molongui_authorship_box' );
-        $byline   = \get_option( 'molongui_authorship_byline' );
-        $archives = \get_option( 'molongui_authorship_archives' );
-        $seo      = \get_option( 'molongui_authorship_seo' );
-        $compat   = \get_option( 'molongui_authorship_compat' );
+        $main     = \get_option( 'molongui_authorship_main', array() );
+        $box      = \get_option( 'molongui_authorship_box', array() );
+        $byline   = \get_option( 'molongui_authorship_byline', array() );
+        $archives = \get_option( 'molongui_authorship_archives', array() );
+        $seo      = \get_option( 'molongui_authorship_seo', array() );
+        $compat   = \get_option( 'molongui_authorship_compat', array() );
         $options  = \array_merge( $main, $box, $byline, $archives, $seo, $compat );
         $options['author_box'] = $options['enable_author_boxes'];
         $options['guest_authors'] = $options['enable_guest_authors'];
@@ -169,8 +169,8 @@ class DB_Update
     }
     public function db_update_18()
     {
-        $strings = \get_option( 'molongui_authorship_strings' );
-        $box     = \get_option( 'molongui_authorship_box' );
+        $strings = \get_option( 'molongui_authorship_strings', array() );
+        $box     = \get_option( 'molongui_authorship_box', array() );
         foreach ( $strings as $key => $value )
         {
             $box[$key] = $value;
@@ -180,8 +180,8 @@ class DB_Update
     }
     public function db_update_17()
     {
-        $strings = \get_option( 'molongui_authorship_strings' );
-        $box     = \get_option( 'molongui_authorship_box' );
+        $strings = \get_option( 'molongui_authorship_strings', array() );
+        $box     = \get_option( 'molongui_authorship_box', array() );
         $box['no_related_posts'] = $strings['no_related_posts'];
         unset( $strings['no_related_posts'] );
         \update_option( 'molongui_authorship_strings', $strings );
@@ -189,8 +189,8 @@ class DB_Update
     }
     public function db_update_16()
     {
-        $main = \get_option( 'molongui_authorship_main' );
-        $box  = \get_option( 'molongui_authorship_box'  );
+        $main = \get_option( 'molongui_authorship_main', array() );
+        $box  = \get_option( 'molongui_authorship_box', array() );
         if ( !\function_exists( 'get_editable_roles' ) ) require_once ABSPATH . 'wp-admin/includes/user.php';
         $ur = array();
         $user_roles = \get_editable_roles();
@@ -254,11 +254,11 @@ class DB_Update
 
         $wpdb->query( "UPDATE {$wpdb->prefix}posts SET post_type = 'guest_author' WHERE post_type = 'molongui_guestauthor';" );
         \add_option( 'molongui_authorship_update_post_counters', true );
-        $box_settings      = (array) get_option( 'molongui_authorship_box' );
-        $byline_settings   = (array) get_option( 'molongui_authorship_byline' );
-        $authors_settings  = (array) get_option( 'molongui_authorship_authors' );
-        $archives_settings = (array) get_option( 'molongui_authorship_archives' );
-        $advanced_settings = (array) get_option( 'molongui_authorship_advanced' );
+        $box_settings      = (array) get_option( 'molongui_authorship_box', array() );
+        $byline_settings   = (array) get_option( 'molongui_authorship_byline', array() );
+        $authors_settings  = (array) get_option( 'molongui_authorship_authors', array() );
+        $archives_settings = (array) get_option( 'molongui_authorship_archives', array() );
+        $advanced_settings = (array) get_option( 'molongui_authorship_advanced', array() );
         $box_settings['show_meta']               = true;
         $box_settings['avatar_src']              = 'local';
         $box_settings['avatar_local_fallback']   = 'gravatar';
@@ -363,7 +363,7 @@ class DB_Update
             $value = get_site_transient( $transient_name );
             if ( $value )
             {
-                $notices = get_option( 'molongui_authorship_notices' );
+                $notices = get_option( 'molongui_authorship_notices', array() );
                 if ( !$notices ) $notices = array();
                 $notices[$key] = $value;
                 update_option( 'molongui_authorship_notices', $notices );
@@ -383,7 +383,7 @@ class DB_Update
     public function db_update_11()
     {
         global $wpdb;
-        $guest_settings = get_option( 'molongui_authorship_guest' );
+        $guest_settings = get_option( 'molongui_authorship_guest', array() );
         delete_option( 'molongui_authorship_guest' );
         if ( did_action( 'authorship_pro/loaded' ) and $guest_settings['include_guests_in_search'] )
         {
@@ -405,7 +405,7 @@ class DB_Update
         $wpdb->query( "UPDATE {$wpdb->prefix}usermeta SET meta_key = 'molongui_author_box_display' WHERE meta_key = 'molongui_author_hide_box';" );
         $wpdb->query( "UPDATE {$wpdb->prefix}postmeta SET meta_value = 'hide' WHERE meta_key = '_molongui_guest_author_box_display' AND meta_value = '1';" );
         $wpdb->query( "UPDATE {$wpdb->prefix}usermeta SET meta_value = 'hide' WHERE meta_key = 'molongui_author_box_display' AND meta_value = '1';" );
-        $box_settings = get_option( 'molongui_authorship_box' );
+        $box_settings = get_option( 'molongui_authorship_box', array() );
         $display = array
         (
             '1'     => 'show',
@@ -439,20 +439,20 @@ class DB_Update
                 delete_user_meta( $user->ID, 'molongui_author_link' );
             }
         }
-        $box_settings = get_option( 'molongui_authorship_box' );
+        $box_settings = get_option( 'molongui_authorship_box', array() );
         unset( $box_settings['show_mail'] );
         unset( $box_settings['show_web'] );
         update_option( 'molongui_authorship_box', $box_settings );
     }
     public function db_update_9()
     {
-        $box_settings = get_option( 'molongui_authorship_box' );
+        $box_settings = get_option( 'molongui_authorship_box', array() );
         $box_settings['show_mail'] = '0';
         update_option( 'molongui_authorship_box', $box_settings );
     }
     public function db_update_8()
     {
-        $box_settings = get_option( 'molongui_authorship_box' );
+        $box_settings = get_option( 'molongui_authorship_box', array() );
         if ( isset( $box_settings['box_border_style'] ) and $box_settings['box_border_style'] == 'none' )
         {
             $box_settings['box_border']       = 'none';
@@ -490,9 +490,9 @@ class DB_Update
     public function db_update_7() {}
     public function db_update_6()
     {
-        $main_settings     = get_option( 'molongui_authorship_main' );
-        $box_settings      = get_option( 'molongui_authorship_box' );
-        $advanced_settings = get_option( 'molongui_authorship_advanced' );
+        $main_settings     = get_option( 'molongui_authorship_main', array() );
+        $box_settings      = get_option( 'molongui_authorship_box', array() );
+        $advanced_settings = get_option( 'molongui_authorship_advanced', array() );
         $text_styles = array
         (
             'normal'   => 'normal',
@@ -626,7 +626,7 @@ class DB_Update
     public function db_update_4()
     {
         global $wpdb;
-        $main_settings = get_option( 'molongui_authorship_main' );
+        $main_settings = get_option( 'molongui_authorship_main', array() );
         $advanced_settings = array(
             'extend_to_post'         => '1',
             'extend_to_page'         => '1',
@@ -660,7 +660,7 @@ class DB_Update
     public function db_update_3()
     {
         global $wpdb;
-        $settings = get_option( 'molongui_authorship_main' );
+        $settings = get_option( 'molongui_authorship_main', array() );
         $main_settings = array(
             'show_related'            => $settings['show_related'],
             'related_order_by'        => $settings['related_order_by'],
@@ -713,7 +713,7 @@ class DB_Update
     public function db_update_2()
     {
         global $wpdb;
-        $settings = get_option( 'molongui_authorship_config' );
+        $settings = get_option( 'molongui_authorship_config', array() );
         $main_settings = array
         (
             'show_related'       => $settings['molongui_authorship_related_show'],

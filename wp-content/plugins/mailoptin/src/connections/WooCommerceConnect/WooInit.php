@@ -20,11 +20,6 @@ class WooInit
 {
     public function __construct()
     {
-        add_action('woocommerce_init', [$this, 'woocommerce_init']);
-    }
-
-    public function woocommerce_init()
-    {
         add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
         add_action('admin_footer', [$this, 'admin_scripts']);
 
@@ -38,7 +33,6 @@ class WooInit
         Tags::get_instance();
         WooSettings::get_instance();
     }
-
 
     public function enqueue_scripts()
     {
@@ -201,7 +195,7 @@ class WooInit
             <?php echo mo_minify_css(ob_get_clean()); ?>
             <script type="text/javascript">
                 (function ($) {
-                    $('#mo-woocommerce-product-category').click(function (e) {
+                    $('#mo-woocommerce-product-category').on('click', function (e) {
                         e.preventDefault();
                         $.fancybox.open({
                             src: '#mo-woocommerce-product-category-modal',
@@ -225,7 +219,7 @@ class WooInit
         $connection = sanitize_text_field($_POST['connection']);
 
         $type = 'product';
-        if ( ! empty($_POST['type'])) $type = $_POST['type'];
+        if ( ! empty($_POST['type'])) $type = sanitize_text_field($_POST['type']);
 
         ob_start();
 
@@ -264,7 +258,7 @@ class WooInit
         } else {
 
             if (empty($_POST['product_cat_id'])) wp_send_json_error([]);
-            $product_cat_id = $_POST['product_cat_id'];
+            $product_cat_id = absint($_POST['product_cat_id']);
 
             $lists       = [];
             $saved_lists = '';
@@ -322,8 +316,12 @@ class WooInit
         $connection            = sanitize_text_field($_POST['connection']);
         $connection_email_list = sanitize_text_field($_POST['connection_email_list']);
 
+        $mappable_fields = $this->merge_vars_field_map($connection, $connection_email_list);
+
+        if (empty($mappable_fields)) wp_send_json_error([]);
+
         $type = 'product';
-        if ( ! empty($_POST['type'])) $type = $_POST['type'];
+        if ( ! empty($_POST['type'])) $type = sanitize_text_field($_POST['type']);
 
         ob_start();
 
@@ -333,7 +331,7 @@ class WooInit
             ?>
             <h2 class="mo-woocommerce-map-field-title"><span><?= __('Map Fields', 'mailoptin') ?></span></h2>
             <?php
-            foreach ($this->merge_vars_field_map($connection, $connection_email_list) as $key => $value) {
+            foreach ($mappable_fields as $key => $value) {
                 $mapped_key         = rawurlencode('mailoptinWooCommerceMappedFields-' . $key);
                 $saved_mapped_field = $product_object->get_meta($connection . '[' . $mapped_key . ']');
 
@@ -368,12 +366,17 @@ class WooInit
             }
         } else {
             if (empty($_POST['product_cat_id'])) wp_send_json_error([]);
-            $product_cat_id = $_POST['product_cat_id'];
+
+            $mappable_fields = $this->merge_vars_field_map($connection, $connection_email_list);
+
+            if (empty($mappable_fields)) wp_send_json_error([]);
+
+            $product_cat_id = (int)$_POST['product_cat_id'];
             ?>
             <h2 class="mo-woocommerce-map-field-title"><span><?= __('Map Fields', 'mailoptin') ?></span></h2>
             <?php
 
-            foreach ($this->merge_vars_field_map($connection, $connection_email_list) as $key => $value) {
+            foreach ($mappable_fields as $key => $value) {
                 $mapped_key         = rawurlencode('mailoptinWooCommerceMappedFields-' . $key);
                 $saved_mapped_field = get_term_meta($product_cat_id, $connection . '[' . $mapped_key . ']', true);
                 ?>
@@ -459,7 +462,7 @@ class WooInit
             return [
                 'id'          => 'mailoptinWooCommerceDoubleOptin',
                 'label'       => ($is_double_optin === false) ? esc_html__('Enable Double Optin', 'mailoptin') : esc_html__('Disable Double Optin', 'mailoptin'),
-                'description' => esc_html__('Double optin requires users to confirm their email address before they are added or subscribed.', 'mailoptin'),
+                'description' => esc_html__('Double optin requires customers to confirm their email address before they are added or subscribed.', 'mailoptin'),
                 'value'       => wc_bool_to_string($saved_double_optin),
             ];
         }
@@ -530,7 +533,7 @@ class WooInit
 
             $tags     = [];
             $instance = ConnectionFactory::make($saved_integration);
-            if (method_exists($instance, 'get_tags')) {
+            if (is_object($instance) && method_exists($instance, 'get_tags')) {
                 $tags = $instance->get_tags();
             }
 
@@ -687,29 +690,6 @@ class WooInit
         }
 
         return $return_data;
-    }
-
-    /**
-     * @param string $first_name
-     * @param string $last_name
-     *
-     * @return mixed|string
-     */
-    public function get_full_name($first_name = '', $last_name = '')
-    {
-        $full_name = '';
-
-        if (empty($first_name) && empty($last_name)) {
-            return $full_name;
-        } elseif ( ! empty($first_name) && empty($last_name)) {
-            $full_name = $first_name;
-        } elseif (empty($first_name) && ! empty($last_name)) {
-            $full_name = $last_name;
-        } else {
-            $full_name = $first_name . ' ' . $last_name;
-        }
-
-        return $full_name;
     }
 
     /**

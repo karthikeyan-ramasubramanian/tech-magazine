@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Util\Notices;
 
@@ -6,8 +6,11 @@ if (!defined('ABSPATH')) exit;
 
 
 use MailPoet\Config\Menu;
+use MailPoet\Mailer\MailerFactory;
 use MailPoet\Settings\SettingsController;
 use MailPoet\Settings\TrackingConfig;
+use MailPoet\Subscribers\SubscribersRepository;
+use MailPoet\Util\License\Features\Subscribers as SubscribersFeature;
 use MailPoet\WP\Functions as WPFunctions;
 
 class PermanentNotices {
@@ -45,28 +48,44 @@ class PermanentNotices {
   /** @var DeprecatedFilterNotice */
   private $deprecatedFilterNotice;
 
+  /** @var DisabledMailFunctionNotice */
+  private $disabledMailFunctionNotice;
+
+  /** @var PendingApprovalNotice */
+  private $pendingApprovalNotice;
+
+  /** @var WooCommerceVersionWarning */
+  private $woocommerceVersionWarning;
+
   public function __construct(
     WPFunctions $wp,
     TrackingConfig $trackingConfig,
-    SettingsController $settings
+    SubscribersRepository $subscribersRepository,
+    SettingsController $settings,
+    SubscribersFeature $subscribersFeature,
+    MailerFactory $mailerFactory
   ) {
     $this->wp = $wp;
     $this->phpVersionWarnings = new PHPVersionWarnings();
     $this->afterMigrationNotice = new AfterMigrationNotice();
     $this->unauthorizedEmailsNotice = new UnauthorizedEmailNotice($wp, $settings);
     $this->unauthorizedEmailsInNewslettersNotice = new UnauthorizedEmailInNewslettersNotice($settings, $wp);
-    $this->inactiveSubscribersNotice = new InactiveSubscribersNotice($settings, $wp);
-    $this->blackFridayNotice = new BlackFridayNotice();
+    $this->inactiveSubscribersNotice = new InactiveSubscribersNotice($settings, $subscribersRepository, $wp);
+    $this->blackFridayNotice = new BlackFridayNotice($subscribersRepository);
     $this->headersAlreadySentNotice = new HeadersAlreadySentNotice($settings, $trackingConfig, $wp);
     $this->emailWithInvalidListNotice = new EmailWithInvalidSegmentNotice($wp);
     $this->changedTrackingNotice = new ChangedTrackingNotice($wp);
     $this->deprecatedFilterNotice = new DeprecatedFilterNotice($wp);
+    $this->disabledMailFunctionNotice = new DisabledMailFunctionNotice($wp, $settings, $subscribersFeature, $mailerFactory);
+    $this->pendingApprovalNotice = new PendingApprovalNotice($settings);
+    $this->woocommerceVersionWarning = new WooCommerceVersionWarning($wp);
   }
 
   public function init() {
-    $excludeWizard = [
+    $excludeSetupWizard = [
       'mailpoet-welcome-wizard',
       'mailpoet-woocommerce-setup',
+      'mailpoet-landingpage',
     ];
     $this->wp->addAction('wp_ajax_dismissed_notice_handler', [
       $this,
@@ -75,34 +94,43 @@ class PermanentNotices {
 
     $this->phpVersionWarnings->init(
       phpversion(),
-      Menu::isOnMailPoetAdminPage($excludeWizard)
+      Menu::isOnMailPoetAdminPage($excludeSetupWizard)
     );
     $this->afterMigrationNotice->init(
-      Menu::isOnMailPoetAdminPage($excludeWizard)
+      Menu::isOnMailPoetAdminPage($excludeSetupWizard)
     );
     $this->unauthorizedEmailsNotice->init(
-      Menu::isOnMailPoetAdminPage($excludeWizard)
+      Menu::isOnMailPoetAdminPage($excludeSetupWizard)
     );
     $this->unauthorizedEmailsInNewslettersNotice->init(
-      Menu::isOnMailPoetAdminPage($exclude = null, $pageId = 'mailpoet-newsletters')
+      Menu::isOnMailPoetAdminPage($excludeSetupWizard)
     );
     $this->inactiveSubscribersNotice->init(
-      Menu::isOnMailPoetAdminPage($excludeWizard)
+      Menu::isOnMailPoetAdminPage($excludeSetupWizard)
     );
     $this->blackFridayNotice->init(
-      Menu::isOnMailPoetAdminPage($excludeWizard)
+      Menu::isOnMailPoetAdminPage($excludeSetupWizard)
     );
     $this->headersAlreadySentNotice->init(
-      Menu::isOnMailPoetAdminPage($excludeWizard)
+      Menu::isOnMailPoetAdminPage($excludeSetupWizard)
     );
     $this->emailWithInvalidListNotice->init(
-      Menu::isOnMailPoetAdminPage($exclude = null, $pageId = 'mailpoet-newsletters')
+      Menu::isOnMailPoetAdminPage($excludeSetupWizard)
     );
     $this->changedTrackingNotice->init(
-      Menu::isOnMailPoetAdminPage($excludeWizard)
+      Menu::isOnMailPoetAdminPage($excludeSetupWizard)
     );
     $this->deprecatedFilterNotice->init(
-      Menu::isOnMailPoetAdminPage($excludeWizard)
+      Menu::isOnMailPoetAdminPage($excludeSetupWizard)
+    );
+    $this->disabledMailFunctionNotice->init(
+      Menu::isOnMailPoetAdminPage($excludeSetupWizard)
+    );
+    $this->pendingApprovalNotice->init(
+      Menu::isOnMailPoetAdminPage($excludeSetupWizard)
+    );
+    $this->woocommerceVersionWarning->init(
+      Menu::isOnMailPoetAdminPage($excludeSetupWizard)
     );
   }
 
@@ -132,6 +160,9 @@ class PermanentNotices {
         break;
       case (DeprecatedFilterNotice::OPTION_NAME):
         $this->deprecatedFilterNotice->disable();
+        break;
+      case (WooCommerceVersionWarning::OPTION_NAME):
+        $this->woocommerceVersionWarning->disable();
         break;
     }
   }

@@ -1,10 +1,10 @@
-﻿=== Social Sharing Plugin - Sassy Social Share ===
-Contributors: Heateor, jatin8heateor, farhan8heateor
+=== Social Sharing Plugin - Sassy Social Share ===
+Contributors: Heateor, kamirkhan, mohammadfarhankhan, the_champ
 Donate link: https://www.heateor.com/donate/?action=Sassy+Social+Share
-Tags: social share, social sharing, social media share, share facebook, facebook social share, wordpress social share, share buttons, social share buttons, facebook like, twitter tweet, whatsapp share, line share, gab share, gab, parler share, gettr, gettr share, mewe share, mewe
+Tags: social share, social sharing, social media share, share facebook, facebook social share, wordpress social share, share buttons, social share buttons, facebook like, twitter tweet, whatsapp share, line share, gab share, gab social share, gab, parler share, parler social share, gettr, gettr share, gettr social share, mewe share, mewe social share, mewe, mastodon share, mastodon social share, mastodon, rutube share, rutube social share, rutube, google news, google news share, google news icon, RSS, RSS Feed
 Requires at least: 2.5.0
-Tested up to: 5.9.3
-Stable tag: 3.3.42
+Tested up to: 6.2
+Stable tag: 3.3.51
 License: GPLv2 or later
 
 Slickest, Simplest and Optimized Share buttons. Facebook, Twitter, Reddit, Pinterest, Whatsapp, Parler, Gab, Gettr and over 100 more.
@@ -12,13 +12,13 @@ Slickest, Simplest and Optimized Share buttons. Facebook, Twitter, Reddit, Pinte
 == Description ==
 **Try it out live => <a href="https://tastewp.com/new/?pre-installed-plugin-slug=sassy-social-share">Click here</a>**
 
-Sassy Social Share enables your website users to share the content over Facebook, Twitter, Google, Linkedin, Whatsapp, Tumblr, Pinterest, Reddit, Parler, Gab, Gettr and over 100 more social sharing and bookmarking services.
+Sassy Social Share allows your website visitors to share your content over Facebook, Twitter, Google, Linkedin, Whatsapp, Tumblr, Pinterest, Reddit, Parler, Gab, Gettr and over 110 more social sharing and bookmarking services.
 
-This is the Simplest and Smoothest Social Sharing plugin with optimized and great looking vector icons.
+This is the Simplest and Slickest Social Share plugin with optimized and great looking vector icons.
 
 **Note:** Plugin will not work on local server. You should have an online website for the plugin to function properly.
 
-**This plugin does not save any cookie in the browser of the user visiting the website having this plugin installed**
+**This plugin does not save any cookies in the browser of the user visiting the website having this plugin installed**
 
 = Feature list =
 * EU-GDPR Compliant
@@ -125,6 +125,50 @@ Yes, we can help you with it. Just drop an email at support[at]heateor[dot]com
 4. **Universal Sharing Popup**: Universal Sharing popup having all the supported sharing and bookmarking services
 
 == Changelog ==
+= 3.3.51 [13 April 2023] =
+* [Improvement] Fixed broken images at the plugin configuration pages in the admin area
+* [Improvement] Admin UI improvements
+
+= 3.3.50 [8 April 2023] =
+* [Bugfix] Querystring parameters present in the URL were being omitted in the Email share dialogue
+* [Improvement] Admin UI improvements
+* [Improvement] Updated the official Facebook SDK being used throughout the plugin to the latest version 16.0
+
+= 3.3.49 [11 March 2023] =
+* [New] RSS Feed is now available as a social share icon
+* [Improvement] Mastodon share now prompts user to specify their Mastodon instance instead of directly sharing to Mastodon.social
+* [Improvement] Minor improvements
+
+= 3.3.48 [10 March 2023] =
+* [Bugfix] PHP warning related to the Google News URL option was being generated after updating the plugin to the previous version 
+
+= 3.3.47 [9 March 2023] =
+* [New] Added Google News social share and social media follow icon
+* [Bugfix] Help text for the Vertical Youtube URL and Vertical Rutube URL options were not appearing on clicking the (?) icon in the Floating Interface section at the plugin configuration page
+* [Bugfix] Pocket social share icon was appearing broken in AMP
+
+= 3.3.46 [4 February 2023] =
+* [Bugfix] Added href attribute in the anchor tags for the Facebook Messenger, Print, Email, Pinterest and Copy Link share icons to fix the "Links are not crawlable" warning in the Google Search Console
+* [Bugfix] Logo color of Vkontakte share icon was not changing when updated from the Theme Selection section
+* [Improvement] Improved Parler logo for the horizontal sticky social share bar appearing at the bottom of the screen 
+
+= 3.3.45 [20 December 2022] =
+* [Security] Fixed Cross-Site Scripting vulnerability exploit in the shortcodes
+* [Improvement] Improved Print icon
+* [Improvement] Minor improvements
+
+= 3.3.44 [30 November 2022] =
+* [Bugfix] A PHP notice was being generated if Google Bookmarks share icon was selected in the older versions of the plugin
+
+= 3.3.43 [1 September 2022] =
+* [New] Added Mastodon and Rutube social share icons
+* [Bugfix] Evernote and Pocket social share icons were not working
+* [Bugfix] Youtube URL and Instagram Username were not being saved when saving in the Floating Interface section first
+* [Improvement] Improved More social share icon
+* [Improvement] Improved Vkontakte, Gettr, Parler and Pocket icons
+* [Improvement] Admin UI improvements
+* [Improvement] Updated the official Facebook SDK being used throughout the plugin to the latest version 14.0
+
 = 3.3.42 [23 May 2022] =
 * [Improvement] Code quality improvement
 
@@ -1196,3 +1240,48 @@ Yes, we can help you with it. Just drop an email at support[at]heateor[dot]com
 
 = 3.3.42 [23 May 2022] =
 * [Improvement] Code quality improvement
+
+= 3.3.43 [1 September 2022] =
+* [New] Added Mastodon and Rutube social share icons
+* [Bugfix] Evernote and Pocket social share icons were not working
+* [Bugfix] Youtube URL and Instagram Username were not being saved when saving in the Floating Interface section first
+* [Improvement] Improved More social share icon
+* [Improvement] Improved Vkontakte, Gettr, Parler and Pocket icons
+* [Improvement] Admin UI improvements
+* [Improvement] Updated the official Facebook SDK being used throughout the plugin to the latest version 14.0
+* Removed Google Bookmarks icon
+
+= 3.3.44 [30 November 2022] =
+* [Bugfix] A PHP notice was being generated if Google Bookmarks share icon was selected in the older versions of the plugin 
+
+= 3.3.45 [20 December 2022] =
+* [Security] Fixed Cross-Site Scripting vulnerability exploit in the shortcodes
+* [Improvement] Improved Print icon
+* [Improvement] Minor improvements
+
+= 3.3.46 [4 February 2023] =
+* [Bugfix] Added href attribute in the anchor tags for the Facebook Messenger, Print, Email, Pinterest and Copy Link share icons to fix the "Links are not crawlable" warning in the Google Search Console
+* [Bugfix] Logo color of Vkontakte share icon was not changing when updated from the Theme Selection section
+* [Improvement] Improved Parler logo for the horizontal sticky social share bar appearing at the bottom of the screen 
+
+= 3.3.47 [9 March 2023] =
+* [New] Added Google News social share and social media follow icon
+* [Bugfix] Help text for the Vertical Youtube URL and Vertical Rutube URL options were not appearing on clicking the (?) icon in the Floating Interface section at the plugin configuration page
+* [Bugfix] Pocket social share icon was appearing broken in AMP
+
+= 3.3.48 [10 March 2023] =
+* [Bugfix] PHP warning related to the Google News URL option was being generated after updating the plugin to the previous version
+
+= 3.3.49 [11 March 2023] =
+* [New] RSS Feed is now available as a social share icon
+* [Improvement] Mastodon share now prompts user to specify their Mastodon instance instead of directly sharing to Mastodon.social
+* [Improvement] Minor improvements
+
+= 3.3.50 [8 April 2023] =
+* [Bugfix] Querystring parameters present in the URL were being omitted in the Email share dialogue
+* [Improvement] Admin UI improvements
+* [Improvement] Updated the official Facebook SDK being used throughout the plugin to the latest version 16.0
+
+= 3.3.51 [13 April 2023] =
+* [Improvement] Fixed broken images at the plugin configuration pages in the admin area
+* [Improvement] Admin UI improvements

@@ -1,11 +1,12 @@
 @import url(https://fonts.googleapis.com/css?family=PT+Sans:300|PT+Sans:400|PT+Sans:700);
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap');
 /************************************************\
 Very general Reset
 \************************************************/
 
 .wpdreams,
 .wpdreams * {
-  font:normal 13px/100% 'PT Sans', Verdana,Tahoma,sans-serif;
+  font:normal 13px/100% manrope, Verdana,Tahoma,sans-serif;
   padding: auto;
   margin: auto;
   border: none;
@@ -228,7 +229,7 @@ Generic classes
     font-size:1.22em;
     color:#444;
     font-weight: 700;
-    margin: 0 0 0 11px;
+    margin: 0;
     position: relative;
 }
 #wpdreams hr {
@@ -373,8 +374,7 @@ Generic classes
   padding: 6px 16px 6px 35px;
   position: relative;
   text-decoration: none;
-  transition: all 0.2s linear 0s;
-
+  transition: all 0.1s linear 0s;
 }
 
 #wpdreams a.cache,
@@ -389,38 +389,6 @@ Generic classes
   padding: 6px 16px 6px 35px;
 }
 
-#preview a.maximise:hover,
-#wpdreams a.maximise:hover,
-#preview a.refresh:hover,
-#wpdreams a.refresh:hover,
-#wpdreams a.back:hover,
-#wpdreams a.general:hover,
-#wpdreams a.multisite:hover,
-#wpdreams a.frontend:hover,
-#wpdreams a.layout:hover,
-#wpdreams a.autocomplete:hover,
-#wpdreams a.theme:hover,
-#wpdreams a.advanced:hover,
-#wpdreams a.advanced:hover,
-#wpdreams a.cache:hover,
-#wpdreams a.error:hover,
-#wpdreams a.statistics:hover {
-  opacity: 0.8;
-}
-
-#wpdreams a.back:active,
-#wpdreams a.general:active,
-#wpdreams a.multisite:active,
-#wpdreams a.frontend:active,
-#wpdreams a.layout:active,
-#wpdreams a.autocomplete:active,
-#wpdreams a.theme:active,
-#wpdreams a.advanced:active,
-#wpdreams a.cache:active,
-#wpdreams a.error:active,
-#wpdreams a.statistics:active  {
-
-}
 #preview a.maximise,
 #wpdreams a.maximise {
   background: url("icons/b-maximise.png") no-repeat scroll 5px 5px #63A69F;
@@ -435,43 +403,84 @@ Generic classes
   background: url("icons/b-back.png") no-repeat scroll 5px 5px transparent;
 }
 
-#wpdreams a.general {
-  background: url("icons/b-settings.png") no-repeat scroll 5px 5px #4095B6;
+#wpdreams a.general::before {
+  background: url("icons/b-settings.png") no-repeat scroll 5px 5px transparent;
 }
 
-#wpdreams a.multisite {
-  background: url("icons/b-multisite.png") no-repeat scroll 5px 5px #4095B6;
+#wpdreams a.multisite::before {
+  background: url("icons/b-multisite.png") no-repeat scroll 5px 5px transparent;
 }
 
-#wpdreams a.frontend {
-  background: url("icons/b-frontend.png") no-repeat scroll 5px 5px #4095B6;
+#wpdreams a.frontend::before {
+  background: url("icons/b-frontend.png") no-repeat scroll 5px 5px transparent;
 }
 
-#wpdreams a.layout {
-  background: url("icons/b-layout.png") no-repeat scroll 5px 5px #4095B6;
+#wpdreams a.layout::before {
+  background: url("icons/b-layout.png") no-repeat scroll 5px 5px transparent;
 }
 
-#wpdreams a.autocomplete {
-  background: url("icons/b-bulb.png") no-repeat scroll 5px 5px #4095B6;
+#wpdreams a.autocomplete::before {
+  background: url("icons/b-bulb.png") no-repeat scroll 5px 5px transparent;
 }
 
-#wpdreams a.theme {
-  background: url("icons/b-eye.png") no-repeat scroll 5px 5px #4095B6;
+#wpdreams a.theme::before {
+  background: url("icons/b-eye.png") no-repeat scroll 5px 5px transparent;
+}
+
+#wpdreams a.advanced:before {
+  background: url("icons/b-asettings.png") no-repeat scroll 5px 5px transparent;
+}
+
+#tabs a {
+    position: relative;
+    background-color: #b2d4e1;
+}
+
+#tabs a::before {
+    content: "";
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.4;
+    position: absolute;
+}
+
+#tabs a:hover,
+#tabs a.current {
+    background-color: #4095B6;
+}
+
+#tabs a:hover::before,
+#tabs a.current::before {
+    opacity: 1;
 }
 
 #wpdreams a.subtheme {
-  background: none repeat scroll 0 0 #414D50;
-  font-size: 12px;
-  margin: 5px 1px 0 9px;
-  padding: 3px 8px;
+  background: none repeat scroll 0 0 #b2b7b8;
+  font-size: 13px;
+  margin: 5px 7px 0 0;
+  padding: 4px 8px;
+    text-shadow: 1px 1px 0 #939393;
 }
 
+#wpdreams a.subtheme:hover,
 #wpdreams a.subtheme.current {
   box-shadow: none;
+    background: none repeat scroll 0 0 #414D50;
+    text-shadow: 1px 1px 0 black;
 }
 
-#wpdreams a.advanced {
-  background: url("icons/b-asettings.png") no-repeat scroll 5px 5px #4095B6;
+#wpdreams a.subtheme span {
+    color: #dd125d;
+    margin-left: 6px;
+    text-shadow: none;
+    font-weight: 400;
+    background: white;
+    padding: 0 9px;
+    display: inline-block;
+    font-size: 11px;
+    border-radius: 30px;
 }
 
 #wpdreams a.cache {
@@ -2694,4 +2703,118 @@ form #asp_indextable_options #asp_it_disable {
 
 #wpdreams.asl_updates_help li {
   margin: 10px 0px 0px 0px;
+}
+
+
+/************************************************\
+ Sidebar form
+\************************************************/
+
+#asl-side-container h2,
+#asl-side-container p {
+    color: #4c4c4c;
+    display: inline-block;
+    margin: 8px 0;
+}
+
+#asl-side-container h2 {
+    font-size: 16px;
+    color: #444;
+    font-weight: 700;
+    margin: 14px 0 6px 0;
+}
+
+#asl-side-container form {
+    display: flex;
+    width: auto;
+    text-align: center;
+    box-sizing: border-box;
+    font-size: 0;
+    border: 1px solid #ffffff;
+    margin: 0 0 12px 0;
+    border-radius: 3px;
+    background: #efefef;
+    align-items: center;
+}
+
+#asl-side-container input[type=email],
+#asl-side-container input[type=submit] {
+    height: 38px;
+    padding: 0 14px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    text-shadow: none;
+    box-shadow: none;
+}
+
+#asl-side-container input[type=email] {
+    border-radius: 4px 0 0 4px;
+    vertical-align: top;
+    width: 100%;
+    background: transparent;
+    color: black;
+}
+
+#asl-side-container input[type=submit] {
+    border-radius: 0 4px 4px 0;
+    background: #cb2550;
+    color: #fff;
+    width: auto;
+    flex: 1 1 auto;
+    margin: 0;
+}
+
+#asl-side-container .gopro input[type=submit] {
+    background: #a440b6;
+}
+
+.asl_pro_only {
+    text-align: center;
+    padding: 24px 40px;
+    background: #494949;
+    color: white;
+    border-radius: 3px
+}
+
+.asl_pro_only h2,
+.asl_pro_only p {
+    display: block;
+    margin: 18px 0;
+    color: white;
+    font-size: 16px;
+    line-height: 22px;
+}
+
+.asl_pro_only i {
+    font-style: italic;
+    font-size: 16px;
+}
+
+.asl_pro_only h2 {
+    font-size: 21px;
+    font-weight: 700;
+    margin: 14px 0 6px 0;
+    line-height: 26px;
+}
+
+.asl_pro_only ul {
+    text-align: left;
+    margin: 18px 0 18px 40px;
+}
+.asl_pro_only ul li {
+    list-style-type: disc !important;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.asl_pro_only img {
+    margin: 18px auto;
+}
+
+.asl_pro_only .gopro {
+    font-size: 16px;
+    padding: 14px 24px 14px 38px !important;
+    margin-top: 16px !important;
+    background: url("icons/tie.png") no-repeat scroll 11px 14px #e264af !important;
 }

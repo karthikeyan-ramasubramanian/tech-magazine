@@ -38,10 +38,10 @@ class WFB_Facebook_API {
 			$old_opts['nr_images']     = $nr_images;
 			$nr_images                 = ! \WIS_Plugin::app()->is_premium() && $nr_images > 20 ? 20 : $nr_images;
 
-			$fields = "id,created_time,child_attachments,shares,sharedposts{message,full_picture,created_time},comments{comments_count},message,full_picture,picture,attachments{media_type,media,title,type,url}"; //,comments.summary(true)
+			$fields = 'id,created_time,child_attachments,shares,sharedposts{message,full_picture,created_time},comments{comments_count},message,full_picture,picture,attachments{media_type,media,title,type,url}'; //,comments.summary(true)
 
 			if ( ! $account->is_me ) {
-				$fields .= ",likes.summary(true)";
+				$fields .= ',likes.summary(true)';
 			}
 
 			$args = [
@@ -50,7 +50,7 @@ class WFB_Facebook_API {
 				'limit'        => $nr_images,
 			];
 
-			$url      = WFB_FACEBOOK_SELF_URL . $account->id . "/feed";
+			$url      = WFB_FACEBOOK_SELF_URL . $account->id . '/feed';
 			$response = wp_remote_get( add_query_arg( $args, $url ) );
 			if ( is_wp_error( $response ) ) {
 				return [ 'error' => __( 'Something went wrong', 'instagram-slider-widget' ) ];
@@ -59,7 +59,7 @@ class WFB_Facebook_API {
 				try {
 					$entry_data = $this->get_posts_from_json( $response['body'] );
 				} catch ( Exception $exception ) {
-					error_log( "SSW ERROR: " . $exception->getTraceAsString() );
+					error_log( 'SSW ERROR: ' . $exception->getTraceAsString() );
 
 					return [ 'error' => __( 'API ERROR: Failed to parse data.', 'instagram-slider-widget' ) ];
 				}

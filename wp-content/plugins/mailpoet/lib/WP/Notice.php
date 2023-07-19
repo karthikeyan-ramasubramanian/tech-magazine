@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\WP;
 
@@ -42,7 +42,7 @@ class Notice {
     if ($showErrorTitle) {
       $message = sprintf(
         "<b>%s </b> %s",
-        WPFunctions::get()->__('MailPoet Error:', 'mailpoet'),
+        __('MailPoet Error:', 'mailpoet'),
         $message
       );
     }

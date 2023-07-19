@@ -43,23 +43,7 @@ if (!class_exists("WD_ASL_StyleSheets_Action")) {
                 wp_register_style('wpdreams-asl-basic', ASL_URL.'css/style.basic.css', array(), ASL_CURR_VER_STRING);
                 wp_enqueue_style('wpdreams-asl-basic');
                 wp_enqueue_style('wpdreams-ajaxsearchlite', ASL_URL.'css/style-'.$asl_options['theme'].'.css', array(), ASL_CURR_VER_STRING);
-				self::$inline_css = "";
-				if ( asl_is_asset_required('aslsicons2') ) {
-					self::$inline_css .= "
-						@font-face {
-							font-family: 'aslsicons2';
-							src: url('".str_replace('http:',"",plugins_url())."/ajax-search-lite/css/fonts/icons2.eot');
-							src: url('".str_replace('http:',"",plugins_url())."/ajax-search-lite/css/fonts/icons2.eot?#iefix') format('embedded-opentype'),
-								 url('".str_replace('http:',"",plugins_url())."/ajax-search-lite/css/fonts/icons2.woff2') format('woff2'),
-								 url('".str_replace('http:',"",plugins_url())."/ajax-search-lite/css/fonts/icons2.woff') format('woff'),
-								 url('".str_replace('http:',"",plugins_url())."/ajax-search-lite/css/fonts/icons2.ttf') format('truetype'),
-								 url('".str_replace('http:',"",plugins_url())."/ajax-search-lite/css/fonts/icons2.svg#icons') format('svg');
-							font-weight: normal;
-							font-style: normal;
-						}
-					";
-				}
-				self::$inline_css .= "
+				self::$inline_css = "
 					div[id*='ajaxsearchlitesettings'].searchsettings .asl_option_inner label {
 						font-size: 0px !important;
 						color: rgba(0, 0, 0, 0);
@@ -72,25 +56,25 @@ if (!class_exists("WD_ASL_StyleSheets_Action")) {
 						z-index: 1;
 					}
 					.asl_w_container {
-						width: ".$asl_options['box_width'].";
-						margin: ".wpdreams_four_to_string($asl_options['box_margin']).";
+						width: " . $asl_options['box_width'] . ";
+						margin: " . wpdreams_four_to_string($asl_options['box_margin']) . ";
+						min-width: 200px;
 					}
 					div[id*='ajaxsearchlite'].asl_m {
-						width: ".$asl_options['box_width'].";
+						width: 100%;
 					}
 					div[id*='ajaxsearchliteres'].wpdreams_asl_results div.resdrg span.highlighted {
 						font-weight: bold;
-						color: ".$asl_options['highlight_color'].";
-						background-color: ".$asl_options['highlight_bg_color'].";
+						color: " . $asl_options['highlight_color'] . ";
+						background-color: " . $asl_options['highlight_bg_color'] . ";
 					}
-					div[id*='ajaxsearchliteres'].wpdreams_asl_results .results div.asl_image {
-						width: ". $asl_options['image_width'] . "px;
+					div[id*='ajaxsearchliteres'].wpdreams_asl_results .results img.asl_image {
+						width: " . $asl_options['image_width'] . "px;
 						height: " . $asl_options['image_height'] . "px;
-						background-size: ".$asl_options['image_display_mode'].";
-						background-repeat: no-repeat;
+						object-fit: " . $asl_options['image_display_mode'] . ";
 					}
 					div.asl_r .results {
-						max-height: ". $asl_options['v_res_max_height'] .";
+						max-height: " . $asl_options['v_res_max_height'] . ";
 					}
 				";
 				if ( trim($asl_options['box_font']) != '' && $asl_options['box_font'] != 'Open Sans' ) {
@@ -238,7 +222,7 @@ if (!class_exists("WD_ASL_StyleSheets_Action")) {
 				if ( !empty($asl_options['box_width_tablet']) && $asl_options['box_width'] != $asl_options['box_width_tablet'] ) {
 					self::$inline_css .= "
 						@media only screen and (min-width: 641px) and (max-width: 1024px) {
-							.asl_w_container, div.asl_w.asl_m {
+							.asl_w_container {
 								width: ".$asl_options['box_width_tablet']." !important;
 							}
 						}
@@ -259,7 +243,7 @@ if (!class_exists("WD_ASL_StyleSheets_Action")) {
 				if ( !empty($asl_options['box_width_phone']) && $asl_options['box_width'] != $asl_options['box_width_phone'] ) {
 					self::$inline_css .= "
 						@media only screen and (max-width: 640px) {
-							.asl_w_container, div.asl_w.asl_m {
+							.asl_w_container {
 								width: ".$asl_options['box_width_phone']." !important;
 							}
 						}

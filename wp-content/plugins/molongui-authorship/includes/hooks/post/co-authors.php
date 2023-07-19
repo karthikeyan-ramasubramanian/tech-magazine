@@ -9,7 +9,7 @@ function authorship_post_allow_coauthors_edit( $allcaps, $caps, $args, $user )
     $cap     = $args[0];
     $post_id = isset( $args[2] ) ? $args[2] : 0;
 
-    $postType = empty( $post_id ) ? authorship_guess_post_type() : authorship_get_post_type( $post_id );
+    $postType = empty( $post_id ) ? authorship_get_post_type() : authorship_get_post_type( $post_id );
     $obj      = get_post_type_object( $postType );
 
     if ( !$obj or 'revision' == $obj->name ) return $allcaps;

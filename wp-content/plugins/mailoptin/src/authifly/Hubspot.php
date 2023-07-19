@@ -125,7 +125,7 @@ class Hubspot extends OAuth2
         foreach ($fields->results as $field) {
 
             //Ensure the field is not automatically set by Hubspot
-            if ($field->modificationMetadata->readOnlyDefinition) {
+            if ($field->modificationMetadata->readOnlyValue === true) {
                 continue;
             }
 

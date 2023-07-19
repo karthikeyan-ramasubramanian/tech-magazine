@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing
 
 namespace MailPoet\Entities;
 
@@ -32,7 +32,9 @@ class NewsletterOptionFieldEntity {
   public const NAME_SEGMENT = 'segment';
   public const NAME_SEND_TO = 'sendTo';
   public const NAME_TIME_OF_DAY = 'timeOfDay';
-  public const NAME_WEK_DAY = 'weekDay';
+  public const NAME_WEEK_DAY = 'weekDay';
+  public const NAME_AUTOMATION_ID = 'automationId';
+  public const NAME_AUTOMATION_STEP_ID = 'automationStepId';
 
   use AutoincrementedIdTrait;
   use CreatedAtTrait;

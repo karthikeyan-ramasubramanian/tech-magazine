@@ -3,28 +3,36 @@ Contributors: scriptstown
 Tags: contact form, email, notification, entry, form, message
 Donate link: https://scriptstown.com/
 Requires at least: 5.0
-Tested up to: 6.0
+Tested up to: 6.2
 Requires PHP: 5.6
-Stable tag: 1.4.7
+Stable tag: 1.6.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Add a contact form and receive new message notifications directly to your WordPress admin panel, and also to your email. View the latest messages in dashboard.
+Add a contact form and receive new message notifications directly to your WordPress admin and to your email. Search and filter messages.
 
 == Description ==
 
-**Contact Form Query** adds a contact form to your WordPress site and allows to receive new message notification to your specified email and also to the WordPress Admin Panel. It adds a dashboard widget where admin can view all the latest messages received in WordPress dashboard. It supports filtering and searching of messages. Also, you can add extra notes to a message or mark them as answered.
+**Contact Form Query** adds a contact form to your WordPress site and allows you to receive new message notifications to your specified email address and also to the WordPress Admin Panel. It adds a dashboard widget where the admin can quickly view details of the latest messages received in the WordPress dashboard.
+
+To prevent spam entries in the form submissions, this plugin allows you to block messages based on blacklisted keywords so you can input keywords to easily block certain types of spam messages. Also, it supports **captcha** features like Cloudflare Turnstile and Google reCAPTCHA.
+
+It supports **filtering** and **searching** of messages. Also, you can add extra notes to a message or mark them as answered.
 
 ### Contact Form Query Features
 
 * [Contact Form Query Features](https://scriptstown.com/wordpress-plugins/contact-form-query/)
-* Contact Form Shortcode
-* Search and Filter Messages
+* Contact Form **Shortcode**
+* **Search** and **Filter** Messages
 * Add Extra Notes to a Message
 * Customizable Form
-* AJAX Based Contact Form
-* Contact Form Dashboard Widget
-* Notification to Admin via Email
+* **AJAX** Based Contact Form
+* Block Messages Based On Keywords
+* Spam Prevention by **Captcha**
+* Support Cloudflare Turnstile
+* Support Google reCAPTCHA
+* Contact Form Dashboard **Widget**
+* **Notification** to Admin ia Email
 
 == Installation ==
 
@@ -50,9 +58,47 @@ Use the shortcode **[contact_form_query]** in any page or post to display the co
 3. Contact Form Messages in WordPress Admin Panel
 4. Message Single View - Add Notes or Mark as Answered
 5. Contact Form Fields Settings
-6. Latest Messages Dashboard Widget
+6. Contact Form Design Settings
+7. Contact Form Captcha Settings
+8. Contact Form Email Settings
+9. Latest Messages Dashboard Widget
 
 == Changelog ==
+
+= 1.6.2 =
+* Tested up to 6.2.
+
+= 1.6.1 =
+* Improvement: Settings page.
+
+= 1.6.0 =
+* New: Cloudflare turnstile captcha support added.
+* Readme updated.
+
+= 1.5.5 =
+* Improvement: Fix messages layout in firefox browser.
+* Added: Option to block messages based on keywords.
+
+= 1.5.4 =
+* Improvement: Compatibility with PHP 8.1.
+
+= 1.5.3 =
+* Improvement: Query optimization.
+
+= 1.5.2 =
+* Improvement: Settings page.
+
+= 1.5.1 =
+* Tested up to 6.1.
+
+= 1.5.0 =
+* Improvement: Settings page.
+
+= 1.4.9 =
+* Improvement: Better handling for form input.
+
+= 1.4.8 =
+* Readme updated.
 
 = 1.4.7 =
 * Tested up to 6.0.

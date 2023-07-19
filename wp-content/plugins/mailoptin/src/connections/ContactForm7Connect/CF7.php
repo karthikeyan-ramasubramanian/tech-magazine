@@ -67,7 +67,7 @@ class CF7
         //check if the full name moName is empty, else join both the first name and last name
         $optin_data->name                = Init::return_name($name, $first_name, $last_name);
         $optin_data->email               = $posted_data[moVar($field_mapping, 'moEmail')];
-        $optin_data->optin_campaign_type = esc_html__('Contact Form 7', 'mailoptin');
+        $optin_data->optin_campaign_type = 'Contact Form 7';
 
         $optin_data->connection_service    = $connection_service;
         $optin_data->connection_email_list = moVar($mocf7_settings, 'list');
@@ -149,7 +149,7 @@ class CF7
         $tags = [];
         if ( ! empty($saved_integration) && in_array($saved_integration, Init::select2_tag_connections())) {
             $instance = ConnectionFactory::make($saved_integration);
-            if (method_exists($instance, 'get_tags')) {
+            if (is_object($instance) && method_exists($instance, 'get_tags')) {
                 $tags = $instance->get_tags();
             }
         }
