@@ -54,6 +54,7 @@ function authorship_user_save_profile_fields( $user_id )
         update_user_meta( $user_id, 'molongui_author_job', $_POST['molongui_author_job'] );
         update_user_meta( $user_id, 'molongui_author_company', $_POST['molongui_author_company'] );
         update_user_meta( $user_id, 'molongui_author_company_link', $_POST['molongui_author_company_link'] );
+        update_user_meta( $user_id, 'molongui_author_custom_link', $_POST['molongui_author_custom_link'] );
 
         foreach ( authorship_get_social_networks( 'enabled' ) as $id => $network )
         {

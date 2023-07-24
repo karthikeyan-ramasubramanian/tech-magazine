@@ -31,7 +31,7 @@ class Subscription extends AbstractMailjetConnect
         ob_start();
         require dirname(__FILE__) . '/confirm-email-tmpl.php';
 
-        return ob_get_clean();
+        return apply_filters('mo_mailjet_confirm_email_template', ob_get_clean(), $url , $message_content, $button_text);
     }
 
     /**
@@ -109,13 +109,14 @@ class Subscription extends AbstractMailjetConnect
     }
 
 
-    public function is_double_optin() {
+    public function is_double_optin()
+    {
         $optin_campaign_id = absint($this->extras['optin_campaign_id']);
 
         $setting = $this->get_integration_data('MailjetConnect_enable_double_optin');
 
         //external forms
-        if($optin_campaign_id == 0) {
+        if ($optin_campaign_id == 0) {
             $setting = $this->extras['is_double_optin'];
         }
 

@@ -179,8 +179,8 @@ class FormidableForm extends FrmFormAction
         $optin_data->is_timestamp_check_active = false;
         $optin_data->is_double_optin      = $double_optin;
 
-        if (isset($_REQUEST['referrer'])) {
-            $optin_data->conversion_page = esc_url_raw($_REQUEST['referrer']);
+        if (isset($entry->description['referrer']) && !empty($entry->description['referrer'])) {
+            $optin_data->conversion_page = esc_url_raw($entry->description['referrer']);
         }
 
         $optin_data->form_tags = moVar($settings, 'mofm_tags');

@@ -4,8 +4,8 @@ Donate link: https://david.dw-perspective.org.uk/donate
 Tags: security, malware scanning, two factor authentication, firewall, login security
 Requires PHP: 5.6
 Requires at least: 5.0
-Tested up to: 6.2
-Stable tag: 5.1.8
+Tested up to: 6.3
+Stable tag: 5.2.1
 License: GPLv3 or later
 
 Protect your website investment with All-In-One Security (AIOS) – a comprehensive and easy to use security plugin designed especially for WordPress. Featuring login security tools, a cutting-edge firewall and much more.
@@ -212,6 +212,48 @@ Go to the settings menu after you activate the plugin and follow the instruction
 
 == Changelog ==
 
+= 5.2.1 - 12/Jul/2023 =
+
+* FIX: Include helper class file from loader
+* TWEAK: Conditionally load TFA block JavaScript
+
+= 5.2.0 - 10/Jul/2023 =
+
+* SECURITY: Remove authentication data from the stacktrace before saving to the database. This defect meant that a site administator had the potential, between releases 5.1.9 to 5.2.0 (which purges the existing data), to know what site users' passwords are. This information has limited value (an admin can aleady reset anyone's password) except insofar as the passwords may be re-used by users on other sites. In that "hostile admin" scenario, your site has other problems (since the hostile admin has a whole raft of equivalent ways of causing mischief to users, especially if not on multisite where a site admin is potentially not a super admin and may not be able to install or configure plugins). This changelog has been expanded in response to incorrect reports which suggested a wider problem (for example, they did not mention that the attacker needs to already be logged in as an admin to read the log, or that upgrading to 5.2.0 deletes the affected data).
+* SECURITY: Set tighter restrictions on what subsite admins can do in a multisite.
+* FIX: After editing a file reset permissions back to the original permissions
+* FIX: Corrected some broken links in the plugin
+* FIX: Fatal error: cannot declare class
+* FIX: Normalise all arguments in the stacktrace
+* FIX: Wrong login entries added to login activity table on multisite when user logs into subsite they don't belong to.
+* FIX: Too many redirects error for forced logout users solved
+* TWEAK: For Cronjob, WP CLI and AIOS_DISABLE_EXTERNAL_IP_ADDR defined constant do not use external services for user IP addresses. Silenced api.ipify.org request failed warning.
+* TWEAK: Reset password page missing translation and generate password button added for renamed login page
+* TWEAK: Added 'aios_audit_log_event_user_ip' filter to allow filtering of IP addresses in the audit log 
+* TWEAK: Added action hook "aios_reset_all_settings" for reset all settings.
+* TWEAK: Renamed login page to have language change dropdown and other tweaks as per the WordPress 6.2
+
+= 5.1.9 - 09/May/2023 =
+
+* FEATURE: IP addresses - Blacklist manager functionality based on PHP instead of .htaccess rules. Added AIOS_DISABLE_BLACKLIST_IP_MANAGER constant, Define it in your wp-config.php to disable IP Blacklist manager.
+* FEATURE: Detect spambots posting comments and discard it completely or mark as spam.
+* FEATURE: Encrypt TFA secret keys that are stored in the database (extra protection in case of your database being hacked)
+* FEATURE: Added a "Delete all" and "Delete filtered" bulk action to the audit log table
+* FIX: Prevent Cloudflare Turnstile being added to login forms when no credentials where set
+* FIX: Change where the audit log event handler is loaded to prevent an error on plugin deletion
+* FIX: Fix context class checks to support cli
+* TWEAK: Multisite super admin can access the subsite dashboard without login again if salt postfix enabled
+* TWEAK: Captcha JavaScript file is unnecessarily loaded on some site pages if comment captcha or custom login captcha enabled
+* TWEAK: Change some nonce checks to use our internal function to check user capability and nonces
+* TWEAK: User registrations and successful logins are now recorded in the audit log
+* TWEAK: Added a commands class and refactored AJAX handlers
+* TWEAK: Captcha verification to prevent conflicts with some plugins that recall the WordPress authentication code
+* TWEAK: Improve database table prefix feature UI.
+* TWEAK: WordPress core updates are now recorded in the audit log
+* TWEAK: Translation updates are now recorded in the audit log
+* TWEAK: Add an entity changed event to the audit log when upgrader information is not available
+* TWEAK: Automated emails sent by AIOS that failed to send due to from address
+
 = 5.1.8 - 11/April/2023 =
 
 * FIX: 404 detection - Individual record blacklisting, delete, temp block actions stopped working in 5.1.7
@@ -226,6 +268,7 @@ Go to the settings menu after you activate the plugin and follow the instruction
 = 5.1.7 - 24/March/2023 =
 
 * FIX: Prevent fatal error when calling get_server_detected_user_ip_address() when the firewall is not setup
+* TWEAK: Clarify dashboard notice title and change image.
 
 = 5.1.6 - 21/March/2023 =
 
@@ -1227,4 +1270,4 @@ those who want to enable the basic firewall but do not have "AllowOverride" opti
 - First commit to the WP repository.
 
 == Upgrade Notice ==
-* 5.1.8: Failed logins are now recorded in the audit log. Various tweaks and fixes. See changelog for full details. A recommended update for all.
+* 5.2.1: Performance tweak and fix from issues introduced in 5.2.0. See changelog for full details. A recommended update for all.

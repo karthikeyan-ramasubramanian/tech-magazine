@@ -272,6 +272,8 @@ class Connect extends AbstractInfusionsoftConnect implements ConnectionInterface
             'website'            => esc_html__('Website', 'mailoptin'),
             'notes'              => esc_html__('Person Notes', 'mailoptin'),
 
+            'mocompany'          => esc_html__('Company', 'mailoptin'),
+
             // Phone (mophne)
             'mophne_phone_1'     => esc_html__('Phone 1', 'mailoptin'),
             'mophne_phone_1_ext' => esc_html__('Phone 1 Extension', 'mailoptin'),

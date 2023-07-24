@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) or exit;
 function authorship_register_edit_post_scripts()
 {
-    $file = apply_filters( 'authorship/edit_post/script', MOLONGUI_AUTHORSHIP_FOLDER . '/assets/js/edit-post.ab7c.min.js' );
+    $file = apply_filters( 'authorship/edit_post/script', MOLONGUI_AUTHORSHIP_FOLDER . '/assets/js/edit-post.8b9e.min.js' );
 
     $deps = array( 'jquery', 'molongui-selectr' );
     if ( authorship_is_feature_enabled( 'multi' ) ) $deps[] = 'molongui-sortable';
@@ -22,7 +22,7 @@ function authorship_enqueue_edit_post_scripts()
     }
     molongui_enqueue_selectr();
     if ( authorship_is_feature_enabled( 'multi' ) ) molongui_enqueue_sortable();
-    $file = apply_filters( 'authorship/edit_post/script', MOLONGUI_AUTHORSHIP_FOLDER . '/assets/js/edit-post.ab7c.min.js' );
+    $file = apply_filters( 'authorship/edit_post/script', MOLONGUI_AUTHORSHIP_FOLDER . '/assets/js/edit-post.8b9e.min.js' );
 
     authorship_enqueue_script( $file, 'edit_post', true );
 }

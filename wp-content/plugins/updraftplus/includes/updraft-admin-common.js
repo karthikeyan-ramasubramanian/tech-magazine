@@ -62,7 +62,10 @@ function updraft_send_command(action, data, callback, options) {
 					} else {
 						console.log(e);
 						console.log(response);
-						if (options.alert_on_error) { alert(updraftlion.unexpectedresponse+' '+response); }
+						if (options.alert_on_error) {
+							if ('string' === typeof response && response.match(/security\scheck\s?/i)) response += ' (' + updraftlion.expired_tokens + ' ' + updraftlion.reload_page + ')';
+							alert(updraftlion.unexpectedresponse+' '+response);
+						}
 						return;
 					}
 				}
@@ -720,7 +723,7 @@ var updraft_backups_selection = {};
 	/**
 	 * Multiple range selection event handler that gets executed when hovering the mouse over the row of existing backups. This function highlights the rows with color
 	 */
-	updraft_backups_selection.hightlight_backup_rows = function() {
+	updraft_backups_selection.highlight_backup_rows = function() {
 		if ("undefined" === typeof updraft_backups_selection.firstMultipleSelectionIndex) return;
 		if (!$(this).hasClass('range-selection') && !$(this).hasClass('backuprowselected')) $(this).addClass('range-selection');
 		$(this).siblings().removeClass('range-selection');
@@ -739,8 +742,8 @@ var updraft_backups_selection = {};
 		if ("undefined" === typeof updraft_backups_selection.firstMultipleSelectionIndex) return;
 		delete updraft_backups_selection.firstMultipleSelectionIndex;
 		$('#updraft-navtab-backups-content .updraft_existing_backups .updraft_existing_backups_row').removeClass('range-selection range-selection-start');
-		$('#updraft-navtab-backups-content').off('mouseenter', '.updraft_existing_backups .updraft_existing_backups_row', this.hightlight_backup_rows);
-		$('#updraft-navtab-backups-content').off('mouseleave', '.updraft_existing_backups .updraft_existing_backups_row', this.hightlight_backup_rows);
+		$('#updraft-navtab-backups-content').off('mouseenter', '.updraft_existing_backups .updraft_existing_backups_row', this.highlight_backup_rows);
+		$('#updraft-navtab-backups-content').off('mouseleave', '.updraft_existing_backups .updraft_existing_backups_row', this.highlight_backup_rows);
 		$(document).off('mouseleave', this.unregister_highlight_mode);
 	}
 
@@ -749,8 +752,8 @@ var updraft_backups_selection = {};
 	 */
 	updraft_backups_selection.register_highlight_mode = function() {
 		$(document).on('mouseleave', updraft_backups_selection.unregister_highlight_mode);
-		$('#updraft-navtab-backups-content').on('mouseenter', '.updraft_existing_backups .updraft_existing_backups_row', updraft_backups_selection.hightlight_backup_rows);
-		$('#updraft-navtab-backups-content').on('mouseleave', '.updraft_existing_backups .updraft_existing_backups_row', updraft_backups_selection.hightlight_backup_rows);
+		$('#updraft-navtab-backups-content').on('mouseenter', '.updraft_existing_backups .updraft_existing_backups_row', updraft_backups_selection.highlight_backup_rows);
+		$('#updraft-navtab-backups-content').on('mouseleave', '.updraft_existing_backups .updraft_existing_backups_row', updraft_backups_selection.highlight_backup_rows);
 	}
 })(jQuery);
 // @codingStandardsIgnoreEnd
@@ -2784,7 +2787,7 @@ jQuery(function($) {
 			backupnow_nodb: 0,
 			backupnow_nofiles: 0,
 			backupnow_nocloud: 0,
-			backupnow_label: 'UpdraftPlus Clone',
+			backupnow_label: 'UpdraftClone',
 			extradata: '',
 			onlythisfileentity: 'plugins,themes,uploads,others',
 			clone_id: clone_id,
@@ -2921,7 +2924,7 @@ jQuery(function($) {
 	function add_new_instance(method) {
 		var template = Handlebars.compile(updraftlion.remote_storage_templates[method]);
 		var context = {}; // Initiate a reference by assigning an empty object to a variable (in this case the context variable) so that it can be used as a target of merging one or more other objects. Unlike basic values (boolean, string, integer, etc.), in Javascript objects and arrays are passed by reference
-		// copy what are in the template properties to the context overwriting the same object properties, and then copy what are in the default instance settings to the context overwriting all the same properties from the previous merging opeartion (if any). The context properties are overwritten by other objects that have the same properties later in the parameters order
+		// copy what are in the template properties to the context overwriting the same object properties, and then copy what are in the default instance settings to the context overwriting all the same properties from the previous merging operation (if any). The context properties are overwritten by other objects that have the same properties later in the parameters order
 		Object.assign(context, updraftlion.remote_storage_options[method]['template_properties'], updraftlion.remote_storage_options[method]['default']);
 		var method_name = updraftlion.remote_storage_methods[method];
 		context['instance_id'] = 's-' + generate_instance_id(32);
@@ -3768,7 +3771,7 @@ jQuery(function($) {
 		var input = wrapper.find('input');
 		input.prop('readonly', false).trigger('focus');
 
-		// place carret at the end of the text
+		// place caret at the end of the text
 		var input_val = input.val();
 		input.val('');
 		input.val(input_val);
@@ -4547,7 +4550,7 @@ jQuery(function($) {
 	});
 });
 
-// UpdraftPlus Vault
+// UpdraftVault
 jQuery(function($) {
 	
 	var settings_css_prefix = '#updraft-navtab-settings-content ';
@@ -4860,7 +4863,7 @@ jQuery(function($) {
 	});
 
 	/**
-	 * Handlebars helper function to compare two values using a specifed operator
+	 * Handlebars helper function to compare two values using a specified operator
 	 *
 	 * @see https://stackoverflow.com/questions/8853396/logical-operator-in-a-handlebars-js-if-conditional#answer-16315366
 	 *

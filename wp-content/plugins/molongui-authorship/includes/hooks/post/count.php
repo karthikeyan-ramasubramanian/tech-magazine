@@ -46,9 +46,26 @@ function authorship_post_counters_update_completed()
     }
 }
 add_action( 'admin_notices', 'authorship_post_counters_update_completed' );
-function authorship_post_filter_count( $count, $userid, $post_type, $public_only )
+function authorship_post_count( $count, $userid, $post_type, $public_only )
 {
-    $author_type = ( is_guest_author() and !in_the_loop() ) ? 'guest' : 'user';
+    $post_count = apply_filters( 'authorship/pre_post_count', null, $count, $userid, $post_type, $public_only );
+
+    if ( !is_null( $post_count ) )
+    {
+        return apply_filters( 'authorship/post_count', $post_count, $count, $userid, $post_type, $public_only );
+    }
+
+    global $wp_query;
+    if ( is_guest_author() and isset( $wp_query->guest_author_id ) and !in_the_loop() )
+    {
+        $author_type = 'guest';
+        $author_id   = $wp_query->guest_author_id;
+    }
+    else
+    {
+        $author_type = 'user';
+        $author_id   = $userid;
+    }
 
     /*!
      * PRIVATE FILTERS.
@@ -56,17 +73,16 @@ function authorship_post_filter_count( $count, $userid, $post_type, $public_only
      * For internal use only. Not intended to be used by plugin or theme developers.
      * Future compatibility NOT guaranteed.
      *
-     * Please do not rely on this filter for your custom code to work. As a private filter it is meant to be
-     * used only by Molongui. It may be edited, renamed or removed from future releases without prior notice
-     * or deprecation phase.
+     * Please do not rely on this filter for your custom code to work. As a private filter it is meant to be used only
+     * by Molongui. It may be edited, renamed or removed from future releases without prior notice or deprecation phase.
      *
-     * If you choose to ignore this notice and use this filter, please note that you do so at on your own risk
-     * and knowing that it could cause code failure.
+     * If you choose to ignore this notice and use this filter, please note that you do so at on your own risk and
+     * knowing that it could cause code failure.
      */
-    $author_id   = apply_filters( '_authorship/filter/count/author_id', $userid );
-    $author_type = apply_filters( '_authorship/filter/count/author_type', $author_type );
+    list( $author_id, $author_type ) = apply_filters( '_authorship/post_count/author', array( $author_id, $author_type ), $count, $userid, $post_type, $public_only );
     $author      = new Author( $author_id, $author_type );
     $post_counts = $author->get_post_count( $post_type );
-    return array_sum( $post_counts );
+    $post_count  = array_sum( $post_counts );
+    return apply_filters( 'authorship/post_count', $post_count, $count, $userid, $post_type, $public_only );
 }
-add_filter( 'get_usernumposts', 'authorship_post_filter_count', 999, 4 );
+add_filter( 'get_usernumposts', 'authorship_post_count', 999, 4 );

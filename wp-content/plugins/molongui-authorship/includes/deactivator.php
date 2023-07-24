@@ -25,9 +25,28 @@ class Deactivator
     }
 	private static function deactivate_single_blog()
 	{
+        global $wpdb;
         \authorship_clear_cache();
 		\delete_transient( MOLONGUI_AUTHORSHIP_NAME.'-activated' );
 		\delete_transient( MOLONGUI_AUTHORSHIP_NAME.'-updated' );
+        \delete_option( 'molongui_authorship_update_post_authors' );
+        \delete_option( 'm_update_post_authors_complete' );
+        \delete_option( 'm_update_post_authors_running' );
+        \delete_option( 'molongui_authorship_update_post_counters' );
+        \delete_option( 'm_update_post_counters_complete' );
+        \delete_option( 'm_update_post_counters_running' );
+
+        $likes = array
+        (
+            'm_update_post_authors_batch_%',
+            'm_update_post_counters_batch_%',
+            'molongui_authorship_add_author_error_%',
+            'molongui_authorship_add_author_input_%',
+        );
+        foreach( $likes as $like )
+        {
+            $wpdb->query( "DELETE FROM {$wpdb->prefix}options WHERE option_name LIKE '{$like}';" );
+        }
 	}
 
 } // class

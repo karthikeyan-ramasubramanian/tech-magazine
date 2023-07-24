@@ -104,7 +104,7 @@ class SendCampaign extends AbstractSendGridConnect
             }
 
             $response = $this->sendgrid_instance()->make_request(
-                '/marketing/singlesends',
+                'marketing/singlesends',
                 apply_filters('mailoptin_sendgrid_campaign_settings', $payload, $this->email_campaign_id),
                 'post'
             );

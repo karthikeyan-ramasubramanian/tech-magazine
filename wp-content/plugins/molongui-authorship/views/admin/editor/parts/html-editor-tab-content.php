@@ -160,6 +160,7 @@ $avatar_default = array
 $link = array
 (
     'archive' => __( "Author page", 'molongui-authorship' ),
+    'website' => __( "Author website", 'molongui-authorship' ),
     'custom'  => __( "Custom URL", 'molongui-authorship' ),
     'none'    => __( "Don't link", 'molongui-authorship' ),
 );
@@ -276,7 +277,7 @@ authorship_editor_select( 'author_box_avatar_link', __( "Link", 'molongui-author
     (
         'default'    => 'archive',
         'info-title' => __( "Whether to make the avatar a link", 'molongui-authorship' ),
-        'info-desc'  => __( "You can make the author profile image in the author box link to a page listing all posts by the author (Author page) or to the author's website (Custom URL). You can also disable the link.", 'molongui-authorship' ),
+        'info-desc'  => __( "You can make the author profile image in the author box link to a page listing all posts by the author (Author page), to the author's website (Author website) or to a custom URL you can configure for each author (Custom URL). You can also disable the link.", 'molongui-authorship' ),
         'info-tip'   => __( "Regardless of this setting, the author avatar might not become a link. i.e. When author archive pages are disabled.", 'molongui-authorship' ),
         'info-more'  => '',
         'parent'     => 'avatar',
@@ -312,7 +313,7 @@ authorship_editor_select( 'author_box_name_link', __( "Link", 'molongui-authorsh
     (
         'default'    => 'archive',
         'info-title' => __( "Whether to make the author name a link", 'molongui-authorship' ),
-        'info-desc'  => __( "You can make the author name in the author box link to a page listing all posts by the author (Author page) or to the author's website (Custom URL). You can also disable the link.", 'molongui-authorship' ),
+        'info-desc'  => __( "You can make the author name in the author box link to a page listing all posts by the author (Author page), to the author's website (Author website) or to a custom URL you can configure for each author (Custom URL). You can also disable the link.", 'molongui-authorship' ),
         'info-tip'   => __( "Regardless of this setting, the author name might not become a link. i.e. When author archive pages are disabled.", 'molongui-authorship' ),
         'info-more'  => '',
     )
@@ -662,7 +663,7 @@ authorship_editor_select( 'author_box_related_show', __( "Show related posts", '
         'info-more'   => '',
     )
 );
-authorship_editor_input( 'author_box_related_empty', __( "Show even if no related", 'molongui-authorship' ), array
+authorship_editor_input( 'author_box_related_show_empty', __( "Show even if no related", 'molongui-authorship' ), array
     (
         'type'        => 'checkbox',
         'default'     => 0,

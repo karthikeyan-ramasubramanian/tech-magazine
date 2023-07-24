@@ -42,6 +42,204 @@
   user-select: none;
 }
 
+.dialog-type-confirm .dialog-widget-content,
+.dialog-type-alert .dialog-widget-content {
+  margin: auto;
+  width: 400px;
+  padding: 20px;
+}
+.dialog-type-confirm .dialog-header,
+.dialog-type-alert .dialog-header {
+  font-size: 15px;
+  font-weight: 500;
+}
+.dialog-type-confirm .dialog-header:after,
+.dialog-type-alert .dialog-header:after {
+  content: "";
+  display: block;
+  border-bottom: var(--e-a-border);
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  margin-right: -20px;
+  margin-left: -20px;
+}
+.dialog-type-confirm .dialog-message,
+.dialog-type-alert .dialog-message {
+  min-height: 50px;
+}
+.dialog-type-confirm .dialog-buttons-wrapper,
+.dialog-type-alert .dialog-buttons-wrapper {
+  padding-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+.dialog-type-confirm .dialog-buttons-wrapper .dialog-button,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  outline: none;
+  border: none;
+  border-radius: var(--e-a-border-radius);
+  background-color: var(--e-a-btn-bg);
+  color: var(--e-a-btn-color-invert);
+  transition: var(--e-a-transition-hover);
+}
+.dialog-type-confirm .dialog-buttons-wrapper .dialog-button:hover,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button:hover {
+  border: none;
+}
+.dialog-type-confirm .dialog-buttons-wrapper .dialog-button:hover, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button:focus,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button:hover,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button:focus {
+  background-color: var(--e-a-btn-bg-hover);
+  color: var(--e-a-btn-color-invert);
+}
+.dialog-type-confirm .dialog-buttons-wrapper .dialog-button:active,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button:active {
+  background-color: var(--e-a-btn-bg-active);
+}
+.dialog-type-confirm .dialog-buttons-wrapper .dialog-button:not([disabled]),
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button:not([disabled]) {
+  cursor: pointer;
+}
+.dialog-type-confirm .dialog-buttons-wrapper .dialog-button:disabled,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button:disabled {
+  background-color: var(--e-a-btn-bg-disabled);
+  color: var(--e-a-btn-color-disabled);
+}
+.dialog-type-confirm .dialog-buttons-wrapper .dialog-button:not(.elementor-button-state) .elementor-state-icon,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button:not(.elementor-button-state) .elementor-state-icon {
+  display: none;
+}
+.dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-btn-txt, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.dialog-cancel,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-btn-txt,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.dialog-cancel {
+  background: transparent;
+  color: var(--e-a-color-txt);
+}
+.dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-btn-txt:hover, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.dialog-cancel:hover, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-btn-txt:focus, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.dialog-cancel:focus,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-btn-txt:hover,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.dialog-cancel:hover,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-btn-txt:focus,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.dialog-cancel:focus {
+  background: var(--e-a-bg-hover);
+  color: var(--e-a-color-txt-hover);
+}
+.dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-btn-txt:disabled, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.dialog-cancel:disabled,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-btn-txt:disabled,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.dialog-cancel:disabled {
+  background: transparent;
+  color: var(--e-a-color-txt-disabled);
+}
+.dialog-type-confirm .dialog-buttons-wrapper .dialog-button.elementor-button-success, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-success,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.elementor-button-success,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-success {
+  background-color: var(--e-a-btn-bg-success);
+}
+.dialog-type-confirm .dialog-buttons-wrapper .dialog-button.elementor-button-success:hover, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.elementor-button-success:focus, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-success:hover, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-success:focus,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.elementor-button-success:hover,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.elementor-button-success:focus,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-success:hover,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-success:focus {
+  background-color: var(--e-a-btn-bg-success-hover);
+}
+.dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-primary, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.dialog-take_over, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.dialog-ok,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-primary,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.dialog-take_over,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.dialog-ok {
+  background-color: var(--e-a-btn-bg-primary);
+  color: var(--e-a-btn-color);
+}
+.dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-primary:hover, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.dialog-take_over:hover, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.dialog-ok:hover, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-primary:focus, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.dialog-take_over:focus, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.dialog-ok:focus,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-primary:hover,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.dialog-take_over:hover,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.dialog-ok:hover,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-primary:focus,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.dialog-take_over:focus,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.dialog-ok:focus {
+  background-color: var(--e-a-btn-bg-primary-hover);
+  color: var(--e-a-btn-color);
+}
+.dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-primary.e-btn-txt, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-btn-txt.dialog-take_over, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-primary.dialog-cancel, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.dialog-cancel.dialog-take_over, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-btn-txt.dialog-ok, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.dialog-ok.dialog-cancel,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-primary.e-btn-txt,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-btn-txt.dialog-take_over,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-primary.dialog-cancel,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.dialog-cancel.dialog-take_over,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-btn-txt.dialog-ok,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.dialog-ok.dialog-cancel {
+  background: transparent;
+  color: var(--e-a-color-primary-bold);
+}
+.dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-primary.e-btn-txt:hover, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-btn-txt.dialog-take_over:hover, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-primary.dialog-cancel:hover, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.dialog-cancel.dialog-take_over:hover, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-btn-txt.dialog-ok:hover, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.dialog-ok.dialog-cancel:hover, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-primary.e-btn-txt:focus, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-btn-txt.dialog-take_over:focus, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-primary.dialog-cancel:focus, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.dialog-cancel.dialog-take_over:focus, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-btn-txt.dialog-ok:focus, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.dialog-ok.dialog-cancel:focus,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-primary.e-btn-txt:hover,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-btn-txt.dialog-take_over:hover,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-primary.dialog-cancel:hover,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.dialog-cancel.dialog-take_over:hover,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-btn-txt.dialog-ok:hover,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.dialog-ok.dialog-cancel:hover,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-primary.e-btn-txt:focus,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-btn-txt.dialog-take_over:focus,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-primary.dialog-cancel:focus,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.dialog-cancel.dialog-take_over:focus,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-btn-txt.dialog-ok:focus,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.dialog-ok.dialog-cancel:focus {
+  background: var(--e-a-bg-primary);
+}
+.dialog-type-confirm .dialog-buttons-wrapper .dialog-button.go-pro, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-accent,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.go-pro,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-accent {
+  background-color: var(--e-a-btn-bg-accent);
+}
+.dialog-type-confirm .dialog-buttons-wrapper .dialog-button.go-pro:hover, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.go-pro:focus, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-accent:hover, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-accent:focus,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.go-pro:hover,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.go-pro:focus,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-accent:hover,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-accent:focus {
+  background-color: var(--e-a-btn-bg-accent-hover);
+}
+.dialog-type-confirm .dialog-buttons-wrapper .dialog-button.go-pro:active, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-accent:active,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.go-pro:active,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-accent:active {
+  background-color: var(--e-a-btn-bg-accent-active);
+}
+.dialog-type-confirm .dialog-buttons-wrapper .dialog-button.elementor-button-warning, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-warning,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.elementor-button-warning,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-warning {
+  background-color: var(--e-a-btn-bg-warning);
+}
+.dialog-type-confirm .dialog-buttons-wrapper .dialog-button.elementor-button-warning:hover, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.elementor-button-warning:focus, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-warning:hover, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-warning:focus,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.elementor-button-warning:hover,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.elementor-button-warning:focus,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-warning:hover,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-warning:focus {
+  background-color: var(--e-a-btn-bg-warning-hover);
+}
+.dialog-type-confirm .dialog-buttons-wrapper .dialog-button.elementor-button-danger, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-danger,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.elementor-button-danger,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-danger {
+  background-color: var(--e-a-btn-bg-danger);
+}
+.dialog-type-confirm .dialog-buttons-wrapper .dialog-button.elementor-button-danger:hover, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.elementor-button-danger:focus, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-danger:hover, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-danger:focus,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.elementor-button-danger:hover,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.elementor-button-danger:focus,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-danger:hover,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-danger:focus {
+  background-color: var(--e-a-btn-bg-danger-hover);
+}
+.dialog-type-confirm .dialog-buttons-wrapper .dialog-button i,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button i {
+  margin-inline-end: 5px;
+}
+.dialog-type-confirm .dialog-buttons-wrapper .dialog-button:hover, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button:focus, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button:visited,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button:hover,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button:focus,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button:visited {
+  color: initial;
+}
 .flatpickr-calendar {
   width: 280px;
 }
@@ -1591,11 +1789,12 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
 
 .e-con {
   --border-radius: 0;
-  --display: flex;
-  --flex-direction: column;
-  --flex-basis: auto;
-  --flex-grow: 0;
-  --flex-shrink: 1;
+  --border-width-top: 0px;
+  --border-width-right: 0px;
+  --border-width-bottom: 0px;
+  --border-width-left: 0px;
+  --border-style: initial;
+  --border-color: initial;
   --container-widget-width: 100%;
   --container-widget-height: initial;
   --container-widget-flex-grow: 0;
@@ -1620,8 +1819,9 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
   --overlay-mix-blend-mode: initial;
   --overlay-opacity: 1;
   --overlay-transition: 0.3s;
+  --e-con-grid-template-columns: repeat(3, 1fr);
+  --e-con-grid-template-rows: repeat(2, 1fr);
   position: var(--position);
-  flex: var(--flex-grow) var(--flex-shrink) var(--flex-basis);
   width: var(--width);
   min-width: 0;
   min-height: var(--min-height);
@@ -1634,39 +1834,73 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
   overflow: var(--overflow);
   transition: background var(--background-transition, 0.3s), border var(--border-transition, 0.3s), box-shadow var(--border-transition, 0.3s), transform var(--e-con-transform-transition-duration, 0.4s);
 }
+.e-con.e-flex {
+  --flex-direction: column;
+  --flex-basis: auto;
+  --flex-grow: 0;
+  --flex-shrink: 1;
+  flex: var(--flex-grow) var(--flex-shrink) var(--flex-basis);
+}
 .e-con-full, .e-con > .e-con-inner {
-  flex-direction: var(--flex-direction);
   text-align: var(--text-align);
   padding-top: var(--padding-top);
   padding-bottom: var(--padding-bottom);
 }
+.e-con-full.e-flex, .e-con.e-flex > .e-con-inner {
+  flex-direction: var(--flex-direction);
+}
 .e-con, .e-con > .e-con-inner {
   display: var(--display);
 }
-.e-con-boxed {
+.e-con.e-grid {
+  --grid-justify-content: start;
+  --grid-align-content: start;
+  --grid-auto-flow: row;
+}
+.e-con.e-grid, .e-con.e-grid > .e-con-inner {
+  grid-template-columns: var(--e-con-grid-template-columns);
+  grid-template-rows: var(--e-con-grid-template-rows);
+  justify-content: var(--grid-justify-content);
+  align-content: var(--grid-align-content);
+  grid-auto-flow: var(--grid-auto-flow);
+}
+.e-con-boxed.e-flex {
   flex-direction: column;
-  text-align: initial;
   flex-wrap: initial;
   justify-content: initial;
   align-items: initial;
   align-content: initial;
+}
+.e-con-boxed.e-grid {
+  justify-items: initial;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+}
+.e-con-boxed {
+  text-align: initial;
   gap: initial;
 }
-.e-con > .e-con-inner {
+.e-con.e-flex > .e-con-inner {
   flex-wrap: var(--flex-wrap);
   justify-content: var(--justify-content);
   align-items: var(--align-items);
   align-content: var(--align-content);
+  flex-basis: initial;
+  flex-grow: 1;
+  flex-shrink: initial;
+  align-self: initial;
+}
+.e-con.e-grid > .e-con-inner {
+  justify-items: var(--justify-items);
+  align-items: var(--align-items);
+}
+.e-con > .e-con-inner {
   gap: var(--gap);
   width: 100%;
   max-width: var(--content-width);
   margin: 0 auto;
   padding-inline: 0;
   height: 100%;
-  flex-basis: initial;
-  flex-grow: 1;
-  flex-shrink: initial;
-  align-self: initial;
 }
 :is(.elementor-section-wrap, [data-elementor-id]) > .e-con {
   --margin-right: auto;
@@ -1676,33 +1910,52 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
 .e-con .elementor-widget.elementor-widget {
   margin-bottom: 0;
 }
-.e-con::before,
-.e-con > .elementor-background-video-container::before,
-.e-con > .e-con-inner > .elementor-background-video-container::before,
-.e-con > .elementor-background-slideshow::before,
-.e-con > .e-con-inner > .elementor-background-slideshow::before,
-.e-con > .elementor-motion-effects-container > .elementor-motion-effects-layer::before {
+.e-con::before, :is(.e-con, .e-con > .e-con-inner) > .elementor-background-video-container::before,
+.e-con > .elementor-motion-effects-container > .elementor-motion-effects-layer::before,
+.e-con > .elementor-background-slideshow::before {
   content: var(--background-overlay);
   display: block;
   position: absolute;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top: 0;
   mix-blend-mode: var(--overlay-mix-blend-mode);
   opacity: var(--overlay-opacity);
   transition: var(--overlay-transition, 0.3s);
   border-radius: var(--border-radius);
+  border-style: var(--border-style);
+  border-color: var(--border-color);
+  border-top-width: var(--border-width-top);
+  border-right-width: var(--border-width-right);
+  border-bottom-width: var(--border-width-bottom);
+  border-left-width: var(--border-width-left);
+  top: calc(0px - var(--border-width-top));
+  left: calc(0px - var(--border-width-left));
+  width: max(100% + var(--border-width-right) + var(--border-width-left), 100%);
+  height: max(100% + var(--border-width-top) + var(--border-width-bottom), 100%);
 }
 .e-con::before {
   transition: background var(--overlay-transition, 0.3s), border-radius var(--border-transition, 0.3s), opacity var(--overlay-transition, 0.3s);
 }
-.e-con > .elementor-background-video-container::before,
-.e-con > .e-con-inner > .elementor-background-video-container::before {
+.e-con > .elementor-background-slideshow, :is(.e-con, .e-con > .e-con-inner) > .elementor-background-video-container {
+  border-radius: var(--border-radius);
+  border-style: var(--border-style);
+  border-color: var(--border-color);
+  border-top-width: var(--border-width-top);
+  border-right-width: var(--border-width-right);
+  border-bottom-width: var(--border-width-bottom);
+  border-left-width: var(--border-width-left);
+  top: calc(0px - var(--border-width-top));
+  left: calc(0px - var(--border-width-left));
+  width: max(100% + var(--border-width-right) + var(--border-width-left), 100%);
+  height: max(100% + var(--border-width-top) + var(--border-width-bottom), 100%);
+}
+@media (max-width: ELEMENTOR_SCREEN_MOBILE_MAX) {
+  :is(.e-con, .e-con > .e-con-inner) > .elementor-background-video-container.elementor-hidden-phone {
+    display: none;
+  }
+}
+:is(.e-con, .e-con > .e-con-inner) > .elementor-background-video-container::before {
   z-index: 1;
 }
-.e-con > .elementor-background-slideshow::before,
-.e-con > .e-con-inner > .elementor-background-slideshow::before {
+:is(.e-con, .e-con > .e-con-inner) > .elementor-background-slideshow::before {
   z-index: 2;
 }
 .e-con .elementor-widget {
@@ -1722,7 +1975,7 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
 }
 
 @media (max-width: 767px) {
-  .e-con {
+  .e-con.e-flex {
     --width: 100%;
     --flex-wrap: wrap;
   }
@@ -1751,7 +2004,7 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
   max-width: 100%;
   border: 1px solid #69727D;
   background-color: transparent;
-  color: #1A1C1E;
+  color: #1f2124;
   vertical-align: middle;
   flex-grow: 1;
 }
@@ -2197,13 +2450,23 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
   --swiper-pagination-bullet-size: 6px;
   --swiper-pagination-bullet-horizontal-gap: 6px;
 }
-.elementor-element .swiper .swiper-slide figure, .elementor-lightbox .swiper .swiper-slide figure {
+.elementor-element .swiper .swiper-slide figure,
+.elementor-element .swiper-container .swiper-slide figure, .elementor-lightbox .swiper .swiper-slide figure,
+.elementor-lightbox .swiper-container .swiper-slide figure {
   line-height: 0;
 }
-.elementor-element .swiper .elementor-lightbox-content-source, .elementor-lightbox .swiper .elementor-lightbox-content-source {
+.elementor-element .swiper .elementor-lightbox-content-source,
+.elementor-element .swiper-container .elementor-lightbox-content-source, .elementor-lightbox .swiper .elementor-lightbox-content-source,
+.elementor-lightbox .swiper-container .elementor-lightbox-content-source {
   display: none;
 }
-.elementor-element .swiper .elementor-swiper-button, .elementor-lightbox .swiper .elementor-swiper-button {
+.elementor-element .swiper .elementor-swiper-button,
+.elementor-element .swiper ~ .elementor-swiper-button,
+.elementor-element .swiper-container .elementor-swiper-button,
+.elementor-element .swiper-container ~ .elementor-swiper-button, .elementor-lightbox .swiper .elementor-swiper-button,
+.elementor-lightbox .swiper ~ .elementor-swiper-button,
+.elementor-lightbox .swiper-container .elementor-swiper-button,
+.elementor-lightbox .swiper-container ~ .elementor-swiper-button {
   position: absolute;
   display: inline-flex;
   z-index: 1;
@@ -2213,39 +2476,113 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
   top: 50%;
   transform: translateY(-50%);
 }
-.elementor-element .swiper .elementor-swiper-button svg, .elementor-lightbox .swiper .elementor-swiper-button svg {
+.elementor-element .swiper .elementor-swiper-button svg,
+.elementor-element .swiper ~ .elementor-swiper-button svg,
+.elementor-element .swiper-container .elementor-swiper-button svg,
+.elementor-element .swiper-container ~ .elementor-swiper-button svg, .elementor-lightbox .swiper .elementor-swiper-button svg,
+.elementor-lightbox .swiper ~ .elementor-swiper-button svg,
+.elementor-lightbox .swiper-container .elementor-swiper-button svg,
+.elementor-lightbox .swiper-container ~ .elementor-swiper-button svg {
   fill: rgba(238, 238, 238, 0.9);
   height: 1em;
   width: 1em;
 }
-.elementor-element .swiper .elementor-swiper-button-prev, .elementor-lightbox .swiper .elementor-swiper-button-prev {
+.elementor-element .swiper .elementor-swiper-button-prev,
+.elementor-element .swiper ~ .elementor-swiper-button-prev,
+.elementor-element .swiper-container .elementor-swiper-button-prev,
+.elementor-element .swiper-container ~ .elementor-swiper-button-prev, .elementor-lightbox .swiper .elementor-swiper-button-prev,
+.elementor-lightbox .swiper ~ .elementor-swiper-button-prev,
+.elementor-lightbox .swiper-container .elementor-swiper-button-prev,
+.elementor-lightbox .swiper-container ~ .elementor-swiper-button-prev {
   left: 10px;
 }
-.elementor-element .swiper .elementor-swiper-button-next, .elementor-lightbox .swiper .elementor-swiper-button-next {
+.elementor-element .swiper .elementor-swiper-button-next,
+.elementor-element .swiper ~ .elementor-swiper-button-next,
+.elementor-element .swiper-container .elementor-swiper-button-next,
+.elementor-element .swiper-container ~ .elementor-swiper-button-next, .elementor-lightbox .swiper .elementor-swiper-button-next,
+.elementor-lightbox .swiper ~ .elementor-swiper-button-next,
+.elementor-lightbox .swiper-container .elementor-swiper-button-next,
+.elementor-lightbox .swiper-container ~ .elementor-swiper-button-next {
   right: 10px;
 }
-.elementor-element .swiper .elementor-swiper-button.swiper-button-disabled, .elementor-lightbox .swiper .elementor-swiper-button.swiper-button-disabled {
+.elementor-element .swiper .elementor-swiper-button.swiper-button-disabled,
+.elementor-element .swiper ~ .elementor-swiper-button.swiper-button-disabled,
+.elementor-element .swiper-container .elementor-swiper-button.swiper-button-disabled,
+.elementor-element .swiper-container ~ .elementor-swiper-button.swiper-button-disabled, .elementor-lightbox .swiper .elementor-swiper-button.swiper-button-disabled,
+.elementor-lightbox .swiper ~ .elementor-swiper-button.swiper-button-disabled,
+.elementor-lightbox .swiper-container .elementor-swiper-button.swiper-button-disabled,
+.elementor-lightbox .swiper-container ~ .elementor-swiper-button.swiper-button-disabled {
   opacity: 0.3;
 }
-.elementor-element .swiper .swiper-image-stretch .swiper-slide .swiper-slide-image, .elementor-lightbox .swiper .swiper-image-stretch .swiper-slide .swiper-slide-image {
+.elementor-element .swiper .swiper-image-stretch .swiper-slide .swiper-slide-image,
+.elementor-element .swiper-container .swiper-image-stretch .swiper-slide .swiper-slide-image, .elementor-lightbox .swiper .swiper-image-stretch .swiper-slide .swiper-slide-image,
+.elementor-lightbox .swiper-container .swiper-image-stretch .swiper-slide .swiper-slide-image {
   width: 100%;
 }
 .elementor-element .swiper .swiper-pagination-fraction,
 .elementor-element .swiper .swiper-pagination-custom,
 .elementor-element .swiper .swiper-horizontal > .swiper-pagination-bullets,
-.elementor-element .swiper .swiper-pagination-bullets.swiper-pagination-horizontal, .elementor-lightbox .swiper .swiper-pagination-fraction,
+.elementor-element .swiper .swiper-pagination-bullets.swiper-pagination-horizontal,
+.elementor-element .swiper ~ .swiper-pagination-fraction,
+.elementor-element .swiper ~ .swiper-pagination-custom,
+.elementor-element .swiper ~ .swiper-pagination-bullets.swiper-pagination-horizontal,
+.elementor-element .swiper-container .swiper-pagination-fraction,
+.elementor-element .swiper-container .swiper-pagination-custom,
+.elementor-element .swiper-container .swiper-horizontal > .swiper-pagination-bullets,
+.elementor-element .swiper-container .swiper-pagination-bullets.swiper-pagination-horizontal,
+.elementor-element .swiper-container ~ .swiper-pagination-fraction,
+.elementor-element .swiper-container ~ .swiper-pagination-custom,
+.elementor-element .swiper-container ~ .swiper-pagination-bullets.swiper-pagination-horizontal, .elementor-lightbox .swiper .swiper-pagination-fraction,
 .elementor-lightbox .swiper .swiper-pagination-custom,
 .elementor-lightbox .swiper .swiper-horizontal > .swiper-pagination-bullets,
-.elementor-lightbox .swiper .swiper-pagination-bullets.swiper-pagination-horizontal {
+.elementor-lightbox .swiper .swiper-pagination-bullets.swiper-pagination-horizontal,
+.elementor-lightbox .swiper ~ .swiper-pagination-fraction,
+.elementor-lightbox .swiper ~ .swiper-pagination-custom,
+.elementor-lightbox .swiper ~ .swiper-pagination-bullets.swiper-pagination-horizontal,
+.elementor-lightbox .swiper-container .swiper-pagination-fraction,
+.elementor-lightbox .swiper-container .swiper-pagination-custom,
+.elementor-lightbox .swiper-container .swiper-horizontal > .swiper-pagination-bullets,
+.elementor-lightbox .swiper-container .swiper-pagination-bullets.swiper-pagination-horizontal,
+.elementor-lightbox .swiper-container ~ .swiper-pagination-fraction,
+.elementor-lightbox .swiper-container ~ .swiper-pagination-custom,
+.elementor-lightbox .swiper-container ~ .swiper-pagination-bullets.swiper-pagination-horizontal {
   bottom: 5px;
 }
-.elementor-element .swiper.swiper-cube .elementor-swiper-button, .elementor-lightbox .swiper.swiper-cube .elementor-swiper-button {
+.elementor-element .swiper.swiper-cube .elementor-swiper-button,
+.elementor-element .swiper.swiper-cube ~ .elementor-swiper-button,
+.elementor-element .swiper-container.swiper-cube .elementor-swiper-button,
+.elementor-element .swiper-container.swiper-cube ~ .elementor-swiper-button, .elementor-lightbox .swiper.swiper-cube .elementor-swiper-button,
+.elementor-lightbox .swiper.swiper-cube ~ .elementor-swiper-button,
+.elementor-lightbox .swiper-container.swiper-cube .elementor-swiper-button,
+.elementor-lightbox .swiper-container.swiper-cube ~ .elementor-swiper-button {
   transform: translate3d(0, -50%, 1px);
 }
-.elementor-element.elementor-pagination-position-outside .swiper, .elementor-lightbox.elementor-pagination-position-outside .swiper {
+.elementor-element :where(.swiper-container-horizontal) ~ .swiper-pagination-bullets, .elementor-lightbox :where(.swiper-container-horizontal) ~ .swiper-pagination-bullets {
+  bottom: 5px;
+  left: 0;
+  width: 100%;
+}
+.elementor-element :where(.swiper-container-horizontal) ~ .swiper-pagination-bullets .swiper-pagination-bullet, .elementor-lightbox :where(.swiper-container-horizontal) ~ .swiper-pagination-bullets .swiper-pagination-bullet {
+  margin: 0 var(--swiper-pagination-bullet-horizontal-gap, 4px);
+}
+.elementor-element :where(.swiper-container-horizontal) ~ .swiper-pagination-progressbar, .elementor-lightbox :where(.swiper-container-horizontal) ~ .swiper-pagination-progressbar {
+  width: 100%;
+  height: 4px;
+  left: 0;
+  top: 0;
+}
+.elementor-element.elementor-pagination-position-outside .swiper,
+.elementor-element.elementor-pagination-position-outside .swiper-container, .elementor-lightbox.elementor-pagination-position-outside .swiper,
+.elementor-lightbox.elementor-pagination-position-outside .swiper-container {
   padding-bottom: 30px;
 }
-.elementor-element.elementor-pagination-position-outside .swiper .elementor-swiper-button, .elementor-lightbox.elementor-pagination-position-outside .swiper .elementor-swiper-button {
+.elementor-element.elementor-pagination-position-outside .swiper .elementor-swiper-button,
+.elementor-element.elementor-pagination-position-outside .swiper ~ .elementor-swiper-button,
+.elementor-element.elementor-pagination-position-outside .swiper-container .elementor-swiper-button,
+.elementor-element.elementor-pagination-position-outside .swiper-container ~ .elementor-swiper-button, .elementor-lightbox.elementor-pagination-position-outside .swiper .elementor-swiper-button,
+.elementor-lightbox.elementor-pagination-position-outside .swiper ~ .elementor-swiper-button,
+.elementor-lightbox.elementor-pagination-position-outside .swiper-container .elementor-swiper-button,
+.elementor-lightbox.elementor-pagination-position-outside .swiper-container ~ .elementor-swiper-button {
   top: calc(50% - 30px / 2);
 }
 .elementor-element .elementor-swiper, .elementor-lightbox .elementor-swiper {
@@ -2254,13 +2591,27 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
 .elementor-element .elementor-main-swiper, .elementor-lightbox .elementor-main-swiper {
   position: static;
 }
-.elementor-element.elementor-arrows-position-outside .swiper, .elementor-lightbox.elementor-arrows-position-outside .swiper {
+.elementor-element.elementor-arrows-position-outside .swiper,
+.elementor-element.elementor-arrows-position-outside .swiper-container, .elementor-lightbox.elementor-arrows-position-outside .swiper,
+.elementor-lightbox.elementor-arrows-position-outside .swiper-container {
   width: calc(100% - 60px);
 }
-.elementor-element.elementor-arrows-position-outside .swiper .elementor-swiper-button-prev, .elementor-lightbox.elementor-arrows-position-outside .swiper .elementor-swiper-button-prev {
+.elementor-element.elementor-arrows-position-outside .swiper .elementor-swiper-button-prev,
+.elementor-element.elementor-arrows-position-outside .swiper ~ .elementor-swiper-button-prev,
+.elementor-element.elementor-arrows-position-outside .swiper-container .elementor-swiper-button-prev,
+.elementor-element.elementor-arrows-position-outside .swiper-container ~ .elementor-swiper-button-prev, .elementor-lightbox.elementor-arrows-position-outside .swiper .elementor-swiper-button-prev,
+.elementor-lightbox.elementor-arrows-position-outside .swiper ~ .elementor-swiper-button-prev,
+.elementor-lightbox.elementor-arrows-position-outside .swiper-container .elementor-swiper-button-prev,
+.elementor-lightbox.elementor-arrows-position-outside .swiper-container ~ .elementor-swiper-button-prev {
   left: 0;
 }
-.elementor-element.elementor-arrows-position-outside .swiper .elementor-swiper-button-next, .elementor-lightbox.elementor-arrows-position-outside .swiper .elementor-swiper-button-next {
+.elementor-element.elementor-arrows-position-outside .swiper .elementor-swiper-button-next,
+.elementor-element.elementor-arrows-position-outside .swiper ~ .elementor-swiper-button-next,
+.elementor-element.elementor-arrows-position-outside .swiper-container .elementor-swiper-button-next,
+.elementor-element.elementor-arrows-position-outside .swiper-container ~ .elementor-swiper-button-next, .elementor-lightbox.elementor-arrows-position-outside .swiper .elementor-swiper-button-next,
+.elementor-lightbox.elementor-arrows-position-outside .swiper ~ .elementor-swiper-button-next,
+.elementor-lightbox.elementor-arrows-position-outside .swiper-container .elementor-swiper-button-next,
+.elementor-lightbox.elementor-arrows-position-outside .swiper-container ~ .elementor-swiper-button-next {
   right: 0;
 }
 
@@ -2270,6 +2621,10 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
   --lightbox-text-color: var(--lightbox-ui-color);
   --lightbox-header-icons-size: 20px;
   --lightbox-navigation-icons-size: 25px;
+}
+.elementor-lightbox:not(.elementor-popup-modal) .dialog-header,
+.elementor-lightbox:not(.elementor-popup-modal) .dialog-message {
+  text-align: center;
 }
 .elementor-lightbox .dialog-header {
   display: none;
@@ -2501,7 +2856,7 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
 }
 .elementor-slideshow__share-links a {
   text-align: left;
-  color: #3A3F45;
+  color: #3f444b;
   font-size: 12px;
   line-height: 2.5;
   display: block;
@@ -2689,7 +3044,7 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
   width: 100%;
 }
 #wp-admin-bar-elementor_edit_page .elementor-edit-link-type {
-  background: #3A3F45;
+  background: #3f444b;
   font-size: 11px;
   line-height: 9px;
   margin-top: 6px;
@@ -2898,6 +3253,8 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
   --n-tabs-heading-grow: initial;
   --n-tabs-heading-justify-content: center;
   --n-tabs-heading-width: initial;
+  --n-tabs-heading-overflow-x: initial;
+  --n-tabs-heading-wrap: wrap;
   --n-tabs-border-width: 1px;
   --n-tabs-border-color: #D5D8DC;
   --n-tabs-content-padding: initial;
@@ -2917,6 +3274,7 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
   --n-tabs-title-align-items: center;
   --n-tabs-title-direction: row;
   --n-tabs-title-gap: 10px;
+  --n-tabs-title-flex-grow: 0;
   --n-tabs-title-padding-top: var( --n-tabs-default-padding-block );
   --n-tabs-title-padding-right: var( --n-tabs-default-padding-inline );
   --n-tabs-title-padding-bottom: var( --n-tabs-default-padding-block );
@@ -2943,11 +3301,33 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
   flex-shrink: 0;
   justify-content: var(--n-tabs-heading-justify-content);
   gap: var(--n-tabs-title-gap);
+  overflow-x: var(--n-tabs-heading-overflow-x);
+  flex-wrap: var(--n-tabs-heading-wrap);
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.elementor-widget-n-tabs .e-n-tabs-heading::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome, Safari and Opera */
+}
+.elementor-widget-n-tabs .e-n-tabs-heading.e-scroll {
+  cursor: grabbing;
+  cursor: -webkit-grabbing;
+}
+.elementor-widget-n-tabs .e-n-tabs-heading.e-scroll-active {
+  position: relative;
+}
+.elementor-widget-n-tabs .e-n-tabs-heading.e-scroll-active::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline: -1000vw;
+  z-index: 2;
 }
 .elementor-widget-n-tabs .e-n-tabs-content {
   flex-grow: 1;
   padding: var(--n-tabs-content-padding);
   border-radius: var(--n-tabs-content-border-radius);
+  min-width: 0;
 }
 .elementor-widget-n-tabs .e-n-tab-title {
   display: flex;
@@ -2959,6 +3339,9 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
   position: relative;
   cursor: pointer;
   outline: none;
+  flex-grow: var(--n-tabs-title-flex-grow);
+  flex-basis: content;
+  flex-shrink: 0;
   padding-top: var(--n-tabs-title-padding-top);
   padding-right: var(--n-tabs-title-padding-right);
   padding-bottom: var(--n-tabs-title-padding-bottom);
@@ -3047,6 +3430,7 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  width: 100%;
 }
 .elementor-widget-n-tabs .e-n-tabs-content .e-collapse:not(:first-child) {
   margin-top: var(--n-tabs-title-gap);
@@ -3119,6 +3503,37 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
     display: none;
   }
 }
+.e-n-tabs-none > .elementor-widget-container > .e-n-tabs > .e-n-tabs-content > .e-collapse {
+  display: none;
+}
+
+.elementor-widget-n-accordion {
+  --n-accordion-title-font-size: 15px;
+  --n-accordion-title-padding: 10px 15px;
+  --n-accordion-border-width: 1px;
+  --n-accordion-border-color: #D5D8DC;
+  --n-accordion-border-style: solid;
+}
+.elementor-widget-n-accordion .e-n-accordion-item > .e-con {
+  border-width: var(--n-accordion-border-width);
+  border-color: var(--n-accordion-border-color);
+  border-style: var(--n-accordion-border-style);
+}
+.elementor-widget-n-accordion .e-n-accordion-item-title {
+  list-style: none;
+  font-size: var(--n-accordion-title-font-size);
+  padding: var(--n-accordion-title-padding);
+  border-width: var(--n-accordion-border-width);
+  border-color: var(--n-accordion-border-color);
+  border-style: var(--n-accordion-border-style);
+}
+.elementor-widget-n-accordion .e-n-accordion-item-title i {
+  color: var(--n-accordion-icon-color);
+}
+.elementor-widget-n-accordion .e-n-accordion-item-title svg {
+  fill: var(--n-accordion-icon-color);
+}
+
 .elementor-accordion {
   text-align: left;
 }
@@ -4124,8 +4539,7 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
   text-align: center;
 }
 
-.elementor-image-carousel-wrapper:not(.swiper-container-initialized) .swiper-slide,
-.elementor-image-carousel-wrapper:not(.swiper-initialized) .swiper-slide {
+.elementor-image-carousel-wrapper:not(.swiper-container-initialized):not(.swiper-initialized) .swiper-slide {
   max-width: calc(100% / var(--e-image-carousel-slides-to-show, 3));
 }
 
@@ -4849,6 +5263,9 @@ body.elementor-page .elementor-widget-menu-anchor {
   overflow: hidden;
   transform: translate3d(0, 0, 0);
 }
+.elementor-widget-video .elementor-wrapper {
+  aspect-ratio: var(--video-aspect-ratio);
+}
 .elementor-widget-video .elementor-wrapper iframe,
 .elementor-widget-video .elementor-wrapper video {
   height: 100%;
@@ -4856,6 +5273,22 @@ body.elementor-page .elementor-widget-menu-anchor {
   display: flex;
   border: none;
   background-color: #000000;
+}
+@supports not (aspect-ratio: 1/1) {
+  .elementor-widget-video .elementor-wrapper {
+    position: relative;
+    overflow: hidden;
+    height: 0;
+    padding-bottom: calc(100% / var(--video-aspect-ratio));
+  }
+  .elementor-widget-video .elementor-wrapper iframe,
+  .elementor-widget-video .elementor-wrapper video {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
 }
 .elementor-widget-video .elementor-open-inline .elementor-custom-embed-image-overlay {
   position: absolute;

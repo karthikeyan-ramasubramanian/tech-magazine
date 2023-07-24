@@ -1,11 +1,11 @@
-=== LoginPress | WordPress Login Page Customizer ===
+=== LoginPress | wp-login Custom Login Page Customizer ===
 Requires at least: 4.0
 Tested up to: 6.2
 Contributors: WPBrigade, hiddenpearls, AbdulWahab610
 Donate link: https://loginpress.pro/pricing/?utm_source=loginpress-lite
 Author URI: https://wpbrigade.com/?utm_source=loginpress-lite&utm_medium=author-url-link
 Tags: wp-login, login, login customizer, custom login, wordpress login,
-Stable tag: 1.7.1
+Stable tag: 1.8.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -221,6 +221,9 @@ Please visit <a target="_blank" rel="friend" href="https://loginpress.pro?utm_so
 23. Custom Login page (Company theme) Example #23 with Captcha [Pro feature](https://loginpress.pro?utm_source=loginpress-lite&utm_medium=screenshots&utm_campaign=pro-upgrade)
 
 == Changelog ==
+
+= 1.8.0 – 2023-06-05 =
+* New Feature: Introducing [PCI Compliance](https://loginpress.pro/doc/wordpress-login-page-pci-compliance/) (Enable / Disable) settings for login and registration forms.
 
 = 1.7.1 – 2023-04-03 =
 * Enhancement: Improved Responsive of default login screen.
@@ -673,5 +676,5 @@ Please visit <a target="_blank" rel="friend" href="https://loginpress.pro?utm_so
 
 == Upgrade Notice ==
 
-= 1.7.1 =
+= 1.8.0 =
 * Upgrade immediately. Compatible with 6.2

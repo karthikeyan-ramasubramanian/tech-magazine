@@ -1609,11 +1609,11 @@ class LoginPress_Entities {
   }
 
   /**
-  * Manage the Login Footer Links
+  * Login Footer Links
   *
   * @since	1.0.0
   * @version 1.6.4
-  * * * * * * * * * * * * * * * */
+  */
   public function login_page_custom_footer() {
 
     /**

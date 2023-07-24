@@ -168,10 +168,6 @@ class MOLifterLMS extends \LLMS_Abstract_Integration
         $optin_data->is_timestamp_check_active = false;
         $optin_data->is_double_optin           = $double_optin;
 
-        if (isset($_REQUEST['referrer'])) {
-            $optin_data->conversion_page = esc_url_raw($_REQUEST['referrer']);
-        }
-
         if ( ! empty($form_tags)) {
             $optin_data->form_tags = $form_tags;
         }
@@ -273,10 +269,6 @@ class MOLifterLMS extends \LLMS_Abstract_Integration
         $optin_data->user_agent                = esc_html($_SERVER['HTTP_USER_AGENT']);
         $optin_data->is_timestamp_check_active = false;
         $optin_data->is_double_optin           = $double_optin;
-
-        if (isset($_REQUEST['referrer'])) {
-            $optin_data->conversion_page = esc_url_raw($_REQUEST['referrer']);
-        }
 
         if ( ! empty($form_tags)) {
             $optin_data->form_tags = $form_tags;

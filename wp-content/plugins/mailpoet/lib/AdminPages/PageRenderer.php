@@ -27,6 +27,7 @@ use MailPoet\Tracy\DIPanel\DIPanel;
 use MailPoet\Util\Installation;
 use MailPoet\Util\License\Features\Subscribers as SubscribersFeature;
 use MailPoet\Util\License\License;
+use MailPoet\WooCommerce;
 use MailPoet\WP\Functions as WPFunctions;
 use MailPoet\WP\Notice as WPNotice;
 use MailPoetVendor\Carbon\Carbon;
@@ -77,6 +78,9 @@ class PageRenderer {
   /*** @var AssetsController */
   private $assetsController;
 
+  /** @var WooCommerce\Helper */
+  private $wooCommerceHelper;
+
   public function __construct(
     Bridge $bridge,
     Renderer $renderer,
@@ -92,7 +96,8 @@ class PageRenderer {
     TrackingConfig $trackingConfig,
     TransientCache $transientCache,
     WPFunctions $wp,
-    AssetsController $assetsController
+    AssetsController $assetsController,
+    WooCommerce\Helper $wooCommerceHelper
   ) {
     $this->bridge = $bridge;
     $this->renderer = $renderer;
@@ -109,6 +114,7 @@ class PageRenderer {
     $this->transientCache = $transientCache;
     $this->wp = $wp;
     $this->assetsController = $assetsController;
+    $this->wooCommerceHelper = $wooCommerceHelper;
   }
 
   /**
@@ -128,7 +134,11 @@ class PageRenderer {
     $wpSegmentState = ($wpSegment instanceof SegmentEntity) && $wpSegment->getDeletedAt() === null ?
       SegmentEntity::SEGMENT_ENABLED : SegmentEntity::SEGMENT_DISABLED;
     $installedAtDiff = (new \DateTime($this->settings->get('installed_at')))->diff(new \DateTime());
-    $subscribersCacheCreatedAt = $this->transientCache->getOldestCreatedAt(TransientCache::SUBSCRIBERS_STATISTICS_COUNT_KEY) ?: Carbon::now();
+    $subscriberCount = $this->subscribersFeature->getSubscribersCount();
+    $subscribersCacheCreatedAt = Carbon::now();
+    if ($this->subscribersFeature->isSubscribersCountEnoughForCache($subscriberCount)) {
+      $subscribersCacheCreatedAt = $this->transientCache->getOldestCreatedAt(TransientCache::SUBSCRIBERS_STATISTICS_COUNT_KEY) ?: Carbon::now();
+    }
 
     $defaults = [
       'current_page' => sanitize_text_field(wp_unslash($_GET['page'] ?? '')),
@@ -165,10 +175,12 @@ class PageRenderer {
       'has_premium_support' => $this->subscribersFeature->hasPremiumSupport(),
       'has_mss_key_specified' => Bridge::isMSSKeySpecified(),
       'mss_key_invalid' => $this->servicesChecker->isMailPoetAPIKeyValid() === false,
+      'mss_key_valid' => $this->subscribersFeature->hasValidMssKey(),
       'mss_key_pending_approval' => $this->servicesChecker->isMailPoetAPIKeyPendingApproval(),
       'mss_active' => $this->bridge->isMailpoetSendingServiceEnabled(),
       'plugin_partial_key' => $this->servicesChecker->generatePartialApiKey(),
-      'subscriber_count' => $this->subscribersFeature->getSubscribersCount(),
+      'mailpoet_hide_automations' => $this->servicesChecker->isBundledSubscription() && $this->wp->isPluginActive('automatewoo/automatewoo.php'),
+      'subscriber_count' => $subscriberCount,
       'subscribers_counts_cache_created_at' => $subscribersCacheCreatedAt->format('Y-m-d\TH:i:sO'),
       'subscribers_limit' => $this->subscribersFeature->getSubscribersLimit(),
       'subscribers_limit_reached' => $this->subscribersFeature->check(),
@@ -179,6 +191,7 @@ class PageRenderer {
         'automationEditor' => admin_url('admin.php?page=mailpoet-automation-editor'),
         'automationTemplates' => admin_url('admin.php?page=mailpoet-automation-templates'),
       ],
+      'woocommerce_store_config' => $this->wooCommerceHelper->isWooCommerceActive() ? $this->getWoocommerceStoreConfig() : null,
       'tags' => array_map(function (TagEntity $tag): array {
         return [
         'id' => $tag->getId(),
@@ -210,5 +223,19 @@ class PageRenderer {
       $notice = new WPNotice(WPNotice::TYPE_ERROR, $e->getMessage());
       $notice->displayWPNotice();
     }
+  }
+
+  private function getWoocommerceStoreConfig() {
+
+    return [
+      'precision' => $this->wooCommerceHelper->wcGetPriceDecimals(),
+      'decimalSeparator' => $this->wooCommerceHelper->wcGetPriceDecimalSeperator(),
+      'thousandSeparator' => $this->wooCommerceHelper->wcGetPriceThousandSeparator(),
+      'code' => $this->wooCommerceHelper->getWoocommerceCurrency(),
+      'symbol' => html_entity_decode($this->wooCommerceHelper->getWoocommerceCurrencySymbol()),
+      'symbolPosition' => $this->wp->getOption('woocommerce_currency_pos'),
+      'priceFormat' => $this->wooCommerceHelper->getWoocommercePriceFormat(),
+
+    ];
   }
 }

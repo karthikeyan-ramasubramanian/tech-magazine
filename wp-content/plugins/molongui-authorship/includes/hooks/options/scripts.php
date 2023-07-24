@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) or exit;
 function authorship_register_options_scripts()
 {
-    $file  = apply_filters( 'authorship/options/script', MOLONGUI_AUTHORSHIP_FOLDER . '/assets/js/options.542e.min.js' );
+    $file  = apply_filters( 'authorship/options/script', MOLONGUI_AUTHORSHIP_FOLDER . '/assets/js/options.7a0a.min.js' );
     $scope = 'options';
 
     authorship_register_script( $file, $scope );
@@ -10,7 +10,7 @@ function authorship_register_options_scripts()
 add_action( 'admin_enqueue_scripts', 'authorship_register_options_scripts' );
 function authorship_enqueue_options_scripts()
 {
-    $file  = apply_filters( 'authorship/options/script', MOLONGUI_AUTHORSHIP_FOLDER . '/assets/js/options.542e.min.js' );
+    $file  = apply_filters( 'authorship/options/script', MOLONGUI_AUTHORSHIP_FOLDER . '/assets/js/options.7a0a.min.js' );
     $scope = 'options';
     authorship_enqueue_script( $file, $scope, true );
 }

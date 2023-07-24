@@ -3,7 +3,7 @@ Contributors: molongui
 Donate link: https://www.paypal.me/amitzy/
 Tags: author, author box, author bio, author biography, simple author box, author profile fields, author social icons, responsive author box, guest, guest author, guest author box, guest posts, co-authors, coauthors, multiple authors, multi-author
 Requires at least: 5.2
-Tested up to: 6.1
+Tested up to: 6.2
 Requires PHP: 5.5
 Stable tag: trunk
 License: GPLv3 or later
@@ -245,6 +245,24 @@ If you have purchased a Pro plugin at [molongui.com](https://www.molongui.com/),
 == Changelog ==
 
 > <strong>Important</strong>: if you use a caching plugin, please flush cache after any plugin update.
+
+= 4.6.18 (2023-07-11) =
+
+* Added option to make author name and author avatar in the author box to link to a custom URL
+* Added filter hook to control whether automatically add spaces to byline separators
+* Improved compatibility with the Top 10 plugin
+* Improved compatibility with the Authors List plugin
+* Removed obsolete temporary database entries that caused post counters update to fail on some installations
+* Fixed authors list not being ordered by user roles
+
+= 4.6.17 (2023-05-02) =
+
+* Improved compatibility with the tagDiv Cloud Library plugin
+* Updated Loco Translate XML file
+* Fixed show empty related entries not working properly
+* Fixed 'get_the_author_posts' not working for guest authors
+* Fixed post counters not updating for users with no role
+* Added WordPress 6.2 compatibility
 
 = 4.6.16 (2023-02-15) =
 

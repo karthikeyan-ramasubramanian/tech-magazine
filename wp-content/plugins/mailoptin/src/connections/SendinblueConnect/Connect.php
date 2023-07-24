@@ -140,7 +140,7 @@ class Connect extends AbstractSendinblueConnect implements ConnectionInterface
      */
     public function register_connection($connections)
     {
-        $connections[self::$connectionName] = __('Sendinblue', 'mailoptin');
+        $connections[self::$connectionName] = __('Brevo (Sendinblue)', 'mailoptin');
 
         return $connections;
     }

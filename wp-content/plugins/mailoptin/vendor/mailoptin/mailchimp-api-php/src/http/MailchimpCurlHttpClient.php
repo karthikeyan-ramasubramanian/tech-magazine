@@ -99,7 +99,7 @@ class MailchimpCurlHttpClient implements MailchimpHttpClientInterface {
       $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
       if ($http_code != 200) {
         $response_data = json_decode($response);
-        $error = isset($response_data->detail) ? $response_data->detail : (is_string($response) ? $response : '');
+        $error = isset($response_data->detail) ? $response_data->detail . ' - ' . (is_string($response) ? '('.$response.')' : '') : (is_string($response) ? $response : '');
       }
     }
 

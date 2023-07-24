@@ -63,10 +63,6 @@ class HubspotConnect extends \NF_Abstracts_ActionNewsletter
         $optin_data->is_timestamp_check_active = false;
         $optin_data->is_double_optin      = $double_optin;
 
-        if (isset($_REQUEST['referrer'])) {
-            $optin_data->conversion_page = esc_url_raw($_REQUEST['referrer']);
-        }
-
         if ( ! empty($action_settings['moTags'])) {
             $optin_data->form_tags = $action_settings['moTags'];
         }

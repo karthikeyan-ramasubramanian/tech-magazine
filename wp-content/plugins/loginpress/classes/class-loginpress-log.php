@@ -29,6 +29,7 @@ class LoginPress_Log_Info {
 		if ( version_compare( $GLOBALS['wp_version'], '5.9', '>=' ) && ! empty( get_available_languages() ) ) {
 			$lang_switcher     = isset( $loginpress_setting['enable_language_switcher'] ) ? $loginpress_setting['enable_language_switcher'] : 'Off';
 		}
+		$pci_compliance        = isset( $loginpress_setting['enable_pci_compliance'] ) ? $loginpress_setting['enable_pci_compliance'] : 'Off';
 		$_loginpassword_url    = ( $lostpassword_url == 'on' ) ? 'WordPress Default' : "WooCommerce Custom URL";
 		$loginpress_uninstall  = isset( $loginpress_setting['loginpress_uninstall'] ) ? $loginpress_setting['loginpress_uninstall'] : 'off';
 		$disable_default_style = (bool) apply_filters( 'loginpress_disable_default_style', false );
@@ -60,6 +61,7 @@ class LoginPress_Log_Info {
 		$html .= 'Plugin Version:           ' . LOGINPRESS_VERSION . "\n";
 		$html .= 'Expiration:           	  ' . $session_expiration . "\n";
 		$html .= 'Login Order:              ' . ucfirst( $login_order ) . "\n";
+		$html .= 'PCI Compliance:           ' . ucfirst( $pci_compliance ) . "\n";
 		if ( class_exists( 'WooCommerce' ) ) {
 			$html .= 'Lost Password URL:        ' . $_loginpassword_url . "\n";
 		}

@@ -1,5 +1,8 @@
 <?php
 defined( 'ABSPATH' ) or exit;
+
+$options  = authorship_get_options();
+
 ?>
 
 <div class="molongui-metabox">
@@ -21,6 +24,19 @@ defined( 'ABSPATH' ) or exit;
         $select = ob_get_clean();
         echo apply_filters( '_authorship/guest/box_display', $select );
         ?>
+    </div>
+
+    <hr>
+
+    <!-- Custom link for author name and avatar -->
+    <?php $custom_link_disabled = ( 'custom' != $options['author_box_avatar_link'] and 'custom' != $options['author_box_name_link'] ); ?>
+    <div class="m-field">
+        <label class="m-title" for="_molongui_guest_author_custom_link"><strong><?php _e( "Custom link", 'molongui-authorship' ); ?></strong></label>
+        <p class="m-description"><?php _e( "URL to make the author name and/or avatar link to.", 'molongui-authorship' ); ?></p>
+        <input type="text" name="_molongui_guest_author_custom_link" id="_molongui_guest_author_custom_link" value="<?php echo esc_attr( $guest_author_custom_link ); ?>" <?php disabled( $custom_link_disabled ); ?> />
+        <?php if ( $custom_link_disabled ) : ?>
+            <p class="m-description" style="padding: 5px 10px; border: 1px solid lightgray; border-radius: 5px; background: #f4f4f4;"><?php _e( "Enable this setting on the Author Box Editor", 'molongui-authorship' ); ?></p>
+        <?php endif; ?>
     </div>
 
     <hr>
@@ -84,6 +100,7 @@ defined( 'ABSPATH' ) or exit;
             document.getElementById('_molongui_guest_author_show_icon_mail').disabled  = $disabled;
             document.getElementById('_molongui_guest_author_show_icon_web').disabled   = $disabled;
             document.getElementById('_molongui_guest_author_show_icon_phone').disabled = $disabled;
+            document.getElementById('_molongui_guest_author_custom_link').disabled = $disabled;
         };
     </script>
 </div>

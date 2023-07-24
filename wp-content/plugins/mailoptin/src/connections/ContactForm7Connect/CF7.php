@@ -76,8 +76,10 @@ class CF7
         $optin_data->is_timestamp_check_active = false;
         $optin_data->is_double_optin      = $double_optin;
 
-        if (isset($_REQUEST['referrer'])) {
-            $optin_data->conversion_page = esc_url_raw($_REQUEST['referrer']);
+        $container_post_id = $obj->get_meta('container_post_id');
+
+        if (!empty($container_post_id)) {
+            $optin_data->conversion_page = get_permalink(intval($container_post_id));
         }
 
         $optin_data->form_tags = moVar($mocf7_settings, 'tags');

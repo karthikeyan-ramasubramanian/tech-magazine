@@ -91,6 +91,16 @@ class Subscription extends AbstractInfusionsoftConnect
                             $value = implode(', ', $value);
                         }
 
+                        // Company transformer
+                        if ($ISKey == 'mocompany') {
+                            
+                            $properties['company'] = [
+                                'id' => intval($value)
+                            ];
+
+                            continue;
+                        }
+
                         // email1 transformer
                         if ($ISKey == 'email_address_2') {
                             $properties['email_addresses'][] = [

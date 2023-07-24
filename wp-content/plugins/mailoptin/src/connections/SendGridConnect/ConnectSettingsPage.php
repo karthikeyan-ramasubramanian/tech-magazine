@@ -72,17 +72,24 @@ class ConnectSettingsPage extends AbstractSendGridConnect
 
                 $response = $this->sendgrid_instance()->make_request('marketing/senders');
 
-                $senders = array_reduce($response['body'], function ($carry, $item) {
-                    $carry[$item['id']] = sprintf('%s (%s)', $item['nickname'], $item['from']['email']);
-
-                    return $carry;
-                }, $senders);
-
                 if (self::is_http_code_success($response['status_code'])) {
+
+                    $senders = array_reduce($response['body'], function ($carry, $item) {
+                        $carry[$item['id']] = sprintf('%s (%s)', $item['nickname'], $item['from']['email']);
+
+                        return $carry;
+                    }, $senders);
+
                     set_transient('mailoptin_sendgrid_sender_list', $senders, 5 * MINUTE_IN_SECONDS);
+
+                } else {
+                    throw new \Exception(
+                        is_string($response['body']) ? $response['body'] : wp_json_encode($response['body'])
+                    );
                 }
 
             } catch (\Exception $e) {
+                self::save_optin_error_log(is_string($e->getMessage()) ? $e->getMessage() : wp_json_encode($e->getMessage()), 'sendgrid');
             }
         }
 

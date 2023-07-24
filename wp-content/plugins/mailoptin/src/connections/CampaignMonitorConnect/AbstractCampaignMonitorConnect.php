@@ -75,7 +75,7 @@ class AbstractCampaignMonitorConnect extends AbstractConnect
             new OAuthCredentialStorage([
                 'campaignmonitor.access_token'  => $this->access_token,
                 'campaignmonitor.refresh_token' => $this->refresh_token,
-                'campaignmonitor.expires_at'    => $this->expires_at,
+                'campaignmonitor.expires_at'    => $this->expires_at
             ]));
 
         if ($instance->hasAccessTokenExpired()) {

@@ -6,7 +6,10 @@ if (!defined('ABSPATH')) exit;
 
 
 use MailPoet\Automation\Engine\Control\RootStep;
+use MailPoet\Automation\Engine\Data\AutomationTemplate;
+use MailPoet\Automation\Engine\Data\Field;
 use MailPoet\Automation\Engine\Integration\Action;
+use MailPoet\Automation\Engine\Integration\Filter;
 use MailPoet\Automation\Engine\Integration\Payload;
 use MailPoet\Automation\Engine\Integration\Step;
 use MailPoet\Automation\Engine\Integration\Subject;
@@ -14,6 +17,9 @@ use MailPoet\Automation\Engine\Integration\SubjectTransformer;
 use MailPoet\Automation\Engine\Integration\Trigger;
 
 class Registry {
+  /** @var array<string, AutomationTemplate> */
+  private $templates;
+
   /** @var array<string, Step> */
   private $steps = [];
 
@@ -22,6 +28,12 @@ class Registry {
 
   /** @var SubjectTransformer[] */
   private $subjectTransformers = [];
+
+  /** @var array<string, Field>|null */
+  private $fields = null;
+
+  /** @var array<string, Filter> */
+  private $filters = [];
 
   /** @var array<string, Trigger> */
   private $triggers = [];
@@ -43,6 +55,30 @@ class Registry {
     $this->steps[$rootStep->getKey()] = $rootStep;
   }
 
+  public function addTemplate(AutomationTemplate $template): void {
+    $this->templates[$template->getSlug()] = $template;
+  }
+
+  public function getTemplate(string $slug): ?AutomationTemplate {
+    return $this->getTemplates()[$slug] ?? null;
+  }
+
+  /** @return array<string, AutomationTemplate> */
+  public function getTemplates(string $category = null): array {
+    return $category
+      ? array_filter(
+          $this->templates,
+          function(AutomationTemplate $template) use ($category): bool {
+            return $template->getCategory() === $category;
+          }
+        )
+      : $this->templates;
+  }
+
+  public function removeTemplate(string $slug): void {
+    unset($this->templates[$slug]);
+  }
+
   /** @param Subject<Payload> $subject */
   public function addSubject(Subject $subject): void {
     $key = $subject->getKey();
@@ -50,6 +86,9 @@ class Registry {
       throw new \Exception(); // TODO
     }
     $this->subjects[$key] = $subject;
+
+    // reset fields cache
+    $this->fields = null;
   }
 
   /** @return Subject<Payload>|null */
@@ -68,6 +107,41 @@ class Registry {
 
   public function getSubjectTransformers(): array {
     return $this->subjectTransformers;
+  }
+
+  public function getField(string $key): ?Field {
+    return $this->getFields()[$key] ?? null;
+  }
+
+  /** @return array<string, Field> */
+  public function getFields(): array {
+    // add fields lazily (on the first call)
+    if ($this->fields === null) {
+      $this->fields = [];
+      foreach ($this->subjects as $subject) {
+        foreach ($subject->getFields() as $field) {
+          $this->addField($field);
+        }
+      }
+    }
+    return $this->fields ?? [];
+  }
+
+  public function addFilter(Filter $filter): void {
+    $fieldType = $filter->getFieldType();
+    if (isset($this->filters[$fieldType])) {
+      throw new \Exception(); // TODO
+    }
+    $this->filters[$fieldType] = $filter;
+  }
+
+  public function getFilter(string $fieldType): ?Filter {
+    return $this->filters[$fieldType] ?? null;
+  }
+
+  /** @return array<string, Filter> */
+  public function getFilters(): array {
+    return $this->filters;
   }
 
   public function addStep(Step $step): void {
@@ -141,5 +215,16 @@ class Registry {
   public function onBeforeAutomationStepSave(callable $callback, string $key = null, int $priority = 10): void {
     $keyPart = $key ? "/key=$key" : '';
     $this->wordPress->addAction(Hooks::AUTOMATION_STEP_BEFORE_SAVE . $keyPart, $callback, $priority, 2);
+  }
+
+  /**
+   * This is used only internally. Fields are added lazily from subjects.
+   */
+  private function addField(Field $field): void {
+    $key = $field->getKey();
+    if (isset($this->fields[$key])) {
+      throw new \Exception(); // TODO
+    }
+    $this->fields[$key] = $field;
   }
 }

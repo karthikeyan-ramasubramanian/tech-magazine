@@ -5,10 +5,10 @@ Tags: popup, popup maker, popups, newsletter, mailchimp
 Requires at least: 4.9
 Requires PHP: 7.2.5
 Tested up to: 6.2
-Stable tag: 1.2.58.0
+Stable tag: 1.2.61.0
 License: GPL-2.0+
 
-Create popup, optin forms & email newsletter forms to get email subscribers via an easy form builder and popup maker — Mailchimp, ConvertKit, ActiveCampaign, Campaign Monitor, Constant Contact & more.
+Create popup, optin forms & email newsletter forms to get email subscribers via an easy form builder and popup maker — Mailchimp, Salesforce, ActiveCampaign, Campaign Monitor, Constant Contact, ConvertKit etc.
 
 == Description ==
 
@@ -55,7 +55,7 @@ Our popup optin forms are GDPR compliant.
 
 = Integrates with All Email Marketing Platforms =
 
-MailOptin popup maker works with all popular email marketing software and CRM, including Mailchimp, AWeber, Constant Contact, Campaign Monitor, Sendy, Mailerlite, MailPoet, ConvertKit, ActiveCampaign, Infusionsoft by Keap, Drip, Sendinblue, EmailOctopus, HubSpot, Ontraport CRM, Mailjet, Klaviyo, Sendlane, Mailster, Moosend, Gist, VerticalResponse, Zoho CRM, Zoho Campaigns, Emma, SendFox, SendGrid Email Marketing, GoDaddy Email Marketing, CleverReach, GetResponse, weMail, FluentCRM, and NewsMAN.
+MailOptin popup maker works with all popular email marketing software and CRM, including Mailchimp, AWeber, Constant Contact, Campaign Monitor, Salesforce, Sendy, Mailerlite, MailPoet, ConvertKit, ActiveCampaign, Infusionsoft by Keap, Drip, Brevo (Sendinblue), EmailOctopus, HubSpot, Ontraport CRM, Microsoft Dynamics 365, Mailjet, Klaviyo, Sendlane, Mailster, Moosend, Gist, VerticalResponse, Zoho CRM, Zoho Campaigns, Emma, SendFox, SendGrid Email Marketing, GoDaddy Email Marketing, CleverReach, Omnisend, GetResponse, weMail, FluentCRM, Benchmark Email, and NewsMAN.
 
 = User Registration Forms =
 
@@ -83,7 +83,7 @@ MailOptin integrates WordPress with all major email marketing providers to send 
 
 For example, **Sendy** is a newsletter application without integration with WordPress to send *new publish post notifications* to an email list. MailOptin bridges this gap and delivers your post content immediately after publication.
 
-Use MailOptin today to deliver new post notifications and email digest newsletters to subscribers of email lists in Mailchimp, Constant Contact, Campaign Monitor, Klaviyo, ActiveCampaign, ConvertKit, Infusionsoft, Sendinblue, SendGrid, Mailjet, CleverReach, Zoho Campaigns, MailerLite, Sendy, SendGrid etc as well as to [WordPress users](https://mailoptin.io/send-emails-wordpress-registered-users/?utm_source=wprepo&utm_medium=link&utm_campaign=liteversion), [MemberPress members](https://mailoptin.io/article/send-wordpress-emails-memberpress-members/?utm_source=wprepo&utm_medium=link&utm_campaign=liteversion), [LifterLMS students](https://mailoptin.io/article/send-wordpress-emails-lifterlms-students/?utm_source=wprepo&utm_medium=link&utm_campaign=liteversion), [LearnDash users](https://mailoptin.io/article/send-wordpress-emails-learndash-users/?utm_source=wprepo&utm_medium=link&utm_campaign=liteversion), [Paid Memberships Pro members](https://mailoptin.io/article/send-wordpress-emails-paid-memberships-pro-members/?utm_source=wprepo&utm_medium=link&utm_campaign=liteversion), [Easy Digital Downloads](https://mailoptin.io/article/send-emails-edd-customers-wordpress/?utm_source=wprepo&utm_medium=link&utm_campaign=liteversion), [Restrict Content Pro Members](https://mailoptin.io/article/send-wordpress-emails-restrict-content-pro-members/?utm_source=wprepo&utm_medium=link&utm_campaign=liteversion) & [WooCommerce customers](https://mailoptin.io/article/send-emails-woocommerce-customers-wordpress/?utm_source=wprepo&utm_medium=link&utm_campaign=liteversion), [Active subscribers in WooCommerce Subscriptions](https://mailoptin.io/article/send-emails-woocommerce-subscriptions/?utm_source=wprepo&utm_medium=link&utm_campaign=liteversion), [Members in WooCommerce Memberships](https://mailoptin.io/article/send-emails-woocommerce-memberships/?utm_source=wprepo&utm_medium=link&utm_campaign=liteversion), [GiveWP donors](https://mailoptin.io/article/send-emails-givewp-donors-wordpress/?utm_source=wprepo&utm_medium=link&utm_campaign=liteversion).
+Use MailOptin today to deliver new post notifications and email digest newsletters to subscribers of email lists in Mailchimp, Constant Contact, Campaign Monitor, Klaviyo, ActiveCampaign, ConvertKit, Infusionsoft, Brevo (Sendinblue), SendGrid, Mailjet, CleverReach, Zoho Campaigns, MailerLite, Sendy, SendGrid etc as well as to [WordPress users](https://mailoptin.io/send-emails-wordpress-registered-users/?utm_source=wprepo&utm_medium=link&utm_campaign=liteversion), [MemberPress members](https://mailoptin.io/article/send-wordpress-emails-memberpress-members/?utm_source=wprepo&utm_medium=link&utm_campaign=liteversion), [LifterLMS students](https://mailoptin.io/article/send-wordpress-emails-lifterlms-students/?utm_source=wprepo&utm_medium=link&utm_campaign=liteversion), [LearnDash users](https://mailoptin.io/article/send-wordpress-emails-learndash-users/?utm_source=wprepo&utm_medium=link&utm_campaign=liteversion), [Paid Memberships Pro members](https://mailoptin.io/article/send-wordpress-emails-paid-memberships-pro-members/?utm_source=wprepo&utm_medium=link&utm_campaign=liteversion), [Easy Digital Downloads](https://mailoptin.io/article/send-emails-edd-customers-wordpress/?utm_source=wprepo&utm_medium=link&utm_campaign=liteversion), [Restrict Content Pro Members](https://mailoptin.io/article/send-wordpress-emails-restrict-content-pro-members/?utm_source=wprepo&utm_medium=link&utm_campaign=liteversion) & [WooCommerce customers](https://mailoptin.io/article/send-emails-woocommerce-customers-wordpress/?utm_source=wprepo&utm_medium=link&utm_campaign=liteversion), [Active subscribers in WooCommerce Subscriptions](https://mailoptin.io/article/send-emails-woocommerce-subscriptions/?utm_source=wprepo&utm_medium=link&utm_campaign=liteversion), [Members in WooCommerce Memberships](https://mailoptin.io/article/send-emails-woocommerce-memberships/?utm_source=wprepo&utm_medium=link&utm_campaign=liteversion), [GiveWP donors](https://mailoptin.io/article/send-emails-givewp-donors-wordpress/?utm_source=wprepo&utm_medium=link&utm_campaign=liteversion).
 
 = A/B Testing: Take out the guesswork =
 
@@ -140,6 +140,7 @@ The [Device Targeting](https://mailoptin.io/device-targeting-wordpress/?utm_sour
 If you like this plugin, then consider checking out our other products:
 
 * <a href="https://profilepress.com/" rel="friend" title="ProfilePress">ProfilePress</a> - The best custom registration, login, front-end profile and user management plugin in the market.
+* <a href="https://fusewp.com/">FuseWP</a> - Connect wordPress to marketing platforms and sync users to your email list.
 
 == Installation ==
 
@@ -183,18 +184,13 @@ Yes, MailOptin has complete translation and localization support. All .mo and .p
 
 == Changelog ==
 
-= 1.2.58.0 =
-* Added integration with the new MailerLite platform.
+= 1.2.61.0 =
+* Pro: [Microsoft Dynamics 365](https://mailoptin.io/article/create-microsoft-dynamics-365-wordpress-forms-capture-leads/) integration.
+* Fixed conflicts with the OceanWP theme.
 
-= 1.2.57.0 =
-* Pro: [Restrict Content Pro](https://mailoptin.io/integrations/restrict-content-pro/?ref=changelog) integration.
-* Added filter to flag a sendinblue field as boolean.
-* Fixed a couple of PHP Warning: Undefined array key.
-* Fixed bug with error reporting.
-
-= 1.2.56.0 =
-* Pro: [GiveWP](https://mailoptin.io/integrations/givewp/?ref=changelog) integration.
-* Added preheader support when creating email automations and broadcasts.
-* Added lagacy label to old Constant Contact integration.
+= 1.2.60.0 =
+* Pro: [Salesforce](https://mailoptin.io/article/create-salesforce-wordpress-forms-capture-leads/) integration.
+* Added [Benchmark Email](https://mailoptin.io/article/create-benchmark-email-wordpress-forms/) integration.
+* PHP 8 compatibility improvements.
 
 See the [changelog file](https://plugins.svn.wordpress.org/mailoptin/trunk/changelog.txt) for complete change log information.

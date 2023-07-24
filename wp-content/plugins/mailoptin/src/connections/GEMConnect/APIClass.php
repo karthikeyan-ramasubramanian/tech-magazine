@@ -64,7 +64,7 @@ class APIClass
         $response_body = wp_remote_retrieve_body($response);
 
         if ($response_http_code >= 200 && $response_http_code <= 299) {
-            $response_body = json_decode(wp_remote_retrieve_body($response));
+            $response_body = json_decode($response_body);
         }
 
         return ['status' => $response_http_code, 'body' => $response_body];

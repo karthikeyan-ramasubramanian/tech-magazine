@@ -507,7 +507,7 @@ class WooInit
     public function woo_checkout_fields()
     {
         $fields          = [];
-        $checkout_fields = WC()->checkout->checkout_fields;
+        $checkout_fields = WC()->checkout()->get_checkout_fields();
 
         if ( ! empty($checkout_fields)) {
             $fields[''] = esc_html__('Select one', 'mailoptin');
@@ -696,7 +696,7 @@ class WooInit
      * @param $field
      * @param $order
      *
-     * @return mixed|void
+     * @return mixed
      */
     public function get_field_value($field, $order)
     {
@@ -704,6 +704,8 @@ class WooInit
 
         if (is_callable([$order, $field_tag])) {
             return $order->$field_tag();
+        } else {
+            return $order->get_meta($field);
         }
     }
 

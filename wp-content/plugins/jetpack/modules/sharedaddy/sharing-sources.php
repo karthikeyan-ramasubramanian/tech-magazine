@@ -1194,7 +1194,7 @@ class Share_Twitter extends Sharing_Source {
 	 * @return string
 	 */
 	public function get_display( $post ) {
-		$via = $this->sharing_twitter_via( $post );
+		$via = static::sharing_twitter_via( $post );
 
 		if ( $via ) {
 			$via = 'data-via="' . esc_attr( $via ) . '"';
@@ -1202,7 +1202,7 @@ class Share_Twitter extends Sharing_Source {
 			$via = '';
 		}
 
-		$related = $this->get_related_accounts( $post );
+		$related = static::get_related_accounts( $post );
 		if ( ! empty( $related ) && $related !== $via ) {
 			$related = 'data-related="' . esc_attr( $related ) . '"';
 		} else {
@@ -1260,8 +1260,8 @@ class Share_Twitter extends Sharing_Source {
 			$substr = 'substr';
 		}
 
-		$via     = $this->sharing_twitter_via( $post );
-		$related = $this->get_related_accounts( $post );
+		$via     = static::sharing_twitter_via( $post );
+		$related = static::get_related_accounts( $post );
 		if ( $via ) {
 			$sig = " via @$via";
 			if ( $related === $via ) {
@@ -1336,22 +1336,6 @@ class Share_Reddit extends Sharing_Source {
 	public $icon = '\f222';
 
 	/**
-	 * Constructor.
-	 *
-	 * @param int   $id       Sharing source ID.
-	 * @param array $settings Sharing settings.
-	 */
-	public function __construct( $id, array $settings ) {
-		parent::__construct( $id, $settings );
-
-		if ( 'official' === $this->button_style ) {
-			$this->smart = true;
-		} else {
-			$this->smart = false;
-		}
-	}
-
-	/**
 	 * Service name.
 	 *
 	 * @return string
@@ -1368,11 +1352,12 @@ class Share_Reddit extends Sharing_Source {
 	 * @return string
 	 */
 	public function get_display( $post ) {
-		if ( $this->smart ) {
-			return '<div class="reddit_button"><iframe src="' . $this->http() . '://www.reddit.com/static/button/button1.html?newwindow=true&width=120&amp;url=' . rawurlencode( $this->get_share_url( $post->ID ) ) . '&amp;title=' . rawurlencode( $this->get_share_title( $post->ID ) ) . '" height="22" width="120" scrolling="no" frameborder="0"></iframe></div>';
-		} else {
-			return $this->get_link( $this->get_process_request_url( $post->ID ), _x( 'Reddit', 'share to', 'jetpack' ), __( 'Click to share on Reddit', 'jetpack' ), 'share=reddit' );
-		}
+		return $this->get_link(
+			$this->get_process_request_url( $post->ID ),
+			_x( 'Reddit', 'share to', 'jetpack' ),
+			__( 'Click to share on Reddit', 'jetpack' ),
+			'share=reddit'
+		);
 	}
 
 	/**
@@ -3196,5 +3181,68 @@ class Share_Mastodon extends Sharing_Source {
 				'height' => 400,
 			)
 		);
+	}
+}
+
+/**
+ * Nextdoor sharing service.
+ */
+class Share_Nextdoor extends Sharing_Source {
+	/**
+	 * Service short name.
+	 *
+	 * @var string
+	 */
+	public $shortname = 'nextdoor';
+
+	/**
+	 * Service icon font code.
+	 *
+	 * @var string
+	 */
+	public $icon = '\f10c';
+
+	/**
+	 * Service name.
+	 *
+	 * @return string
+	 */
+	public function get_name() {
+		return __( 'Nextdoor', 'jetpack' );
+	}
+
+	/**
+	 * Get the markup of the sharing button.
+	 *
+	 * @param WP_Post $post Post object.
+	 *
+	 * @return string
+	 */
+	public function get_display( $post ) {
+		return $this->get_link(
+			$this->get_process_request_url( $post->ID ),
+			_x( 'Nextdoor', 'share to', 'jetpack' ),
+			__( 'Click to share on Nextdoor', 'jetpack' ),
+			'share=nextdoor',
+			'sharing-nextdoor-' . $post->ID
+		);
+	}
+
+	/**
+	 * Process sharing request. Add actions that need to happen when sharing here.
+	 *
+	 * @param WP_Post $post Post object.
+	 * @param array   $post_data Array of information about the post we're sharing.
+	 *
+	 * @return void
+	 */
+	public function process_request( $post, array $post_data ) {
+		// Record stats
+		parent::process_request( $post, $post_data );
+
+		$url  = 'https://nextdoor.com/sharekit/?source=jetpack&body=';
+		$url .= rawurlencode( $this->get_share_title( $post->ID ) . ' ' . $this->get_share_url( $post->ID ) );
+
+		parent::redirect_request( $url );
 	}
 }

@@ -84,7 +84,7 @@ class STCFQ_Helper {
 		if ( 'text' === $type || 'email' === $type ) {
 			echo '<input type="' . esc_attr( $type ) . '" name="' . esc_attr( $data['name'] ) . '" size="40" class="' . esc_attr( $output_input_classes ) . '"' . esc_attr( $output_input_required ) . ' aria-invalid="false">';
 		} elseif ( 'textarea' === $type ) {
-			echo '<textarea type="' . esc_attr( $type ) . '" name="' . esc_attr( $data['name'] ) . '" cols="50" rows="6" class="' . esc_attr( $output_input_classes ) . '"' . esc_attr( $output_input_required ) . ' aria-invalid="false"></textarea>';
+			echo '<textarea type="' . esc_attr( $type ) . '" name="' . esc_attr( $data['name'] ) . '" cols="65" rows="6" class="' . esc_attr( $output_input_classes ) . '"' . esc_attr( $output_input_required ) . ' aria-invalid="false"></textarea>';
 		}
 
 		echo '</span>';

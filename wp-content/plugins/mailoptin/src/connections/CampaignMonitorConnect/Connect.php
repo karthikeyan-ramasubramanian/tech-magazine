@@ -125,6 +125,8 @@ class Connect extends AbstractCampaignMonitorConnect implements ConnectionInterf
 
         } catch (\Exception $e) {
             self::save_optin_error_log($e->getMessage(), 'campaignmonitor');
+
+            return [];
         }
     }
 

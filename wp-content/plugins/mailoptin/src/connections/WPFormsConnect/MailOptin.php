@@ -105,8 +105,8 @@ class MailOptin extends \WPForms_Provider
             $optin_data->is_double_optin           = $double_optin;
             $optin_data->user_agent                = esc_html($_SERVER['HTTP_USER_AGENT']);
 
-            if (isset($_REQUEST['referrer'])) {
-                $optin_data->conversion_page = esc_url_raw($_REQUEST['referrer']);
+            if (!empty($_POST['page_url'])) {
+                $optin_data->conversion_page = esc_url_raw($_POST['page_url']);
             }
 
             $tags = isset($connection['options']['tags']) ? $connection['options']['tags'] : '';

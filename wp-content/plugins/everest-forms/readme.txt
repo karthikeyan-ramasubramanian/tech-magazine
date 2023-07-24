@@ -1,10 +1,10 @@
 === Everest Forms – Build Contact Forms, Surveys, Polls, Application Forms, and more with Ease! ===
 Contributors: WPEverest
 Tags: contact form, custom form, form builder, forms, survey
-Requires at least: 5.0
-Tested up to: 6.1
-Requires PHP: 5.4
-Stable tag: 1.9.9
+Requires at least: 5.2
+Tested up to: 6.2
+Requires PHP: 7.2
+Stable tag: 2.0.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -173,7 +173,7 @@ Everest Forms has a long list of top-notch features, making it the best WordPres
 
 * **Create Multi-column Form Layout:** Tired of lengthy forms that are making your users abandon them? Create efficient and user-friendly forms that supports up to four columns using Everest Forms. This also provides better structure to your forms.
 
-* **Multiple Spam Protection Technique:** Spams won't trouble you anymore. Get the spams controlled with smart integrations like Google reCAPTCHA, HoneyPot, [Math Captcha](https://wpeverest.com/wordpress-plugins/everest-forms/captcha/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro), hCaptcha, and let your mind be at peace.
+* **Multiple Spam Protection Technique:** Spams won't trouble you anymore. Get the spams controlled with smart integrations like Google reCAPTCHA, HoneyPot, [Math Captcha](https://wpeverest.com/wordpress-plugins/everest-forms/captcha/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro), hCaptcha, cloudfare Turnstile and let your mind be at peace.
 
 * **One-Click Form Import Export:** Save your precious time using the import/export tool. Just one click, and you can instantly import or export the forms from one site to another. The supported file format is JSON.
 
@@ -183,7 +183,7 @@ Everest Forms has a long list of top-notch features, making it the best WordPres
 
 * **[Premium] [Email Templates Designer:](https://wpeverest.com/wordpress-plugins/everest-forms/email-templates/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Design beautiful email templates to impress your users. Customize color, fonts, spacing, header & footer, etc., of email template in real-time without coding. You've got an option to start from scratch or choose from carefully designed templates to get started.
 
-* **[Premium] Collect Payments:** Need to collect payments from customers on your forms? With our [PayPal](https://wpeverest.com/wordpress-plugins/everest-forms/paypal-standard/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) and [Stripe](https://wpeverest.com/wordpress-plugins/everest-forms/stripe/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) addon one can easily collect payment globally. Accept PayPal payments and even credit cards and bank payments(iDeal) via Stripe. Also, support [RazorPay](https://wpeverest.com/wordpress-plugins/everest-forms/razorpay/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) for Indian customers. Can be useful for collect single item payment, multiple item payment, donation payment and more.
+* **[Premium] Collect Payments:** Need to collect payments from customers on your forms? With our [PayPal](https://wpeverest.com/wordpress-plugins/everest-forms/paypal-standard/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) and [Stripe](https://wpeverest.com/wordpress-plugins/everest-forms/stripe/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) addon one can easily collect payment globally and [Authorize.Net](https://wpeverest.com/wordpress-plugins/everest-forms/authorize-net/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) addon one can easily collect payment globally. Accept PayPal payments and even credit cards and bank payments(iDeal) via Stripe. Also, support [RazorPay](https://wpeverest.com/wordpress-plugins/everest-forms/razorpay/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) for Indian customers. Can be useful for collect single item payment, multiple item payment, donation payment and more.
 
 * **[Premium] [Smart Conditional Logic:](https://wpeverest.com/wordpress-plugins/everest-forms/conditional-logic/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Choose to show/hide specific form fields based on your users' interaction with previous fields. Collect all the necessary information from the users without making your form appear overwhelming and complex.
 
@@ -382,32 +382,31 @@ The manual installation method involves downloading our form builder plugin and 
 
 == Frequently Asked Questions ==
 
- Do I need to have coding skills to use the Everest Forms Plugin? =
+= Do I need to have coding skills to use the Everest Forms Plugin? =
 
 No, you don't need any coding skills. One can simply drag and drop fields, arrange them and use built-in shortcodes to display the form.
 
-= Does the plugin work with any WordPress themes?
+= Does the plugin work with any WordPress themes? =
 
 Yes, Everest Forms is designed to work with any themes that have been coded following WordPress guidelines.
 
-= Do you have a quick get started video for Everest Form?
+= Do you have a quick get started video for Everest Form? =
 
-Yes, we do. Check out this [Getting Started Videos](https://docs.wpeverest.com/docs/everest-forms/getting-started/watch-video-guide/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
+Yes, we do. Check out this [Getting Started Videos](https://docs.wpeverest.com/everest-forms/docs-category/video-tutorials/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
 
-
-= What types of forms can I build with Everest Forms?
+= What types of forms can I build with Everest Forms? =
 
 You can build absolutely any type of form you imagine with Everest Forms. For example, you can create contact forms, online application forms, email newsletter forms, surveys, polls, quiz forms, user registration forms, feedback forms, booking forms, and more. Our plugin has advanced functionalities and tons of powerful integrations, that make it the ultimate form builder for WordPress.
 
-= Can I integrate my WordPress forms with email marketing services?
+= Can I integrate my WordPress forms with email marketing services? =
 
 Yes, absolutely. You can easily integrate your WordPress forms with popular email marketing services like Mailchimp, Sendinblue, Constant Contact, Drip and more. We provide a dedicated integration addon for these. Plus, you can also integrate hundreds of more powerful services like CRMs, online tools, etc. with our Zapier addon.
 
-= Can I integrate payment services with my Everest Forms?
+= Can I integrate payment services with my Everest Forms? =
 
 Yes. You can easily integrate your WordPress forms with PayPal, Stripe, and Razorpay. Using them, you can create payment forms in WordPress and accept payments.
 
-= How do I protect my WordPress forms from spam?
+= How do I protect my WordPress forms from spam? =
 
 Everest Forms comes with a set of robust spam protection features. You can easily integrate Google reCAPTCHA as well as custom CAPTCHA like math equations, custom question-answer-based CAPTCHA to protect your site from spam and bots.
 
@@ -417,6 +416,41 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 
 == Changelog ==
+
+- 2.0.2       - 19-07-2023
+* Feature     - Regex validation for field.
+* Feature     - Custom CSS and JS for form.
+* Enhancement - Upgrade to the pro improve for dragging a field.
+* Enhancement - Date time slot booking.
+* Fix         - Word count issue with Cyrillic text.
+
+
+- 2.0.1       - 14-06-2023
+* Enhancement - Upgrade to pro link.
+* Feature 	  - Cloudflare Turnstile.
+* Tweak 	  - Form locate option where form is activated.
+* Dependency  - Authorize.Net.
+
+- 2.0.0.1       - 09-05-2023
+* Fix 		  - Design issue with certain themes when everest shortcode is applied.
+
+- 2.0.0       - 08-05-2023
+* Fix 		  - Repeater field issue when exporting the CSV.
+* Fix 		  - Error when enabling image choices without uploading image in checkbox.
+* Fix 		  - Smart tag {first_name} {last_name} are not working.
+* Fix 		  - Form not showing to export the form while storing entry information is disabled.
+* Fix 		  - CSV export issue.
+* Fix 		  - Unnecessary JS Load on Frontend.
+* Fix 		  - Payment status is not showing in CSV.
+* Fix 		  - Minimum word count error message issue.
+* Fix		  - PDF download link not showing issue with paypal.
+* Enhancement - Send CSV in email.
+* Enhancement - Next Previous link on single entry view admin page.
+* Enhancement - Timezone selection for DateTime field.
+* Enhancement - Serial number on entry listing table.
+* Enhancement - Anti Spam Setting.
+* Enhancement - Search forms in entries select.
+* Feature     - Everest forms on top admin menu bar.
 
 - 1.9.9       - 28-03-2023
 * Fix 		  - Payment checkbox smart tag value is not showing email.

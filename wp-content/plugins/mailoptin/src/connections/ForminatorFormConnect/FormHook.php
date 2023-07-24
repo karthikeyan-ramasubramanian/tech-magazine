@@ -8,6 +8,7 @@ use Forminator_Addon_Exception;
 use MailOptin\Connections\Init;
 use MailOptin\Core\OptinForms\ConversionDataBuilder;
 use MailOptin\Core\AjaxHandler;
+use function MailOptin\Core\current_url_with_query_string;
 use function MailOptin\Core\moVar;
 
 class FormHook extends Forminator_Addon_Form_Hooks_Abstract
@@ -64,6 +65,11 @@ class FormHook extends Forminator_Addon_Form_Hooks_Abstract
 
         $connected_service = $addon_setting_values['connected_email_providers'];
 
+        $double_optin = false;
+        if (in_array($connected_service, Init::double_optin_support_connections(true))) {
+            $double_optin = isset($addon_setting_values[$connected_service]['double_optin']) && $addon_setting_values[$connected_service]['double_optin'] === "true";
+        }
+
         $optin_data = new ConversionDataBuilder();
 
         // since it's non mailoptin form, set it to zero.
@@ -76,9 +82,10 @@ class FormHook extends Forminator_Addon_Form_Hooks_Abstract
         $optin_data->connection_email_list     = $addon_setting_values[$connected_service]['lists'];
         $optin_data->user_agent                = esc_html($_SERVER['HTTP_USER_AGENT']);
         $optin_data->is_timestamp_check_active = false;
+        $optin_data->is_double_optin           = $double_optin;
 
-        if (isset($_REQUEST['referrer'])) {
-            $optin_data->conversion_page = esc_url_raw($_REQUEST['referrer']);
+        if (!empty($submitted_data['current_url'])) {
+            $optin_data->conversion_page = esc_url_raw($submitted_data['current_url']);
         }
 
         //map tags

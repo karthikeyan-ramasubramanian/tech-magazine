@@ -10,6 +10,11 @@ function authorship_guest_save( $post_id )
     if ( 'page' == $_POST['post_type'] ) if ( !current_user_can( 'edit_page', $post_id ) ) return $post_id;
     elseif ( !current_user_can( 'edit_post', $post_id ) ) return $post_id;
     $networks = authorship_get_social_networks( 'enabled' );
+    foreach ( $networks as $id => $network )
+    {
+        if ( !empty( $_POST['_molongui_guest_author_'.$id] ) ) update_post_meta( $post_id, '_molongui_guest_author_'.$id, sanitize_text_field( $_POST['_molongui_guest_author_'.$id] ) );
+        else delete_post_meta( $post_id, '_molongui_guest_author_'.$id );
+    }
     $inputs = array
     (
         '_molongui_guest_author_first_name',
@@ -20,17 +25,21 @@ function authorship_guest_save( $post_id )
         '_molongui_guest_author_web',
         '_molongui_guest_author_job',
         '_molongui_guest_author_company',
-        '_molongui_guest_author_company_link',
     );
     foreach ( $inputs as $input )
     {
         if ( !empty( $_POST[$input] ) ) update_post_meta( $post_id, $input, sanitize_text_field( $_POST[$input] ) );
         else delete_post_meta( $post_id, $input );
     }
-    foreach ( $networks as $id => $network )
+    $urls = array
+    (
+        '_molongui_guest_author_company_link',
+        '_molongui_guest_author_custom_link',
+    );
+    foreach ( $urls as $url )
     {
-        if ( !empty( $_POST['_molongui_guest_author_'.$id] ) ) update_post_meta( $post_id, '_molongui_guest_author_'.$id, sanitize_text_field( $_POST['_molongui_guest_author_'.$id] ) );
-        else delete_post_meta( $post_id, '_molongui_guest_author_'.$id );
+        if ( !empty( $_POST[$url] ) ) update_post_meta( $post_id, $url, sanitize_url( $_POST[$url] ) );
+        else delete_post_meta( $post_id, $url );
     }
     $checkboxes = array
     (
@@ -256,6 +265,11 @@ function authorship_guest_add_meta_boxes( $post_type )
     }
 }
 add_action( 'add_meta_boxes', 'authorship_guest_add_meta_boxes' );
+add_filter( 'authorship/admin/guest/convert/metabox', function()
+{
+    if ( !current_user_can( 'create_users' ) ) return false;
+    return true;
+}, 9 );
 function authorship_guest_render_profile_metabox( $post )
 {
     wp_nonce_field( 'molongui_authorship_guest', 'molongui_authorship_guest_nonce' );
@@ -277,7 +291,8 @@ function authorship_guest_render_bio_metabox( $post )
 }
 function authorship_guest_render_short_bio_metabox( $post )
 {
-    include MOLONGUI_AUTHORSHIP_DIR . 'views/guest-author/html-admin-short-bio-metabox.php';
+    $file = MOLONGUI_AUTHORSHIP_DIR . 'views/guest-author/html-admin-short-bio-metabox.php';
+    include apply_filters( 'authorship/admin/guest/shortbio_metabox_html', $file );
 }
 function authorship_guest_render_social_metabox( $post )
 {
@@ -291,12 +306,13 @@ function authorship_guest_render_archive_metabox( $post )
 }
 function authorship_guest_render_box_metabox( $post )
 {
-    $guest_author_hide_box   = get_post_meta( $post->ID, '_molongui_guest_author_box_display', true );
-    $guest_author_mail_icon  = get_post_meta( $post->ID, '_molongui_guest_author_show_icon_mail', true );
-    $guest_author_phone_icon = get_post_meta( $post->ID, '_molongui_guest_author_show_icon_phone', true );
-    $guest_author_web_icon   = get_post_meta( $post->ID, '_molongui_guest_author_show_icon_web', true );
-    $guest_author_mail_meta  = get_post_meta( $post->ID, '_molongui_guest_author_show_meta_mail', true );
-    $guest_author_phone_meta = get_post_meta( $post->ID, '_molongui_guest_author_show_meta_phone', true );
+    $guest_author_hide_box    = get_post_meta( $post->ID, '_molongui_guest_author_box_display', true );
+    $guest_author_custom_link = get_post_meta( $post->ID, '_molongui_guest_author_custom_link', true );
+    $guest_author_mail_icon   = get_post_meta( $post->ID, '_molongui_guest_author_show_icon_mail', true );
+    $guest_author_phone_icon  = get_post_meta( $post->ID, '_molongui_guest_author_show_icon_phone', true );
+    $guest_author_web_icon    = get_post_meta( $post->ID, '_molongui_guest_author_show_icon_web', true );
+    $guest_author_mail_meta   = get_post_meta( $post->ID, '_molongui_guest_author_show_meta_mail', true );
+    $guest_author_phone_meta  = get_post_meta( $post->ID, '_molongui_guest_author_show_meta_phone', true );
     include MOLONGUI_AUTHORSHIP_DIR . 'views/guest-author/html-admin-box-metabox.php';
 }
 function authorship_guest_render_avatar_metabox( $post )
@@ -306,7 +322,8 @@ function authorship_guest_render_avatar_metabox( $post )
 }
 function authorship_guest_render_conversion_metabox( $post )
 {
-    include MOLONGUI_AUTHORSHIP_DIR . 'views/guest-author/html-admin-convert-metabox.php';
+    $file = MOLONGUI_AUTHORSHIP_DIR . 'views/guest-author/html-admin-convert-metabox.php';
+    include apply_filters( 'authorship/admin/guest/convert_metabox_html', $file );
 }
 function authorship_guest_add_conversion_metabox_class( $classes )
 {

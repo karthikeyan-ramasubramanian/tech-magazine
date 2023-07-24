@@ -35,3 +35,8 @@ function authorship_add_default_settings()
     _deprecated_function( __FUNCTION__, '4.4.3', 'authorship_add_defaults()' );
     authorship_add_defaults();
 }
+function authorship_post_filter_count()
+{
+    _deprecated_function( __FUNCTION__, '4.6.18', 'authorship_post_count()' );
+    authorship_post_count();
+}

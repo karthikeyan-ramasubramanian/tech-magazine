@@ -109,7 +109,7 @@ class Subscription extends AbstractMailChimpConnect
 
             $response = $this->mc_list_instance()->getMergeFields(
                 $this->list_id,
-                ['count' => 9999, 'fields' => 'merge_fields.tag,merge_fields.type,merge_fields.options']
+                ['count' => 1000, 'fields' => 'merge_fields.tag,merge_fields.type,merge_fields.options']
             );
 
             if (isset($response->merge_fields) && is_array($response->merge_fields)) {

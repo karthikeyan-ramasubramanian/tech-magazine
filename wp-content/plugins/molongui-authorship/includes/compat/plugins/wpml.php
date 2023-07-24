@@ -13,6 +13,7 @@ function authorship_add_user_meta_fields_to_wpml( $user_meta_fields )
     $user_meta_fields[] = 'molongui_author_company_link';
     $user_meta_fields[] = 'molongui_author_short_bio';
 $user_meta_fields[] = 'molongui_author_long_bio';
+    $user_meta_fields[] = 'molongui_author_custom_link';
 
     return $user_meta_fields;
 }

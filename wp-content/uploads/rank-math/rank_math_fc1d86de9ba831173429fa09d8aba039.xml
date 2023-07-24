@@ -2,32 +2,42 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd http://www.google.com/schemas/sitemap-image/1.1 http://www.google.com/schemas/sitemap-image/1.1/sitemap-image.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
 		<loc>https://blogs.techsnapie.com/category/uncategorized/</loc>
+		<lastmod>2023-05-16T11:49:52+00:00</lastmod>
 	</url>
 	<url>
 		<loc>https://blogs.techsnapie.com/category/cyber-security/</loc>
+		<lastmod>2023-04-12T17:20:48+00:00</lastmod>
 	</url>
 	<url>
 		<loc>https://blogs.techsnapie.com/category/technology/</loc>
+		<lastmod>2023-04-21T06:59:55+00:00</lastmod>
 	</url>
 	<url>
 		<loc>https://blogs.techsnapie.com/category/general/</loc>
+		<lastmod>2023-05-13T12:05:57+00:00</lastmod>
 	</url>
 	<url>
 		<loc>https://blogs.techsnapie.com/category/entertainment/</loc>
+		<lastmod>2022-06-11T10:37:30+00:00</lastmod>
 	</url>
 	<url>
 		<loc>https://blogs.techsnapie.com/category/fashion/</loc>
+		<lastmod>2022-12-09T10:27:11+00:00</lastmod>
 	</url>
 	<url>
 		<loc>https://blogs.techsnapie.com/category/food-health/</loc>
+		<lastmod>2023-04-14T13:57:22+00:00</lastmod>
 	</url>
 	<url>
 		<loc>https://blogs.techsnapie.com/category/travel/</loc>
+		<lastmod>2023-04-27T13:51:39+00:00</lastmod>
 	</url>
 	<url>
 		<loc>https://blogs.techsnapie.com/category/education/</loc>
+		<lastmod>2023-04-21T06:59:55+00:00</lastmod>
 	</url>
 	<url>
 		<loc>https://blogs.techsnapie.com/category/news/</loc>
+		<lastmod>2023-04-21T06:59:55+00:00</lastmod>
 	</url>
 </urlset>

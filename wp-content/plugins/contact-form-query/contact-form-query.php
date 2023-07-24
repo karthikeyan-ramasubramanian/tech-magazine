@@ -3,7 +3,7 @@
  * Plugin Name: Contact Form Query
  * Plugin URI: https://scriptstown.com/wordpress-plugins/contact-form-query/
  * Description: Add a contact form and receive new message notifications directly to your WordPress admin and to your email. Search and filter messages.
- * Version: 1.6.2
+ * Version: 1.7.4
  * Author: ScriptsTown
  * Author URI: https://scriptstown.com/
  * Text Domain: contact-form-query
@@ -13,7 +13,7 @@
 
 defined( 'ABSPATH' ) || die();
 
-define( 'STCFQ_PLUGIN_VERSION', '1.6.2' );
+define( 'STCFQ_PLUGIN_VERSION', '1.7.4' );
 define( 'STCFQ_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'STCFQ_PLUGIN_DIR_PATH', plugin_dir_path( __FILE__ ) );
 define( 'STCFQ_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );

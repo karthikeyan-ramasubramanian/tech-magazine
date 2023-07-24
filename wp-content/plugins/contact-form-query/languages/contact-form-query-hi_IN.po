@@ -2,11 +2,11 @@
 # This file is distributed under the same license as the Contact Form Query plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Contact Form Query 1.6.2\n"
+"Project-Id-Version: Contact Form Query 1.7.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/contact-form-"
 "query\n"
-"POT-Creation-Date: 2023-03-02T01:23:52+00:00\n"
-"PO-Revision-Date: 2023-03-02 06:54+0530\n"
+"POT-Creation-Date: 2023-07-11T20:12:07+00:00\n"
+"PO-Revision-Date: 2023-07-12 01:42+0530\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: hi_IN\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n==0 || n==1);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.1\n"
 "X-Domain: contact-form-query\n"
 
 #. Plugin Name of the plugin
@@ -130,7 +130,7 @@ msgid "Setting saved."
 msgstr ""
 
 #: admin/inc/class-stcfq-setting.php:285 admin/inc/class-stcfq-setting.php:291
-#: public/inc/class-stcfq-shortcode.php:118
+#: public/inc/class-stcfq-form.php:118
 msgid "Please provide a valid email."
 msgstr ""
 
@@ -551,12 +551,15 @@ msgid "Copy"
 msgstr ""
 
 #: admin/inc/setting/tabs/form-fields.php:26
-msgid "Use above shortcode in any page or post to display the contact form."
+msgid ""
+"Use above shortcode in any page or post to display the contact form. Also, "
+"you may use \"Contact Form\" block in the block editor to display the "
+"contact form."
 msgstr ""
 
 #: admin/inc/setting/tabs/form-fields.php:35
 msgid ""
-"You can also re-order the form fields by simply expanding the field and then "
+"You can re-order the form fields by simply expanding the field and then "
 "draging it up or down."
 msgstr ""
 
@@ -727,30 +730,52 @@ msgid_plural "%d Messages not answered"
 msgstr[0] ""
 msgstr[1] ""
 
-#: public/inc/class-stcfq-shortcode.php:17
+#: public/inc/class-stcfq-form.php:17
 msgid ""
 "Error occurred while sending your message. Please try again after some time."
 msgstr ""
 
-#: public/inc/class-stcfq-shortcode.php:45
-#: public/inc/class-stcfq-shortcode.php:48
-#: public/inc/class-stcfq-shortcode.php:69
-#: public/inc/class-stcfq-shortcode.php:72
+#: public/inc/class-stcfq-form.php:45 public/inc/class-stcfq-form.php:48
+#: public/inc/class-stcfq-form.php:69 public/inc/class-stcfq-form.php:72
 msgid "<strong>ERROR:</strong> Please confirm you are not a robot."
 msgstr ""
 
-#: public/inc/class-stcfq-shortcode.php:107
+#: public/inc/class-stcfq-form.php:107
 msgid "Please provide your name."
 msgstr ""
 
-#: public/inc/class-stcfq-shortcode.php:116
+#: public/inc/class-stcfq-form.php:116
 msgid "Please provide your email."
 msgstr ""
 
-#: public/inc/class-stcfq-shortcode.php:127
+#: public/inc/class-stcfq-form.php:127
 msgid "Please specify subject."
 msgstr ""
 
-#: public/inc/class-stcfq-shortcode.php:136
+#: public/inc/class-stcfq-form.php:136
 msgid "Please provide your message."
+msgstr ""
+
+#: includes/block/block.json
+#, fuzzy
+#| msgid "Contact Form Query"
+msgctxt "block title"
+msgid "Contact Form"
+msgstr "संपर्क फ़ॉर्म क्वेरी"
+
+#: includes/block/block.json
+msgctxt "block description"
+msgid ""
+"Add a contact form and receive messages. Customize it in Contact > Settings, "
+"and view messages in Contact > Messages."
+msgstr ""
+
+#: includes/block/block.json
+msgctxt "block keyword"
+msgid "contact"
+msgstr ""
+
+#: includes/block/block.json
+msgctxt "block keyword"
+msgid "form"
 msgstr ""

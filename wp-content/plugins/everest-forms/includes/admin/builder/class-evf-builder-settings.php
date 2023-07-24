@@ -27,6 +27,9 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 
 		add_action( 'everest_forms_settings_connections_email', array( $this, 'output_connections_list' ) );
 
+		add_filter( 'everest_forms_builder_settings_section', array( $this, 'add_custom_css_js_section' ), 11, 2 );
+		add_action( 'everest_forms_settings_panel_content', array( $this, 'add_custom_css_js_settings' ), 111, 1 );
+
 		parent::__construct();
 	}
 
@@ -37,8 +40,9 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		$sections = apply_filters(
 			'everest_forms_builder_settings_section',
 			array(
-				'general' => esc_html__( 'General', 'everest-forms' ),
-				'email'   => esc_html__( 'Email', 'everest-forms' ),
+				'general'  => esc_html__( 'General', 'everest-forms' ),
+				'email'    => esc_html__( 'Email', 'everest-forms' ),
+				'security' => esc_html__( 'Anti-Spam and Security', 'everest-forms' ),
 			),
 			$this->form_data
 		);
@@ -327,48 +331,6 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		everest_forms_panel_field(
 			'checkbox',
 			'settings',
-			'honeypot',
-			$this->form_data,
-			esc_html__( 'Enable anti-spam honeypot', 'everest-forms' ),
-			array(
-				'default' => '1',
-			)
-		);
-		$recaptcha_type   = get_option( 'everest_forms_recaptcha_type', 'v2' );
-		$recaptcha_key    = get_option( 'everest_forms_recaptcha_' . $recaptcha_type . '_site_key' );
-		$recaptcha_secret = get_option( 'everest_forms_recaptcha_' . $recaptcha_type . '_secret_key' );
-		switch ( $recaptcha_type ) {
-			case 'v2':
-				$recaptcha_label = esc_html__( 'Enable Google reCAPTCHA v2', 'everest-forms' );
-				break;
-
-			case 'v3':
-				$recaptcha_label = esc_html__( 'Enable Google reCAPTCHA v3', 'everest-forms' );
-				break;
-
-			case 'hcaptcha':
-				$recaptcha_label = esc_html__( 'Enable hCaptcha', 'everest-forms' );
-				break;
-		}
-		$recaptcha_label = 'yes' === get_option( 'everest_forms_recaptcha_v2_invisible' ) && 'v2' === $recaptcha_type ? esc_html__( 'Enable Google Invisible reCAPTCHA v2', 'everest-forms' ) : $recaptcha_label;
-
-		if ( ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ) {
-			everest_forms_panel_field(
-				'checkbox',
-				'settings',
-				'recaptcha_support',
-				$this->form_data,
-				$recaptcha_label,
-				array(
-					'default' => '0',
-					/* translators: %1$s - general settings docs url */
-					'tooltip' => sprintf( esc_html__( 'Enable reCaptcha. Make sure the site key and secret key is set in settings page. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#enable-recaptcha-support' ) ),
-				)
-			);
-		}
-		everest_forms_panel_field(
-			'checkbox',
-			'settings',
 			'ajax_form_submission',
 			$this->form_data,
 			esc_html__( 'Enable Ajax Form Submission', 'everest-forms' ),
@@ -622,7 +584,148 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		endforeach;
 
 		echo '</div>';
+		// --------------------------------------------------------------------//
+		// Spam Protection and Security
+		// --------------------------------------------------------------------//
+		echo '<div class="evf-content-section evf-content-security-settings">';
+		echo '<div class="evf-content-section-title">';
+		esc_html_e( 'Anti-Spam and Security', 'everest-forms' );
+		echo '</div>';
+		echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Honeypot', 'everest-forms' ) . '</h4>';
+		everest_forms_panel_field(
+			'checkbox',
+			'settings',
+			'honeypot',
+			$this->form_data,
+			esc_html__( 'Enable anti-spam honeypot', 'everest-forms' ),
+			array(
+				'default' => '1',
+			)
+		);
+		do_action( 'everest_forms_inline_honeypot_settings', $this, 'honeypot', 'connection_1' );
+		echo '</div>';
+		if ( 'yes' === get_option( 'everest_forms_recaptcha_v2_invisible' ) ) {
+			$recaptcha_type   = get_option( 'everest_forms_recaptcha_type', 'v2' );
+			$recaptcha_key    = get_option( 'everest_forms_recaptcha_' . $recaptcha_type . '_invisible_site_key' );
+			$recaptcha_secret = get_option( 'everest_forms_recaptcha_' . $recaptcha_type . '_invisible_secret_key' );
+		} else {
+			$recaptcha_type   = get_option( 'everest_forms_recaptcha_type', 'v2' );
+			$recaptcha_key    = get_option( 'everest_forms_recaptcha_' . $recaptcha_type . '_site_key' );
+			$recaptcha_secret = get_option( 'everest_forms_recaptcha_' . $recaptcha_type . '_secret_key' );
+		}
+
+		switch ( $recaptcha_type ) {
+			case 'v2':
+				$recaptcha_label = esc_html__( 'Enable Google reCAPTCHA v2', 'everest-forms' );
+				break;
+
+			case 'v3':
+				$recaptcha_label = esc_html__( 'Enable Google reCAPTCHA v3', 'everest-forms' );
+				break;
+
+			case 'hcaptcha':
+				$recaptcha_label = esc_html__( 'Enable hCaptcha', 'everest-forms' );
+				break;
+
+			case 'turnstile':
+				$recaptcha_label = esc_html__( 'Enable Cloudflare Turnstile', 'everest-forms' );
+				break;
+		}
+		$recaptcha_label = 'yes' === get_option( 'everest_forms_recaptcha_v2_invisible' ) && 'v2' === $recaptcha_type ? esc_html__( 'Enable Google Invisible reCAPTCHA v2', 'everest-forms' ) : $recaptcha_label;
+		if ( ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ) {
+			echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Captcha', 'everest-forms' ) . '</h4>';
+
+			everest_forms_panel_field(
+				'checkbox',
+				'settings',
+				'recaptcha_support',
+				$this->form_data,
+				$recaptcha_label,
+				array(
+					'default' => '0',
+					/* translators: %1$s - general settings docs url */
+					'tooltip' => sprintf( esc_html__( 'Enable reCaptcha. Make sure the site key and secret key is set in settings page. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.wpeverest.com/docs/everest-forms/individual-form-settings/general-settings/#enable-recaptcha-support' ) ),
+				)
+			);
+
+			do_action( 'everest_forms_inline_captcha_settings', $this, 'captcha', 'connection_1' );
+			echo '</div>';
+		}
+		do_action( 'everest_forms_inline_security_settings', $this );
+		echo '</div>';
+
 		do_action( 'everest_forms_settings_panel_content', $this );
+
+	}
+
+	/**
+	 * Add Custom CSS and JS menu item to the builder settings list.
+	 *
+	 * @param [array] $arr Setting Menu items list.
+	 * @param [array] $form_data Form Data.
+	 * @return array
+	 */
+	public function add_custom_css_js_section( $arr, $form_data ) {
+
+		$arr['custom-css-js'] = esc_html__( 'Custom CSS and JS', 'everest-forms' );
+
+		return $arr;
+	}
+
+	/**
+	 * Add Custom Css and Js settings section.
+	 *
+	 * @param [array] $form_data Form Data.
+	 * @return void
+	 */
+	public function add_custom_css_js_settings( $form_data ) {
+		// --------------------------------------------------------------------//
+		// Custom CSS and JS
+		// --------------------------------------------------------------------//
+		echo '<div class="evf-content-section evf-content-custom-css-js-settings">';
+		echo '<div class="evf-content-section-title">';
+		esc_html_e( 'Custom CSS and JS', 'everest-forms' );
+		echo '</div>';
+		echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Custom CSS', 'everest-forms' ) . '</h4>';
+		everest_forms_panel_field(
+			'checkbox',
+			'settings',
+			'evf-enable-custom-css',
+			$this->form_data,
+			esc_html__( 'Enable Custom CSS', 'everest-forms' ),
+			array(
+				'default' => '0',
+			)
+		);
+		everest_forms_panel_field(
+			'textarea',
+			'settings',
+			'evf-custom-css',
+			$this->form_data,
+			esc_html__( 'Custom CSS', 'everest-forms' )
+		);
+		echo '</div>';
+		echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Custom JS', 'everest-forms' ) . '</h4>';
+		everest_forms_panel_field(
+			'checkbox',
+			'settings',
+			'evf-enable-custom-js',
+			$this->form_data,
+			esc_html__( 'Enable Custom JS', 'everest-forms' ),
+			array(
+				'default' => '0',
+			)
+		);
+		everest_forms_panel_field(
+			'textarea',
+			'settings',
+			'evf-custom-js',
+			$this->form_data,
+			esc_html__( 'Custom JS', 'everest-forms' )
+		);
+		echo '</div>';
+
+		echo '</div>';
 	}
 
 	/**

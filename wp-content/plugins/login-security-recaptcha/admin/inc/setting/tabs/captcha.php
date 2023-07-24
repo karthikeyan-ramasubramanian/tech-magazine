@@ -449,7 +449,10 @@ if ( $cf_turnstile_enable ) {
 								}
 								?>
 							</fieldset>
-							<p class="description"><?php esc_html_e( 'reCAPTCHA v3 returns a score (0.0 is very likely a bot). Select Google reCAPTCHA Version 3 Score.', 'login-security-recaptcha' ); ?></p>
+							<p class="description">
+								<?php esc_html_e( 'Select Google reCAPTCHA Version 3 Score.', 'login-security-recaptcha' ); ?><br>
+								<?php esc_html_e( 'reCAPTCHA v3 returns a score (0.0 is very likely a bot, higher score means better interaction).', 'login-security-recaptcha' ); ?>
+							</p>
 						</td>
 					</tr>
 
@@ -477,6 +480,26 @@ if ( $cf_turnstile_enable ) {
 								}
 								?>
 							</fieldset>
+						</td>
+					</tr>
+
+					<tr class="stls_capt stls_grecaptcha_v3">
+						<th scope="row">
+							<label for="stls_grecaptcha_v3_onaction"><?php esc_html_e( 'Token Generation', 'login-security-recaptcha' ); ?></label>
+						</th>
+						<td>
+							<fieldset>
+								<legend class="screen-reader-text">
+									<span><?php esc_html_e( 'Generate Token on Form Submission', 'login-security-recaptcha' ); ?></span>
+								</legend>
+								<label for="stls_grecaptcha_v3_onaction">
+									<input <?php checked( $grecaptcha_v3['onaction'], true, true ); ?> name="grecaptcha_v3_onaction" type="checkbox" id="stls_grecaptcha_v3_onaction" value="1">
+									<?php esc_html_e( 'Generate Token on Form Submission', 'login-security-recaptcha' ); ?>
+								</label>
+							</fieldset>
+							<p class="description">
+								<?php echo wp_kses( __( 'Generate token only when the user submits the form rather than on page load. <br>You may uncheck this only if you face issues with reCAPTCHA v3.', 'login-security-recaptcha' ), array( 'br' => array() ) ); ?>
+							</p>
 						</td>
 					</tr>
 

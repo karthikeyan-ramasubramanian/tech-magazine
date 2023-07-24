@@ -497,6 +497,7 @@ class Author
             'mail',
             'phone',
             'web',
+            'custom_link',
             'archive',
             'img',
             'job',
@@ -524,6 +525,7 @@ class Author
         if ( in_array( 'mail', $fields ) )              $data['mail']              = $this->get_mail();
         if ( in_array( 'phone', $fields ) )             $data['phone']             = $this->get_meta( 'phone' );
         if ( in_array( 'web', $fields ) )               $data['web']               = $this->get_meta( 'web' );
+        if ( in_array( 'custom_link', $fields ) )       $data['custom_link']       = $this->get_meta( 'custom_link' );
         if ( in_array( 'archive', $fields ) )           $data['archive']           = $this->get_url();
         if ( in_array( 'img', $fields ) )               $data['img']               = $this->get_avatar( 'thumbnail', 'box' );
         if ( in_array( 'job', $fields ) )               $data['job']               = $this->get_meta( 'job' );

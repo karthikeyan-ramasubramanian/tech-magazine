@@ -68,6 +68,7 @@ class STLSR_Setting {
 		$grecaptcha_v3_secret_key = isset( $_POST['grecaptcha_v3_secret_key'] ) ? sanitize_text_field( $_POST['grecaptcha_v3_secret_key'] ) : '';
 		$grecaptcha_v3_score      = isset( $_POST['grecaptcha_v3_score'] ) ? sanitize_text_field( $_POST['grecaptcha_v3_score'] ) : $grecaptcha_v3_default['score'];
 		$grecaptcha_v3_badge      = isset( $_POST['grecaptcha_v3_badge'] ) ? sanitize_text_field( $_POST['grecaptcha_v3_badge'] ) : $grecaptcha_v3_default['badge'];
+		$grecaptcha_v3_onaction   = isset( $_POST['grecaptcha_v3_onaction'] ) ? (bool) $_POST['grecaptcha_v3_onaction'] : false;
 
 		$cf_turnstile_default = STLSR_Helper::cf_turnstile_default();
 
@@ -75,7 +76,7 @@ class STLSR_Setting {
 		$cf_turnstile_secret_key  = isset( $_POST['cf_turnstile_secret_key'] ) ? sanitize_text_field( $_POST['cf_turnstile_secret_key'] ) : '';
 		$cf_turnstile_theme       = isset( $_POST['cf_turnstile_theme'] ) ? sanitize_text_field( $_POST['cf_turnstile_theme'] ) : $cf_turnstile_default['theme'];
 		$cf_turnstile_size        = isset( $_POST['cf_turnstile_size'] ) ? sanitize_text_field( $_POST['cf_turnstile_size'] ) : $cf_turnstile_default['size'];
-		$cf_turnstile_disable_btn = isset( $_POST['cf_turnstile_disable_btn'] ) ? (bool) $_POST['cf_turnstile_disable_btn'] : $cf_turnstile_default['disable_btn'];
+		$cf_turnstile_disable_btn = isset( $_POST['cf_turnstile_disable_btn'] ) ? (bool) $_POST['cf_turnstile_disable_btn'] : false;
 
 		$capt_login_enable = isset( $_POST['capt_login_enable'] ) ? (bool) $_POST['capt_login_enable'] : false;
 		$capt_login        = isset( $_POST['capt_login'] ) ? sanitize_text_field( $_POST['capt_login'] ) : '';
@@ -90,7 +91,7 @@ class STLSR_Setting {
 
 		$capt_comment_enable    = isset( $_POST['capt_comment_enable'] ) ? (bool) $_POST['capt_comment_enable'] : false;
 		$capt_comment           = isset( $_POST['capt_comment'] ) ? sanitize_text_field( $_POST['capt_comment'] ) : '';
-		$capt_comment_logged_in = isset( $_POST['capt_comment_logged_in'] ) ? (bool) $_POST['capt_comment_logged_in'] : $capt_comment_default['logged_in'];
+		$capt_comment_logged_in = isset( $_POST['capt_comment_logged_in'] ) ? (bool) $_POST['capt_comment_logged_in'] : false;
 
 		$errors = array();
 
@@ -133,6 +134,7 @@ class STLSR_Setting {
 				'secret_key' => $grecaptcha_v3_secret_key,
 				'score'      => $grecaptcha_v3_score,
 				'badge'      => $grecaptcha_v3_badge,
+				'onaction'   => $grecaptcha_v3_onaction,
 			),
 			true
 		);

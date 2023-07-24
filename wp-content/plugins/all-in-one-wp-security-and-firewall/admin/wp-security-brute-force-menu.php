@@ -47,12 +47,10 @@ class AIOWPSecurity_Brute_Force_Menu extends AIOWPSecurity_Admin_Menu {
 			'login-whitelist' => array(
 				'title' => __('Login whitelist', 'all-in-one-wp-security-and-firewall'),
 				'render_callback' => array($this, 'render_login_whitelist'),
-				'display_condition_callback' => 'is_main_site',
 			),
 			'honeypot' => array(
 				'title' => __('Honeypot', 'all-in-one-wp-security-and-firewall'),
 				'render_callback' => array($this, 'render_honeypot'),
-				'display_condition_callback' => 'is_main_site',
 			),
 		);
 
@@ -283,6 +281,10 @@ class AIOWPSecurity_Brute_Force_Menu extends AIOWPSecurity_Admin_Menu {
 			$this->show_msg_settings_updated();
 		}
 
+		if ('cloudflare-turnstile' == $aio_wp_security->configs->get_value('aiowps_default_captcha') && false === $aio_wp_security->captcha_obj->cloudflare_turnstile_verify_configuration($aio_wp_security->configs->get_value('aiowps_turnstile_site_key'), $aio_wp_security->configs->get_value('aiowps_turnstile_secret_key'))) {
+			echo '<div class="notice notice-warning aio_red_box"><p>'.__('Your Cloudflare Turnstile configuration is invalid.', 'all-in-one-wp-security-and-firewall').' '.__('Please enter the correct Cloudflare Turnstile keys below to use the Turnstile feature.', 'all-in-one-wp-security-and-firewall').'</p></div>';
+		}
+
 		if ('1' == $aio_wp_security->configs->get_value('aios_google_recaptcha_invalid_configuration')) {
 			echo '<div class="notice notice-warning aio_red_box"><p>'.__('Your Google reCAPTCHA configuration is invalid.', 'all-in-one-wp-security-and-firewall').' '.__('Please enter the correct reCAPTCHA keys below to use the reCAPTCHA feature.', 'all-in-one-wp-security-and-firewall').'</p></div>';
 		}
@@ -330,6 +332,7 @@ class AIOWPSecurity_Brute_Force_Menu extends AIOWPSecurity_Admin_Menu {
 						$this->show_msg_error($error_msg);
 					}
 				} else {
+					$result = 1;
 					$aio_wp_security->configs->set_value('aiowps_allowed_ip_addresses', ''); // Clear the IP address config value
 				}
 

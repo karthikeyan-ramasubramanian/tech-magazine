@@ -8,7 +8,9 @@ $name_tag = ( !empty( $options['author_box_name_tag'] ) ? $options['author_box_n
         <?php
             if ( empty( $options['author_box_name_link'] ) or 'none' === $options['author_box_name_link']
                  or
-                 ( 'custom' === $options['author_box_name_link'] and empty( $author['web'] ) )
+                 ( 'website' === $options['author_box_name_link'] and empty( $author['web'] ) )
+                 or
+                 ( 'custom' === $options['author_box_name_link'] and empty( $author['custom_link'] ) )
                  or
                  ( 'archive' === $options['author_box_name_link']
                     and
@@ -28,7 +30,12 @@ $name_tag = ( !empty( $options['author_box_name_tag'] ) ? $options['author_box_n
             }
             else
             {
-                $url = 'archive' === $options['author_box_name_link'] ? $author['archive'] : $author['web'];
+                switch ( $options['author_box_name_link'] )
+                {
+                    case 'website': $url = $author['web']; break;
+                    case 'custom' : $url = $author['custom_link']; break;
+                    case 'archive': default: $url = $author['archive']; break;
+                }
                 ?>
                 <a class="m-a-box-name-url <?php echo ( $options['author_box_name_underline'] == 'remove' ? 'molongui-remove-underline' : '' ); ?>" href="<?php echo esc_url( $url ); ?>" <?php echo ( $add_microdata ? 'itemprop="url"' : '' ); ?>>
 		            <?php echo $author['name']; ?>

@@ -78,8 +78,9 @@ function authorship_post_add_meta_boxes( $post_type )
 {
     $editor_caps = apply_filters( 'authorship/editor_caps', current_user_can( 'edit_others_pages' ) or current_user_can( 'edit_others_posts' ), $post_type );
     if ( !$editor_caps ) return;
+
     $post_types = molongui_supported_post_types( MOLONGUI_AUTHORSHIP_PREFIX, 'all' );
-    if ( in_array( $post_type, $post_types ) )
+    if ( in_array( $post_type, $post_types ) and apply_filters( 'authorship/add_authors_widget', true, $post_type ) )
     {
         add_meta_box
         (
@@ -91,7 +92,7 @@ function authorship_post_add_meta_boxes( $post_type )
             , 'high'
         );
     }
-    if ( authorship_is_feature_enabled( 'box' ) and in_array( $post_type, authorship_box_post_types() ) )
+    if ( authorship_is_feature_enabled( 'box' ) and in_array( $post_type, authorship_box_post_types() ) and apply_filters( 'authorship/add_author_box_widget', true, $post_type ) )
     {
         add_meta_box
         (

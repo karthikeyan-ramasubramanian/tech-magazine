@@ -89,9 +89,9 @@ if ( ( isset( $nonce_verified ) || ( isset( $_POST['apply-filter'] ) && wp_verif
 /* End search and filters */
 
 $query          = "SELECT ID, subject, message, name, email, answered, created_at FROM {$wpdb->prefix}stcfq_queries$filter";
-$total_query    = "SELECT COUNT(1) FROM (${query}) AS combined_table";
+$total_query    = "SELECT COUNT(1) FROM ({$query}) AS combined_table";
 $total          = $wpdb->get_var( $total_query );
 $items_per_page = 25;
 $offset         = ( $current_page * $items_per_page ) - $items_per_page;
-$messages       = $wpdb->get_results( $query . " ORDER BY ID DESC LIMIT ${offset}, ${items_per_page}" );
+$messages       = $wpdb->get_results( $query . " ORDER BY ID DESC LIMIT {$offset}, {$items_per_page}" );
 $total_pages    = ceil( $total / $items_per_page );

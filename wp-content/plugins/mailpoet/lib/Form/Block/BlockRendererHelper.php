@@ -6,7 +6,7 @@ if (!defined('ABSPATH')) exit;
 
 
 use MailPoet\Form\Util\FieldNameObfuscator;
-use MailPoet\Models\ModelValidator;
+use MailPoet\Services\Validator;
 use MailPoet\WP\Functions as WPFunctions;
 
 /**
@@ -35,8 +35,8 @@ class BlockRendererHelper {
 
     if ($blockId === 'email') {
       $rules['required'] = true;
-      $rules['minlength'] = ModelValidator::EMAIL_MIN_LENGTH;
-      $rules['maxlength'] = ModelValidator::EMAIL_MAX_LENGTH;
+      $rules['minlength'] = Validator::EMAIL_MIN_LENGTH;
+      $rules['maxlength'] = Validator::EMAIL_MAX_LENGTH;
       $rules['type-message'] = __('This value should be a valid email.', 'mailpoet');
     }
 
@@ -259,6 +259,15 @@ class BlockRendererHelper {
       $modifiers[] = 'disabled';
     }
     return join(' ', $modifiers);
+  }
+
+  public function escapeShortCodes(?string $value): ?string {
+    if ($value === null) {
+      return null;
+    }
+    return preg_replace_callback('/' . $this->wp->getShortcodeRegex() . '/s', function ($matches) {
+      return str_replace(['[', ']'], ['&#91;', '&#93;'], $matches[0]);
+    }, $value);
   }
 
   private function translateValidationErrorMessage(string $validate): string {

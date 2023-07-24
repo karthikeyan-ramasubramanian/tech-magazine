@@ -12,6 +12,8 @@ namespace Google\Site_Kit\Modules;
 
 use Google\Site_Kit\Core\Modules\Module;
 use Google\Site_Kit\Core\Modules\Module_Settings;
+use Google\Site_Kit\Core\Modules\Module_With_Data_Available_State;
+use Google\Site_Kit\Core\Modules\Module_With_Data_Available_State_Trait;
 use Google\Site_Kit\Core\Modules\Module_With_Deactivation;
 use Google\Site_Kit\Core\Modules\Module_With_Debug_Fields;
 use Google\Site_Kit\Core\Modules\Module_With_Scopes;
@@ -22,6 +24,7 @@ use Google\Site_Kit\Core\Modules\Module_With_Assets;
 use Google\Site_Kit\Core\Modules\Module_With_Assets_Trait;
 use Google\Site_Kit\Core\Modules\Module_With_Owner;
 use Google\Site_Kit\Core\Modules\Module_With_Owner_Trait;
+use Google\Site_Kit\Core\Modules\Module_With_Service_Entity;
 use Google\Site_Kit\Core\REST_API\Exception\Invalid_Datapoint_Exception;
 use Google\Site_Kit\Core\Validation\Exception\Invalid_Report_Metrics_Exception;
 use Google\Site_Kit\Core\Validation\Exception\Invalid_Report_Dimensions_Exception;
@@ -33,9 +36,13 @@ use Google\Site_Kit\Core\Permissions\Permissions;
 use Google\Site_Kit\Core\REST_API\Data_Request;
 use Google\Site_Kit\Core\Tags\Guards\Tag_Environment_Type_Guard;
 use Google\Site_Kit\Core\Tags\Guards\Tag_Verify_Guard;
+use Google\Site_Kit\Core\Util\Date;
 use Google\Site_Kit\Core\Util\Debug_Data;
 use Google\Site_Kit\Core\Util\Feature_Flags;
 use Google\Site_Kit\Core\Util\Method_Proxy_Trait;
+use Google\Site_Kit\Core\Util\BC_Functions;
+use Google\Site_Kit\Core\Util\Sort;
+use Google\Site_Kit\Core\Util\URL;
 use Google\Site_Kit\Modules\Analytics\Account_Ticket;
 use Google\Site_Kit\Modules\Analytics\Google_Service_AnalyticsProvisioning;
 use Google\Site_Kit\Modules\Analytics\AMP_Tag;
@@ -63,12 +70,6 @@ use Google\Site_Kit_Dependencies\Google\Service\Exception as Google_Service_Exce
 use Google\Site_Kit_Dependencies\Psr\Http\Message\RequestInterface;
 use WP_Error;
 use Exception;
-use Google\Site_Kit\Core\Modules\Module_With_Data_Available_State;
-use Google\Site_Kit\Core\Modules\Module_With_Data_Available_State_Trait;
-use Google\Site_Kit\Core\Modules\Module_With_Service_Entity;
-use Google\Site_Kit\Core\Util\BC_Functions;
-use Google\Site_Kit\Core\Util\Sort;
-use Google\Site_Kit\Core\Util\URL;
 
 /**
  * Class representing the Analytics module.
@@ -96,6 +97,8 @@ final class Analytics extends Module
 	 * Module slug name.
 	 */
 	const MODULE_SLUG = 'analytics';
+
+	const DASHBOARD_VIEW = 'universal-analytics';
 
 	/**
 	 * Registers functionality through WordPress hooks.
@@ -143,6 +146,18 @@ final class Analytics extends Module
 			},
 			10,
 			2
+		);
+
+		add_filter(
+			'googlesitekit_dashboard_sharing_data',
+			function ( $data ) {
+				if ( Feature_Flags::enabled( 'ga4Reporting' ) && ! $this->authentication->is_authenticated() ) {
+					$settings              = $this->get_settings()->get();
+					$data['dashboardView'] = $settings['dashboardView'];
+				}
+
+				return $data;
+			}
 		);
 
 	}
@@ -239,7 +254,7 @@ final class Analytics extends Module
 	public function get_debug_fields() {
 		$settings = $this->get_settings()->get();
 
-		return array(
+		$fields = array(
 			'analytics_account_id'  => array(
 				'label' => __( 'Analytics account ID', 'google-site-kit' ),
 				'value' => $settings['accountID'],
@@ -261,6 +276,21 @@ final class Analytics extends Module
 				'debug' => $settings['useSnippet'] ? 'yes' : 'no',
 			),
 		);
+
+		if ( Feature_Flags::enabled( 'ga4Reporting' ) ) {
+			$fields = array_merge(
+				array(
+					'analytics_dashboard_view' => array(
+						'label' => __( 'Analytics dashboard view', 'google-site-kit' ),
+						'value' => 'google-analytics-4' === $settings['dashboardView'] ? __( 'Google Analytics 4 view', 'google-site-kit' ) : __( 'Universal Analytics view', 'google-site-kit' ),
+						'debug' => $settings['dashboardView'],
+					),
+				),
+				$fields
+			);
+		}
+
+		return $fields;
 	}
 
 	/**
@@ -361,7 +391,7 @@ final class Analytics extends Module
 
 		if ( Feature_Flags::enabled( 'ga4Reporting' ) ) {
 			// For GA4-SPECIFIC provisioning callback, switch to GA4 dashboard view.
-			$new_settings['dashboardView'] = 'google-analytics-4';
+			$new_settings['dashboardView'] = Analytics_4::DASHBOARD_VIEW;
 		}
 
 		$this->get_settings()->merge( $new_settings );
@@ -392,6 +422,14 @@ final class Analytics extends Module
 	 * @return array Map of datapoints to their definitions.
 	 */
 	protected function get_datapoint_definitions() {
+		$shareable = Feature_Flags::enabled( 'dashboardSharing' );
+		// If ga4Reporting is enabled, the dashboard view controls which
+		// Analytics module is shareable.
+		if ( $shareable && Feature_Flags::enabled( 'ga4Reporting' ) ) {
+			$settings  = $this->get_settings()->get();
+			$shareable = self::DASHBOARD_VIEW === $settings['dashboardView'];
+		}
+
 		$datapoints = array(
 			'GET:accounts-properties-profiles' => array( 'service' => 'analytics' ),
 			'POST:create-account-ticket'       => array(
@@ -411,13 +449,13 @@ final class Analytics extends Module
 			),
 			'GET:goals'                        => array(
 				'service'   => 'analytics',
-				'shareable' => Feature_Flags::enabled( 'dashboardSharing' ),
+				'shareable' => $shareable,
 			),
 			'GET:profiles'                     => array( 'service' => 'analytics' ),
 			'GET:properties-profiles'          => array( 'service' => 'analytics' ),
 			'GET:report'                       => array(
 				'service'   => 'analyticsreporting',
-				'shareable' => Feature_Flags::enabled( 'dashboardSharing' ),
+				'shareable' => $shareable,
 			),
 		);
 
@@ -658,12 +696,12 @@ final class Analytics extends Module
 					}
 				} else {
 					$date_range    = $data['dateRange'] ?: 'last-28-days';
-					$date_ranges[] = $this->parse_date_range( $date_range, $data['compareDateRanges'] ? 2 : 1 );
+					$date_ranges[] = Date::parse_date_range( $date_range, $data['compareDateRanges'] ? 2 : 1 );
 
 					// When using multiple date ranges, it changes the structure of the response,
 					// where each date range becomes an item in a list.
 					if ( ! empty( $data['multiDateRange'] ) ) {
-						$date_ranges[] = $this->parse_date_range( $date_range, 1, 1, true );
+						$date_ranges[] = Date::parse_date_range( $date_range, 1, 1, true );
 					}
 				}
 
@@ -864,7 +902,7 @@ final class Analytics extends Module
 				} else {
 					$account_summaries = $this->get_service( 'analytics' )->management_accountSummaries->listManagementAccountSummaries();
 					$current_url       = $this->context->get_reference_site_url();
-					$current_urls      = $this->permute_site_url( $current_url );
+					$current_urls      = URL::permute_site_url( $current_url );
 
 					foreach ( $account_summaries as $account_summary ) {
 						$found_property = $this->find_property( $account_summary->getWebProperties(), '', $current_urls );
@@ -913,7 +951,7 @@ final class Analytics extends Module
 				}
 
 				$current_url    = $this->context->get_reference_site_url();
-				$current_urls   = $this->permute_site_url( $current_url );
+				$current_urls   = URL::permute_site_url( $current_url );
 				$found_property = $this->find_property( $properties, '', $current_urls );
 
 				if ( ! is_null( $found_property ) ) {
@@ -1020,7 +1058,7 @@ final class Analytics extends Module
 
 		$dimension_filter_clauses = array();
 
-		$hostnames = $this->permute_site_hosts( URL::parse( $this->context->get_reference_site_url(), PHP_URL_HOST ) );
+		$hostnames = URL::permute_site_hosts( URL::parse( $this->context->get_reference_site_url(), PHP_URL_HOST ) );
 
 		$dimension_filter = new Google_Service_AnalyticsReporting_DimensionFilter();
 		$dimension_filter->setDimensionName( 'ga:hostname' );
@@ -1208,10 +1246,6 @@ final class Analytics extends Module
 		$account_id  = $settings['accountID'];
 		$property_id = $settings['propertyID'];
 
-		if ( empty( $property_id ) ) {
-			return;
-		}
-
 		if ( ! $this->is_tracking_disabled() ) {
 			return;
 		}
@@ -1223,9 +1257,11 @@ final class Analytics extends Module
 		<?php else : ?>
 			<!-- <?php esc_html_e( 'Google Analytics opt-out snippet added by Site Kit', 'google-site-kit' ); ?> -->
 			<?php
-			BC_Functions::wp_print_inline_script_tag(
-				sprintf( 'window["ga-disable-%s"] = true;', esc_attr( $property_id ) )
-			);
+			if ( ! empty( $property_id ) ) {
+				BC_Functions::wp_print_inline_script_tag(
+					sprintf( 'window["ga-disable-%s"] = true;', esc_attr( $property_id ) )
+				);
+			}
 			?>
 			<?php do_action( 'googlesitekit_analytics_tracking_opt_out', $property_id, $account_id ); ?>
 			<!-- <?php esc_html_e( 'End Google Analytics opt-out snippet added by Site Kit', 'google-site-kit' ); ?> -->

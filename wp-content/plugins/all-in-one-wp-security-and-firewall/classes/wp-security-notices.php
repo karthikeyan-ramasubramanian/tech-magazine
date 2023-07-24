@@ -56,7 +56,7 @@ class AIOWPSecurity_Notices extends Updraft_Notices_1_2 {
 								'</p>',
 				'button_link' => add_query_arg(array(
 					'page' => 'aiowpsec_database',
-					'tab'  => 'tab2',
+					'tab'  => 'database-backup',
 				), admin_url('admin.php')) . '#automated-scheduled-backups-heading',
 				'button_meta' => __('Setup UpdraftPlus backup plugin', 'all-in-one-wp-security-and-firewall'),
 				'dismiss_time' => 'dismiss_automated_database_backup_notice',
@@ -81,12 +81,30 @@ class AIOWPSecurity_Notices extends Updraft_Notices_1_2 {
 				'supported_positions' => array('ip-retrieval-settings'),
 				'validity_function' => 'should_show_ip_retrieval_settings_notice',
 			),
+			'ip-blacklist-settings-on-upgrade' => array(
+				'title'		  => htmlspecialchars(__('Important: Blacklist manager disabled', 'all-in-one-wp-security-and-firewall')),
+				'text' 		  => '<p>' .
+					__("The blacklist manager feature has been disabled to prevent any unexpected site lockouts.", 'all-in-one-wp-security-and-firewall') .
+					'</p>' .
+					'<p>' .
+					__("This feature will block any IP address or range listed in its settings, please double check your own details are not included before turning it back on.", 'all-in-one-wp-security-and-firewall') .
+					'</p>' ,
+				'button_link' => add_query_arg(array(
+					'page' => AIOWPSEC_BLACKLIST_MENU_SLUG,
+				), admin_url('admin.php')) . '#poststuff',
+				'action_button_text' => 'Turn it on',
+				'button_meta' => __('Edit the settings', 'all-in-one-wp-security-and-firewall'),
+				'dismiss_time' => 'dismiss_ip_blacklist_notice',
+				'dismiss_text' => 'Keep it off',
+				'supported_positions' => array('ip-blacklist-settings-on-upgrade'),
+				'validity_function' => 'should_show_ip_blacklist_settings_on_upgrade',
+			),
 			'login-whitelist-disabled-on-upgrade' => array(
 				'title'		  => htmlspecialchars(__('Important: Disabled login whitelist setting', 'all-in-one-wp-security-and-firewall')),
 				'text' 		  => $login_whitelist_notice_text,
 				'button_link' => add_query_arg(array(
 					'page' => AIOWPSEC_BRUTE_FORCE_MENU_SLUG,
-					'tab'  => 'tab4',
+					'tab'  => 'login-whitelist',
 				), admin_url('admin.php')) . '#poststuff',
 				'action_button_text' => __('Turn it back on', 'all-in-one-wp-security-and-firewall'),
 				'button_meta' => __('Edit the settings', 'all-in-one-wp-security-and-firewall'),
@@ -253,7 +271,7 @@ class AIOWPSecurity_Notices extends Updraft_Notices_1_2 {
 	 * @return Boolean True if the current tab is the database backup tab, otherwise false.
 	 */
 	private function is_database_backup_tab() {
-		return (isset($_GET['tab']) && 'tab2' == $_GET['tab']);
+		return (isset($_GET['tab']) && 'database-backup' == $_GET['tab']);
 	}
 
 	/**
@@ -356,7 +374,39 @@ class AIOWPSecurity_Notices extends Updraft_Notices_1_2 {
 
 		return true;
 	}
-
+	
+	/**
+	 * Decides whether to show the IP Blacklist settings notice.
+	 *
+	 * @return Boolean True if the IP Blacklist settings notice should be shown, otherwise false.
+	 */
+	protected function should_show_ip_blacklist_settings_on_upgrade() {
+		if (!is_main_site()) {
+			return false;
+		}
+		
+		if ($this->is_blacklist_admin_page()) {
+			return false;
+		}
+		
+		global $aio_wp_security;
+		
+		if ('1' == $aio_wp_security->configs->get_value('aiowps_is_ip_blacklist_settings_notice_on_upgrade')) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Whether the current page is the AIOS blacklist admin page
+	 *
+	 * @return Boolean True if the current page is the AIOS blacklist admin page, otherwise false.
+	 */
+	private function is_blacklist_admin_page() {
+		return ('admin.php' == $GLOBALS['pagenow'] && isset($_GET['page']) && AIOWPSEC_BLACKLIST_MENU_SLUG == $_GET['page']);
+	}
+	
 	/**
 	 * Decides whether to show the IP address detection settings notice.
 	 *
@@ -408,7 +458,7 @@ class AIOWPSecurity_Notices extends Updraft_Notices_1_2 {
 	 * @return Boolean True if the current tab is the advanced settings tab, otherwise false.
 	 */
 	private function is_login_whitelist_tab() {
-		return (isset($_GET['tab']) && 'tab4' == $_GET['tab']);
+		return (isset($_GET['tab']) && 'login-whitelist' == $_GET['tab']);
 	}
 
 	/**
@@ -429,7 +479,7 @@ class AIOWPSecurity_Notices extends Updraft_Notices_1_2 {
 	 * @return integer AIOS Plugin installation timestamp.
 	 */
 	public function get_aiowps_plugin_installed_timestamp() {
-		$installed_at = @filemtime(AIO_WP_SECURITY_PATH.'/index.html'); // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+		$installed_at = @filemtime(AIO_WP_SECURITY_PATH.'/index.html'); // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged -- ignore warning as we handle it below
 		if (false === $installed_at) {
 			global $aio_wp_security;
 			$installed_at = (int) $aio_wp_security->configs->get_value('installed-at');

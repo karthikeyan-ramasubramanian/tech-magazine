@@ -1,6 +1,7 @@
 <?php
 defined( 'ABSPATH' ) or exit;
 
+$options  = authorship_get_options();
 $is_pro   = authorship_has_pro();
 $networks = authorship_get_social_networks( 'enabled' );
 
@@ -117,6 +118,19 @@ $networks = authorship_get_social_networks( 'enabled' );
                                 <span class="m-description">
                                     <?php printf( __( " %sUpgrade to Pro%s to be able to control author box display on a per user basis.", 'molongui-authorship' ), '<a href="' . MOLONGUI_AUTHORSHIP_WEB . '" target="_blank">', '</a>' ); ?>
                                 </span>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+
+                    <!-- Custom link for author name and avatar -->
+                    <?php $custom_link_disabled = ( 'custom' != $options['author_box_avatar_link'] and 'custom' != $options['author_box_name_link'] ); ?>
+                    <tr class="user-m-custom-link-wrap">
+                        <th><label for="molongui_author_custom_link"><?php _e( "Custom link", 'molongui-authorship' ); ?></label></th>
+                        <td>
+                            <input type="text" name="molongui_author_custom_link" id="molongui_author_custom_link" value="<?php echo esc_attr( get_the_author_meta( 'molongui_author_custom_link', $user->ID ) ); ?>" class="regular-text" />
+                            <p class="description"><?php _e( "URL to make the author name and/or avatar link to.", 'molongui-authorship' ); ?></p>
+                            <?php if ( $custom_link_disabled ) : ?>
+                                <p class="description"><?php _e( "You need to enable this setting on the Author Box Editor in order to work.", 'molongui-authorship' ); ?></p>
                             <?php endif; ?>
                         </td>
                     </tr>

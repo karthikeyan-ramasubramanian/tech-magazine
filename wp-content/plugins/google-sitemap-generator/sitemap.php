@@ -2,7 +2,7 @@
 /**
  * $Id: sitemap.php 2823802 2022-11-24 18:12:38Z auctollo $
 
- *  Google XML Sitemaps Generator for WordPress
+ *  XML Sitemap Generator for Google
  * ==============================================================================
 
  * This generator will create a sitemaps.org compliant sitemap of your WordPress site.
@@ -10,21 +10,21 @@
  * For additional details like installation instructions, please check the readme.txt and documentation.txt files.
 
  * Have fun!
- * Arne
 
  * Info for WordPress:
  * ==============================================================================
- * Plugin Name: Sitemap Generator
+ * Plugin Name: XML Sitemap Generator for Google
  * Plugin URI: https://auctollo.com/
  * Description: This plugin improves SEO using sitemaps for best indexation by search engines like Google, Bing, Yahoo and others.
- * Version: 4.1.9
+ * Version: 4.1.11
  * Author: Auctollo
- * Author URI: https://acutollo.com/
+ * Author URI: https://auctollo.com/
  * Text Domain: sitemap
  * Domain Path: /lang
 
 
- * Copyright 2005 - 2018 ARNE BRACHHOLD  (email : himself - arnebrachhold - de)
+ * Copyright 2019 - 2023 AUCTOLLO
+ * Copyright 2005 - 2018 ARNE BRACHHOLD
 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * @author Arne Brachhold
+ * @author AUCTOLLO
  * @package sitemap
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
@@ -96,6 +96,22 @@ function ga_header() {
 						window.location.reload()
 					},1000)
 				})
+			}
+			var enable_updates = document.querySelector(\"[name='enable_auto_update']\")
+			if(enable_updates){
+				enable_updates.addEventListener('click', function (event) {
+					event.preventDefault();
+					document.getElementById('enable_updates').value = \"true\";
+					document.querySelector(\"[id='enable-updates-form']\").submit();
+				});
+			}
+			var do_not_enable_updates = document.querySelector(\"[name='do_not_enable_auto_update']\")
+			if(do_not_enable_updates){
+				do_not_enable_updates.addEventListener('click', function (event) {
+					event.preventDefault();
+					document.getElementById('enable_updates').value = \"false\";
+					document.querySelector(\"[id='enable-updates-form']\").submit();
+				});
 			}
 			var more_info_button = document.getElementById('more_info_button')
 			if(more_info_button){
@@ -308,6 +324,18 @@ function register_consent() {
 				} else {
 					add_option( 'sm_beta_notice_dismissed_from_wp_admin', 'true' );
 				}
+			}
+		}
+		if ( isset( $_POST['enable_updates'] ) ) {
+			if ( 'true' === $_POST['enable_updates'] ) {
+				$auto_update_plugins = get_option( 'auto_update_plugins' );
+				if ( ! is_array( $auto_update_plugins ) ) {
+					$auto_update_plugins = array();
+				}
+				array_push( $auto_update_plugins, 'google-sitemap-generator/sitemap.php' );
+				update_option( 'auto_update_plugins', $auto_update_plugins );
+			} elseif ( 'false' === $_POST['enable_updates'] ) {
+				update_option( 'sm_hide_auto_update_banner', 'yes' );
 			}
 		}
 	}

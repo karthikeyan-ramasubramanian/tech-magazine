@@ -2,11 +2,11 @@
 # This file is distributed under the same license as the Login Security Captcha plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Login Security Captcha 1.5.4\n"
+"Project-Id-Version: Login Security Captcha 1.5.6\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/login-security-"
 "recaptcha\n"
-"POT-Creation-Date: 2023-03-02T00:12:47+00:00\n"
-"PO-Revision-Date: 2023-03-02 05:42+0530\n"
+"POT-Creation-Date: 2023-07-11T18:33:43+00:00\n"
+"PO-Revision-Date: 2023-07-12 00:04+0530\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: hi_IN\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n==0 || n==1);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.1\n"
 "X-Domain: login-security-recaptcha\n"
 
 #. Plugin Name of the plugin
@@ -66,20 +66,20 @@ msgstr ""
 msgid "Login Security Captcha Settings"
 msgstr "लॉगिन सुरक्षा रिकैप्चा"
 
-#: admin/inc/class-stlsr-setting.php:153 admin/inc/class-stlsr-setting.php:166
-#: admin/inc/class-stlsr-setting.php:179 admin/inc/class-stlsr-setting.php:192
+#: admin/inc/class-stlsr-setting.php:155 admin/inc/class-stlsr-setting.php:168
+#: admin/inc/class-stlsr-setting.php:181 admin/inc/class-stlsr-setting.php:194
 msgid "Please select valid captcha."
 msgstr "वैध कैप्चा का चयन करें।"
 
-#: admin/inc/class-stlsr-setting.php:206
+#: admin/inc/class-stlsr-setting.php:208
 msgid "Setting saved."
 msgstr "सेटिंग सहेजी गई।"
 
-#: admin/inc/class-stlsr-setting.php:231
+#: admin/inc/class-stlsr-setting.php:233
 msgid "The plugin has been reset to its default state."
 msgstr ""
 
-#: admin/inc/class-stlsr-setting.php:245
+#: admin/inc/class-stlsr-setting.php:247
 msgid "The error logs have been cleared successfully."
 msgstr ""
 
@@ -330,29 +330,45 @@ msgid "Score"
 msgstr ""
 
 #: admin/inc/setting/tabs/captcha.php:435
+#: admin/inc/setting/tabs/captcha.php:453
 msgid "Select Google reCAPTCHA Version 3 Score."
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:452
+#: admin/inc/setting/tabs/captcha.php:454
 msgid ""
-"reCAPTCHA v3 returns a score (0.0 is very likely a bot). Select Google "
-"reCAPTCHA Version 3 Score."
+"reCAPTCHA v3 returns a score (0.0 is very likely a bot, higher score means "
+"better interaction)."
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:458
+#: admin/inc/setting/tabs/captcha.php:461
 msgid "Badge Position"
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:463
+#: admin/inc/setting/tabs/captcha.php:466
 msgid "Select Badge Position for reCAPTCHA Version 3."
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:486
+#: admin/inc/setting/tabs/captcha.php:488
+msgid "Token Generation"
+msgstr ""
+
+#: admin/inc/setting/tabs/captcha.php:493
+#: admin/inc/setting/tabs/captcha.php:497
+msgid "Generate Token on Form Submission"
+msgstr ""
+
+#: admin/inc/setting/tabs/captcha.php:501
+msgid ""
+"Generate token only when the user submits the form rather than on page load. "
+"<br>You may uncheck this only if you face issues with reCAPTCHA v3."
+msgstr ""
+
+#: admin/inc/setting/tabs/captcha.php:509
 msgid "Save Changes"
 msgstr ""
 
-#: admin/inc/setting/tabs/captcha.php:499
-#: admin/inc/setting/tabs/captcha.php:503
+#: admin/inc/setting/tabs/captcha.php:522
+#: admin/inc/setting/tabs/captcha.php:526
 msgid "Like this plugin? Leave a Review."
 msgstr ""
 

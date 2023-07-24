@@ -11,7 +11,7 @@ class Init
 
     public static function text_tag_connections()
     {
-        return ['AweberConnect', 'MailChimpConnect', 'ConvertFoxConnect', 'SendlaneConnect', 'DripConnect', 'ActiveCampaignConnect', 'ZohoCRMConnect', 'WeMailConnect', 'CleverReachConnect'];
+        return ['AweberConnect', 'MailChimpConnect', 'ConvertFoxConnect', 'SendlaneConnect', 'DripConnect', 'ActiveCampaignConnect', 'ZohoCRMConnect', 'WeMailConnect', 'CleverReachConnect', 'OmnisendConnect'];
     }
 
     public static function no_name_mapping_connections()
@@ -99,6 +99,8 @@ class Init
         \MailOptin\ActiveCampaignConnect\Connect::get_instance();
         \MailOptin\CtctConnect\Connect::get_instance();
         \MailOptin\Ctctv3Connect\Connect::get_instance();
+        \MailOptin\SalesforceConnect\Connect::get_instance();
+        \MailOptin\MicrosoftDynamic365Connect\Connect::get_instance();
         \MailOptin\HubspotConnect\Connect::get_instance();
         \MailOptin\InfusionsoftConnect\Connect::get_instance();
         \MailOptin\CleverReachConnect\Connect::get_instance();
@@ -113,6 +115,8 @@ class Init
         \MailOptin\MailPoetConnect\Connect::get_instance();
         \MailOptin\MailsterConnect\Connect::get_instance();
         \MailOptin\MoosendConnect\Connect::get_instance();
+        \MailOptin\OmnisendConnect\Connect::get_instance();
+        \MailOptin\BenchmarkEmailConnect\Connect::get_instance();
         \MailOptin\GetResponseConnect\Connect::get_instance();
         \MailOptin\KlaviyoConnect\Connect::get_instance();
         \MailOptin\ZohoCampaignsConnect\Connect::get_instance();

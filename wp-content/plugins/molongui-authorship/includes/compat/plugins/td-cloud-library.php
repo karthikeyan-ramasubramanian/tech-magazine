@@ -104,7 +104,7 @@ add_filter( 'molongui_authorship_bypass_original_user_id_if', function( $value )
         $aq->setAccessible( true ); // Set the property to public before it can be read
 
         $query = $aq->getValue( $tdb_state_author );
-        $is_author = $query->is_author;
+        $is_author = isset( $query->is_author ) ? $query->is_author : false;
 
         if ( $is_author ) return false;
     }

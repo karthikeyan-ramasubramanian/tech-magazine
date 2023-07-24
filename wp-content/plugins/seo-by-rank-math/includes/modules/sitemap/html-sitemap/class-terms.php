@@ -82,12 +82,7 @@ class Terms {
 
 		$terms = $query->orderBy( $sort['field'], $sort['order'] )->get();
 
-		return array_filter(
-			$terms,
-			function( $term ) use ( $taxonomy ) {
-				return SitemapBase::is_object_indexable( get_term( $term->term_id, $taxonomy ), 'term' );
-			}
-		);
+		return $this->get_indexable_terms( $terms, $taxonomy );
 	}
 
 	/**
@@ -101,6 +96,7 @@ class Terms {
 	 */
 	public function generate_sitemap( $taxonomy, $show_dates, $args = [] ) {
 		$terms = get_terms( $taxonomy, $args );
+		$terms = $this->get_indexable_terms( $terms, $taxonomy );
 		if ( empty( $terms ) ) {
 			return '';
 		}
@@ -164,22 +160,28 @@ class Terms {
 	 *
 	 * @param array  $terms    The terms to output.
 	 * @param string $taxonomy The taxonomy name.
+	 * @param bool   $remove_children Whether to remove terms that have a parent.
 	 *
 	 * @return string
 	 */
-	private function generate_terms_list_hierarchical( $terms, $taxonomy ) {
+	private function generate_terms_list_hierarchical( $terms, $taxonomy, $remove_children = true ) {
 		$output = [];
+		if ( $remove_children ) {
+			// Remove initial with parents because they are queried below in $this->get_terms!
+			$terms = $this->remove_with_parent( $terms );
+		}
 		foreach ( $terms as $term ) {
 			$output[] = '<li class="rank-math-html-sitemap__item">'
-				. '<a href="' . esc_url( $this->get_term_link( (int) $term->term_id, $taxonomy ) ) . '" class="rank-math-html-sitemap__link">'
-				. esc_html( $this->get_term_title( $term, $taxonomy ) )
-				. '</a>'
-				. '</li>';
+							. '<a href="' . esc_url( $this->get_term_link( (int) $term->term_id, $taxonomy ) ) . '" class="rank-math-html-sitemap__link">'
+							. esc_html( $this->get_term_title( $term, $taxonomy ) )
+							. '</a>'
+						. '</li>';
 
 			$children = $this->get_terms( $taxonomy, $term->term_id );
+
 			if ( ! empty( $children ) ) {
 				$output[] = '<ul class="rank-math-html-sitemap__list">';
-				$output[] = $this->generate_terms_list_hierarchical( $children, $taxonomy );
+				$output[] = $this->generate_terms_list_hierarchical( $children, $taxonomy, false );
 				$output[] = '</ul>';
 			}
 		}
@@ -232,4 +234,37 @@ class Terms {
 		// Fallback to term name.
 		return $term->name;
 	}
+
+	/**
+	 * Removes terms that have a parent from the list.
+	 *
+	 * @param array $terms The terms list.
+	 *
+	 * @return array
+	 */
+	private function remove_with_parent( $terms ) {
+		return array_filter(
+			$terms,
+			function ( $term ) {
+				return ! $term->parent;
+			}
+		);
+	}
+
+	/**
+	 * Remove terms that are not indexable.
+	 *
+	 * @param array  $terms    Array of terms.
+	 * @param string $taxonomy Taxonomy name that `$terms` are part of.
+	 * @return array
+	 */
+	private function get_indexable_terms( $terms, $taxonomy ) {
+		return array_filter(
+			$terms,
+			function( $term ) use ( $taxonomy ) {
+				return SitemapBase::is_object_indexable( get_term( $term->term_id, $taxonomy ), 'term' );
+			}
+		);
+	}
+
 }

@@ -4,6 +4,22 @@ namespace Molongui\Authorship\Includes;
 \defined( 'ABSPATH' ) or exit;
 class DB_Update
 {
+    public function db_update_22()
+    {
+        $options = \get_option( 'molongui_authorship_options', array() );
+
+        if ( !empty( $options['author_box_avatar_link'] ) and 'custom' == $options['author_box_avatar_link'] )
+        {
+            $options['author_box_avatar_link'] = 'website';
+        }
+
+        if ( !empty( $options['author_box_name_link'] ) and 'custom' == $options['author_box_name_link'] )
+        {
+            $options['author_box_name_link'] = 'website';
+        }
+
+        \update_option( 'molongui_authorship_options', $options );
+    }
     public function db_update_21()
     {
         $options = \get_option( 'molongui_authorship_options', array() );

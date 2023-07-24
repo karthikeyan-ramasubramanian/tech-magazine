@@ -150,8 +150,9 @@ class STLSR_Helper {
 
 	public static function grecaptcha_v3_default() {
 		return array(
-			'score' => '0.3',
-			'badge' => 'bottomright',
+			'score'    => '0.3',
+			'badge'    => 'bottomright',
+			'onaction' => true,
 		);
 	}
 
@@ -168,6 +169,7 @@ class STLSR_Helper {
 			'secret_key' => isset( $options['secret_key'] ) ? esc_attr( $options['secret_key'] ) : '',
 			'score'      => isset( $options['score'] ) ? esc_attr( $options['score'] ) : $default['score'],
 			'badge'      => isset( $options['badge'] ) ? esc_attr( $options['badge'] ) : $default['badge'],
+			'onaction'   => isset( $options['onaction'] ) ? (bool) ( $options['onaction'] ) : $default['onaction'],
 		);
 	}
 
@@ -180,36 +182,58 @@ class STLSR_Helper {
 			return;
 		}
 
-		$script = ( "if('function' !== typeof lsrecaptcha3) {
-			function lsrecaptcha3() {
-				grecaptcha.ready(function() {
-					[].forEach.call(document.querySelectorAll('.stls-grecaptcha3'), function(el) {
-						const action = el.getAttribute('data-action');
-						const form = el.form;
-						form.addEventListener('submit', function(e) {
-							e.preventDefault();
-							grecaptcha.execute('" . esc_attr( $captcha['site_key'] ) . "', {action: action}).then(function(token) {
-								el.setAttribute('value', token);
-								const button = form.querySelector('[type=\"submit\"]');
-								if(button) {
-									const input = document.createElement('input');
-									input.type = 'hidden';
-									input.name = button.getAttribute('name');
-									input.value = button.value;
-									input.classList.add('stls-submit-input');
-									var inputEls = document.querySelectorAll('.stls-submit-input');
-									[].forEach.call(inputEls, function(inputEl) {
-										inputEl.remove();
-									});
-									form.appendChild(input);
-								}
-								HTMLFormElement.prototype.submit.call(form);
+		if ( $captcha['onaction'] ) {
+			$script = ( "if('function' !== typeof lsrecaptcha3) {
+				function lsrecaptcha3() {
+					grecaptcha.ready(function() {
+						[].forEach.call(document.querySelectorAll('.stls-grecaptcha3'), function(el) {
+							const action = el.getAttribute('data-action');
+							const form = el.form;
+							form.addEventListener('submit', function(e) {
+								e.preventDefault();
+								grecaptcha.execute('" . esc_attr( $captcha['site_key'] ) . "', {action: action}).then(function(token) {
+									el.setAttribute('value', token);
+									const button = form.querySelector('[type=\"submit\"]');
+									if(button) {
+										const input = document.createElement('input');
+										input.type = 'hidden';
+										input.name = button.getAttribute('name');
+										input.value = button.value;
+										input.classList.add('stls-submit-input');
+										var inputEls = document.querySelectorAll('.stls-submit-input');
+										[].forEach.call(inputEls, function(inputEl) {
+											inputEl.remove();
+										});
+										form.appendChild(input);
+									}
+									HTMLFormElement.prototype.submit.call(form);
+								});
 							});
 						});
 					});
-				});
-			}
-		}" );
+				}
+			}" );
+		} else {
+			$script = ( "if('function' !== typeof lsrecaptcha3) {
+				function lsrecaptcha3() {
+					grecaptcha.ready(function() {
+						[].forEach.call(document.querySelectorAll('.stls-grecaptcha3'), function(el) {
+							const action = el.getAttribute('data-action');
+							const form = el.form;
+							function lsgrecaptcha3SetToken(action) {
+								if(action) {
+									grecaptcha.execute('" . esc_attr( $captcha['site_key'] ) . "', {action: action}).then(function(token) {
+										document.getElementById('lsrecaptcha3-res-' + action).value = token;
+									});
+								}
+							}
+							lsgrecaptcha3SetToken(action);
+							setInterval(function() { lsgrecaptcha3SetToken(action); }, (2 * 60 * 1000));
+						});
+					});
+				}
+			}" );
+		}
 
 		wp_enqueue_script( 'recaptcha-api-v3', ( 'https://www.google.com/recaptcha/api.js?onload=lsrecaptcha3&render=' . esc_attr( $captcha['site_key'] ) . '&badge=' . esc_attr( $captcha['badge'] ) ), array(), null );
 		wp_add_inline_script( 'recaptcha-api-v3', $script, 'before' );

@@ -182,6 +182,11 @@ class SendingQueue {
       return;
     }
 
+    $isTransactional = in_array($newsletter->type, [
+      NewsletterEntity::TYPE_AUTOMATION_TRANSACTIONAL,
+      NewsletterEntity::TYPE_WC_TRANSACTIONAL_EMAIL,
+    ]);
+
     // clone the original object to be used for processing
     $_newsletter = (object)$newsletter->asArray();
     $_newsletter->options = $newsletterEntity->getOptionsAsArray();
@@ -230,7 +235,7 @@ class SendingQueue {
         // No segments = Welcome emails or some Automatic emails.
         // Welcome emails or some Automatic emails use segments only for scheduling and store them as a newsletter option
         $foundSubscribers = SubscriberModel::whereIn('id', $subscribersToProcessIds);
-        $foundSubscribers = $newsletter->type === NewsletterEntity::TYPE_TRANSACTIONAL ?
+        $foundSubscribers = $newsletter->type === NewsletterEntity::TYPE_AUTOMATION_TRANSACTIONAL ?
           $foundSubscribers->whereNotEqual('status', SubscriberModel::STATUS_BOUNCED) :
           $foundSubscribers->where('status', SubscriberModel::STATUS_SUBSCRIBED);
         $foundSubscribers = $foundSubscribers
@@ -269,6 +274,10 @@ class SendingQueue {
           $foundSubscribers,
           $timer
         );
+        if (!$isTransactional) {
+          $now = Carbon::createFromTimestamp((int)current_time('timestamp'));
+          $this->subscribersRepository->bulkUpdateLastSendingAt($foundSubscribersIds, $now);
+        }
         $this->loggerFactory->getLogger(LoggerFactory::TOPIC_NEWSLETTERS)->info(
           'after queue chunk processing',
           ['newsletter_id' => $newsletter->id, 'task_id' => $queue->taskId]
@@ -339,7 +348,7 @@ class SendingQueue {
       $unsubscribeUrls[] = $this->links->getUnsubscribeUrl($queue->id, $subscriberEntity);
       $oneClickUnsubscribeUrls[] = $this->links->getOneClickUnsubscribeUrl($queue->id, $subscriberEntity);
 
-      $metasForSubscriber = $this->mailerMetaInfo->getNewsletterMetaInfo($newsletter, $subscriberEntity);
+      $metasForSubscriber = $this->mailerMetaInfo->getNewsletterMetaInfo($newsletterEntity, $subscriberEntity);
       if ($campaignId) {
         $metasForSubscriber['campaign_id'] = $campaignId;
       }

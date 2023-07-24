@@ -17,20 +17,4 @@
             </template>
         </project>
     </domain>
-    <domain name="molongui-common-framework">
-        <project name="Molongui Common Framework" slug="molongui-common-framework">
-            <source>
-                <directory>fw</directory>
-                <exclude>
-                    <directory>fw/i18n</directory>
-                </exclude>
-            </source>
-            <target>
-                <directory>fw/i18n</directory>
-            </target>
-            <template>
-                <file>fw/i18n/molongui-common-framework.pot</file>
-            </template>
-        </project>
-    </domain>
 </bundle>

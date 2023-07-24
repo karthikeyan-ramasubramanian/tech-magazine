@@ -25,24 +25,17 @@ class ConnectSettingsPage
             $status = sprintf("<span style='color:#FF0000'>(%s$msg) </span>", __('Not Connected', 'mailoptin'));
         }
 
-        if (defined('MAILOPTIN_DETACH_LIBSODIUM')) {
-            $support_id_description = sprintf(__('To get it, %sclick here%s.', 'mailoptin'),
-                '<a target="_blank" href="https://bit.ly/2ZTmjgH">',
-                '</a>'
-            );
-        }
-
         $settingsArg = array(
-            'section_title_without_status'     => __('Sendinblue (Recommended)', 'mailoptin'),
-            'section_title'                    => __('Sendinblue Connection', 'mailoptin') . " $status",
+            'section_title_without_status'     => __('Brevo (Sendinblue)', 'mailoptin'),
+            'section_title'                    => __('Brevo (Sendinblue) Connection', 'mailoptin') . " $status",
             'type'                             => AbstractConnect::EMAIL_MARKETING_TYPE,
             'sendinblue_api_key'               => array(
                 'type'          => 'text',
                 'obfuscate_val' => true,
                 'label'         => __('API Key', 'mailoptin'),
                 'description'   => sprintf(
-                    __('Log in to your %sSendinblue account%s to get your API v3 key.', 'mailoptin'),
-                    '<a target="_blank" href="https://bit.ly/3kBrmu2">',
+                    __('Log in to your %sBrevo account%s to get your API v3 key.', 'mailoptin'),
+                    '<a target="_blank" href="https://bit.ly/3HLcBCL">',
                     '</a>'
                 ),
             ),
@@ -83,8 +76,8 @@ class ConnectSettingsPage
             'label' => '',
             'data'  => sprintf(
                 '<a href="%s" target="_blank" class="button">%s</a>',
-                'https://bit.ly/33O2EQq',
-                esc_html__("Don't have a Sendinblue account? Create one", 'mailoptin')
+                'https://bit.ly/3LFeTVr',
+                esc_html__("Don't have a Brevo (Sendinblue) account? Create one", 'mailoptin')
             )
         );
 

@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInite27686d2fdf5de1fb75575a70fb62b06
+class ComposerStaticInitb2ebe11d9a74ba56a62cc57e839ada7f
 {
     public static $files = array (
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
@@ -12,23 +12,10 @@ class ComposerStaticInite27686d2fdf5de1fb75575a70fb62b06
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
         'a1105708a18b76903365ca1c4aa61b02' => __DIR__ . '/..' . '/symfony/translation/Resources/functions.php',
         '9e4824c5afbdc1482b6025ce3d4dfde8' => __DIR__ . '/..' . '/league/csv/src/functions_include.php',
-        '784368192bb2be2d6178826e1a6f0ee9' => __DIR__ . '/../..' . '/src/authifly/OAuthCredentialStorage.php',
-        '90058afbba53e4180c7aea859b5c23a3' => __DIR__ . '/../..' . '/src/authifly/ConstantContact.php',
-        '7c70296db031281e2c69499cedfa84d0' => __DIR__ . '/../..' . '/src/authifly/ConstantContactV3.php',
-        '086bcb11854b84d4e577ad21028d8bd7' => __DIR__ . '/../..' . '/src/authifly/Aweber.php',
-        'ac9cc8980660efd3e238c95c228b94b0' => __DIR__ . '/../..' . '/src/authifly/CampaignMonitor.php',
-        'a78777ff836d159fe91b871975d4b0a3' => __DIR__ . '/../..' . '/src/authifly/VerticalResponse.php',
-        'fc19d1e11a215510b36443cddffb0e3a' => __DIR__ . '/../..' . '/src/authifly/Facebook.php',
-        '05e51710b89762d293904981fb194070' => __DIR__ . '/../..' . '/src/authifly/Hubspot.php',
-        '945bc6c2039077c40509b034aa7ea74d' => __DIR__ . '/../..' . '/src/authifly/Zoho.php',
-        'b9633de6476ae361f00d00fa732467f2' => __DIR__ . '/../..' . '/src/authifly/Infusionsoft.php',
-        '7deba475c7811369965cbd792856349d' => __DIR__ . '/../..' . '/src/authifly/Jilt.php',
-        '01a622b173c6313c4db38d191511be8d' => __DIR__ . '/../..' . '/src/authifly/CleverReach.php',
-        '0c3d673a10e24a9deae0466c5bff821d' => __DIR__ . '/../..' . '/src/authifly/Stripe.php',
-        '6c86670451b6932c93a21a5edd9610bf' => __DIR__ . '/../..' . '/src/authifly/Newsman.php',
         '1d70241e5fa15180bf0b547b18160633' => __DIR__ . '/../..' . '/src/core/src/Functions/custom-settings-api.php',
         '541054f7d83801e360f0f9cfeb6e7da9' => __DIR__ . '/../..' . '/src/core/src/Functions/functions.php',
         '1064428a5c96d5b26937d911d5bd0e95' => __DIR__ . '/../..' . '/src/core/src/Functions/php-html-css-js-minifier.php',
+        '0a894b0fefb3ff1b2043ad324a2d5cfd' => __DIR__ . '/../..' . '/src/core/src/Functions/FuseWPAdminNotice.php',
         'e180ca08fee0de2c7165b35361a1b492' => __DIR__ . '/../..' . '/src/core/src/Functions/MoBFnote.php',
     );
 
@@ -67,14 +54,17 @@ class ComposerStaticInite27686d2fdf5de1fb75575a70fb62b06
             'MailOptin\\SendinblueConnect\\' => 28,
             'MailOptin\\SendGridConnect\\' => 26,
             'MailOptin\\SendFoxConnect\\' => 25,
+            'MailOptin\\SalesforceConnect\\' => 28,
             'MailOptin\\RegisteredUsersConnect\\' => 33,
             'MailOptin\\RCPConnect\\' => 21,
             'MailOptin\\PolylangConnect\\' => 26,
             'MailOptin\\PmProConnect\\' => 23,
             'MailOptin\\OntraportConnect\\' => 27,
+            'MailOptin\\OmnisendConnect\\' => 26,
             'MailOptin\\NinjaFormsConnect\\' => 28,
             'MailOptin\\NewsmanConnect\\' => 25,
             'MailOptin\\MoosendConnect\\' => 25,
+            'MailOptin\\MicrosoftDynamic365Connect\\' => 37,
             'MailOptin\\MemberPressConnect\\' => 29,
             'MailOptin\\MailsterConnect\\' => 26,
             'MailOptin\\MailjetConnect\\' => 25,
@@ -112,6 +102,7 @@ class ComposerStaticInite27686d2fdf5de1fb75575a70fb62b06
             'MailOptin\\CommentOptinConnect\\' => 30,
             'MailOptin\\CleverReachConnect\\' => 29,
             'MailOptin\\CampaignMonitorConnect\\' => 33,
+            'MailOptin\\BenchmarkEmailConnect\\' => 32,
             'MailOptin\\AweberConnect\\' => 24,
             'MailOptin\\ActiveCampaignConnect\\' => 32,
         ),
@@ -247,6 +238,10 @@ class ComposerStaticInite27686d2fdf5de1fb75575a70fb62b06
         array (
             0 => __DIR__ . '/../..' . '/src/connections/SendFoxConnect',
         ),
+        'MailOptin\\SalesforceConnect\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/connections/SalesforceConnect',
+        ),
         'MailOptin\\RegisteredUsersConnect\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/connections/RegisteredUsersConnect',
@@ -267,6 +262,10 @@ class ComposerStaticInite27686d2fdf5de1fb75575a70fb62b06
         array (
             0 => __DIR__ . '/../..' . '/src/connections/OntraportConnect',
         ),
+        'MailOptin\\OmnisendConnect\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/connections/OmnisendConnect',
+        ),
         'MailOptin\\NinjaFormsConnect\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/connections/NinjaFormsConnect',
@@ -278,6 +277,10 @@ class ComposerStaticInite27686d2fdf5de1fb75575a70fb62b06
         'MailOptin\\MoosendConnect\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/connections/MoosendConnect',
+        ),
+        'MailOptin\\MicrosoftDynamic365Connect\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/connections/MicrosoftDynamic365Connect',
         ),
         'MailOptin\\MemberPressConnect\\' => 
         array (
@@ -427,6 +430,10 @@ class ComposerStaticInite27686d2fdf5de1fb75575a70fb62b06
         array (
             0 => __DIR__ . '/../..' . '/src/connections/CampaignMonitorConnect',
         ),
+        'MailOptin\\BenchmarkEmailConnect\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/connections/BenchmarkEmailConnect',
+        ),
         'MailOptin\\AweberConnect\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/connections/AweberConnect',
@@ -461,7 +468,7 @@ class ComposerStaticInite27686d2fdf5de1fb75575a70fb62b06
         ),
         'Authifly\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/src/authifly/src',
+            0 => __DIR__ . '/..' . '/mailoptin/authifly/src',
         ),
     );
 
@@ -488,46 +495,62 @@ class ComposerStaticInite27686d2fdf5de1fb75575a70fb62b06
         'AC_Webhook' => __DIR__ . '/../..' . '/src/connections/ActiveCampaignConnect/APIClass/includes/Webhook.class.php',
         'ActiveCampaign' => __DIR__ . '/../..' . '/src/connections/ActiveCampaignConnect/APIClass/includes/ActiveCampaign.class.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
-        'Authifly\\Adapter\\AbstractAdapter' => __DIR__ . '/../..' . '/src/authifly/src/Adapter/AbstractAdapter.php',
-        'Authifly\\Adapter\\AdapterInterface' => __DIR__ . '/../..' . '/src/authifly/src/Adapter/AdapterInterface.php',
-        'Authifly\\Adapter\\DataStoreTrait' => __DIR__ . '/../..' . '/src/authifly/src/Adapter/DataStoreTrait.php',
-        'Authifly\\Adapter\\OAuth1' => __DIR__ . '/../..' . '/src/authifly/src/Adapter/OAuth1.php',
-        'Authifly\\Adapter\\OAuth2' => __DIR__ . '/../..' . '/src/authifly/src/Adapter/OAuth2.php',
-        'Authifly\\Authifly' => __DIR__ . '/../..' . '/src/authifly/src/Authifly.php',
-        'Authifly\\Data\\Collection' => __DIR__ . '/../..' . '/src/authifly/src/Data/Collection.php',
-        'Authifly\\Data\\Parser' => __DIR__ . '/../..' . '/src/authifly/src/Data/Parser.php',
-        'Authifly\\Exception\\AuthorizationDeniedException' => __DIR__ . '/../..' . '/src/authifly/src/Exception/AuthorizationDeniedException.php',
-        'Authifly\\Exception\\BadMethodCallException' => __DIR__ . '/../..' . '/src/authifly/src/Exception/BadMethodCallException.php',
-        'Authifly\\Exception\\Exception' => __DIR__ . '/../..' . '/src/authifly/src/Exception/Exception.php',
-        'Authifly\\Exception\\ExceptionInterface' => __DIR__ . '/../..' . '/src/authifly/src/Exception/ExceptionInterface.php',
-        'Authifly\\Exception\\HttpClientFailureException' => __DIR__ . '/../..' . '/src/authifly/src/Exception/HttpClientFailureException.php',
-        'Authifly\\Exception\\HttpRequestFailedException' => __DIR__ . '/../..' . '/src/authifly/src/Exception/HttpRequestFailedException.php',
-        'Authifly\\Exception\\InvalidAccessTokenException' => __DIR__ . '/../..' . '/src/authifly/src/Exception/InvalidAccessTokenException.php',
-        'Authifly\\Exception\\InvalidApplicationCredentialsException' => __DIR__ . '/../..' . '/src/authifly/src/Exception/InvalidApplicationCredentialsException.php',
-        'Authifly\\Exception\\InvalidArgumentException' => __DIR__ . '/../..' . '/src/authifly/src/Exception/InvalidArgumentException.php',
-        'Authifly\\Exception\\InvalidAuthorizationCodeException' => __DIR__ . '/../..' . '/src/authifly/src/Exception/InvalidAuthorizationCodeException.php',
-        'Authifly\\Exception\\InvalidAuthorizationStateException' => __DIR__ . '/../..' . '/src/authifly/src/Exception/InvalidAuthorizationStateException.php',
-        'Authifly\\Exception\\InvalidOauthTokenException' => __DIR__ . '/../..' . '/src/authifly/src/Exception/InvalidOauthTokenException.php',
-        'Authifly\\Exception\\InvalidOpenidIdentifierException' => __DIR__ . '/../..' . '/src/authifly/src/Exception/InvalidOpenidIdentifierException.php',
-        'Authifly\\Exception\\NotImplementedException' => __DIR__ . '/../..' . '/src/authifly/src/Exception/NotImplementedException.php',
-        'Authifly\\Exception\\RuntimeException' => __DIR__ . '/../..' . '/src/authifly/src/Exception/RuntimeException.php',
-        'Authifly\\Exception\\UnexpectedApiResponseException' => __DIR__ . '/../..' . '/src/authifly/src/Exception/UnexpectedApiResponseException.php',
-        'Authifly\\Exception\\UnexpectedValueException' => __DIR__ . '/../..' . '/src/authifly/src/Exception/UnexpectedValueException.php',
-        'Authifly\\HttpClient\\Curl' => __DIR__ . '/../..' . '/src/authifly/src/HttpClient/Curl.php',
-        'Authifly\\HttpClient\\Guzzle' => __DIR__ . '/../..' . '/src/authifly/src/HttpClient/Guzzle.php',
-        'Authifly\\HttpClient\\HttpClientInterface' => __DIR__ . '/../..' . '/src/authifly/src/HttpClient/HttpClientInterface.php',
-        'Authifly\\HttpClient\\Util' => __DIR__ . '/../..' . '/src/authifly/src/HttpClient/Util.php',
-        'Authifly\\HttpClient\\WPHttp' => __DIR__ . '/../..' . '/src/authifly/src/HttpClient/WPHttp.php',
-        'Authifly\\Logger\\Logger' => __DIR__ . '/../..' . '/src/authifly/src/Logger/Logger.php',
-        'Authifly\\Logger\\LoggerInterface' => __DIR__ . '/../..' . '/src/authifly/src/Logger/LoggerInterface.php',
-        'Authifly\\Logger\\Psr3LoggerWrapper' => __DIR__ . '/../..' . '/src/authifly/src/Logger/Psr3LoggerWrapper.php',
-        'Authifly\\Storage\\Session' => __DIR__ . '/../..' . '/src/authifly/src/Storage/Session.php',
-        'Authifly\\Storage\\StorageInterface' => __DIR__ . '/../..' . '/src/authifly/src/Storage/StorageInterface.php',
-        'Authifly\\Thirdparty\\OAuth\\OAuthConsumer' => __DIR__ . '/../..' . '/src/authifly/src/Thirdparty/OAuth/OAuthConsumer.php',
-        'Authifly\\Thirdparty\\OAuth\\OAuthRequest' => __DIR__ . '/../..' . '/src/authifly/src/Thirdparty/OAuth/OAuthRequest.php',
-        'Authifly\\Thirdparty\\OAuth\\OAuthSignatureMethod' => __DIR__ . '/../..' . '/src/authifly/src/Thirdparty/OAuth/OAuthSignatureMethod.php',
-        'Authifly\\Thirdparty\\OAuth\\OAuthSignatureMethodHMACSHA1' => __DIR__ . '/../..' . '/src/authifly/src/Thirdparty/OAuth/OAuthSignatureMethodHMACSHA1.php',
-        'Authifly\\Thirdparty\\OAuth\\OAuthUtil' => __DIR__ . '/../..' . '/src/authifly/src/Thirdparty/OAuth/OAuthUtil.php',
+        'Authifly\\Adapter\\AbstractAdapter' => __DIR__ . '/..' . '/mailoptin/authifly/src/Adapter/AbstractAdapter.php',
+        'Authifly\\Adapter\\AdapterInterface' => __DIR__ . '/..' . '/mailoptin/authifly/src/Adapter/AdapterInterface.php',
+        'Authifly\\Adapter\\DataStoreTrait' => __DIR__ . '/..' . '/mailoptin/authifly/src/Adapter/DataStoreTrait.php',
+        'Authifly\\Adapter\\OAuth1' => __DIR__ . '/..' . '/mailoptin/authifly/src/Adapter/OAuth1.php',
+        'Authifly\\Adapter\\OAuth2' => __DIR__ . '/..' . '/mailoptin/authifly/src/Adapter/OAuth2.php',
+        'Authifly\\Authifly' => __DIR__ . '/..' . '/mailoptin/authifly/src/Authifly.php',
+        'Authifly\\Data\\Collection' => __DIR__ . '/..' . '/mailoptin/authifly/src/Data/Collection.php',
+        'Authifly\\Data\\Parser' => __DIR__ . '/..' . '/mailoptin/authifly/src/Data/Parser.php',
+        'Authifly\\Exception\\AuthorizationDeniedException' => __DIR__ . '/..' . '/mailoptin/authifly/src/Exception/AuthorizationDeniedException.php',
+        'Authifly\\Exception\\BadMethodCallException' => __DIR__ . '/..' . '/mailoptin/authifly/src/Exception/BadMethodCallException.php',
+        'Authifly\\Exception\\Exception' => __DIR__ . '/..' . '/mailoptin/authifly/src/Exception/Exception.php',
+        'Authifly\\Exception\\ExceptionInterface' => __DIR__ . '/..' . '/mailoptin/authifly/src/Exception/ExceptionInterface.php',
+        'Authifly\\Exception\\HttpClientFailureException' => __DIR__ . '/..' . '/mailoptin/authifly/src/Exception/HttpClientFailureException.php',
+        'Authifly\\Exception\\HttpRequestFailedException' => __DIR__ . '/..' . '/mailoptin/authifly/src/Exception/HttpRequestFailedException.php',
+        'Authifly\\Exception\\InvalidAccessTokenException' => __DIR__ . '/..' . '/mailoptin/authifly/src/Exception/InvalidAccessTokenException.php',
+        'Authifly\\Exception\\InvalidApplicationCredentialsException' => __DIR__ . '/..' . '/mailoptin/authifly/src/Exception/InvalidApplicationCredentialsException.php',
+        'Authifly\\Exception\\InvalidArgumentException' => __DIR__ . '/..' . '/mailoptin/authifly/src/Exception/InvalidArgumentException.php',
+        'Authifly\\Exception\\InvalidAuthorizationCodeException' => __DIR__ . '/..' . '/mailoptin/authifly/src/Exception/InvalidAuthorizationCodeException.php',
+        'Authifly\\Exception\\InvalidAuthorizationStateException' => __DIR__ . '/..' . '/mailoptin/authifly/src/Exception/InvalidAuthorizationStateException.php',
+        'Authifly\\Exception\\InvalidOauthTokenException' => __DIR__ . '/..' . '/mailoptin/authifly/src/Exception/InvalidOauthTokenException.php',
+        'Authifly\\Exception\\InvalidOpenidIdentifierException' => __DIR__ . '/..' . '/mailoptin/authifly/src/Exception/InvalidOpenidIdentifierException.php',
+        'Authifly\\Exception\\NotImplementedException' => __DIR__ . '/..' . '/mailoptin/authifly/src/Exception/NotImplementedException.php',
+        'Authifly\\Exception\\RuntimeException' => __DIR__ . '/..' . '/mailoptin/authifly/src/Exception/RuntimeException.php',
+        'Authifly\\Exception\\UnexpectedApiResponseException' => __DIR__ . '/..' . '/mailoptin/authifly/src/Exception/UnexpectedApiResponseException.php',
+        'Authifly\\Exception\\UnexpectedValueException' => __DIR__ . '/..' . '/mailoptin/authifly/src/Exception/UnexpectedValueException.php',
+        'Authifly\\HttpClient\\Curl' => __DIR__ . '/..' . '/mailoptin/authifly/src/HttpClient/Curl.php',
+        'Authifly\\HttpClient\\Guzzle' => __DIR__ . '/..' . '/mailoptin/authifly/src/HttpClient/Guzzle.php',
+        'Authifly\\HttpClient\\HttpClientInterface' => __DIR__ . '/..' . '/mailoptin/authifly/src/HttpClient/HttpClientInterface.php',
+        'Authifly\\HttpClient\\Util' => __DIR__ . '/..' . '/mailoptin/authifly/src/HttpClient/Util.php',
+        'Authifly\\HttpClient\\WPHttp' => __DIR__ . '/..' . '/mailoptin/authifly/src/HttpClient/WPHttp.php',
+        'Authifly\\Logger\\Logger' => __DIR__ . '/..' . '/mailoptin/authifly/src/Logger/Logger.php',
+        'Authifly\\Logger\\LoggerInterface' => __DIR__ . '/..' . '/mailoptin/authifly/src/Logger/LoggerInterface.php',
+        'Authifly\\Logger\\Psr3LoggerWrapper' => __DIR__ . '/..' . '/mailoptin/authifly/src/Logger/Psr3LoggerWrapper.php',
+        'Authifly\\Provider\\Aweber' => __DIR__ . '/..' . '/mailoptin/authifly/Aweber.php',
+        'Authifly\\Provider\\CampaignMonitor' => __DIR__ . '/..' . '/mailoptin/authifly/CampaignMonitor.php',
+        'Authifly\\Provider\\CleverReach' => __DIR__ . '/..' . '/mailoptin/authifly/CleverReach.php',
+        'Authifly\\Provider\\ConstantContact' => __DIR__ . '/..' . '/mailoptin/authifly/ConstantContact.php',
+        'Authifly\\Provider\\ConstantContactV3' => __DIR__ . '/..' . '/mailoptin/authifly/ConstantContactV3.php',
+        'Authifly\\Provider\\Facebook' => __DIR__ . '/..' . '/mailoptin/authifly/Facebook.php',
+        'Authifly\\Provider\\Hubspot' => __DIR__ . '/..' . '/mailoptin/authifly/Hubspot.php',
+        'Authifly\\Provider\\Infusionsoft' => __DIR__ . '/..' . '/mailoptin/authifly/Infusionsoft.php',
+        'Authifly\\Provider\\Mailchimp' => __DIR__ . '/..' . '/mailoptin/authifly/Mailchimp.php',
+        'Authifly\\Provider\\Microsoft' => __DIR__ . '/..' . '/mailoptin/authifly/Microsoft.php',
+        'Authifly\\Provider\\Newsman' => __DIR__ . '/..' . '/mailoptin/authifly/Newsman.php',
+        'Authifly\\Provider\\Salesforce' => __DIR__ . '/..' . '/mailoptin/authifly/Salesforce.php',
+        'Authifly\\Provider\\Stripe' => __DIR__ . '/..' . '/mailoptin/authifly/Stripe.php',
+        'Authifly\\Provider\\VerticalResponse' => __DIR__ . '/..' . '/mailoptin/authifly/VerticalResponse.php',
+        'Authifly\\Provider\\Zoho' => __DIR__ . '/..' . '/mailoptin/authifly/Zoho.php',
+        'Authifly\\Storage\\OAuthCredentialStorage' => __DIR__ . '/..' . '/mailoptin/authifly/OAuthCredentialStorage.php',
+        'Authifly\\Storage\\Session' => __DIR__ . '/..' . '/mailoptin/authifly/src/Storage/Session.php',
+        'Authifly\\Storage\\StorageInterface' => __DIR__ . '/..' . '/mailoptin/authifly/src/Storage/StorageInterface.php',
+        'Authifly\\Thirdparty\\OAuth\\OAuthConsumer' => __DIR__ . '/..' . '/mailoptin/authifly/src/Thirdparty/OAuth/OAuthConsumer.php',
+        'Authifly\\Thirdparty\\OAuth\\OAuthRequest' => __DIR__ . '/..' . '/mailoptin/authifly/src/Thirdparty/OAuth/OAuthRequest.php',
+        'Authifly\\Thirdparty\\OAuth\\OAuthSignatureMethod' => __DIR__ . '/..' . '/mailoptin/authifly/src/Thirdparty/OAuth/OAuthSignatureMethod.php',
+        'Authifly\\Thirdparty\\OAuth\\OAuthSignatureMethodHMACSHA1' => __DIR__ . '/..' . '/mailoptin/authifly/src/Thirdparty/OAuth/OAuthSignatureMethodHMACSHA1.php',
+        'Authifly\\Thirdparty\\OAuth\\OAuthUtil' => __DIR__ . '/..' . '/mailoptin/authifly/src/Thirdparty/OAuth/OAuthUtil.php',
         'Barryvdh\\Composer\\CleanupPlugin' => __DIR__ . '/..' . '/barryvdh/composer-cleanup-plugin/src/CleanupPlugin.php',
         'Barryvdh\\Composer\\CleanupRules' => __DIR__ . '/..' . '/barryvdh/composer-cleanup-plugin/src/CleanupRules.php',
         'Carbon\\AbstractTranslator' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/AbstractTranslator.php',
@@ -754,6 +777,11 @@ class ComposerStaticInite27686d2fdf5de1fb75575a70fb62b06
         'MailOptin\\AweberConnect\\ConnectSettingsPage' => __DIR__ . '/../..' . '/src/connections/AweberConnect/ConnectSettingsPage.php',
         'MailOptin\\AweberConnect\\SendCampaign' => __DIR__ . '/../..' . '/src/connections/AweberConnect/SendCampaign.php',
         'MailOptin\\AweberConnect\\Subscription' => __DIR__ . '/../..' . '/src/connections/AweberConnect/Subscription.php',
+        'MailOptin\\BenchmarkEmailConnect\\APIClass' => __DIR__ . '/../..' . '/src/connections/BenchmarkEmailConnect/APIClass.php',
+        'MailOptin\\BenchmarkEmailConnect\\AbstractBenchmarkEmailConnect' => __DIR__ . '/../..' . '/src/connections/BenchmarkEmailConnect/AbstractBenchmarkEmailConnect.php',
+        'MailOptin\\BenchmarkEmailConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/BenchmarkEmailConnect/Connect.php',
+        'MailOptin\\BenchmarkEmailConnect\\ConnectSettingsPage' => __DIR__ . '/../..' . '/src/connections/BenchmarkEmailConnect/ConnectSettingsPage.php',
+        'MailOptin\\BenchmarkEmailConnect\\Subscription' => __DIR__ . '/../..' . '/src/connections/BenchmarkEmailConnect/Subscription.php',
         'MailOptin\\CampaignMonitorConnect\\AbstractCampaignMonitorConnect' => __DIR__ . '/../..' . '/src/connections/CampaignMonitorConnect/AbstractCampaignMonitorConnect.php',
         'MailOptin\\CampaignMonitorConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/CampaignMonitorConnect/Connect.php',
         'MailOptin\\CampaignMonitorConnect\\ConnectSettingsPage' => __DIR__ . '/../..' . '/src/connections/CampaignMonitorConnect/ConnectSettingsPage.php',
@@ -842,6 +870,10 @@ class ComposerStaticInite27686d2fdf5de1fb75575a70fb62b06
         'MailOptin\\Core\\Admin\\Customizer\\OptinForm\\CustomizerSettings' => __DIR__ . '/../..' . '/src/core/src/Admin/Customizer/OptinForm/CustomizerSettings.php',
         'MailOptin\\Core\\Admin\\Customizer\\OptinForm\\OptinFormFactory' => __DIR__ . '/../..' . '/src/core/src/Admin/Customizer/OptinForm/OptinFormFactory.php',
         'MailOptin\\Core\\Admin\\Customizer\\UpsellCustomizerSection' => __DIR__ . '/../..' . '/src/core/src/Admin/Customizer/UpsellCustomizerSection.php',
+        'MailOptin\\Core\\Admin\\FuseWP' => __DIR__ . '/../..' . '/src/core/src/Admin/FuseWP.php',
+        'MailOptin\\Core\\Admin\\Installer\\MailOptin_Install_Skin' => __DIR__ . '/../..' . '/src/core/src/Admin/Installer/MailOptin_Install_Skin.php',
+        'MailOptin\\Core\\Admin\\Installer\\PluginSilentUpgrader' => __DIR__ . '/../..' . '/src/core/src/Admin/Installer/PluginSilentUpgrader.php',
+        'MailOptin\\Core\\Admin\\Installer\\PluginSilentUpgraderSkin' => __DIR__ . '/../..' . '/src/core/src/Admin/Installer/PluginSilentUpgraderSkin.php',
         'MailOptin\\Core\\Admin\\SettingsPage\\AbstractSettingsPage' => __DIR__ . '/../..' . '/src/core/src/Admin/SettingsPage/AbstractSettingsPage.php',
         'MailOptin\\Core\\Admin\\SettingsPage\\AddEmailCampaign' => __DIR__ . '/../..' . '/src/core/src/Admin/SettingsPage/AddEmailCampaign.php',
         'MailOptin\\Core\\Admin\\SettingsPage\\AddNewEmail' => __DIR__ . '/../..' . '/src/core/src/Admin/SettingsPage/AddNewEmail.php',
@@ -1071,6 +1103,10 @@ class ComposerStaticInite27686d2fdf5de1fb75575a70fb62b06
         'MailOptin\\MemberPressConnect\\MemberPressSettings' => __DIR__ . '/../..' . '/src/connections/MemberPressConnect/MemberPressSettings.php',
         'MailOptin\\MemberPressConnect\\Membership' => __DIR__ . '/../..' . '/src/connections/MemberPressConnect/Membership.php',
         'MailOptin\\MemberPressConnect\\WP_MemberPress_Mail_BG_Process' => __DIR__ . '/../..' . '/src/connections/MemberPressConnect/WP_MemberPress_Mail_BG_Process.php',
+        'MailOptin\\MicrosoftDynamic365Connect\\AbstractMicrosoftDynamic365Connect' => __DIR__ . '/../..' . '/src/connections/MicrosoftDynamic365Connect/AbstractMicrosoftDynamic365Connect.php',
+        'MailOptin\\MicrosoftDynamic365Connect\\Connect' => __DIR__ . '/../..' . '/src/connections/MicrosoftDynamic365Connect/Connect.php',
+        'MailOptin\\MicrosoftDynamic365Connect\\ConnectSettingsPage' => __DIR__ . '/../..' . '/src/connections/MicrosoftDynamic365Connect/ConnectSettingsPage.php',
+        'MailOptin\\MicrosoftDynamic365Connect\\Subscription' => __DIR__ . '/../..' . '/src/connections/MicrosoftDynamic365Connect/Subscription.php',
         'MailOptin\\MoosendConnect\\APIClass' => __DIR__ . '/../..' . '/src/connections/MoosendConnect/APIClass.php',
         'MailOptin\\MoosendConnect\\AbstractMoosendConnect' => __DIR__ . '/../..' . '/src/connections/MoosendConnect/AbstractMoosendConnect.php',
         'MailOptin\\MoosendConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/MoosendConnect/Connect.php',
@@ -1120,6 +1156,11 @@ class ComposerStaticInite27686d2fdf5de1fb75575a70fb62b06
         'MailOptin\\NinjaFormsConnect\\Integrations\\WordPressUserRegistrationConnect' => __DIR__ . '/../..' . '/src/connections/NinjaFormsConnect/Integrations/WordPressUserRegistrationConnect.php',
         'MailOptin\\NinjaFormsConnect\\Integrations\\ZohoCRMConnect' => __DIR__ . '/../..' . '/src/connections/NinjaFormsConnect/Integrations/ZohoCRMConnect.php',
         'MailOptin\\NinjaFormsConnect\\Integrations\\ZohoCampaignsConnect' => __DIR__ . '/../..' . '/src/connections/NinjaFormsConnect/Integrations/ZohoCampaignsConnect.php',
+        'MailOptin\\OmnisendConnect\\APIClass' => __DIR__ . '/../..' . '/src/connections/OmnisendConnect/APIClass.php',
+        'MailOptin\\OmnisendConnect\\AbstractOmnisendConnect' => __DIR__ . '/../..' . '/src/connections/OmnisendConnect/AbstractOmnisendConnect.php',
+        'MailOptin\\OmnisendConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/OmnisendConnect/Connect.php',
+        'MailOptin\\OmnisendConnect\\ConnectSettingsPage' => __DIR__ . '/../..' . '/src/connections/OmnisendConnect/ConnectSettingsPage.php',
+        'MailOptin\\OmnisendConnect\\Subscription' => __DIR__ . '/../..' . '/src/connections/OmnisendConnect/Subscription.php',
         'MailOptin\\OntraportConnect\\APIClass' => __DIR__ . '/../..' . '/src/connections/OntraportConnect/APIClass.php',
         'MailOptin\\OntraportConnect\\AbstractOntraportConnect' => __DIR__ . '/../..' . '/src/connections/OntraportConnect/AbstractOntraportConnect.php',
         'MailOptin\\OntraportConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/OntraportConnect/Connect.php',
@@ -1137,6 +1178,10 @@ class ComposerStaticInite27686d2fdf5de1fb75575a70fb62b06
         'MailOptin\\RCPConnect\\RCPSettings' => __DIR__ . '/../..' . '/src/connections/RCPConnect/RCPSettings.php',
         'MailOptin\\RegisteredUsersConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/RegisteredUsersConnect/Connect.php',
         'MailOptin\\RegisteredUsersConnect\\WP_Mail_BG_Process' => __DIR__ . '/../..' . '/src/connections/RegisteredUsersConnect/WP_Mail_BG_Process.php',
+        'MailOptin\\SalesforceConnect\\AbstractSalesforceConnect' => __DIR__ . '/../..' . '/src/connections/SalesforceConnect/AbstractSalesforceConnect.php',
+        'MailOptin\\SalesforceConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/SalesforceConnect/Connect.php',
+        'MailOptin\\SalesforceConnect\\ConnectSettingsPage' => __DIR__ . '/../..' . '/src/connections/SalesforceConnect/ConnectSettingsPage.php',
+        'MailOptin\\SalesforceConnect\\Subscription' => __DIR__ . '/../..' . '/src/connections/SalesforceConnect/Subscription.php',
         'MailOptin\\SendFoxConnect\\APIClass' => __DIR__ . '/../..' . '/src/connections/SendFoxConnect/APIClass.php',
         'MailOptin\\SendFoxConnect\\AbstractSendFoxConnect' => __DIR__ . '/../..' . '/src/connections/SendFoxConnect/AbstractSendFoxConnect.php',
         'MailOptin\\SendFoxConnect\\Connect' => __DIR__ . '/../..' . '/src/connections/SendFoxConnect/Connect.php',
@@ -1419,9 +1464,9 @@ class ComposerStaticInite27686d2fdf5de1fb75575a70fb62b06
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInite27686d2fdf5de1fb75575a70fb62b06::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInite27686d2fdf5de1fb75575a70fb62b06::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInite27686d2fdf5de1fb75575a70fb62b06::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitb2ebe11d9a74ba56a62cc57e839ada7f::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitb2ebe11d9a74ba56a62cc57e839ada7f::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitb2ebe11d9a74ba56a62cc57e839ada7f::$classMap;
 
         }, null, ClassLoader::class);
     }

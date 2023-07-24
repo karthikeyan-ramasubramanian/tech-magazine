@@ -3,9 +3,9 @@ Contributors: scriptstown
 Tags: antispam, captcha, cloudflare, spam, recaptcha, turnstile, login, comment, anti-spam, monitor, log
 Donate link: https://scriptstown.com/
 Requires at least: 5.0
-Tested up to: 6.2
+Tested up to: 6.3
 Requires PHP: 5.6
-Stable tag: 1.5.4
+Stable tag: 1.5.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -93,6 +93,12 @@ Using this plugin, you can change the captcha theme to light or dark for Cloudfl
 7. Monitor Captcha Error Logs
 
 == Changelog ==
+
+= 1.5.6 =
+* Tested up to 6.3.
+
+= 1.5.5 =
+* Added: Option to generate reCAPTCHA v3 token on page load.
 
 = 1.5.4 =
 * Readme updated.

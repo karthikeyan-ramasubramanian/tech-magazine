@@ -249,7 +249,7 @@ class ConnectionFormSettingsPage extends Forminator_Addon_Form_Settings_Abstract
 
                     $html_select_list .= '<div style="margin-top: 30px;">';
                     $html_select_list .= '<label for="moffDoubleOptin">'. $double_optin_status . '</label>';
-                    $html_select_list .= '<input id="moffDoubleOptin" type="checkbox" value="true" name="'. $connected_email_providers . '[double_optin]" class="sui-checkbox"  '. checked($is_double_optin, "true", false). ' style="margin-left: 30px" />';
+                    $html_select_list .= '<input id="moffDoubleOptin" type="checkbox" value="true" name="'. $connected_email_providers . '[double_optin]"  '. checked($is_double_optin, "true", false). ' style="margin-left: 30px" />';
                     $html_select_list .= "</div>";
                 }
 

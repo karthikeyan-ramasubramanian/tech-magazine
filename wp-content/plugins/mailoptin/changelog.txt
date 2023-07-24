@@ -1,5 +1,30 @@
 ﻿== Changelog ==
 
+= 1.2.61.0 =
+* Pro: [Microsoft Dynamics 365](https://mailoptin.io/article/create-microsoft-dynamics-365-wordpress-forms-capture-leads/) integration.
+* Fixed conflicts with the OceanWP theme.
+
+= 1.2.60.0 =
+* Pro: [Salesforce](https://mailoptin.io/article/create-salesforce-wordpress-forms-capture-leads/) integration.
+* Added [Benchmark Email](https://mailoptin.io/article/create-benchmark-email-wordpress-forms/) integration.
+* PHP 8 compatibility improvements.
+
+= 1.2.59.0 =
+* Added [Omnisend](https://mailoptin.io/article/create-omnisend-optin-forms-wordpress/) integration.
+* Improved {{date}} usage in email campaigns.
+* Fixed bug with formidable forms integration not working.
+* Fixed VTI bug.
+
+= 1.2.58.2 =
+* Fixed bug where actual mailchimp api error was missing during error logging.
+* Renamed Sendinblue to Brevo.
+
+= 1.2.58.1 =
+* Fixed bug with falsey error emails going out.
+* Fixed issue with checkbox not showing correctly in forminator addon settings page.
+* Fixed double optin issue in forminator integration.
+* Ensure conversion page is correctly populated with Forminator, Gravity forms, Formidable Forms & WPForms integration.
+
 = 1.2.58.0 =
 * Added integration with the new MailerLite platform.
 

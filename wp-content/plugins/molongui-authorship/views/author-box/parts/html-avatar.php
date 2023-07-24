@@ -6,7 +6,9 @@
 		<?php
             if ( empty( $options['author_box_avatar_link'] ) or 'none' === $options['author_box_avatar_link']
                  or
-                 ( 'custom' === $options['author_box_avatar_link'] and empty( $author['web'] ) )
+                 ( 'website' === $options['author_box_avatar_link'] and empty( $author['web'] ) )
+                 or
+                 ( 'custom' === $options['author_box_avatar_link'] and empty( $author['custom_link'] ) )
                  or
                  ( 'archive' === $options['author_box_avatar_link']
                     and
@@ -26,7 +28,12 @@
             }
             else
             {
-                $url = 'archive' === $options['author_box_avatar_link'] ? $author['archive'] : $author['web'];
+                switch ( $options['author_box_avatar_link'] )
+                {
+                    case 'website': $url = $author['web']; break;
+                    case 'custom' : $url = $author['custom_link']; break;
+                    case 'archive': default: $url = $author['archive']; break;
+                }
                 ?>
                 <a class="m-a-box-avatar-url" href="<?php echo esc_url( $url ); ?>">
                     <?php echo $author['img']; ?>

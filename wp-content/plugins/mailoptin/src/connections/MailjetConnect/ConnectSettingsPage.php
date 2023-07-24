@@ -35,7 +35,7 @@ class ConnectSettingsPage
                 'label'         => __('Enter API Key', 'mailoptin'),
                 'description'   => sprintf(
                     __('%sRetrieve your API and Secret keys%s', 'mailoptin'),
-                    '<a target="_blank" href="https://app.mailjet.com/account/api_keys">',
+                    '<a target="_blank" href="https://app.mailjet.com/account/apikeys">',
                     '</a>'
                 ),
             ),

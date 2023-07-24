@@ -3,9 +3,9 @@ Contributors: scriptstown
 Tags: contact form, email, notification, entry, form, message
 Donate link: https://scriptstown.com/
 Requires at least: 5.0
-Tested up to: 6.2
+Tested up to: 6.3
 Requires PHP: 5.6
-Stable tag: 1.6.2
+Stable tag: 1.7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -64,6 +64,22 @@ Use the shortcode **[contact_form_query]** in any page or post to display the co
 9. Latest Messages Dashboard Widget
 
 == Changelog ==
+
+= 1.7.4 =
+* Tested up to 6.3.
+
+= 1.7.3 =
+* Improvement: CSS fixes.
+
+= 1.7.2 =
+* Improvement: CSS fixes.
+* Improvement: Increased textarea rows and columns.
+
+= 1.7.1 =
+* Added: Contact form block.
+
+= 1.7.0 =
+* Improvement: Fixed deprecated warnings.
 
 = 1.6.2 =
 * Tested up to 6.2.

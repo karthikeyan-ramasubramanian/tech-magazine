@@ -1,4 +1,4 @@
-/*! elementor - v3.12.2 - 23-04-2023 */
+/*! elementor - v3.14.0 - 26-06-2023 */
 (self["webpackChunkelementor"] = self["webpackChunkelementor"] || []).push([["preloaded-modules"],{
 
 /***/ "../assets/dev/js/frontend/handlers/accordion.js":
@@ -329,168 +329,11 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = void 0;
-class ImageCarousel extends elementorModules.frontend.handlers.SwiperBase {
+class ImageCarousel extends elementorModules.frontend.handlers.CarouselBase {
   getDefaultSettings() {
-    return {
-      selectors: {
-        carousel: '.elementor-image-carousel-wrapper',
-        slideContent: '.swiper-slide'
-      }
-    };
-  }
-  getDefaultElements() {
-    const selectors = this.getSettings('selectors');
-    const elements = {
-      $swiperContainer: this.$element.find(selectors.carousel)
-    };
-    elements.$slides = elements.$swiperContainer.find(selectors.slideContent);
-    return elements;
-  }
-  getSwiperSettings() {
-    const elementSettings = this.getElementSettings(),
-      slidesToShow = +elementSettings.slides_to_show || 3,
-      isSingleSlide = 1 === slidesToShow,
-      elementorBreakpoints = elementorFrontend.config.responsive.activeBreakpoints,
-      defaultSlidesToShowMap = {
-        mobile: 1,
-        tablet: isSingleSlide ? 1 : 2
-      };
-    const swiperOptions = {
-      slidesPerView: slidesToShow,
-      loop: 'yes' === elementSettings.infinite,
-      speed: elementSettings.speed,
-      handleElementorBreakpoints: true
-    };
-    swiperOptions.breakpoints = {};
-    let lastBreakpointSlidesToShowValue = slidesToShow;
-    Object.keys(elementorBreakpoints).reverse().forEach(breakpointName => {
-      // Tablet has a specific default `slides_to_show`.
-      const defaultSlidesToShow = defaultSlidesToShowMap[breakpointName] ? defaultSlidesToShowMap[breakpointName] : lastBreakpointSlidesToShowValue;
-      swiperOptions.breakpoints[elementorBreakpoints[breakpointName].value] = {
-        slidesPerView: +elementSettings['slides_to_show_' + breakpointName] || defaultSlidesToShow,
-        slidesPerGroup: +elementSettings['slides_to_scroll_' + breakpointName] || 1
-      };
-      if (elementSettings.image_spacing_custom) {
-        swiperOptions.breakpoints[elementorBreakpoints[breakpointName].value].spaceBetween = this.getSpaceBetween(breakpointName);
-      }
-      lastBreakpointSlidesToShowValue = +elementSettings['slides_to_show_' + breakpointName] || defaultSlidesToShow;
-    });
-    if ('yes' === elementSettings.autoplay) {
-      swiperOptions.autoplay = {
-        delay: elementSettings.autoplay_speed,
-        disableOnInteraction: 'yes' === elementSettings.pause_on_interaction
-      };
-    }
-    if (isSingleSlide) {
-      swiperOptions.effect = elementSettings.effect;
-      if ('fade' === elementSettings.effect) {
-        swiperOptions.fadeEffect = {
-          crossFade: true
-        };
-      }
-    } else {
-      swiperOptions.slidesPerGroup = +elementSettings.slides_to_scroll || 1;
-    }
-    if (elementSettings.image_spacing_custom) {
-      swiperOptions.spaceBetween = this.getSpaceBetween();
-    }
-    const showArrows = 'arrows' === elementSettings.navigation || 'both' === elementSettings.navigation,
-      showDots = 'dots' === elementSettings.navigation || 'both' === elementSettings.navigation;
-    if (showArrows) {
-      swiperOptions.navigation = {
-        prevEl: '.elementor-swiper-button-prev',
-        nextEl: '.elementor-swiper-button-next'
-      };
-    }
-    if (showDots) {
-      swiperOptions.pagination = {
-        el: '.swiper-pagination',
-        type: 'bullets',
-        clickable: true
-      };
-    }
-    if ('yes' === elementSettings.lazyload) {
-      swiperOptions.lazy = {
-        loadPrevNext: true,
-        loadPrevNextAmount: 1
-      };
-    }
-    return swiperOptions;
-  }
-  async onInit() {
-    super.onInit(...arguments);
-    if (!this.elements.$swiperContainer.length || 2 > this.elements.$slides.length) {
-      return;
-    }
-    const Swiper = elementorFrontend.utils.swiper;
-    this.swiper = await new Swiper(this.elements.$swiperContainer, this.getSwiperSettings());
-
-    // Expose the swiper instance in the frontend
-    this.elements.$swiperContainer.data('swiper', this.swiper);
-    const elementSettings = this.getElementSettings();
-    if ('yes' === elementSettings.pause_on_hover) {
-      this.togglePauseOnHover(true);
-    }
-  }
-  updateSwiperOption(propertyName) {
-    const elementSettings = this.getElementSettings(),
-      newSettingValue = elementSettings[propertyName],
-      params = this.swiper.params;
-
-    // Handle special cases where the value to update is not the value that the Swiper library accepts.
-    switch (propertyName) {
-      case 'autoplay_speed':
-        params.autoplay.delay = newSettingValue;
-        break;
-      case 'speed':
-        params.speed = newSettingValue;
-        break;
-    }
-    this.swiper.update();
-  }
-  getChangeableProperties() {
-    return {
-      pause_on_hover: 'pauseOnHover',
-      autoplay_speed: 'delay',
-      speed: 'speed',
-      arrows_position: 'arrows_position' // Not a Swiper setting.
-    };
-  }
-
-  onElementChange(propertyName) {
-    if (0 === propertyName.indexOf('image_spacing_custom')) {
-      this.updateSpaceBetween(propertyName);
-      return;
-    }
-    const changeableProperties = this.getChangeableProperties();
-    if (changeableProperties[propertyName]) {
-      // 'pause_on_hover' is implemented by the handler with event listeners, not the Swiper library.
-      if ('pause_on_hover' === propertyName) {
-        const newSettingValue = this.getElementSettings('pause_on_hover');
-        this.togglePauseOnHover('yes' === newSettingValue);
-      } else {
-        this.updateSwiperOption(propertyName);
-      }
-    }
-  }
-  onEditSettingsChange(propertyName) {
-    if ('activeItemIndex' === propertyName) {
-      this.swiper.slideToLoop(this.getEditSettings('activeItemIndex') - 1);
-    }
-  }
-  getSpaceBetween() {
-    let device = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-    return elementorFrontend.utils.controls.getResponsiveControlValue(this.getElementSettings(), 'image_spacing_custom', 'size', device) || 0;
-  }
-  updateSpaceBetween(propertyName) {
-    const deviceMatch = propertyName.match('image_spacing_custom_(.*)'),
-      device = deviceMatch ? deviceMatch[1] : 'desktop',
-      newSpaceBetween = this.getSpaceBetween(device);
-    if ('desktop' !== device) {
-      this.swiper.params.breakpoints[elementorFrontend.config.responsive.activeBreakpoints[device].value].spaceBetween = newSpaceBetween;
-    }
-    this.swiper.params.spaceBetween = newSpaceBetween;
-    this.swiper.update();
+    const settings = super.getDefaultSettings();
+    settings.selectors.carousel = '.elementor-image-carousel-wrapper';
+    return settings;
   }
 }
 exports["default"] = ImageCarousel;
@@ -899,6 +742,7 @@ var _video = _interopRequireDefault(__webpack_require__(/*! ./handlers/video */ 
 var _imageCarousel = _interopRequireDefault(__webpack_require__(/*! ./handlers/image-carousel */ "../assets/dev/js/frontend/handlers/image-carousel.js"));
 var _textEditor = _interopRequireDefault(__webpack_require__(/*! ./handlers/text-editor */ "../assets/dev/js/frontend/handlers/text-editor.js"));
 var _nestedTabs = _interopRequireDefault(__webpack_require__(/*! elementor/modules/nested-tabs/assets/js/frontend/handlers/nested-tabs */ "../modules/nested-tabs/assets/js/frontend/handlers/nested-tabs.js"));
+var _nestedAccordion = _interopRequireDefault(__webpack_require__(/*! elementor/modules/nested-accordion/assets/js/frontend/handlers/nested-accordion */ "../modules/nested-accordion/assets/js/frontend/handlers/nested-accordion.js"));
 var _lightbox = _interopRequireDefault(__webpack_require__(/*! elementor-frontend/utils/lightbox/lightbox */ "../assets/dev/js/frontend/utils/lightbox/lightbox.js"));
 elementorFrontend.elements.$window.on('elementor/frontend/init', () => {
   elementorFrontend.elementsHandler.elementsHandlers = {
@@ -908,6 +752,7 @@ elementorFrontend.elements.$window.on('elementor/frontend/init', () => {
     'progress.default': _progress.default,
     'tabs.default': _tabs.default,
     'nested-tabs.default': _nestedTabs.default,
+    'nested-accordion.default': _nestedAccordion.default,
     'toggle.default': _toggle.default,
     'video.default': _video.default,
     'image-carousel.default': _imageCarousel.default,
@@ -1294,8 +1139,8 @@ module.exports = elementorModules.ViewModule.extend({
       closeButtonOptions: {
         ...closeIcon,
         attributes: {
-          tabindex: 0,
           role: 'button',
+          tabindex: 0,
           'aria-label': elementorFrontend.config.i18n.close + ' (Esc)'
         }
       },
@@ -1395,7 +1240,7 @@ module.exports = elementorModules.ViewModule.extend({
   },
   setHTMLContent(html) {
     if (window.elementorCommon) {
-      elementorDevTools.deprecation.deprecated('elementorFrontend.utils.lightbox.setHTMLContent', '3.1.4');
+      elementorDevTools.deprecation.deprecated('elementorFrontend.utils.lightbox.setHTMLContent()', '3.1.4');
     }
     this.getModal().setMessage(html);
   },
@@ -1482,7 +1327,8 @@ module.exports = elementorModules.ViewModule.extend({
           target: '_blank'
         }).text(networkLabel),
         $socialNetworkIconElement = this.isFontIconSvgExperiment ? $(data.iconElement.element) : $('<i>', {
-          class: 'eicon-' + key
+          class: 'eicon-' + key,
+          'aria-hidden': 'true'
         });
       $link.prepend($socialNetworkIconElement);
       $linkList.append($link);
@@ -1532,6 +1378,7 @@ module.exports = elementorModules.ViewModule.extend({
       elements.$iconShare = $(iconElement, {
         class: slideshowClasses.iconShare,
         role: 'button',
+        tabindex: 0,
         'aria-label': i18n.share,
         'aria-expanded': false
       }).append($('<span>'));
@@ -1551,6 +1398,7 @@ module.exports = elementorModules.ViewModule.extend({
         showZoomElements = [],
         showZoomAttrs = {
           role: 'switch',
+          tabindex: 0,
           'aria-checked': false,
           'aria-label': i18n.zoom
         },
@@ -1574,6 +1422,7 @@ module.exports = elementorModules.ViewModule.extend({
         fullScreenElements = [],
         fullScreenAttrs = {
           role: 'switch',
+          tabindex: 0,
           'aria-checked': false,
           'aria-label': i18n.fullscreen
         },
@@ -1778,19 +1627,25 @@ module.exports = elementorModules.ViewModule.extend({
     $container.prepend(this.elements.$header).append($slidesWrapper);
     if (!isSingleSlide) {
       const $prevButtonIcon = this.isFontIconSvgExperiment ? $(_eIcons.chevronLeft.element) : $('<i>', {
-          class: slideshowClasses.prevButtonIcon
+          class: slideshowClasses.prevButtonIcon,
+          'aria-hidden': 'true'
         }),
         $nextButtonIcon = this.isFontIconSvgExperiment ? $(_eIcons.chevronRight.element) : $('<i>', {
-          class: slideshowClasses.nextButtonIcon
-        });
+          class: slideshowClasses.nextButtonIcon,
+          'aria-hidden': 'true'
+        }),
+        $prevButtonLabel = $('<span>', {
+          class: 'screen-reader-text'
+        }).html(i18n.previous),
+        $nextButtonLabel = $('<span>', {
+          class: 'screen-reader-text'
+        }).html(i18n.next);
       $prevButton = $('<div>', {
-        class: slideshowClasses.prevButton + ' ' + classes.preventClose,
-        'aria-label': i18n.previous
-      }).html($prevButtonIcon);
+        class: slideshowClasses.prevButton + ' ' + classes.preventClose
+      }).append($prevButtonIcon, $prevButtonLabel);
       $nextButton = $('<div>', {
-        class: slideshowClasses.nextButton + ' ' + classes.preventClose,
-        'aria-label': i18n.next
-      }).html($nextButtonIcon);
+        class: slideshowClasses.nextButton + ' ' + classes.preventClose
+      }).append($nextButtonIcon, $nextButtonLabel);
       $container.append($nextButton, $prevButton);
       this.$buttons = this.$buttons.add($nextButton).add($prevButton);
     }

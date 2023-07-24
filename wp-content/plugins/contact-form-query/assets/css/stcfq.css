@@ -21,6 +21,11 @@
 	position: relative;
 }
 
+.stcfq-container textarea.stcfq-form-control {
+	max-width: 100%;
+	line-height: 1.6;
+}
+
 .stcfq-container .st-alert-message {
 	margin-top: 1rem;
 	position: relative;

@@ -61,6 +61,7 @@ class EVF_Form_Task {
 	public function __construct() {
 		add_action( 'wp', array( $this, 'listen_task' ) );
 		add_filter( 'everest_forms_field_properties', array( $this, 'load_previous_field_value' ), 99, 3 );
+		add_action( 'everest_forms_complete_entry_save', array( $this, 'update_slot_booking_value' ), 10, 5 );
 	}
 
 	/**
@@ -270,12 +271,18 @@ class EVF_Form_Task {
 				} elseif ( 'hcaptcha' === $recaptcha_type ) {
 					$site_key   = get_option( 'everest_forms_recaptcha_hcaptcha_site_key' );
 					$secret_key = get_option( 'everest_forms_recaptcha_hcaptcha_secret_key' );
+				} elseif ( 'turnstile' === $recaptcha_type ) {
+					$site_key   = get_option( 'everest_forms_recaptcha_turnstile_site_key' );
+					$secret_key = get_option( 'everest_forms_recaptcha_turnstile_secret_key' );
+					$theme_mode = get_option( 'everest_forms_recaptcha_turnstile_theme' );
 				}
 
 				if ( ! empty( $site_key ) && ! empty( $secret_key ) && isset( $this->form_data['settings']['recaptcha_support'] ) && '1' === $this->form_data['settings']['recaptcha_support'] &&
 				! isset( $_POST['__amp_form_verify'] ) && ( 'v3' === $recaptcha_type || ! evf_is_amp() ) ) {
 					if ( 'hcaptcha' === $recaptcha_type ) {
 						$error = esc_html__( 'hCaptcha verification failed, please try again later.', 'everest-forms' );
+					} elseif ( 'turnstile' === $recaptcha_type ) {
+						$error = esc_html__( 'Cloudflare Turnstile verification failed, please try again later.', 'everest-forms' );
 					} else {
 						$error = esc_html__( 'Google reCAPTCHA verification failed, please try again later.', 'everest-forms' );
 					}
@@ -293,6 +300,17 @@ class EVF_Form_Task {
 					if ( 'hcaptcha' === $recaptcha_type ) {
 						$token        = ! empty( $_POST['h-captcha-response'] ) ? evf_clean( wp_unslash( $_POST['h-captcha-response'] ) ) : false;
 						$raw_response = wp_safe_remote_get( 'https://hcaptcha.com/siteverify?secret=' . $secret_key . '&response=' . $token );
+					} elseif ( 'turnstile' === $recaptcha_type ) {
+						$token        = ! empty( $_POST['cf-turnstile-response'] ) ? evf_clean( wp_unslash( $_POST['cf-turnstile-response'] ) ) : false;
+						$url          = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+						$params       = array(
+							'method' => 'POST',
+							'body'   => array(
+								'secret'   => $secret_key,
+								'response' => $token,
+							),
+						);
+						$raw_response = wp_safe_remote_post( $url, $params );
 					} else {
 						$raw_response = wp_safe_remote_get( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $token );
 					}
@@ -861,7 +879,7 @@ class EVF_Form_Task {
 			$email['reply_to']       = ! empty( $notification['evf_reply_to'] ) ? $notification['evf_reply_to'] : $email['sender_address'];
 			$email['message']        = ! empty( $notification['evf_email_message'] ) ? evf_string_translation( $form_data['id'], 'evf_email_message', $notification['evf_email_message'] ) : '{all_fields}';
 			$email                   = apply_filters( 'everest_forms_entry_email_atts', $email, $fields, $entry, $form_data );
-			$attachment = '';
+			$attachment              = '';
 
 			// Create new email.
 			$emails = new EVF_Emails();
@@ -896,6 +914,7 @@ class EVF_Form_Task {
 			}
 
 		endforeach;
+		do_action( 'everest_forms_remove_attachments_after_send_email', $attachment, $fields, $form_data, 'entry-email', $connection_id, $entry_id );
 	}
 
 	/**
@@ -1019,6 +1038,62 @@ class EVF_Form_Task {
 		do_action( 'everest_forms_complete_entry_save', $entry_id, $fields, $entry, $form_id, $form_data );
 
 		return $this->entry_id;
+	}
+
+	/**
+	 * Insert or update the slot booking data.
+	 *
+	 * @param int   $entry_id Entry id.
+	 * @param array $fields    List of form fields.
+	 * @param array $entry     User submitted data.
+	 * @param int   $form_id   Form ID.
+	 * @param array $form_data Prepared form settings.
+	 */
+	public function update_slot_booking_value( $entry_id, $fields, $entry, $form_id, $form_data ) {
+		$new_slot_booking_field_meta_key_list = array();
+		$time_interval                        = 0;
+		foreach ( $form_data['form_fields'] as $field ) {
+			if ( ( 'date-time' === $field['type'] ) && isset( $field['slot_booking_advanced'] ) && evf_string_to_bool( $field['slot_booking_advanced'] ) ) {
+				$new_slot_booking_field_meta_key_list[ $field['meta-key'] ] = array(
+					$field['datetime_format'],
+					$field['date_format'],
+					$field['date_mode'],
+				);
+				$time_interval = $field['time_interval'];
+			}
+		}
+
+		foreach ( $fields as $key => $value ) {
+			if ( array_key_exists( $value['meta_key'], $new_slot_booking_field_meta_key_list ) ) {
+				$new_value       = $value['value'];
+				$datetime_format = $new_slot_booking_field_meta_key_list[ $value['meta_key'] ][0];
+				$date_format     = $new_slot_booking_field_meta_key_list[ $value['meta_key'] ][1];
+				$mode            = $new_slot_booking_field_meta_key_list[ $value['meta_key'] ][2];
+				$datetime_arr    = parse_datetime_values( $new_value, $datetime_format, $date_format, $mode, $time_interval );
+			}
+		}
+
+		if ( ! empty( $datetime_arr ) ) {
+			$get_booked_slot = get_option( 'evf_booked_slot', array() );
+			$new_booked_slot = array( $form_id => $datetime_arr );
+
+			if ( empty( $get_booked_slot ) ) {
+				$all_booked_slot = maybe_serialize( $new_booked_slot );
+			} else {
+				$unserialized_booked_slot = maybe_unserialize( $get_booked_slot );
+
+				if ( array_key_exists( $form_id, $unserialized_booked_slot ) ) {
+					$booked_slot     = $unserialized_booked_slot[ $form_id ];
+					$booked_slot     = array_merge( (array) $booked_slot, $datetime_arr );
+					$new_booked_slot = array( $form_id => $booked_slot );
+				}
+
+				$all_booked_slot = maybe_serialize( array_replace( $unserialized_booked_slot, $new_booked_slot ) );
+			}
+
+			update_option( 'evf_booked_slot', $all_booked_slot );
+		}
+
 	}
 
 	/**

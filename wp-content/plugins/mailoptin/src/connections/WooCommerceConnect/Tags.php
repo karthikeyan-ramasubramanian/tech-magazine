@@ -225,21 +225,6 @@ class Tags
     }
 
     /**
-     * @param $field
-     * @param $order
-     *
-     * @return mixed|void
-     */
-    public function get_field_value($field, $order)
-    {
-        $field_tag = 'get_' . $field;
-
-        if (is_callable([$order, $field_tag])) {
-            return $order->$field_tag();
-        }
-    }
-
-    /**
      * @param $order
      *
      * @return mixed|string
@@ -292,7 +277,7 @@ class Tags
         $payload = [];
 
         foreach ($field_map as $key => $value) {
-            $payload[$key] = $this->get_field_value($value, $order);
+            $payload[$key] = WooInit::get_instance()->get_field_value($value, $order);
         }
 
         $double_optin = false;
@@ -329,10 +314,6 @@ class Tags
         $optin_data->is_timestamp_check_active = false;
         $optin_data->is_double_optin           = $double_optin;
 
-        if (isset($_REQUEST['referrer'])) {
-            $optin_data->conversion_page = esc_url_raw($_REQUEST['referrer']);
-        }
-
         if ( ! empty($form_tags)) {
             $optin_data->form_tags = $form_tags;
         }
@@ -346,7 +327,7 @@ class Tags
 
             if (in_array($name, ['moEmail', 'moName', 'moFirstName', 'moLastName'])) continue;
 
-            $field_value = $this->get_field_value($value, $order);
+            $field_value = WooInit::get_instance()->get_field_value($value, $order);
 
             if (empty($field_value)) continue;
 

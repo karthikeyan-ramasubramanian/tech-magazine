@@ -85,7 +85,6 @@ class AutomationEditor {
       'registry' => $this->buildRegistry(),
       'context' => $this->buildContext(),
       'automation' => $this->automationMapper->buildAutomation($automation),
-      'sub_menu' => 'mailpoet-automation',
       'locale_full' => $this->wp->getLocale(),
       'api' => [
         'root' => rtrim($this->wp->escUrlRaw($this->wp->restUrl()), '/'),
@@ -108,7 +107,50 @@ class AutomationEditor {
         'args_schema' => $step->getArgsSchema()->toArray(),
       ];
     }
-    return ['steps' => $steps];
+
+    $subjects = [];
+    foreach ($this->registry->getSubjects() as $key => $subject) {
+      $subjects[$key] = [
+        'key' => $subject->getKey(),
+        'name' => $subject->getName(),
+        'args_schema' => $subject->getArgsSchema()->toArray(),
+        'field_keys' => array_map(function ($field) {
+          return $field->getKey();
+        }, $subject->getFields()),
+      ];
+    }
+
+    $fields = [];
+    foreach ($this->registry->getFields() as $key => $field) {
+      $fields[$key] = [
+        'key' => $field->getKey(),
+        'type' => $field->getType(),
+        'name' => $field->getName(),
+        'args' => $field->getArgs(),
+      ];
+    }
+
+    $filters = [];
+    foreach ($this->registry->getFilters() as $fieldType => $filter) {
+      $conditions = [];
+      foreach ($filter->getConditions() as $key => $label) {
+        $conditions[] = [
+          'key' => $key,
+          'label' => $label,
+        ];
+      }
+      $filters[$fieldType] = [
+        'field_type' => $filter->getFieldType(),
+        'conditions' => $conditions,
+      ];
+    }
+
+    return [
+      'steps' => $steps,
+      'subjects' => $subjects,
+      'fields' => $fields,
+      'filters' => $filters,
+    ];
   }
 
   private function buildContext(): array {

@@ -38,6 +38,7 @@ if ( apply_filters( 'authorship/plugin_compatibility', authorship_is_feature_ena
     if ( is_plugin_active( 'td-cloud-library/td-cloud-library.php' ) ) require_once $path . 'td-cloud-library.php';
     if ( is_plugin_active( 'td-composer/td-composer.php' ) ) require_once $path . 'td-composer.php';
     if ( is_plugin_active( 'autodescription/autodescription.php' ) ) require_once $path . 'the-seo-framework.php';
+    if ( is_plugin_active( 'top-10/top-10.php' ) ) require_once $path . 'top-10.php';
     if ( is_plugin_active( 'ultimate-member/ultimate-member.php' ) ) require_once $path . 'ultimate-member.php';
     if ( is_plugin_active( 'userswp/userswp.php' ) ) require_once $path . 'userswp.php';
     if ( is_plugin_active( 'wordpress-popular-posts/wordpress-popular-posts.php' ) ) require_once $path . 'wordpress-popular-posts.php';

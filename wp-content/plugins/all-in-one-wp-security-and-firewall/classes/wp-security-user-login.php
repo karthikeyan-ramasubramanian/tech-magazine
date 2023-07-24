@@ -52,7 +52,7 @@ class AIOWPSecurity_User_Login {
 	 */
 	private function is_locked_ip_addresses_tab_admin_page() {
 		global $pagenow;
-		return ('admin.php' == $pagenow && isset($_GET['page']) && 'aiowpsec' == $_GET['page'] && isset($_GET['tab']) && 'tab3' == $_GET['tab']);
+		return ('admin.php' == $pagenow && isset($_GET['page']) && 'aiowpsec' == $_GET['page'] && isset($_GET['tab']) && 'locked-ip' == $_GET['tab']);
 	}
 
 	/**
@@ -71,7 +71,7 @@ class AIOWPSecurity_User_Login {
 						__('You have disabled login lockout by defining the AIOS_DISABLE_LOGIN_LOCKOUT constant value as true, and the login lockout setting has enabled it.', 'all-in-one-wp-security-and-firewall') . ' ' .
 						/* translators: 1: Locked IP Addresses admin page link */
 						sprintf(__('Delete your login lockout IP from %s and define the AIOS_DISABLE_LOGIN_LOCKOUT constant value as false.', 'all-in-one-wp-security-and-firewall'),
-							'<a href="'.admin_url('admin.php?page=aiowpsec&tab=tab2').'">' . __('Locked IP addresses', 'all-in-one-wp-security-and-firewall') . '</a>'
+							'<a href="'.admin_url('admin.php?page=aiowpsec&tab=locked-ip').'">' . __('Locked IP addresses', 'all-in-one-wp-security-and-firewall') . '</a>'
 						).
 					'</p>
 				</div>';
@@ -182,6 +182,7 @@ class AIOWPSecurity_User_Login {
 		global $aio_wp_security;
 		if (!is_wp_error($user)) {
 			// Authentication has been successful, there's nothing to do here.
+			AIOWPSecurity_Audit_Events::event_successful_login($username);
 			return $user;
 		}
 		if (empty($username) || empty($password)) {
@@ -319,7 +320,6 @@ class AIOWPSecurity_User_Login {
 			//If the login attempt was made using a non-existent user then let's set user_id to blank and record the attempted user login name for DB storage later on
 			$user_id = 0;
 		}
-		$ip_range_str = esc_sql($ip_range).'.*';// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 
 		$lock_time = current_time('mysql', true);
 		$date = new DateTime($lock_time);
@@ -374,10 +374,8 @@ class AIOWPSecurity_User_Login {
 				}
 			
 				$email_msg .= __("Log into your site WordPress administration panel to see the duration of the lockout or to unlock the user.", 'all-in-one-wp-security-and-firewall') . "\n";
-			
-				$site_title = get_bloginfo('name');
-				$from_name = empty($site_title) ? 'WordPress' : $site_title;
-				$email_header = 'From: '.$from_name.' <'.get_bloginfo('admin_email').'>' . "\r\n\\";
+
+				$email_header = '';
 				$send_mail = wp_mail($to_email_address, $subject, $email_msg, $email_header, $backtrace_filepath);
 			
 				if (false === $send_mail) {
@@ -486,10 +484,8 @@ class AIOWPSecurity_User_Login {
 		global $aio_wp_security;
 		$subject = '['.network_site_url().'] '. __('Unlock request notification', 'all-in-one-wp-security-and-firewall');
 		$email_msg = sprintf(__('You have requested for the account with email address %s to be unlocked. Please press the link below to unlock your account:', 'all-in-one-wp-security-and-firewall'), $email) . "\n" . sprintf(__('Unlock link: %s', 'all-in-one-wp-security-and-firewall'), $unlock_link) . "\n\n" . __('After pressing the above link you will be able to login to the WordPress administration panel.', 'all-in-one-wp-security-and-firewall') . "\n";
-		$site_title = get_bloginfo('name');
-		$from_name = empty($site_title) ? 'WordPress' : $site_title;
-		$email_header = 'From: '.$from_name.' <'.get_bloginfo('admin_email').'>' . "\r\n\\";
-		$sendMail = wp_mail($email, $subject, $email_msg, $email_header);
+		
+		$sendMail = wp_mail($email, $subject, $email_msg);
 		if (false === $sendMail) {
 			$aio_wp_security->debug_logger->log_debug("Unlock Request Notification email failed to send to " . $email, 4);
 		}
@@ -544,18 +540,21 @@ class AIOWPSecurity_User_Login {
 		return $last_login;
 	}
 
-	public static function wp_login_action_handler($user_login, $user = '') {
+	/**
+	 * Updates the last login time in user meta, the login activity table and the users online transient.
+	 *
+	 * @global wpdb $wpdb
+	 * @global AIO_WP_Security $aio_wp_security
+	 *
+	 * @param string  $user_login
+	 * @param WP_User $user
+	 * @param string  $login_activity_table
+	 *
+	 * @return void
+	 */
+	private static function update_login_activity($user_login, $user, $login_activity_table) {
 		global $wpdb, $aio_wp_security;
-		$login_activity_table = AIOWPSEC_TBL_USER_LOGIN_ACTIVITY;
 
-		if ('' == $user) {
-			//Try and get user object
-			$user = get_user_by('login', $user_login); //This should return WP_User obj
-			if (!$user) {
-				$aio_wp_security->debug_logger->log_debug("AIOWPSecurity_User_Login::wp_login_action_handler: Unable to get WP_User object for login ".$user_login, 4);
-				return;
-			}
-		}
 		$login_date_time = current_time('mysql', true);
 		update_user_meta($user->ID, 'aiowps_last_login_time', $login_date_time); //store last login time in meta table
 		$curr_ip_address = AIOWPSecurity_Utility_IP::get_user_ip_address();
@@ -566,6 +565,50 @@ class AIOWPSecurity_User_Login {
 			$aio_wp_security->debug_logger->log_debug("Error inserting record into ".$login_activity_table, 4);//Log the highly unlikely event of DB error
 		}
 		self::update_users_online_transient($user->ID);
+	}
+
+	public static function wp_login_action_handler($user_login, $user = '') {
+		global $wpdb, $aio_wp_security;
+
+		if ('' == $user) {
+			//Try and get user object
+			$user = get_user_by('login', $user_login); //This should return WP_User obj
+			if (!$user) {
+				$aio_wp_security->debug_logger->log_debug("AIOWPSecurity_User_Login::wp_login_action_handler: Unable to get WP_User object for login ".$user_login, 4);
+				return;
+			}
+		}
+
+		if (is_super_admin($user->ID)) {
+			$logging_into_correct_site = true;
+		} else {
+			$user_sites = get_blogs_of_user($user->ID);
+
+			$current_site_id = get_current_blog_id();
+
+			$logging_into_correct_site = false;
+
+			foreach ($user_sites as $site) {
+				if ($site->userblog_id == $current_site_id) {
+					$logging_into_correct_site = true;
+					break;
+				}
+			}
+		}
+
+		if ($logging_into_correct_site) {
+			$login_activity_table = $wpdb->prefix . 'aiowps_login_activity';
+			self::update_login_activity($user_login, $user, $login_activity_table);
+		} else {
+			$user_primary_site = get_active_blog_for_user($user->ID);
+			switch_to_blog($user_primary_site->blog_id);
+
+			$login_activity_table = $wpdb->prefix . 'aiowps_login_activity';
+
+			self::update_login_activity($user_login, $user, $login_activity_table);
+
+			restore_current_blog();
+		}
 	}
 	/**
 	 * The handler for logout events, ie, uses the WP "clear_auth_cookies" action.

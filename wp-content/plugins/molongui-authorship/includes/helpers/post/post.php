@@ -246,7 +246,8 @@ if ( !function_exists( 'mount_byline' ) )
         {
             foreach ( $authors as $author )
             {
-                $divider = ( $i == 0 ? '' : ( $i == ( $total - 1 ) ? ' '.$last_separator.' ' : $separator.' ' ) );
+                $space   = apply_filters( 'authorship/byline_separator_autospace', '__return_true' ) ? ' ' : '';
+                $divider = ( $i == 0 ? '' : ( $i == ( $total - 1 ) ? $space.$last_separator.$space : $separator.$space ) );
                 $author_class = new Author( $author->id, $author->type );
                 if ( $linked ) $item = $author_class->get_link();
                 else $item = $author_class->get_name();

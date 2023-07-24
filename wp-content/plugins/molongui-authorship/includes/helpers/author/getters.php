@@ -145,16 +145,23 @@ if ( !function_exists( 'molongui_get_users' ) )
 
             if ( !empty( $no_role_ids ) )
             {
-                $no_role_users = array();
-                add_filter( '_authorship/filter/get_user_by', '__return_list_false' );
-                foreach ( $no_role_ids as $no_role_id )
+                if ( isset( $parsed_args['fields'] ) and 'ID' === $parsed_args['fields'] )
                 {
-                    $no_role_users[$no_role_id] = get_user_by( 'id', $no_role_id );
+                    $no_role_users = $no_role_ids;
+
+                    $users = array_merge( $users, $no_role_users );
+                    sort( $users );
                 }
-                remove_filter( '_authorship/filter/get_user_by', '__return_list_false' );
-                $users = array_merge( $users, $no_role_users );
-                usort( $users, function($a, $b) use ( $parsed_args ) { return strcasecmp( $a->$parsed_args['orderby'], $b->$parsed_args['orderby'] ); } );
-                if ( $parsed_args['order'] == 'desc' ) $authors = array_reverse( $users );
+                else
+                {
+                    $no_role_users = molongui_query( array( 'include' => $no_role_ids ), 'users' );
+
+                    $users = array_merge( $users, $no_role_users );
+                    $field = $parsed_args['orderby'];
+                    usort( $users, function($a, $b) use ( $field ) { return strcasecmp( $a->$field, $b->$field ); } );
+                }
+
+                if ( $parsed_args['order'] == 'desc' ) $users = array_reverse( $users );
             }
         }
         return $users;
@@ -209,11 +216,16 @@ if ( !function_exists( 'molongui_get_authors' ) )
     {
         $authors = array();
         $options = authorship_get_options();
+
+        $original_orderby = $orderby;
         if ( !empty( $orderby ) )
         {
             switch ( $orderby )
             {
                 case 'id':
+                    $orderby = 'ID';
+                break;
+                case 'rand':
                     $orderby = 'ID';
                 break;
                 case 'post_count':
@@ -334,27 +346,50 @@ if ( !function_exists( 'molongui_get_authors' ) )
             }
         }
         if ( in_array( $orderby, array( 'include', 'post__in' ) ) ) return $authors;
-        if ( 'post_count' === $orderby )
+        switch ( $original_orderby )
         {
-            usort( $authors, function ( $a, $b ) use ( $orderby, $post_types )
-            {
-                return $a[$orderby][$post_types[0]] - $b[$orderby][$post_types[0]];
-            });
-        }
-        elseif ( 'ID' === $orderby )
-        {
-            $key = 'id';
-            usort( $authors, function ( $a, $b ) use ( $key )
-            {
-                return $a[$key] - $b[$key];
-            });
-        }
-        else
-        {
-            usort( $authors, function ( $a, $b ) use ( $orderby )
-            {
-                return strcasecmp( $a[$orderby], $b[$orderby] );
-            });
+            case 'user_roles':
+
+                usort( $authors, function ( $a, $b ) use ( $orderby )
+                {
+                    return strcasecmp( $a[$orderby][0], $b[$orderby][0] );
+                });
+
+            break;
+
+            case 'post_count':
+
+                usort( $authors, function ( $a, $b ) use ( $orderby, $post_types )
+                {
+                    return $a[$orderby][$post_types[0]] - $b[$orderby][$post_types[0]];
+                });
+
+            break;
+
+            case 'id':
+            case 'ID':
+
+                $key = 'id';
+                usort( $authors, function ( $a, $b ) use ( $key )
+                {
+                    return $a[$key] - $b[$key];
+                });
+
+            break;
+
+            case 'rand':
+            case 'random':
+                shuffle( $authors );
+
+            break;
+
+            default:
+                usort( $authors, function ( $a, $b ) use ( $orderby )
+                {
+                    return strcasecmp( $a[$orderby], $b[$orderby] );
+                });
+
+            break;
         }
         if ( 'desc' == $order ) $authors = array_reverse( $authors );
         return $authors;

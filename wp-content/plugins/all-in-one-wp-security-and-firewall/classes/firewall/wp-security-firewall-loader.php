@@ -156,6 +156,7 @@ class Loader {
 					AIOWPS_FIREWALL_DIR."/rule/rules/6g/{$rule}",
 					AIOWPS_FIREWALL_DIR."/rule/rules/bruteforce/{$rule}",
 					AIOWPS_FIREWALL_DIR."/rule/rules/blacklist/{$rule}",
+					AIOWPS_FIREWALL_DIR."/rule/rules/general/{$rule}",
 					AIOWPS_FIREWALL_DIR."/libs/{$file}",
 				);
 
@@ -170,8 +171,19 @@ class Loader {
 		});
 		
 		// Manually include needed files
+		$classes_dir = dirname(AIOWPS_FIREWALL_DIR);
+
+		$manual_files = array(
+			$classes_dir.'/wp-security-helper.php',
+		);
+
+		foreach ($manual_files as $file) {
+			clearstatcache();
+			if (file_exists($file)) include_once $file;
+		}
+
 		if (Context::wordpress_safe()) {
-			include_once(AIO_WP_SECURITY_PATH.'/classes/wp-security-utility-file.php');
+			include_once(dirname(AIOWPS_FIREWALL_DIR).'/wp-security-utility-file.php');
 		}
 	}
 

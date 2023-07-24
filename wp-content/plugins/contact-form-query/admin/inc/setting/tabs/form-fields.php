@@ -23,7 +23,7 @@ $feedback_messages = STCFQ_Helper::feedback_messages();
 					<strong id="stcfq-contact-form-shortcode">[contact_form_query]</strong>&nbsp;
 					<button type="button" class="button" id="stcfq-copy-contact-form-shortcode" data-message="<?php esc_attr_e( 'Copied to clipboard.', 'contact-form-query' ); ?>"><?php esc_html_e( 'Copy', 'contact-form-query' ); ?></button>
 					<p class="description">
-						<?php esc_html_e( 'Use above shortcode in any page or post to display the contact form.', 'contact-form-query' ); ?>
+						<?php esc_html_e( 'Use above shortcode in any page or post to display the contact form. Also, you may use "Contact Form" block in the block editor to display the contact form.', 'contact-form-query' ); ?>
 					</p>
 				</td>
 			</tr>
@@ -32,7 +32,7 @@ $feedback_messages = STCFQ_Helper::feedback_messages();
 				<th scope="row"><?php esc_html_e( 'Form Fields', 'contact-form-query' ); ?></th>
 				<td>
 					<p class="description">
-						<?php esc_html_e( 'You can also re-order the form fields by simply expanding the field and then draging it up or down.', 'contact-form-query' ); ?>
+						<?php esc_html_e( 'You can re-order the form fields by simply expanding the field and then draging it up or down.', 'contact-form-query' ); ?>
 					</p>
 					<ul id="stcfq-form-field-settings" class="clearfix">
 					<?php foreach ( $contact_fields as $key => $field ) { ?>
